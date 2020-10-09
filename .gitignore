@@ -1,0 +1,10 @@
+﻿################################################################################
+# 此 .gitignore 文件已由 Microsoft(R) Visual Studio 自动创建。
+################################################################################
+
+/DigitalPlatform.MarcKernel
+/DigitalPlatform.MarcQuery/bin
+/DigitalPlatform.MarcQuery/obj
+/dp2mini/bin/Debug
+/packages
+/dp2mini/obj/Debug
