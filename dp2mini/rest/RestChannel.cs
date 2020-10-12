@@ -64,6 +64,15 @@ namespace DigitalPlatform.LibraryRestClient
             this.Logout();
         }
 
+        /// <summary>
+        /// 最近一次调用从 dp2Library 返回的错误码
+        /// </summary>
+        public ErrorCode ErrorCode = ErrorCode.NoError;
+
+        /// <summary>
+        /// 当前已登录用户所管辖的馆代码(列表)
+        /// </summary>
+        public string LibraryCodeList = ""; // 当前已登录用户所管辖的馆代码 2020/10/12
 
         // return:
         //      -1  error
@@ -298,30 +307,34 @@ namespace DigitalPlatform.LibraryRestClient
             return response;
         }
 
-
+        /// <summary>
+        /// 获取书目信息
+        /// </summary>
+        /// <param name="strBiblioRecPath"></param>
+        /// <param name="strBiblioType"></param>
+        /// <returns></returns>
         public GetBiblioInfoResponse GetBiblioInfo(
-    string strBiblioRecPath,
-    string strBiblioType)
+            string strBiblioRecPath,
+            string strBiblioType)
         {
         REDO:
-
-            //CookieAwareWebClient client = new CookieAwareWebClient(this.Cookies);
-            //client.Headers["Content-type"] = "application/json; charset=utf-8";
-            //client.Headers["User-Agent"] = "dp2LibraryClient";
             CookieAwareWebClient client = this.GetClient();
 
-
+            // 设置接口参数
             GetBiblioInfoRequest request = new GetBiblioInfoRequest();
             request.strBiblioRecPath = strBiblioRecPath;
             request.strBiblioType = strBiblioType;
             request.strBiblioXml = "";
-
+            // 将参数序列号，转成二进制
             byte[] baData = Encoding.UTF8.GetBytes(Serialize(request));
+
+            // 调接口
             byte[] result = client.UploadData(this.GetRestfulApiUrl("GetBiblioInfo"),
                                                 "POST",
                                                 baData);
-
             string strResult = Encoding.UTF8.GetString(result);
+
+            // 返回值序列号为对象
             GetBiblioInfoResponse response = Deserialize<GetBiblioInfoResponse>(strResult);
 
             // 未登录时，按需登录
@@ -342,6 +355,7 @@ namespace DigitalPlatform.LibraryRestClient
             return response;
         }
 
+        // 校验barcode
         public long VerifyBarcode(string strLibraryCode,
             string strBarcode,
             out string strError)
@@ -350,9 +364,6 @@ namespace DigitalPlatform.LibraryRestClient
             long nRet = 0;
             try
             {
-                //CookieAwareWebClient client = new CookieAwareWebClient(Cookies);
-                //client.Headers["Content-type"] = "application/json; charset=utf-8";
-                //client.Headers["User-Agent"] = "dp2LibraryClient";
                 CookieAwareWebClient client = this.GetClient();
 
 
@@ -379,17 +390,20 @@ namespace DigitalPlatform.LibraryRestClient
             }
         }
 
+
+        /// <summary>
+        /// 得到所有数据库
+        /// </summary>
+        /// <param name="strDbXml"></param>
+        /// <param name="strError"></param>
+        /// <returns></returns>
         public int GetAllDatabase(out string strDbXml,
             out string strError)
         {
             strDbXml = "";
             strError = "";
-            //CookieAwareWebClient client = new CookieAwareWebClient(Cookies);
-            //client.Headers["Content-type"] = "application/json; charset=utf-8";
-            //client.Headers["User-Agent"] = "dp2LibraryClient";
+
             CookieAwareWebClient client = this.GetClient();
-
-
             /*
         // 管理数据库
         // parameters:
@@ -402,7 +416,8 @@ namespace DigitalPlatform.LibraryRestClient
             out string strOutputInfo)   
 */
             ManageDatabaseRequest request = new ManageDatabaseRequest();
-            request.strAction = "getinfo";
+            //strAction 动作。create delete initialize backup getinfo
+            request.strAction = "getinfo"; 
             request.strDatabaseName = "";
             request.strDatabaseInfo = "";
 
@@ -460,22 +475,16 @@ namespace DigitalPlatform.LibraryRestClient
 
         REDO:
 
-            //CookieAwareWebClient client = new CookieAwareWebClient(this.Cookies);
-            //client.Headers["Content-type"] = "application/json; charset=utf-8";
-            //client.Headers["User-Agent"] = "dp2LibraryClient";
             CookieAwareWebClient client = this.GetClient();
 
-
-            // 请求实体
+            // 请求参数
             SearchReaderRequest request = new SearchReaderRequest();
             request.strReaderDbNames = strReaderDbNames;// "";           
             request.strQueryWord = strQueryWord;// "";
             request.nPerMax = nPerMax;// -1;
-
             request.strFrom = strFrom;// "email";
             request.strMatchStyle = strMatchStyle;// "left";
             request.strLang = strLang;// "zh";
-
             request.strResultSetName = strResultSetName;//"";
             request.strOutputStyle = strOutputStyle;// "id,cols";      、
 
@@ -495,6 +504,153 @@ namespace DigitalPlatform.LibraryRestClient
             return response.SearchReaderResult.Value;
         }
 
+        //LibraryServerResult GetOperLog(
+        //    string strFileName,
+        //    long lIndex,
+        //    long lHint,
+        //    string strStyle,
+        //    string strFilter,
+        //    out string strXml,
+        //    out long lHintNext,
+        //    long lAttachmentFragmentStart,
+        //    int nAttachmentFragmentLength,
+        //    out byte[] attachment_data,
+        //    out long lAttachmentTotalLength);
+
+
+        /*
+                // 获得日志记录
+                // parameters:
+                //      strFileName 纯文件名,不含路径部分。但要包括".log"部分。
+                //      lIndex  记录序号。从0开始计数。
+                //              lIndex 为 -1 调用本函数：
+                //              1) 若 strStyle 中不包含 "getcount" 时，表示希望获得整个文件尺寸值，将返回在 lHintNext 中；
+                //              2) 若 strStyle 中包含 "getcount"，表示希望获得整个文件中包含的日志记录数，将返回在 lHintNext 中。
+                //      lHint   记录位置暗示性参数。这是一个只有服务器才能明白含义的值，对于前端来说是不透明的。
+                //              目前的含义是记录起始位置。
+                //      strStyle    level-0/level-1/level-2 表示详略级别
+                //                  level-0   全部
+                //                  level-1   删除 读者记录和册记录
+                //                  level-2   删除 读者记录和册记录中的 <borrowHistory>
+                //                  getcount    表示希望获得指定日志文件中的记录总数。返回在 lHintNext 参数中
+                //                  如果包含 dont_return_xml 表示在 strXml 不返回内容
+                // 权限：需要getoperlog权限
+                // return:
+                // result.Value
+                //      -1  error
+                //      0   file not found
+                //      1   succeed
+                //      2   超过范围
+         */
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="strFileName"></param>
+        /// <param name="lIndex"></param>
+        /// <param name="lHint"></param>
+        /// <param name="strStyle"></param>
+        /// <param name="strFilter"></param>
+        /// <param name="strXml"></param>
+        /// <param name="lHintNext"></param>
+        /// <param name="lAttachmentFragmentStart"></param>
+        /// <param name="nAttachmentFragmentLength"></param>
+        /// <param name="attachment_data"></param>
+        /// <param name="lAttachmentTotalLength"></param>
+        /// <param name="strError"></param>
+        /// <returns></returns>
+        public long GetOperLog(string strFileName,
+    long lIndex,
+    long lHint,
+    string strStyle,
+    string strFilter,
+    out string strXml,
+    out long lHintNext,
+    long lAttachmentFragmentStart,
+    int nAttachmentFragmentLength,
+    out byte[] attachment_data,
+    out long lAttachmentTotalLength,
+    out string strError)
+        {
+            strError = "";
+
+            strXml = "";
+            lHintNext = -1;
+
+            attachment_data = null;
+            lAttachmentTotalLength = 0;
+
+            /*
+        REDO:
+            try
+            {
+                IAsyncResult soapresult = this.ws.BeginGetOperLog(
+                    strFileName,
+                    lIndex,
+                    lHint,
+                    strStyle,
+                    strFilter,
+                    lAttachmentFragmentStart,
+                    nAttachmentFragmentLength,
+                    null,
+                    null);
+
+                WaitComplete(soapresult);
+
+                if (this.m_ws == null)
+                {
+                    strError = "用户中断";
+                    this.ErrorCode = localhost.ErrorCode.RequestCanceled;
+                    return -1;
+                }
+
+                LibraryServerResult result = this.ws.EndGetOperLog(
+                    out strXml,
+                    out lHintNext,
+                    out attachment_data,
+                    out lAttachmentTotalLength,
+                    soapresult);
+                if (result.Value == -1 && result.ErrorCode == ErrorCode.NotLogin)
+                {
+                    if (DoNotLogin(ref strError) == 1)
+                        goto REDO;
+                    return -1;
+                }
+                strError = result.ErrorInfo;
+                this.ErrorCode = result.ErrorCode;
+                this.ClearRedoCount();
+                return result.Value;
+            }
+            catch (Exception ex)
+            {
+                int nRet = ConvertWebError(ex, out strError);
+                if (nRet == 0)
+                    return -1;
+                goto REDO;
+            }
+
+            */
+
+            return 0;
+        }
+
+public long  GetOperLogs(
+    string strFileName,
+    long lIndex,
+    long lHint,
+    int nCount,
+    string strStyle,
+    string strFilter,
+    out OperLogInfo[] records,
+            out string strError)
+        {
+
+            records = null;
+            strError = "";
+
+            return 0;
+
+
+        }
 
 
         /// <summary>

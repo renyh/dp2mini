@@ -806,6 +806,20 @@ namespace DigitalPlatform.LibraryRestClient
 
     #region GetOperLog
 
+    /*
+         LibraryServerResult GetOperLog(
+                    string strFileName,
+                    long lIndex,
+                    long lHint,
+                    string strStyle,
+                    string strFilter,
+                    out string strXml,
+                    out long lHintNext,
+                    long lAttachmentFragmentStart,
+                    int nAttachmentFragmentLength,
+                    out byte[] attachment_data,
+                    out long lAttachmentTotalLength);
+     */
     [DataContract]
     public class GetOperLogRequest
     {
@@ -816,6 +830,10 @@ namespace DigitalPlatform.LibraryRestClient
         [DataMember]
         public long lHint { get; set; }
         [DataMember]
+        public string strStyle { get; set; }
+        [DataMember]
+        public string strFilter { get; set; }
+
         public long lAttachmentFragmentStart { get; set; }
         [DataMember]
         public int nAttachmentFragmentLength { get; set; }
@@ -833,6 +851,59 @@ namespace DigitalPlatform.LibraryRestClient
         public byte[] attachment_data { get; set; }
         [DataMember]
         public long lAttachmentTotalLength { get; set; }
+    }
+
+
+    /*
+        LibraryServerResult GetOperLogs(
+            string strFileName,
+            long lIndex,
+            long lHint,
+            int nCount,
+            string strStyle,
+            string strFilter,
+            out OperLogInfo[] records);
+     */
+    [DataContract]
+    public class GetOperLogsRequest
+    {
+        [DataMember]
+        public string strFileName { get; set; }
+        [DataMember]
+        public long lIndex { get; set; }
+        [DataMember]
+        public long lHint { get; set; }
+        [DataMember]
+        public int nCount { get; set; }
+
+        [DataMember]
+        public string strStyle { get; set; }
+        [DataMember]
+        public string strFilter { get; set; }
+    }
+
+    [DataContract]
+    public class GetOperLogsResponse
+    {
+        [DataMember]
+        public LibraryServerResult GetOperLogResult { get; set; }
+        [DataMember]
+        public OperLogInfo[] records { get; set; }
+    }
+
+    // API GetOperLogs()所使用的结构
+    [DataContract]
+    public class OperLogInfo
+    {
+        [DataMember]
+        public long Index = -1; // 日志记录序号
+        [DataMember]
+        public long HintNext = -1; // 下一记录暗示
+
+        [DataMember]
+        public string Xml = ""; // 日志记录XML
+        [DataMember]
+        public long AttachmentLength = 0;   // 附件尺寸
     }
 
     #endregion

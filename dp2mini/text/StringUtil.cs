@@ -398,6 +398,8 @@ namespace DigitalPlatform.Text
             return false;
         }
 
+
+
         // 修改字符串某一个位字符
         public static string SetAt(string strText, int index, char c)
         {
@@ -406,6 +408,104 @@ namespace DigitalPlatform.Text
 
             return strText;
         }
+
+        // 比较两个版本号
+        public static int CompareVersion(string strVersion1, string strVersion2)
+        {
+            if (string.IsNullOrEmpty(strVersion1) == true)
+                strVersion1 = "0.0";
+            if (string.IsNullOrEmpty(strVersion2) == true)
+                strVersion2 = "0.0";
+
+            try
+            {
+                Version version1 = new Version(strVersion1);
+                Version version2 = new Version(strVersion2);
+
+                return version1.CompareTo(version2);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("比较版本号字符串 '" + strVersion1 + "' 和 '" + strVersion2 + "' 过程出现异常: " + ex.Message, ex);
+            }
+        }
+
+        public static List<string> ParseTwoPart(string strText, string strSep)
+        {
+            string strLeft = "";
+            string strRight = "";
+            ParseTwoPart(strText, strSep, out strLeft, out strRight);
+            List<string> results = new List<string>();
+            results.Add(strLeft);
+            results.Add(strRight);
+            return results;
+        }
+
+        public static List<string> ParseTwoPart(string strText, string[] seps)
+        {
+            string strLeft = "";
+            string strRight = "";
+
+            if (string.IsNullOrEmpty(strText) == true)
+                goto END1;
+
+            int nRet = 0;
+            string strSep = "";
+            foreach (string sep in seps)
+            {
+                nRet = strText.IndexOf(sep);
+                if (nRet != -1)
+                {
+                    strSep = sep;
+                    goto FOUND;
+                }
+            }
+
+            strLeft = strText;
+            goto END1;
+
+        FOUND:
+            Debug.Assert(nRet != -1, "");
+            strLeft = strText.Substring(0, nRet).Trim();
+            strRight = strText.Substring(nRet + strSep.Length).Trim();
+
+        END1:
+            List<string> results = new List<string>();
+            results.Add(strLeft);
+            results.Add(strRight);
+            return results;
+        }
+
+        /// <summary>
+        /// 通用的，切割两个部分的函数
+        /// </summary>
+        /// <param name="strText">要处理的字符串</param>
+        /// <param name="strSep">分隔符号</param>
+        /// <param name="strPart1">返回第一部分</param>
+        /// <param name="strPart2">返回第二部分</param>
+        public static void ParseTwoPart(string strText,
+            string strSep,
+            out string strPart1,
+            out string strPart2)
+        {
+            strPart1 = "";
+            strPart2 = "";
+
+            if (string.IsNullOrEmpty(strText) == true)
+                return;
+
+            int nRet = strText.IndexOf(strSep);
+            if (nRet == -1)
+            {
+                strPart1 = strText;
+                return;
+            }
+
+            strPart1 = strText.Substring(0, nRet).Trim();
+            strPart2 = strText.Substring(nRet + strSep.Length).Trim();
+        }
+
+
     }
 
 }

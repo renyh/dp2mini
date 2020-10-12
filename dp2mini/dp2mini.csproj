@@ -183,6 +183,7 @@
     <Compile Include="core\ByteArray.cs" />
     <Compile Include="core\ConfigSetting.cs" />
     <Compile Include="core\ExceptionUtil.cs" />
+    <Compile Include="core\Range.cs" />
     <Compile Include="Database\DbManager.cs" />
     <Compile Include="Database\Note.cs" />
     <Compile Include="Database\NoteDB.cs" />
@@ -191,6 +192,11 @@
     <Compile Include="MarcKernel\MarcHeaderStruct.cs" />
     <Compile Include="MarcKernel\MarcUtil.cs" />
     <Compile Include="MarcKernel\MarcXmlWriter.cs" />
+    <Compile Include="opeLog\OperLogDatesLoader.cs" />
+    <Compile Include="opeLog\OperLogItemLoader.cs" />
+    <Compile Include="opeLog\OperLogLoader.cs" />
+    <Compile Include="opeLog\ProgressEstimate.cs" />
+    <Compile Include="opeLog\Stop.cs" />
     <Compile Include="text\StringUtil.cs" />
     <Compile Include="io\DateTimeUtil.cs" />
     <Compile Include="io\PathUtil.cs" />
@@ -248,6 +254,12 @@
       <DependentUpon>textForm.cs</DependentUpon>
     </Compile>
     <Compile Include="text\Cryptography.cs" />
+    <Compile Include="TransferStatisForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TransferStatisForm.designer.cs">
+      <DependentUpon>TransferStatisForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="xml\DomUtil.cs" />
     <EmbeddedResource Include="checkForm.resx">
       <DependentUpon>checkForm.cs</DependentUpon>
@@ -284,6 +296,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="textForm.resx">
       <DependentUpon>textForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TransferStatisForm.resx">
+      <DependentUpon>TransferStatisForm.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
