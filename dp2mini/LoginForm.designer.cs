@@ -1,4 +1,6 @@
-﻿namespace dp2mini
+﻿//test wuyang
+
+namespace dp2mini
 {
     partial class LoginForm
     {
