@@ -141,7 +141,13 @@ namespace practice
             // 一定要调save函数才能把信息保存下来
             Properties.Settings.Default.Save();
         }
-
+        private void Display(string text)
+        {
+            if (text == "Empty")
+                textBox_result.Text = string.Empty;
+            else
+                textBox_result.Text += text+"\r\n";
+        } 
         private void 通用练习题ToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Form_c dlg = new Form_c();
@@ -158,10 +164,10 @@ namespace practice
                 GetVersionResponse response= channel.GetVersion();
                 if (response.GetVersionResult.Value == -1)
                 {
-                    this.textBox_result.Text = "获取版本出错：" + response.GetVersionResult.ErrorInfo;
+                    this.textBox_result.Text += "获取版本出错：" + response.GetVersionResult.ErrorInfo;
                     return;
                 }
-                this.textBox_result.Text = response.GetVersionResult.ErrorInfo;
+                this.textBox_result.Text += response.GetVersionResult.ErrorInfo;
             }
             finally
             {
@@ -226,9 +232,7 @@ namespace practice
             }
         }
 
-
         #endregion
-
 
         private void button_SearchBiblio_Click(object sender, EventArgs e)
         {
@@ -376,8 +380,6 @@ namespace practice
             }
         }
 
-
-
         private void button__Reservation_start_Click(object sender, EventArgs e)
         {
             RestChannel channel = this.GetChannel();
@@ -398,10 +400,6 @@ namespace practice
                 this._channelPool.ReturnChannel(channel);
             }
         }
-
-
-  
-
 
         // 创建书目
         private void button_setBiblioInfo_Click(object sender, EventArgs e)
@@ -454,9 +452,6 @@ namespace practice
                 this._channelPool.ReturnChannel(channel);
             }
         }
-
-
-
 
         private void button_getField_Click(object sender, EventArgs e)
         {
@@ -593,11 +588,11 @@ public long SearchItem(string strItemDbName,
                     out string strError);
                 if (lRet == -1)
                 {
-                    this.textBox_result.Text = "error:" + strError;
+                    this.textBox_result.Text += "error:" + strError;
                 }
                 else
                 {
-                    this.textBox_result.Text = "count:" + lRet;
+                    this.textBox_result.Text += "count:" + lRet;
 
                     if (itemWarpperList != null && itemWarpperList.Length > 0)
                     {
@@ -645,49 +640,64 @@ public long SearchItem(string strItemDbName,
                 long start1 = getRes.GetResResult.Value;
 
                 //当路径为“XXX/1/object/1”时，是想获取对象文件
-                if (words.Length == 4 && getRes.baContent != null)
+                if (words.Length == 4)
                 {
-                    //获得初始偏移量，为循环做准备
-                    long size = getRes.baContent.Length;
+                    //判断是否为空
+                    if (getRes.baContent == null)
+                        Display("Empty");
+                        Display(getRes.GetResResult.ErrorInfo);
 
-                    //创建文件，开始以二进制方式写入
-                    if (string.IsNullOrEmpty(path) == false)
+                    if (getRes.baContent != null)
                     {
-                        //如果对象文件尺寸不为空
-                        if (getRes.GetResResult.Value != -1)
-                        {
-                            using (FileStream fs = new FileStream(textBox_path.Text, FileMode.Create, FileAccess.Write))
-                            {
-                                //textBox_result.Text += "data:\r\n" + baContent;
-                                fs.Write(getRes.baContent, 0, getRes.baContent.Length);
-                                //+ "Metadata:\r\n" + getRes.strMetadata + "\r\n"
-                                //+ "strOutputResPath:\r\n" + getRes.strOutputResPath + "\r\n"
-                                //+ "baOutputTimestamp\r\n" + strTimestamp;
+                        //获得初始偏移量，为循环做准备
+                        long size = getRes.baContent.Length;
 
-                                //循环写入对象文件，但是不 Dispose
-                                for (; ; )
+                        //创建文件，开始以二进制方式写入
+                        if (string.IsNullOrEmpty(path) == false)
+                        {
+                            //如果对象文件尺寸不为空
+                            if (getRes.GetResResult.Value != -1)
+                            {
+                                using (FileStream fs = new FileStream(textBox_path.Text, FileMode.Create, FileAccess.Write))
                                 {
-                                    if (size == start1)
-                                        break;
-                                    else
+                                    //textBox_result.Text += "data:\r\n" + baContent;
+                                    fs.Write(getRes.baContent, 0, getRes.baContent.Length);
+                                    //+ "Metadata:\r\n" + getRes.strMetadata + "\r\n"
+                                    //+ "strOutputResPath:\r\n" + getRes.strOutputResPath + "\r\n"
+                                    //+ "baOutputTimestamp\r\n" + strTimestamp;
+
+                                    //循环写入对象文件，但是不 Dispose
+                                    for (; ; )
                                     {
-                                        GetResResponse getRes1 = channel.GetRes(path, size, length, "data");
-                                        fs.Write(getRes1.baContent, 0, getRes1.baContent.Length);
-                                        size += getRes1.baContent.Length;
+                                        if (size == start1)
+                                            break;
+                                        else
+                                        {
+                                            GetResResponse getRes1 = channel.GetRes(path, size, length, "data");
+                                            fs.Write(getRes1.baContent, 0, getRes1.baContent.Length);
+                                            size += getRes1.baContent.Length;
+                                        }
                                     }
+                                    //循环结束，Dispose
+                                    fs.Dispose();
+                                    MessageBox.Show("对象文件下载成功");
                                 }
-                                //循环结束，Dispose
-                                fs.Dispose();
-                                MessageBox.Show("对象文件下载成功");
+
+                                //textBox_result.Text = String.Empty;
+                                Display("Empty");
+                                //textBox_result.Text += "获取成功\r\n";
+                                //textBox_result.Text += getRes.GetResResult.Value + "\r\n";
+                                Display("获取成功");
+                                Display(getRes.GetResResult.Value.ToString());
                             }
-                            
-                            
-                            textBox_result.Text = "获取成功\r\n";
-                            textBox_result.Text += getRes.GetResResult.Value + "\r\n";
+                            //当尺寸为空时
+                            else
+                            {
+                                Display("Empty");
+                                Display(getRes.GetResResult.ErrorInfo);
+                                //textBox_result.Text += getRes.GetResResult.ErrorInfo;
+                            }
                         }
-                        //当尺寸为空时
-                        else
-                            textBox_result.Text = getRes.GetResResult.ErrorInfo;
                     }
                 }
 
@@ -719,16 +729,28 @@ public long SearchItem(string strItemDbName,
                             }
                         }
                         else
-                            textBox_result.Text = getRes.GetResResult.ErrorInfo;
+                        {
+                            Display("Empty");
+                            Display(getRes.GetResResult.ErrorInfo);
+                            //textBox_result.Text = getRes.GetResResult.ErrorInfo;
+                        }
                     }
                     else
-                        textBox_result.Text=getRes.GetResResult.ErrorInfo;
+                    {
+                        Display("Empty");
+                        Display(getRes.GetResResult.ErrorInfo);
+
+                        //textBox_result.Text = getRes.GetResResult.ErrorInfo;
+                    }
+                        
                 }
 
                 //其他情况
-                else
+                if(words.Length!=2||words.Length!=4)
                 {
-                    textBox_result.Text = getRes.GetResResult.ErrorInfo;
+                    Display("Empty");
+                    Display(getRes.GetResResult.ErrorInfo);
+                    //textBox_result.Text = getRes.GetResResult.ErrorInfo;
                 }
             }
             finally { this._channelPool.ReturnChannel(channel); }
@@ -808,6 +830,8 @@ public long SearchItem(string strItemDbName,
             }
             finally { this._channelPool.ReturnChannel(channel); }
         }
+
+
     
     }
 
