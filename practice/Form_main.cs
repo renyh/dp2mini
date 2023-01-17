@@ -771,18 +771,28 @@ public long SearchItem(string strItemDbName,
                 string value = getRecord.strXml.Length.ToString();
                 if (getRecord.GetRecordResult.Value == 0)
                 {
-                    textBox_result.Text = "获取成功\r\n";
+                    Display("Empty");
+                    Display("获取成功");
+                    //textBox_result.Text = "获取成功\r\n";
                     string strTimestamp = ByteArray.GetHexTimeStampString(getRecord.timestamp);
-                    textBox_result.Text +=
-                        "strXML:\r\n" +
-                        getRecord.strXml +
-                        "时间戳:\r\n" + strTimestamp;
+                    Display("strXML");
+                    Display(getRecord.strXml);
+                    Display("时间戳");
+                    Display(strTimestamp);
+                    //textBox_result.Text +=
+                    //    "strXML:\r\n" +
+                    //    getRecord.strXml +
+                    //    "时间戳:\r\n" + strTimestamp;
                     //  + "时间戳（文本）"+newStr
                     //+ "\r\n"+value;
 
                 }
                 else
-                    textBox_result.Text = "获取失败";
+                {
+                    Display("Empty");
+                    Display(getRecord.GetRecordResult.ErrorInfo);
+                    //textBox_result.Text = "获取失败";
+                }
             }
             finally { this._channelPool.ReturnChannel(restChannel); }
         }
@@ -822,10 +832,18 @@ public long SearchItem(string strItemDbName,
                     stamp);
                 //textBox_result.Text = //"获取成功\r\n";
                 string strTimestamp =ByteArray.GetHexTimeStampString(writeres.baOutputTimestamp);
-                textBox_result.Text += "\r\n" + writeres.WriteResResult.Value
-                    + "\r\n" + writeres.WriteResResult.ErrorInfo
-                    + "\r\n" + writeres.strOutputResPath
-                    + "\r\n" + strTimestamp;
+                Display("Empty");
+                Display(writeres.WriteResResult.Value.ToString());
+                Display("报错信息");
+                Display(writeres.WriteResResult.ErrorInfo);
+                Display("strOutputResPath");
+                Display(writeres.strOutputResPath);
+                Display("strTimestamp");
+                Display(strTimestamp);
+                //textBox_result.Text += "\r\n" + writeres.WriteResResult.Value
+                //    + "\r\n" + writeres.WriteResResult.ErrorInfo
+                //    + "\r\n" + writeres.strOutputResPath
+                //    + "\r\n" + strTimestamp;
 
             }
             finally { this._channelPool.ReturnChannel(channel); }
