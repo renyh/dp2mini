@@ -1,4 +1,7 @@
-﻿        // 同步
+﻿123
+
+
+        // 同步
         // 注：中途遇到异常(例如 Loader 抛出异常)，可能会丢失 INSERT_BATCH 条以内的日志记录写入 operlog 表
         // parameters:
         //      strLastDate   处理中断或者结束时返回最后处理过的日期
