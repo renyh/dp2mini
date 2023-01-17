@@ -143,11 +143,17 @@ namespace practice
         }
         private void Display(string text)
         {
-            if (text == "Empty")
-                textBox_result.Text = string.Empty;
-            else
-                textBox_result.Text += text+"\r\n";
-        } 
+            //if (text == "Empty")
+            //    textBox_result.Text = String.Empty;
+            //    //textBox_result.Text = string.Empty;
+
+            //else
+            textBox_result.Text += text+"\r\n";
+        }
+        private void ClearDisplay()
+        {
+            textBox_result.Clear(); 
+        }
         private void 通用练习题ToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Form_c dlg = new Form_c();
@@ -644,7 +650,8 @@ public long SearchItem(string strItemDbName,
                 {
                     //判断是否为空
                     if (getRes.baContent == null)
-                        Display("Empty");
+                        // Display("Empty");
+                        ClearDisplay();
                         Display(getRes.GetResResult.ErrorInfo);
 
                     if (getRes.baContent != null)
@@ -684,7 +691,8 @@ public long SearchItem(string strItemDbName,
                                 }
 
                                 //textBox_result.Text = String.Empty;
-                                Display("Empty");
+                                //Display("Empty");
+                                ClearDisplay();
                                 //textBox_result.Text += "获取成功\r\n";
                                 //textBox_result.Text += getRes.GetResResult.Value + "\r\n";
                                 Display("获取成功");
@@ -693,7 +701,8 @@ public long SearchItem(string strItemDbName,
                             //当尺寸为空时
                             else
                             {
-                                Display("Empty");
+                                //Display("Empty");
+                                ClearDisplay();
                                 Display(getRes.GetResResult.ErrorInfo);
                                 //textBox_result.Text += getRes.GetResResult.ErrorInfo;
                             }
@@ -718,26 +727,38 @@ public long SearchItem(string strItemDbName,
                             //参照上面同样的判断，值不为1，注意这里的value表示XML元数据。
                             if (getRes.GetResResult.Value != -1)
                             {
-                                textBox_result.Text = "获取成功\r\n";
-                                textBox_result.Text += getRes.GetResResult.Value + "\r\n";
-                                textBox_result.Text += "\r\n" + "strTimestamp" + "\r\n"
-                                    + strTimestamp + "\r\n"
-                               + "元数据" + "\r\n"
-                              + getRes.strMetadata + "\r\n"
-                              + "数据\r\n" + strbaContent;
+                                ClearDisplay();
+                                Display("获取成功");
+                                Display(getRes.GetResResult.Value.ToString());
+                                Display("strTimestamp");
+                                Display(strTimestamp);
+                                Display("元数据");
+                                Display(getRes.strMetadata);
+                                Display("数据");
+                                Display(strbaContent);
+                              //  textBox_result.Text = "获取成功\r\n";
+                              //  textBox_result.Text += getRes.GetResResult.Value + "\r\n";
+                              //  textBox_result.Text += "\r\n" + "strTimestamp" + "\r\n"
+                              //      + strTimestamp + "\r\n"
+                              // + "元数据" + "\r\n"
+                              //+ getRes.strMetadata + "\r\n"
+                              //+ "数据\r\n" + strbaContent;
                                 //+"XMl\r\n"+newStr;
                             }
                         }
                         else
                         {
-                            Display("Empty");
+                            ClearDisplay();
+
+                            //Display("Empty");
                             Display(getRes.GetResResult.ErrorInfo);
                             //textBox_result.Text = getRes.GetResResult.ErrorInfo;
                         }
                     }
                     else
                     {
-                        Display("Empty");
+                        ClearDisplay();
+                        //Display("Empty");
                         Display(getRes.GetResResult.ErrorInfo);
 
                         //textBox_result.Text = getRes.GetResResult.ErrorInfo;
@@ -746,10 +767,14 @@ public long SearchItem(string strItemDbName,
                 }
 
                 //其他情况
-                if(words.Length!=2||words.Length!=4)
+                if(words.Length!=2)
                 {
-                    Display("Empty");
-                    Display(getRes.GetResResult.ErrorInfo);
+                    if (words.Length != 4)
+                    {
+                        ClearDisplay();
+                        //Display("Empty");
+                        Display(getRes.GetResResult.ErrorInfo);
+                    }
                     //textBox_result.Text = getRes.GetResResult.ErrorInfo;
                 }
             }
