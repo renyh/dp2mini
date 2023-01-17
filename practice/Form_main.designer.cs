@@ -1719,6 +1719,7 @@
             this.label54.Size = new System.Drawing.Size(89, 18);
             this.label54.TabIndex = 1;
             this.label54.Text = "strRanges";
+            
             // 
             // label55
             // 
@@ -1728,6 +1729,7 @@
             this.label55.Size = new System.Drawing.Size(116, 18);
             this.label55.TabIndex = 2;
             this.label55.Text = "lTotalLength";
+            
             // 
             // label56
             // 
@@ -1778,6 +1780,7 @@
             this.strRanges.Name = "strRanges";
             this.strRanges.Size = new System.Drawing.Size(269, 28);
             this.strRanges.TabIndex = 8;
+            this.strRanges.Enabled = false;
             // 
             // lTotalLength
             // 
@@ -1785,6 +1788,7 @@
             this.lTotalLength.Name = "lTotalLength";
             this.lTotalLength.Size = new System.Drawing.Size(271, 28);
             this.lTotalLength.TabIndex = 9;
+            this.lTotalLength.Enabled = false;
             // 
             // strStyle
             // 
