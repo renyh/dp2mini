@@ -2350,10 +2350,10 @@ namespace DigitalPlatform.LibraryRestClient
             return response;
         }
 
-        public long WriteRes(
+        public long WriteXml(
             string strPath,
             string strXml,
-            bool bInlucdePreamble,
+            bool bInlucdePreamble,  //是否包括utf8的标志
             string strStyle,
             byte[] timestamp,
             out byte[] baOutputTimestamp,

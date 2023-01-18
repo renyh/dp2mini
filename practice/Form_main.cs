@@ -824,6 +824,574 @@ public long SearchItem(string strItemDbName,
 
         private void button_writeres_Click(object sender, EventArgs e)
         {
+
+            string strPath = textBox_WriteRes_strResPath.Text.Trim();
+            string strXml = textBox_WriteRes_baContent.Text.Trim();
+
+            string strMetadata = textBox_WriteRes_strMetadata.Text.Trim();
+            string strStyle = textBox_WriteRes_strStyle.Text.Trim();
+
+            //时间戳
+            string timestamp = textBox_WriteRes_baInputTimestamp.Text;
+            byte[] baTimestamp = ByteArray.GetTimeStampByteArray(timestamp);
+
+            RestChannel channel = this.GetChannel();
+            try
+            {
+                channel.WriteXml(
+     strPath,
+     strXml,
+    false, //bInlucdePreamble,
+     strStyle,
+    baTimestamp,
+    out byte[] baOutputTimestamp,
+    out string strOutputPath,
+    out string strError);
+            }
+            finally
+            {
+                this._channelPool.ReturnChannel(channel);
+            }
+
+            /*
+
+             */
+        }
+
+
+#if NO
+  //参考dp2kernelTestApi
+
+                static long TryWriteRes(this RmsChannel channel,
+            string strResPath,
+            string strRanges,
+            long lTotalLength,
+            byte[] baContent,
+            string strMetadata,
+            string strStyle,
+            byte[] baInputTimestamp,
+            out string strOutputResPath,
+            out byte[] baOutputTimestamp,
+            out string strError)
+        {
+            if (strResPath.EndsWith("?"))
+                return channel.WriteRes(strResPath,
+strRanges,
+lTotalLength,
+baContent,
+strMetadata,
+strStyle,
+baInputTimestamp,
+out strOutputResPath,
+out baOutputTimestamp,
+out strError);
+
+            // 先尝试用一个不合适的 timestamp 写入
+            var ret = channel.WriteRes(strResPath,
+            strRanges,
+            lTotalLength,
+            baContent,
+            strMetadata,
+            strStyle + ",checkcreatingtimestamp",   // checkcreatingtimestamp 表示，如果记录以前不存在，新创建，则要检查请求参数中的 timestamp 必须是 null，否则就报错
+            GetRandomTimestamp(),
+            out strOutputResPath,
+            out baOutputTimestamp,
+            out strError);
+            if (ret == -1 && channel.ErrorCode == ChannelErrorCode.TimestampMismatch)
+            {
+                // 再正式写入
+                return channel.WriteRes(strResPath,
+strRanges,
+lTotalLength,
+baContent,
+strMetadata,
+strStyle,
+baInputTimestamp,
+out strOutputResPath,
+out baOutputTimestamp,
+out strError);
+            }
+
+            strError = $"在用随机 timestamp 写入 '{strResPath}' 时居然没有出错，这是错误的效果。strRanges='{strRanges}' lTotalLength={lTotalLength} baContent.Length={(baContent == null ? 0 : baContent.Length)}";
+            return -1;
+        }
+
+
+             // 用片段方式创建记录
+        public static CreateResult FragmentCreateRecords(
+            CancellationToken token,
+            int count,
+            int fragment_length = 1,
+            string style = "")
+        {
+            var channel = DataModel.GetChannel();
+
+            if (fragment_length < 1)
+                throw new ArgumentException("fragment_length 必须大于等于 1");
+
+            var overlap = StringUtil.IsInList("overlap", style);
+
+            List<string> created_paths = new List<string>();
+            List<AccessPoint> created_accesspoints = new List<AccessPoint>();
+
+            for (int i = 0; i < count; i++)
+            {
+                token.ThrowIfCancellationRequested();
+
+                string path = $"{strDatabaseName}/?";
+                string current_barcode = (i + 1).ToString().PadLeft(10, '0');
+                string xml = @"<root xmlns:dprms='http://dp2003.com/dprms'>
+<barcode>{barcode}</barcode>
+<dprms:file id='1' />
+<dprms:file id='2' />
+<dprms:file id='3' />
+<dprms:file id='4' />
+<dprms:file id='5' />
+<dprms:file id='6' />
+<dprms:file id='7' />
+<dprms:file id='8' />
+<dprms:file id='9' />
+<dprms:file id='10' />
+</root>".Replace("{barcode}", current_barcode);
+
+                {
+                    // 增大记录尺寸
+                    XmlDocument dom = new XmlDocument();
+                    dom.LoadXml(xml);
+
+                    StringBuilder text = new StringBuilder();
+                    for (int k = 0; k < 1024; k++)
+                    {
+                        text.Append(k.ToString());
+                    }
+                    DomUtil.SetElementText(dom.DocumentElement, "comment", text.ToString());
+
+                    xml = dom.DocumentElement.OuterXml;
+                }
+
+                byte[] bytes = Encoding.UTF8.GetBytes(xml);
+
+                string current_path = path;
+                byte[] timestamp = null;
+                long start = 0;
+                long end = 0;
+
+                string progress_id = DataModel.NewProgressID();
+                DataModel.ShowProgressMessage(progress_id, $"正在用 Fragment 方式{style}创建记录 {i}，请耐心等待 ...");
+
+                while (true)
+                {
+                    token.ThrowIfCancellationRequested();
+
+                    int chunk_length = fragment_length;
+
+                    end = start + chunk_length - 1;
+
+                    if (end > bytes.Length - 1)
+                    {
+                        end = bytes.Length - 1; // chunk_length
+                        chunk_length = (int)(end - start + 1);
+                    }
+
+                    Debug.Assert(end >= start);
+
+                    long delta = 0;  // 调整长度
+                    if (overlap)
+                    {
+                        delta = -10;
+                        if (start + delta < 0)
+                            delta = -1 * start;
+                    }
+
+                    byte[] fragment = new byte[end - (start + delta) + 1];
+                    Array.Copy(bytes, (start + delta), fragment, 0, fragment.Length);
+
+                    DataModel.ShowProgressMessage(progress_id, $"正在用 Fragment 方式{style}创建记录 {current_path} {start + delta}-{end} {StringUtil.GetPercentText(end + 1, bytes.Length)}...");
+
+                    var ret = channel.TryWriteRes(current_path,
+                        $"{start + delta}-{end}",
+                        bytes.Length,
+                        fragment,
+                        "", // strMetadata
+                        "", // strStyle,
+                        timestamp,
+                        out string output_path,
+                        out byte[] output_timestamp,
+                        out string strError);
+                    if (ret == -1)
+                        return new CreateResult
+                        {
+                            Value = -1,
+                            ErrorInfo = $"写入 {current_path} {start}-{end} 时出错: {strError}",
+                            CreatedPaths = created_paths,
+                            AccessPoints = created_accesspoints,
+                        };
+
+                    timestamp = output_timestamp;
+                    current_path = output_path;
+
+                    start += chunk_length;
+                    if (start > bytes.Length - 1)
+                        break;
+                }
+
+                DataModel.ShowProgressMessage(progress_id, $"用 Fragment 方式{style}创建记录 {current_path} 完成");
+
+                token.ThrowIfCancellationRequested();
+
+                // TODO: 读出记录检查内容是否和发出的一致
+                {
+                    var ret = channel.GetRes(current_path,
+                        out string strResult,
+                        out string _,
+                        out byte[] _,
+                        out string _,
+                        out string strError);
+                    if (ret == -1)
+                        return new CreateResult
+                        {
+                            Value = -1,
+                            ErrorInfo = strError,
+                            CreatedPaths = created_paths,
+                            AccessPoints = created_accesspoints,
+                        };
+
+                    if (xml != strResult)
+                        return new CreateResult
+                        {
+                            Value = -1,
+                            ErrorInfo = $"读出记录 {current_path} 内容和创建时的不一致",
+                            CreatedPaths = created_paths,
+                            AccessPoints = created_accesspoints,
+                        };
+                }
+
+                created_paths.Add(current_path);
+                created_accesspoints.Add(new AccessPoint
+                {
+                    Key = current_barcode,
+                    From = "册条码号",
+                    Path = current_path,
+                });
+
+                // 上载对象
+                for (int j = 0; j < 1; j++)
+                {
+                    token.ThrowIfCancellationRequested();
+
+                    int length = 1024 * 1024;
+                    byte[] contents = new byte[length];
+                    for (int k = 0; k < length; k++)
+                    {
+                        contents[k] = (byte)k;
+                    }
+
+                    string object_path = $"{current_path}/object/{j + 1}";
+
+                    int chunk = 10 * 1024;
+                    long start_offs = 0;
+                    byte[] object_timestamp = null;
+                    while (start_offs < length)
+                    {
+                        token.ThrowIfCancellationRequested();
+
+                        long end_offs = start_offs + chunk - 1;
+                        if (end_offs >= length)
+                            end_offs = length - 1;
+
+                        long delta = 0;  // 调整长度
+                        if (overlap)
+                        {
+                            delta = -10;
+                            if (start_offs + delta < 0)
+                                delta = -1 * start_offs;
+                        }
+
+                        byte[] chunk_contents = new byte[end_offs - (start_offs + delta) + 1];
+                        Array.Copy(contents, (start_offs + delta), chunk_contents, 0, chunk_contents.Length);
+                        var ret = channel.TryWriteRes(object_path,
+                            $"{start_offs + delta}-{end_offs}",
+                            length,
+                            chunk_contents,
+                            "",
+                            "content,data",
+                            object_timestamp,
+                            out string output_object_path,
+                            out byte[] output_object_timestamp,
+                            out string strError);
+                        if (ret == -1)
+                            return new CreateResult
+                            {
+                                Value = -1,
+                                ErrorInfo = strError,
+                                CreatedPaths = created_paths,
+                                AccessPoints = created_accesspoints,
+                            };
+                        object_timestamp = output_object_timestamp;
+
+                        start_offs += chunk_contents.Length;
+                    }
+
+                    token.ThrowIfCancellationRequested();
+
+                    // 读出比较
+                    using (var stream = new MemoryStream())
+                    {
+                        var ret = channel.GetRes(object_path,
+                            stream,
+                            null,
+                            "content,data",
+                            null,
+                            out string _,
+                            out byte[] download_timestamp,
+                            out string _,
+                            out string strError);
+                        if (ret == -1)
+                            return new CreateResult
+                            {
+                                Value = -1,
+                                ErrorInfo = strError,
+                                CreatedPaths = created_paths,
+                                AccessPoints = created_accesspoints,
+                            };
+                        byte[] download_bytes = new byte[length];
+                        stream.Seek(0, SeekOrigin.Begin);
+                        var read_len = stream.Read(download_bytes, 0, length);
+                        if (read_len != length)
+                            return new CreateResult
+                            {
+                                Value = -1,
+                                ErrorInfo = "read file error"
+                            };
+
+                        if (ByteArray.Compare(contents, download_bytes) != 0)
+                            return new CreateResult
+                            {
+                                Value = -1,
+                                ErrorInfo = $"对象 {object_path} 下载后和原始数据比对发现不一致",
+                                CreatedPaths = created_paths,
+                                AccessPoints = created_accesspoints,
+                            };
+                    }
+                }
+
+                // 检查检索点是否被成功创建
+                foreach (var accesspoint in created_accesspoints)
+                {
+                    token.ThrowIfCancellationRequested();
+
+                    string strQueryXml = $"<target list='{ strDatabaseName}:{accesspoint.From}'><item><word>{accesspoint.Key}</word><match>exact</match><relation>=</relation><dataType>string</dataType><maxCount>-1</maxCount></item><lang>chi</lang></target>";
+
+                    var ret = channel.DoSearch(strQueryXml, "default", out string strError);
+                    if (ret == -1)
+                        return new CreateResult
+                        {
+                            Value = -1,
+                            ErrorInfo = $"DoSearch() 出错: {strError}"
+                        };
+                    if (ret != 1)
+                        return new CreateResult
+                        {
+                            Value = -1,
+                            ErrorInfo = $"检索 '{accesspoint.Key}' 应当命中 1 条。但命中了 {ret} 条",
+                        };
+                }
+
+                DataModel.SetMessage($"Fragment 方式创建记录 {current_path} 成功");
+            }
+
+            return new CreateResult
+            {
+                CreatedPaths = created_paths,
+                AccessPoints = created_accesspoints,
+            };
+        }
+
+        // 用 Fragment 方式覆盖已经创建好的记录
+        public static NormalResult FragmentOverwriteRecords(
+            CancellationToken token,
+            IEnumerable<string> paths,
+    int fragment_length = 1,
+    string style = "")
+        {
+            var channel = DataModel.GetChannel();
+
+            int i = 1;
+            foreach (var path in paths)
+            {
+                token.ThrowIfCancellationRequested();
+
+                string origin_xml = "";
+                byte[] origin_timestamp = null;
+                // 先获得一次原始记录。然后 Fragment 覆盖，在覆盖完以前，每次中途再获取一次记录，应该是看到原始记录
+                {
+                    var ret = channel.GetRes(path,
+                        out origin_xml,
+                        out string _,
+                        out origin_timestamp,
+                        out string _,
+                        out string strError);
+                    if (ret == -1)
+                        return new CreateResult
+                        {
+                            Value = -1,
+                            ErrorInfo = strError,
+                        };
+                }
+
+                XmlDocument dom = new XmlDocument();
+                dom.LoadXml(origin_xml);
+                var old_text = DomUtil.GetElementText(dom.DocumentElement, "changed");
+                if (old_text == null)
+                    old_text = "";
+                DomUtil.SetElementText(dom.DocumentElement, "changed", old_text + CreateString(i++));
+
+                if (i > 2000)
+                    i = 0;
+
+                string new_xml = dom.DocumentElement.OuterXml;
+                byte[] bytes = Encoding.UTF8.GetBytes(new_xml);
+
+                byte[] timestamp = origin_timestamp;
+                long start = 0;
+                long end = 0;
+
+                var overlap = StringUtil.IsInList("overlap", style);
+
+                string progress_id = DataModel.NewProgressID();
+                DataModel.ShowProgressMessage(progress_id, $"正在用 Fragment 方式{style}覆盖记录 {path}，请耐心等待 ...");
+
+                while (true)
+                {
+                    token.ThrowIfCancellationRequested();
+
+                    int chunk_length = fragment_length;
+
+                    if (chunk_length == -1)
+                        chunk_length = bytes.Length;
+
+                    end = start + chunk_length - 1;
+
+                    if (end > bytes.Length - 1)
+                    {
+                        end = bytes.Length - 1;
+                        chunk_length = (int)(end - start + 1);
+                    }
+
+                    Debug.Assert(end >= start);
+
+                    long delta = 0;  // 调整长度
+                    if (overlap)
+                    {
+                        delta = -10;
+                        if (start + delta < 0)
+                            delta = -1 * start;
+                    }
+
+                    byte[] fragment = new byte[end - (start + delta) + 1];
+                    Array.Copy(bytes, start + delta, fragment, 0, fragment.Length);
+
+                    DataModel.ShowProgressMessage(progress_id, $"正在用 Fragment 方式{style}覆盖记录 {path} {start + delta}-{end} {StringUtil.GetPercentText(end + 1, bytes.Length)}...");
+
+                    byte[] timestamp_param = timestamp;
+                    // 如果是从头覆盖，则需要使用读出时的完成时间戳
+                    if (start + delta == 0)
+                        timestamp_param = origin_timestamp;
+
+                    var ret = channel.TryWriteRes(path,
+                        $"{start + delta}-{end}",
+                        bytes.Length,
+                        fragment,
+                        "", // strMetadata
+                        "", // strStyle,
+                        timestamp_param,
+                        out string output_path,
+                        out byte[] output_timestamp,
+                        out string strError);
+                    if (ret == -1)
+                        return new CreateResult
+                        {
+                            Value = -1,
+                            ErrorInfo = strError,
+                        };
+
+                    // 马上读取检验
+                    if (end < bytes.Length - 1)
+                    {
+                        token.ThrowIfCancellationRequested();
+
+                        ret = channel.GetRes(path,
+    out string read_xml,
+    out string _,
+    out byte[] read_timestamp,
+    out string _,
+    out strError);
+                        if (ret == -1)
+                            return new CreateResult
+                            {
+                                Value = -1,
+                                ErrorInfo = strError,
+                            };
+                        if (read_xml != origin_xml)
+                            return new NormalResult
+                            {
+                                Value = -1,
+                                ErrorInfo = $"记录 {path} {start}-{end}轮次 读取出来和 origin_xml 不一致"
+                            };
+                        if (ByteArray.Compare(read_timestamp, origin_timestamp) != 0)
+                            return new NormalResult
+                            {
+                                Value = -1,
+                                ErrorInfo = $"记录 {path} 的时间戳({ByteArray.GetHexTimeStampString(read_timestamp)})读取出来和 origin_timestamp({ByteArray.GetHexTimeStampString(origin_timestamp)}) 不一致"
+                            };
+                    }
+
+                    timestamp = output_timestamp;
+
+                    start += chunk_length;
+                    if (start > bytes.Length - 1)
+                        break;
+                }
+
+                DataModel.ShowProgressMessage(progress_id, $"用 Fragment 方式{style}覆盖记录 {path} 完成");
+
+                token.ThrowIfCancellationRequested();
+
+                // 覆盖成功后，马上读取检验
+                {
+                    var ret = channel.GetRes(path,
+out string read_xml,
+out string _,
+out byte[] read_timestamp,
+out string _,
+out string strError);
+                    if (ret == -1)
+                        return new CreateResult
+                        {
+                            Value = -1,
+                            ErrorInfo = strError,
+                        };
+                    if (read_xml != new_xml)
+                        return new NormalResult
+                        {
+                            Value = -1,
+                            ErrorInfo = $"记录 {path} 读取出来和 new_xml 不一致"
+                        };
+                }
+
+                DataModel.SetMessage($"覆盖记录 {path} 成功");
+            }
+
+            return new NormalResult();
+        }
+
+#endif
+
+        #region wuyang原来函数
+
+        /*
+        private void button_writeres_Click(object sender, EventArgs e)
+        {
             RestChannel channel = GetChannel();
             try
             {
@@ -873,9 +1441,31 @@ public long SearchItem(string strItemDbName,
             }
             finally { this._channelPool.ReturnChannel(channel); }
         }
+        */
 
+        #endregion
 
-    
+        private void WriteRes_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        // 选择一个文件上传
+        private void button_selectFile_Click(object sender, EventArgs e)
+        {
+            using (OpenFileDialog dlg = new OpenFileDialog())
+            {
+                dlg.Title = "请指定一个上传的文件";
+                dlg.FileName = "";
+                dlg.Filter = "文件 （All files(*.*)|*.*";
+                dlg.RestoreDirectory = true;
+                if (dlg.ShowDialog() != DialogResult.OK)
+                    return;
+
+                this.textBox_WriteRes_fileName.Text = dlg.FileName;
+            }
+
+        }
     }
 
 
