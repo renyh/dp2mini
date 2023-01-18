@@ -1093,7 +1093,7 @@ namespace dp2mini
             //空价格的
             List<string> emptyList = new List<string>();
             //高于500价格
-            List<string> largeList = new List<string>();
+            List<string> largeList1 = new List<string>();
             //括号
             List<string> bracketList = new List<string>();
             //其它
@@ -1131,7 +1131,8 @@ namespace dp2mini
                     || price.Substring(0, 3) == "TWD"
                     || price.Substring(0, 3) == "HKD"
                     || price.Substring(0, 3) == "JPY"
-                    || price.Substring(0, 3) == "EUR")
+                    || price.Substring(0, 3) == "EUR"
+                    || price.Substring(0, 3) =="THB")
                     )
                 {
                     string right = price.Substring(3);
@@ -1143,6 +1144,8 @@ namespace dp2mini
                         continue;
                     }
 
+                    // 2023/1/18 不再对金额进行判断。
+                    /*
                     //大于200
                     try
                     {
@@ -1173,6 +1176,7 @@ namespace dp2mini
                             }
                         }
                     }
+                    */
 
                     // 正常的
                     bool bRet = Regex.IsMatch(right, match);// "^[0-9]*(.[0-9])$");
@@ -1204,15 +1208,15 @@ namespace dp2mini
                 }
             }
 
-            //
-            if (largeList.Count > 0)
-            {
-                result.AppendLine("\r\n下面是册价格很高超过CNY200异常的，有" + largeList.Count + "条。");
-                foreach (string li in largeList)
-                {
-                    result.AppendLine(li);
-                }
-            }
+            // 2023/1/8 去掉对价格金额的检查，用户反馈，他们有的书价格确实很高。
+            //if (largeList.Count > 0)
+            //{
+            //    result.AppendLine("\r\n下面是册价格很高超过CNY200异常的，有" + largeList.Count + "条。");
+            //    foreach (string li in largeList)
+            //    {
+            //        result.AppendLine(li);
+            //    }
+            //}
             //
 
             if (bracketList.Count > 0)
@@ -1241,7 +1245,7 @@ namespace dp2mini
             this.OnlyOutput2File(result.ToString());
 
             if (emptyList.Count == 0
-                && largeList.Count == 0
+                //&& largeList.Count == 0
                 && bracketList.Count == 0
                 && otherList.Count == 0)
             {
