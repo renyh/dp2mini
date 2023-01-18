@@ -831,8 +831,8 @@ public long SearchItem(string strItemDbName,
                 // this.strRanges.Text = 
 
 
-                string strPath = strResPath.Text.Trim();
-                string data = baContent.Text.Trim();
+                string strPath = textBox_WriteRes_strResPath.Text.Trim();
+                string data = textBox_WriteRes_baContent.Text.Trim();
 
                 //将string转换成utf8编码
                 byte[] byteArray = System.Text.Encoding.UTF8.GetBytes(data);
@@ -841,11 +841,11 @@ public long SearchItem(string strItemDbName,
                 long Lenth = long.Parse(byteArray.Length.ToString());
                 string Ranges = "0" + "-" + (byteArray.Length - 1).ToString();
 
-                string Metadata = strMetadata.Text.Trim();
-                string Style = strStyle.Text.Trim();
+                string Metadata = textBox_WriteRes_strMetadata.Text.Trim();
+                string Style = textBox_WriteRes_strStyle.Text.Trim();
 
                 //转换时间戳
-                string Timestamp = baInputTimestamp.Text;
+                string Timestamp = textBox_WriteRes_baInputTimestamp.Text;
                 byte[] stamp = ByteArray.GetTimeStampByteArray(Timestamp);
                 WriteResResponse writeres = channel.WriteRes(
                     strPath,
