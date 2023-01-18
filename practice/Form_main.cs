@@ -822,40 +822,10 @@ public long SearchItem(string strItemDbName,
             finally { this._channelPool.ReturnChannel(restChannel); }
         }
 
+
         private void button_writeres_Click(object sender, EventArgs e)
         {
 
-            string strPath = textBox_WriteRes_strResPath.Text.Trim();
-            string strXml = textBox_WriteRes_baContent.Text.Trim();
-
-            string strMetadata = textBox_WriteRes_strMetadata.Text.Trim();
-            string strStyle = textBox_WriteRes_strStyle.Text.Trim();
-
-            //时间戳
-            string timestamp = textBox_WriteRes_baInputTimestamp.Text;
-            byte[] baTimestamp = ByteArray.GetTimeStampByteArray(timestamp);
-
-            RestChannel channel = this.GetChannel();
-            try
-            {
-                channel.WriteXml(
-     strPath,
-     strXml,
-    false, //bInlucdePreamble,
-     strStyle,
-    baTimestamp,
-    out byte[] baOutputTimestamp,
-    out string strOutputPath,
-    out string strError);
-            }
-            finally
-            {
-                this._channelPool.ReturnChannel(channel);
-            }
-
-            /*
-
-             */
         }
 
 
@@ -1463,6 +1433,56 @@ out string strError);
                     return;
 
                 this.textBox_WriteRes_fileName.Text = dlg.FileName;
+            }
+
+        }
+
+        private void button_writeresForXml_Click(object sender, EventArgs e)
+        {
+
+            string strPath = textBox_WriteRes_strResPath.Text.Trim();
+            string strXml = textBox_WriteRes_baContent.Text.Trim();
+
+            //string strMetadata = textBox_WriteRes_strMetadata.Text.Trim();
+
+            // 可输入ignorechecktimestamp忽略时间戳
+            string strStyle = textBox_WriteRes_strStyle.Text.Trim();
+
+            //时间戳
+            string timestamp = textBox_WriteRes_baInputTimestamp.Text;
+            byte[] baTimestamp = ByteArray.GetTimeStampByteArray(timestamp);
+
+            RestChannel channel = this.GetChannel();
+            try
+            {
+                long lRet =channel.WriteXml(
+                     strPath,
+                     strXml,
+                    false, //bInlucdePreamble,
+                     strStyle,
+                    baTimestamp,
+                    out byte[] baOutputTimestamp,
+                    out string strOutputPath,
+                    out string strError);
+                if (lRet == -1)  //出错的情况
+                {
+                    MessageBox.Show(this, "出错：" + strError);
+                    return;
+                }
+
+                // 成功的情况
+                string strOutuptTimestamp = ByteArray.GetHexTimeStampString(baOutputTimestamp);
+
+                string info = "路径：" + strOutputPath + "\r\n"
+                    + "时间戳：" + strOutuptTimestamp;
+                this.textBox_result.Text= info;
+
+                MessageBox.Show(this, "成功");
+
+            }
+            finally
+            {
+                this._channelPool.ReturnChannel(channel);
             }
 
         }
