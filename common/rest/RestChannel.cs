@@ -2350,12 +2350,12 @@ namespace DigitalPlatform.LibraryRestClient
             return response;
         }
 
-        public long WriteXml(
-            string strPath,
-            string strXml,
+        public long WriteText(
+            string strResPath,
+            string strText,
             bool bInlucdePreamble,  //是否包括utf8的标志
             string strStyle,
-            byte[] timestamp,
+            byte[] baInputTimestamp,
             out byte[] baOutputTimestamp,
             out string strOutputPath,
             out string strError)
@@ -2372,7 +2372,7 @@ namespace DigitalPlatform.LibraryRestClient
 
             byte[] baPreamble = Encoding.UTF8.GetPreamble();
 
-            byte[] baTotal = Encoding.UTF8.GetBytes(strXml);
+            byte[] baTotal = Encoding.UTF8.GetBytes(strText);
 
             if (bInlucdePreamble == true
                 && baPreamble != null && baPreamble.Length > 0)
@@ -2384,9 +2384,9 @@ namespace DigitalPlatform.LibraryRestClient
 
             int nTotalLength = baTotal.Length;
 
-            if (timestamp != null)
+            if (baInputTimestamp != null)
             {
-                baInputTimeStamp = ByteArray.Add(baInputTimeStamp, timestamp);
+                baInputTimeStamp = ByteArray.Add(baInputTimeStamp, baInputTimestamp);
             }
 
             while (true)
@@ -2408,7 +2408,7 @@ namespace DigitalPlatform.LibraryRestClient
                 string strMetadata = "";
                 string strRange = Convert.ToString(nStart) + "-" + Convert.ToString(nStart + baChunk.Length - 1);
 
-                WriteResResponse response = WriteRes(strPath,
+                WriteResResponse response = WriteRes(strResPath,
                     strRange,
                     nTotalLength,
                     baChunk,
@@ -2431,7 +2431,7 @@ namespace DigitalPlatform.LibraryRestClient
 
                 Debug.Assert(strOutputPath != "", "outputpath不能为空");
 
-                strPath = strOutputPath;	// 如果第一次的strPath中包含'?'id, 必须用outputpath才能正确继续
+                strResPath = strOutputPath;	// 如果第一次的strPath中包含'?'id, 必须用outputpath才能正确继续
                 baInputTimeStamp = baOutputTimestamp;	//baOutputTimeStamp;
             }
 

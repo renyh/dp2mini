@@ -15,6 +15,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
+using System.Diagnostics;
 
 namespace practice
 {
@@ -823,16 +824,26 @@ public long SearchItem(string strItemDbName,
         }
 
 
-        private void button_writeres_Click(object sender, EventArgs e)
-        {
 
+        private void WriteRes_Click(object sender, EventArgs e)
+        {
         }
 
+        static byte[] GetRandomTimestamp()
+        {
+            List<byte> results = new List<byte>();
+            for (int i = 0; i < 16; i++)
+            {
+                results.Add((byte)i);
+            }
+
+            return results.ToArray();
+        }
 
 #if NO
-  //参考dp2kernelTestApi
+        //参考dp2kernelTestApi
 
-                static long TryWriteRes(this RmsChannel channel,
+        static long TryWriteRes(this RestChannel channel,
             string strResPath,
             string strRanges,
             long lTotalLength,
@@ -844,7 +855,9 @@ public long SearchItem(string strItemDbName,
             out byte[] baOutputTimestamp,
             out string strError)
         {
+            // 新增资源的情况
             if (strResPath.EndsWith("?"))
+            {
                 return channel.WriteRes(strResPath,
 strRanges,
 lTotalLength,
@@ -855,6 +868,7 @@ baInputTimestamp,
 out strOutputResPath,
 out baOutputTimestamp,
 out strError);
+            }
 
             // 先尝试用一个不合适的 timestamp 写入
             var ret = channel.WriteRes(strResPath,
@@ -886,8 +900,7 @@ out strError);
             return -1;
         }
 
-
-             // 用片段方式创建记录
+        // 用片段方式创建记录
         public static CreateResult FragmentCreateRecords(
             CancellationToken token,
             int count,
@@ -1415,10 +1428,7 @@ out string strError);
 
         #endregion
 
-        private void WriteRes_Click(object sender, EventArgs e)
-        {
 
-        }
 
         // 选择一个文件上传
         private void button_selectFile_Click(object sender, EventArgs e)
@@ -1427,7 +1437,7 @@ out string strError);
             {
                 dlg.Title = "请指定一个上传的文件";
                 dlg.FileName = "";
-                dlg.Filter = "文件 （All files(*.*)|*.*";
+                dlg.Filter = "All files (*.*)|*.*";
                 dlg.RestoreDirectory = true;
                 if (dlg.ShowDialog() != DialogResult.OK)
                     return;
@@ -1437,27 +1447,31 @@ out string strError);
 
         }
 
-        private void button_writeresForXml_Click(object sender, EventArgs e)
+        private void button_writeresForText_Click(object sender, EventArgs e)
         {
+            string strResPath = textBox_WriteRes_strResPath.Text.Trim();
+            if (string.IsNullOrEmpty(strResPath) == true)
+            {
+                MessageBox.Show(this, "资源路径不能为空。");
+                return;
+            }
 
-            string strPath = textBox_WriteRes_strResPath.Text.Trim();
-            string strXml = textBox_WriteRes_baContent.Text.Trim();
-
+            string strStyle = textBox_WriteRes_strStyle.Text.Trim();// 可输入ignorechecktimestamp忽略时间戳
             //string strMetadata = textBox_WriteRes_strMetadata.Text.Trim();
-
-            // 可输入ignorechecktimestamp忽略时间戳
-            string strStyle = textBox_WriteRes_strStyle.Text.Trim();
-
+                        
             //时间戳
             string timestamp = textBox_WriteRes_baInputTimestamp.Text;
             byte[] baTimestamp = ByteArray.GetTimeStampByteArray(timestamp);
 
+            // 写入的内容
+            string strText = textBox_WriteRes_baContent.Text.Trim();
+
             RestChannel channel = this.GetChannel();
             try
             {
-                long lRet =channel.WriteXml(
-                     strPath,
-                     strXml,
+                long lRet =channel.WriteText(
+                     strResPath,
+                     strText,
                     false, //bInlucdePreamble,
                      strStyle,
                     baTimestamp,
@@ -1466,6 +1480,9 @@ out string strError);
                     out string strError);
                 if (lRet == -1)  //出错的情况
                 {
+
+                    this.textBox_result.Text = "出错：" + strError;
+
                     MessageBox.Show(this, "出错：" + strError);
                     return;
                 }
@@ -1485,6 +1502,124 @@ out string strError);
                 this._channelPool.ReturnChannel(channel);
             }
 
+        }
+
+        // 帮助
+        private void button_WriteRes_help_Click(object sender, EventArgs e)
+        {
+            // WriteRes API 帮助文档
+            Process.Start("https://jihulab.com/DigitalPlatform/dp2doc/-/issues/39#note_1981539");
+        }
+
+        private void button_WriteRes_autoTimestamp_Click(object sender, EventArgs e)
+        {
+            this.textBox_WriteRes_baInputTimestamp.Text = ByteArray.GetHexTimeStampString(GetRandomTimestamp());
+
+        }
+
+
+        // 分块写入文件
+        private void button_autoWriteRes_Click(object sender, EventArgs e)
+        {
+            // 校验一下参数
+            string fileName = this.textBox_WriteRes_fileName.Text.Trim();
+            if (string.IsNullOrEmpty(fileName) == true)
+            {
+                MessageBox.Show(this, "请先选择要上传的文件");
+                return;
+            }
+            //检查是否输入了包尺寸
+            string strChunkSize = this.textBox_WriteRes_chunkSize.Text.Trim();
+            long inputChunkSize = 0;
+            try
+            {
+                inputChunkSize = Convert.ToInt64(strChunkSize);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, "包尺寸格式不合法，须为数值型。"+ex.Message);
+                return;
+            }
+
+            string strResPath = textBox_WriteRes_strResPath.Text.Trim();
+            if (string.IsNullOrEmpty(strResPath) == true)
+            {
+                MessageBox.Show(this, "资源路径不能为空。");
+                return;
+            }
+            string strStyle = textBox_WriteRes_strStyle.Text.Trim();// 可输入ignorechecktimestamp忽略时间戳
+            //string strMetadata = textBox_WriteRes_strMetadata.Text.Trim();
+
+
+            // 开始做事
+            string strError = "";
+            RestChannel channel = this.GetChannel();
+            try
+            {
+                
+                
+
+
+
+                using (FileStream s = new FileStream(fileName, FileMode.Open))
+                {
+                    byte[] baInputTimestamp = null;  // 分片写入，界面输入的时间戳无意义
+                    int nStart = 0;
+
+                    long lTotalLength = s.Length;
+
+                    while (s.Position < s.Length)
+                    {
+                        // 与文件剩余尺寸比对，谁小用小
+                        long realChunkSize = Math.Min(inputChunkSize, s.Length - nStart);
+                        byte[] baContent = new byte[realChunkSize];
+
+                        // 从文件中读出指出尺寸的数据到baContent
+                        int nLength = s.Read(baContent, 0, baContent.Length);
+
+                        // 尺寸范围
+                        string strRanges = nStart.ToString() + "-" + (nStart + nLength - 1).ToString();
+
+                        WriteResResponse response = channel.WriteRes(strResPath,
+                            strRanges,
+                            lTotalLength,
+                            baContent,
+                            "",
+                            strStyle,
+                            baInputTimestamp);
+                        if (response.WriteResResult.Value == -1)
+                        {
+
+                            // 第一次的时间戳不匹配，自动重试
+                            if (response.WriteResResult.ErrorCode == ErrorCode.TimestampMismatch
+                            && nStart == 0)
+                            {
+                                baInputTimestamp = response.baOutputTimestamp;
+                                s.Position = nStart;
+                                continue;
+                            }
+                            strError = response.WriteResResult.ErrorInfo;
+                            goto ERROR1;
+                        }
+
+                        // 下一轮取文件的开始位置
+                        nStart += nLength;
+
+                        strResPath = response.strOutputResPath;  //// 如果第一次的strPath中包含'?'id, 必须用outputpath才能正确继续
+                        baInputTimestamp = response.baOutputTimestamp;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                strError = "Exception :" + ex.Message;
+                goto ERROR1;
+            }
+
+            MessageBox.Show(this, "WriteRes() complete");
+            return;
+        ERROR1:
+            MessageBox.Show(this, strError);
         }
     }
 
