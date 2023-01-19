@@ -1183,11 +1183,23 @@ namespace dp2mini
                     if (bRet == true)
                         continue;
 
-                    //带括号的
-                    if (right.IndexOf("(") != -1 || right.IndexOf("（") != -1)
+                    // 2023/1/19 支持CNY10 和 CNY1000/9 这两种价格形态
+                    try
                     {
-                        bracketList.Add(retLine);
+                        // 把中间的/替换掉
+                        right = right.Replace("/", "");
+
+                        double d = Convert.ToInt64(right);
                         continue;
+                    }
+                    catch
+                    {
+                        //带括号的
+                        if (right.IndexOf("(") != -1 || right.IndexOf("（") != -1)
+                        {
+                            bracketList.Add(retLine);
+                            continue;
+                        }
                     }
                 }
 
