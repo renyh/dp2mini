@@ -18,18 +18,78 @@ using System.IO;
 using System.Diagnostics;
 using System.Xml;
 using DigitalPlatform.IO;
+using DigitalPlatform.Xml;
 
 namespace practice
 {
     public partial class Form_main : Form
     {
-        // 通道池
-        RestChannelPool _channelPool = new RestChannelPool();
+
+        #region 窗体加载和关闭
 
         public Form_main()
         {
             InitializeComponent();
         }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            this._channelPool.BeforeLogin -= new BeforeLoginEventHandle(channelPool_BeforeLogin);
+            this._channelPool.BeforeLogin += new BeforeLoginEventHandle(channelPool_BeforeLogin);
+
+
+            this.Server_textBox_url.Text = Properties.Settings.Default.global_url;
+            this.Login_textBox_userName.Text = Properties.Settings.Default.login_userName;
+            this.Login_textBox_password.Text = Properties.Settings.Default.login_password;
+            this.Login_textBox_parameters.Text = Properties.Settings.Default.login_parameters;
+
+            this.SearchBiblio_textBox_BiblioDbNames.Text = Properties.Settings.Default.searchBiblio_biblioDbNames;
+            this.SearchBiblio_textBox_QueryWord.Text = Properties.Settings.Default.searchBiblio_queryWord;
+            this.SearchBiblio_textBox_PerMax.Text = Properties.Settings.Default.searchBiblio_perMax;
+            this.SearchBiblio_textBox_FromStyle.Text = Properties.Settings.Default.searchBiblio_fromStyle;
+            this.SearchBiblio_comboBox_MatchStyle.Text = Properties.Settings.Default.searchBiblio_matchStyle;
+            this.SearchBiblio_textBox_ResultSetName.Text = Properties.Settings.Default.searchBiblio_resultSetName;
+            this.SearchBiblio_textBox_SearchStyle.Text = Properties.Settings.Default.searchBiblio_searchStyle;
+
+            this.GetSearchResult_textBox_ResultSetName.Text = Properties.Settings.Default.getSearchResult_resultsetName;
+            this.GetSearchResult_textBox_Start.Text = Properties.Settings.Default.getSearchResult_start;
+            this.GetSearchResult_textBox_Count.Text = Properties.Settings.Default.getSearchResult_count;
+            this.GetSearchResult_textBox_BrowseInfoStyle.Text = Properties.Settings.Default.getSearchResult_browseInfoStyle;
+        }
+
+        // 关闭时
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            this._channelPool.CleanChannel();
+
+            Properties.Settings.Default.global_url = this.Server_textBox_url.Text;
+
+            Properties.Settings.Default.login_userName = this.Login_textBox_userName.Text;
+            Properties.Settings.Default.login_password = this.Login_textBox_password.Text;
+            Properties.Settings.Default.login_parameters = this.Login_textBox_parameters.Text;
+
+
+            Properties.Settings.Default.searchBiblio_biblioDbNames = this.SearchBiblio_textBox_BiblioDbNames.Text;
+            Properties.Settings.Default.searchBiblio_queryWord = this.SearchBiblio_textBox_QueryWord.Text;
+            Properties.Settings.Default.searchBiblio_perMax = this.SearchBiblio_textBox_PerMax.Text;
+            Properties.Settings.Default.searchBiblio_fromStyle = this.SearchBiblio_textBox_FromStyle.Text;
+            Properties.Settings.Default.searchBiblio_matchStyle = this.SearchBiblio_comboBox_MatchStyle.Text;
+            Properties.Settings.Default.searchBiblio_resultSetName = this.SearchBiblio_textBox_ResultSetName.Text;
+            Properties.Settings.Default.searchBiblio_searchStyle = this.SearchBiblio_textBox_SearchStyle.Text;
+
+            Properties.Settings.Default.getSearchResult_resultsetName = this.GetSearchResult_textBox_ResultSetName.Text;
+            Properties.Settings.Default.getSearchResult_start = this.GetSearchResult_textBox_Start.Text;
+            Properties.Settings.Default.getSearchResult_count = this.GetSearchResult_textBox_Count.Text;
+            Properties.Settings.Default.getSearchResult_browseInfoStyle = this.GetSearchResult_textBox_BrowseInfoStyle.Text;
+
+
+            // 一定要调save函数才能把信息保存下来
+            Properties.Settings.Default.Save();
+        }
+
+        #endregion
+
+        #region 一些属性
 
         public string ServerUrl
         {
@@ -63,6 +123,13 @@ namespace practice
             }
         }
 
+        #endregion
+
+        #region 通道相关
+
+        // 通道池
+        RestChannelPool _channelPool = new RestChannelPool();
+
         public RestChannel GetChannel()
         {
             if (this.ServerUrl == "" || this.UserName == "")
@@ -90,80 +157,11 @@ namespace practice
 
         }
 
-
-        private void Form1_Load(object sender, EventArgs e)
-        {
-            this._channelPool.BeforeLogin -= new BeforeLoginEventHandle(channelPool_BeforeLogin);
-            this._channelPool.BeforeLogin += new BeforeLoginEventHandle(channelPool_BeforeLogin);
+        #endregion
 
 
-            this.Server_textBox_url.Text = Properties.Settings.Default.global_url;
-            this.Login_textBox_userName.Text = Properties.Settings.Default.login_userName;
-            this.Login_textBox_password.Text = Properties.Settings.Default.login_password;
-            this.Login_textBox_parameters.Text = Properties.Settings.Default.login_parameters;
 
-            this.SearchBiblio_textBox_BiblioDbNames.Text = Properties.Settings.Default.searchBiblio_biblioDbNames;
-            this.SearchBiblio_textBox_QueryWord.Text = Properties.Settings.Default.searchBiblio_queryWord;
-            this.SearchBiblio_textBox_PerMax.Text = Properties.Settings.Default.searchBiblio_perMax;
-            this.SearchBiblio_textBox_FromStyle.Text = Properties.Settings.Default.searchBiblio_fromStyle;
-            this.SearchBiblio_comboBox_MatchStyle.Text = Properties.Settings.Default.searchBiblio_matchStyle;
-            this.SearchBiblio_textBox_ResultSetName.Text = Properties.Settings.Default.searchBiblio_resultSetName;
-            this.SearchBiblio_textBox_SearchStyle.Text = Properties.Settings.Default.searchBiblio_searchStyle;
-
-            this.GetSearchResult_textBox_ResultSetName.Text = Properties.Settings.Default.getSearchResult_resultsetName;
-            this.GetSearchResult_textBox_Start.Text = Properties.Settings.Default.getSearchResult_start;
-            this.GetSearchResult_textBox_Count.Text = Properties.Settings.Default.getSearchResult_count;
-            this.GetSearchResult_textBox_BrowseInfoStyle.Text = Properties.Settings.Default.getSearchResult_browseInfoStyle;
-        }
-
-        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            this._channelPool.CleanChannel();
-
-            Properties.Settings.Default.global_url = this.Server_textBox_url.Text;
-
-            Properties.Settings.Default.login_userName = this.Login_textBox_userName.Text;
-            Properties.Settings.Default.login_password = this.Login_textBox_password.Text;
-            Properties.Settings.Default.login_parameters = this.Login_textBox_parameters.Text;
-
-
-            Properties.Settings.Default.searchBiblio_biblioDbNames = this.SearchBiblio_textBox_BiblioDbNames.Text;
-            Properties.Settings.Default.searchBiblio_queryWord = this.SearchBiblio_textBox_QueryWord.Text;
-            Properties.Settings.Default.searchBiblio_perMax = this.SearchBiblio_textBox_PerMax.Text;
-            Properties.Settings.Default.searchBiblio_fromStyle = this.SearchBiblio_textBox_FromStyle.Text;
-            Properties.Settings.Default.searchBiblio_matchStyle = this.SearchBiblio_comboBox_MatchStyle.Text;
-            Properties.Settings.Default.searchBiblio_resultSetName = this.SearchBiblio_textBox_ResultSetName.Text;
-            Properties.Settings.Default.searchBiblio_searchStyle = this.SearchBiblio_textBox_SearchStyle.Text;
-
-            Properties.Settings.Default.getSearchResult_resultsetName = this.GetSearchResult_textBox_ResultSetName.Text;
-            Properties.Settings.Default.getSearchResult_start = this.GetSearchResult_textBox_Start.Text;
-            Properties.Settings.Default.getSearchResult_count = this.GetSearchResult_textBox_Count.Text;
-            Properties.Settings.Default.getSearchResult_browseInfoStyle = this.GetSearchResult_textBox_BrowseInfoStyle.Text;
-
-
-            // 一定要调save函数才能把信息保存下来
-            Properties.Settings.Default.Save();
-        }
-        private void Display(string text)
-        {
-            //if (text == "Empty")
-            //    textBox_result.Text = String.Empty;
-            //    //textBox_result.Text = string.Empty;
-
-            //else
-            textBox_result.Text += text + "\r\n";
-        }
-        private void ClearDisplay()
-        {
-            textBox_result.Clear();
-        }
-        private void 通用练习题ToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Form_c dlg = new Form_c();
-            dlg.ShowDialog(this);
-        }
-
-        #region 登录
+        #region 登录相关
 
         private void button_getVersion_Click(object sender, EventArgs e)
         {
@@ -242,6 +240,19 @@ namespace practice
         }
 
         #endregion
+
+
+        #region 多线程练习题
+
+        private void 通用练习题ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Form_c dlg = new Form_c();
+            dlg.ShowDialog(this);
+        }
+
+        #endregion
+
+        #region 检索书目SearchBiblio 和 GetSearchResult
 
         private void button_SearchBiblio_Click(object sender, EventArgs e)
         {
@@ -334,6 +345,10 @@ namespace practice
             }
         }
 
+        #endregion
+
+        #region
+
         private void button_GetBiblioInfo_Click(object sender, EventArgs e)
         {
             RestChannel channel = this.GetChannel();
@@ -395,9 +410,9 @@ namespace practice
             try
             {
                 ReservationResponse response = channel.Reservation(
-                    this.comboBox_Reservation_action.Text,
+                    this.comboBox_Reservation_strFunction.Text,
                     this.textBox__Reservation_readerBarcode.Text,
-                    this.textBox_Reservation_itemBarcodeList.Text
+                    this.textBox_Reservation_strItemBarcodeList.Text
                     );
 
                 this.textBox_result.Text = "Result:"
@@ -1162,6 +1177,20 @@ out string strError);
 
 #if wuyang原来函数
 
+        private void Display(string text)
+        {
+            //if (text == "Empty")
+            //    textBox_result.Text = String.Empty;
+            //    //textBox_result.Text = string.Empty;
+
+            //else
+            textBox_result.Text += text + "\r\n";
+        }
+        private void ClearDisplay()
+        {
+            textBox_result.Clear();
+        }
+
         /*
         private void button_writeres_Click(object sender, EventArgs e)
         {
@@ -1846,8 +1875,6 @@ out string strError);
                         this.textBox_result.Text += "十六进制:" + hex + "\r\n\r\n";
                     }
 
-
-
                 }
 
             }
@@ -1981,26 +2008,64 @@ out string strError);
                 this._channelPool.ReturnChannel(channel);
             }
         }
-        #endregion
 
 
-        #region GetRecord相关
-
-        private void button_GetRecord_Click(object sender, EventArgs e)
-        {
-
-        }
-
-
-
-        #endregion
-
+        // GetRes help
         private void button_GetRes_help_Click(object sender, EventArgs e)
         {
             // WriteRes API 帮助文档
             Process.Start("https://jihulab.com/DigitalPlatform/dp2doc/-/issues/39#note_1982698");
 
         }
+
+        #endregion
+
+
+        #region GetRecord相关
+
+        // GetRecord
+        private void button_GetRecord_Click(object sender, EventArgs e)
+        {
+            // strResPath
+            string strPath = this.textBox_GetRecord_strPath.Text.Trim();
+            if (string.IsNullOrEmpty(strPath) == true)
+            {
+                MessageBox.Show(this, "路径不能为空。");
+                return;
+            }
+
+            RestChannel channel = this.GetChannel();
+            try
+            {
+                GetRecordResponse response = channel.GetRecord(strPath);
+
+                string xml = response.strXml;
+                if (string.IsNullOrEmpty (xml) == false)
+                    xml=DomUtil.GetIndentXml(xml); 
+
+                this.textBox_result.Text = "Value:" + response.GetRecordResult.Value + "\r\n"
+                    + "ErrorCode:" + response.GetRecordResult.ErrorCode + "\r\n"
+                    + "ErrorInfo" + response.GetRecordResult.ErrorInfo + "\r\n"
+                    + "timestamp:" + ByteArray.GetHexTimeStampString(response.timestamp) + "\r\n"
+                    + "strXml:" + "\r\n"+ xml;
+            }
+            finally
+            {
+                this._channelPool.ReturnChannel(channel);
+            }
+        }
+
+        // GetRecord help
+        private void button_GetRecord_help_Click(object sender, EventArgs e)
+        {
+            // WriteRes API 帮助文档
+            Process.Start("https://jihulab.com/DigitalPlatform/dp2doc/-/issues/39#note_1984009");
+        }
+
+
+        #endregion
+
+
     }
 
 

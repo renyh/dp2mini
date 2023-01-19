@@ -352,7 +352,7 @@ namespace DigitalPlatform.LibraryRestClient
         // parameters:
         //      strItemBarcodeList  册条码号列表，逗号间隔
         // 权限：需要有reservation权限
-        public ReservationResponse Reservation(string action,
+        public ReservationResponse Reservation(string strFunction,
             string strReaderBarcode,
             string strItemBarcodeList)
         {
@@ -367,7 +367,7 @@ namespace DigitalPlatform.LibraryRestClient
 
 
             ReservationRequest request = new ReservationRequest();
-            request.strFunction = action;
+            request.strFunction = strFunction;
             request.strReaderBarcode = strReaderBarcode;
             request.strItemBarcodeList = strItemBarcodeList;
 
