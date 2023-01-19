@@ -1178,22 +1178,41 @@ namespace dp2mini
                     }
                     */
 
-                    // 正常的
+                    // 用正则表达式校验
                     bool bRet = Regex.IsMatch(right, match);// "^[0-9]*(.[0-9])$");
                     if (bRet == true)
                         continue;
 
+
+                    // 2023/1/19 处理中间带/的，支持CNY1000.00/9
+                    int nTemp = right.IndexOf('/');
+                    if (nTemp > 0)
+                    {
+                        string r1 = right.Substring(0, nTemp);
+                        string r2 = right.Substring(nTemp + 1);
+                        try
+                        {
+                            double dR1 = Convert.ToDouble(r1);
+                            double dR2 = Convert.ToDouble(r2);
+                            continue;
+                        }
+                        catch
+                        {
+                            otherList.Add(retLine);
+                            continue;
+                        }
+                    }
+
+
                     // 2023/1/19 支持CNY10 和 CNY1000/9 这两种价格形态
                     try
                     {
-                        // 把中间的/替换掉
-                        right = right.Replace("/", "");
-
                         double d = Convert.ToInt64(right);
                         continue;
                     }
                     catch
                     {
+
                         //带括号的
                         if (right.IndexOf("(") != -1 || right.IndexOf("（") != -1)
                         {
