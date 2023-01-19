@@ -3887,6 +3887,8 @@ idElementName="barcode"
             string fileName = this.Dir + "/" + this._mainForm.LibraryName + "-library.xml";
             if (File.Exists(fileName) == true)
                 File.Delete(fileName);
+
+
             FileStream stream = File.Create(fileName);
 
 

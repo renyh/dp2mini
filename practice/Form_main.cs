@@ -1732,10 +1732,130 @@ out string strError);
             this.textBox_GetRes_targetFile.Text = dlg.FileName;
         }
 
-
+        // 获取资源
         private void button_GetRes_Click(object sender, EventArgs e)
         {
 
+        }
+
+        // 分片获取资源 
+        private void button_GetResByChunk_Click(object sender, EventArgs e)
+        {
+            // strResPath
+            string strResPath = textBox_GetRes_strResPath.Text.Trim();
+            if (string.IsNullOrEmpty(strResPath) == true)
+            {
+                MessageBox.Show(this, "资源路径不能为空。");
+                return;
+            }
+
+            // strStyle
+            string strStyle = this.textBox_GetRes_strStyle.Text.Trim();// "prev/ myself/ next/ metadata/ timestamp / data / all";
+
+            // 目标文件
+            string fileName = this.textBox_GetRes_targetFile.Text.Trim();//this.Dir + "/" + this._mainForm.LibraryName + "-library.xml";
+            if (string.IsNullOrEmpty(fileName) == true)
+            {
+                MessageBox.Show(this, "请输入目标文件名。");
+                return;
+            }
+
+            //检查是否输入了包尺寸
+            string strChunkSize = this.textBox_GetRes_chunkSize.Text.Trim();
+            int chunkSize = 0;
+            try
+            {
+                chunkSize = Convert.ToInt32(strChunkSize);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, "包尺寸格式不合法，须为数值型。" + ex.Message);
+                return;
+            }
+
+            // 开始干活
+            RestChannel channel = this.GetChannel();
+            try
+            {
+                string strMetadata = "";
+                string strOutputResPath = "";
+                byte[] baOutputTimestamp = null;
+
+
+                // 目标文件如果已经存在，先删除
+                if (string.IsNullOrEmpty(fileName) == false)
+                {
+                    if (File.Exists(fileName) == true)
+                        File.Delete(fileName);
+                }
+                using (FileStream stream = File.Create(fileName))
+                {
+                    long lTotalLength = -1;
+                    //byte[] baTotal = null;
+                    byte[] baContent = null;
+                    long lStart = 0;
+                    for (; ; )
+                    {
+                        GetResResponse response = channel.GetRes(strResPath,
+                            lStart,
+                            chunkSize,
+                            strStyle);
+                        if (response.GetResResult.Value == -1)
+                        {
+                            MessageBox.Show(this, "获得服务器文件 '" + strResPath + "' 时发生错误： " + response.GetResResult.ErrorInfo);
+                            return;
+                        }
+
+                        // 一些返回值，如果style里对应参数，则会返回
+                        strMetadata = response.strMetadata;
+                        strOutputResPath = response.strOutputResPath;
+                        baOutputTimestamp = response.baOutputTimestamp;
+
+                        // 返回的value表示资源内容的总长度
+                        lTotalLength = response.GetResResult.Value;
+
+                        // 内容
+                        baContent = response.baContent;
+                        if (baContent !=null && baContent.Length > 0)
+                        { 
+                            // 写入本地文件
+                            stream.Write(baContent, 0, baContent.Length);
+                            stream.Flush();
+                            lStart += baContent.Length;
+                        }
+
+                        // 获取完了
+                        if (lStart >= lTotalLength 
+                            || baContent==null 
+                            || baContent.Length==0)
+                        {
+                            break;
+                        }
+
+                    } // end of for
+
+                }// end of using
+
+
+                // 把返回的其它信息显示在界面上
+                string strOutputTimestamp = "";
+                if (baOutputTimestamp != null && baOutputTimestamp.Length > 0)
+                    strOutputTimestamp = ByteArray.GetHexTimeStampString(baOutputTimestamp);
+
+                this.textBox_result.Text = "strMetadata:" + strMetadata + "\r\n"
+                    + "strOutputResPath:" + strOutputResPath + "\r\n"
+                    + "baOutputTimestamp:" + strOutputTimestamp;
+
+            }
+            catch (Exception ex)
+            {
+                //this.OutputInfo(ExceptionUtil.GetDebugText(ex));
+                return;
+            }
+            finally
+            {
+                this._channelPool.ReturnChannel(channel);
+            }
         }
         #endregion
 
@@ -1746,6 +1866,7 @@ out string strError);
         {
 
         }
+
 
         #endregion
 

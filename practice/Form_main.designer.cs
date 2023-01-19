@@ -958,7 +958,7 @@
             // 
             // button_GetRes_getFile
             // 
-            this.button_GetRes_getFile.Location = new System.Drawing.Point(733, 517);
+            this.button_GetRes_getFile.Location = new System.Drawing.Point(733, 492);
             this.button_GetRes_getFile.Name = "button_GetRes_getFile";
             this.button_GetRes_getFile.Size = new System.Drawing.Size(76, 52);
             this.button_GetRes_getFile.TabIndex = 48;
@@ -968,17 +968,18 @@
             // 
             // button_GetResByChunk
             // 
-            this.button_GetResByChunk.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button_GetResByChunk.Location = new System.Drawing.Point(581, 436);
+            this.button_GetResByChunk.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.button_GetResByChunk.Location = new System.Drawing.Point(257, 599);
             this.button_GetResByChunk.Name = "button_GetResByChunk";
-            this.button_GetResByChunk.Size = new System.Drawing.Size(211, 48);
+            this.button_GetResByChunk.Size = new System.Drawing.Size(321, 66);
             this.button_GetResByChunk.TabIndex = 47;
-            this.button_GetResByChunk.Text = "分片获取全部";
+            this.button_GetResByChunk.Text = "分片获取对象到文件";
             this.button_GetResByChunk.UseVisualStyleBackColor = true;
+            this.button_GetResByChunk.Click += new System.EventHandler(this.button_GetResByChunk_Click);
             // 
             // textBox_GetRes_chunkSize
             // 
-            this.textBox_GetRes_chunkSize.Location = new System.Drawing.Point(257, 444);
+            this.textBox_GetRes_chunkSize.Location = new System.Drawing.Point(262, 554);
             this.textBox_GetRes_chunkSize.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.textBox_GetRes_chunkSize.Name = "textBox_GetRes_chunkSize";
             this.textBox_GetRes_chunkSize.Size = new System.Drawing.Size(316, 38);
@@ -987,7 +988,7 @@
             // label62
             // 
             this.label62.AutoSize = true;
-            this.label62.Location = new System.Drawing.Point(58, 447);
+            this.label62.Location = new System.Drawing.Point(63, 557);
             this.label62.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.label62.Name = "label62";
             this.label62.Size = new System.Drawing.Size(204, 27);
@@ -1005,6 +1006,7 @@
             // 
             // button_GetRes
             // 
+            this.button_GetRes.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.button_GetRes.Location = new System.Drawing.Point(257, 317);
             this.button_GetRes.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.button_GetRes.Name = "button_GetRes";
@@ -1016,7 +1018,7 @@
             // 
             // textBox_GetRes_targetFile
             // 
-            this.textBox_GetRes_targetFile.Location = new System.Drawing.Point(257, 517);
+            this.textBox_GetRes_targetFile.Location = new System.Drawing.Point(257, 492);
             this.textBox_GetRes_targetFile.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.textBox_GetRes_targetFile.Name = "textBox_GetRes_targetFile";
             this.textBox_GetRes_targetFile.Size = new System.Drawing.Size(468, 38);
@@ -1061,7 +1063,7 @@
             // label51
             // 
             this.label51.AutoSize = true;
-            this.label51.Location = new System.Drawing.Point(63, 520);
+            this.label51.Location = new System.Drawing.Point(63, 495);
             this.label51.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.label51.Name = "label51";
             this.label51.Size = new System.Drawing.Size(174, 27);
