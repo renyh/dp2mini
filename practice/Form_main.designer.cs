@@ -150,12 +150,12 @@
             this.label43 = new System.Windows.Forms.Label();
             this.label44 = new System.Windows.Forms.Label();
             this.tabPage_GetRes = new System.Windows.Forms.TabPage();
-            this.button_getres = new System.Windows.Forms.Button();
-            this.textBox_path = new System.Windows.Forms.TextBox();
-            this.textBox_style1 = new System.Windows.Forms.TextBox();
-            this.textBox_nlength = new System.Windows.Forms.TextBox();
-            this.textBox_nstart = new System.Windows.Forms.TextBox();
-            this.textBox_strrespath = new System.Windows.Forms.TextBox();
+            this.button_GetRes = new System.Windows.Forms.Button();
+            this.textBox_GetRes_targetFile = new System.Windows.Forms.TextBox();
+            this.textBox_GetRes_strStyle = new System.Windows.Forms.TextBox();
+            this.textBox_GetRes_nLength = new System.Windows.Forms.TextBox();
+            this.textBox_GetRes_nStart = new System.Windows.Forms.TextBox();
+            this.textBox_GetRes_strResPath = new System.Windows.Forms.TextBox();
             this.label51 = new System.Windows.Forms.Label();
             this.label50 = new System.Windows.Forms.Label();
             this.label49 = new System.Windows.Forms.Label();
@@ -198,6 +198,11 @@
             this.label55 = new System.Windows.Forms.Label();
             this.textBox_WriteRes_object_strStyle = new System.Windows.Forms.TextBox();
             this.checkBox_WriteRes_redoByNewTimestamp = new System.Windows.Forms.CheckBox();
+            this.button1 = new System.Windows.Forms.Button();
+            this.textBox_GetRes_chunkSize = new System.Windows.Forms.TextBox();
+            this.label62 = new System.Windows.Forms.Label();
+            this.button_GetResByChunk = new System.Windows.Forms.Button();
+            this.button_GetRes_getFile = new System.Windows.Forms.Button();
             this.tabPage_SearchBiblio.SuspendLayout();
             this.tabPage_Server.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -447,7 +452,7 @@
             this.textBox_result.Name = "textBox_result";
             this.textBox_result.ReadOnly = true;
             this.textBox_result.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.textBox_result.Size = new System.Drawing.Size(1750, 83);
+            this.textBox_result.Size = new System.Drawing.Size(1750, 212);
             this.textBox_result.TabIndex = 20;
             // 
             // tabPage_Server
@@ -615,7 +620,7 @@
             this.tabControl1.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(1752, 941);
+            this.tabControl1.Size = new System.Drawing.Size(1752, 803);
             this.tabControl1.TabIndex = 6;
             // 
             // tabPage_SearchItem
@@ -1531,12 +1536,17 @@
             // 
             // tabPage_GetRes
             // 
-            this.tabPage_GetRes.Controls.Add(this.button_getres);
-            this.tabPage_GetRes.Controls.Add(this.textBox_path);
-            this.tabPage_GetRes.Controls.Add(this.textBox_style1);
-            this.tabPage_GetRes.Controls.Add(this.textBox_nlength);
-            this.tabPage_GetRes.Controls.Add(this.textBox_nstart);
-            this.tabPage_GetRes.Controls.Add(this.textBox_strrespath);
+            this.tabPage_GetRes.Controls.Add(this.button_GetRes_getFile);
+            this.tabPage_GetRes.Controls.Add(this.button_GetResByChunk);
+            this.tabPage_GetRes.Controls.Add(this.textBox_GetRes_chunkSize);
+            this.tabPage_GetRes.Controls.Add(this.label62);
+            this.tabPage_GetRes.Controls.Add(this.button1);
+            this.tabPage_GetRes.Controls.Add(this.button_GetRes);
+            this.tabPage_GetRes.Controls.Add(this.textBox_GetRes_targetFile);
+            this.tabPage_GetRes.Controls.Add(this.textBox_GetRes_strStyle);
+            this.tabPage_GetRes.Controls.Add(this.textBox_GetRes_nLength);
+            this.tabPage_GetRes.Controls.Add(this.textBox_GetRes_nStart);
+            this.tabPage_GetRes.Controls.Add(this.textBox_GetRes_strResPath);
             this.tabPage_GetRes.Controls.Add(this.label51);
             this.tabPage_GetRes.Controls.Add(this.label50);
             this.tabPage_GetRes.Controls.Add(this.label49);
@@ -1545,79 +1555,80 @@
             this.tabPage_GetRes.Location = new System.Drawing.Point(10, 46);
             this.tabPage_GetRes.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.tabPage_GetRes.Name = "tabPage_GetRes";
-            this.tabPage_GetRes.Size = new System.Drawing.Size(1732, 885);
+            this.tabPage_GetRes.Size = new System.Drawing.Size(1732, 747);
             this.tabPage_GetRes.TabIndex = 11;
             this.tabPage_GetRes.Text = "GetRes";
             this.tabPage_GetRes.UseVisualStyleBackColor = true;
             // 
-            // button_getres
+            // button_GetRes
             // 
-            this.button_getres.Location = new System.Drawing.Point(918, 160);
-            this.button_getres.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
-            this.button_getres.Name = "button_getres";
-            this.button_getres.Size = new System.Drawing.Size(375, 120);
-            this.button_getres.TabIndex = 10;
-            this.button_getres.Text = "button_getres";
-            this.button_getres.UseVisualStyleBackColor = true;
-            this.button_getres.Click += new System.EventHandler(this.button_getres_Click);
+            this.button_GetRes.Location = new System.Drawing.Point(257, 317);
+            this.button_GetRes.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
+            this.button_GetRes.Name = "button_GetRes";
+            this.button_GetRes.Size = new System.Drawing.Size(334, 68);
+            this.button_GetRes.TabIndex = 10;
+            this.button_GetRes.Text = "按输入的尺寸获取资源";
+            this.button_GetRes.UseVisualStyleBackColor = true;
+            this.button_GetRes.Click += new System.EventHandler(this.button_getres_Click);
             // 
-            // textBox_path
+            // textBox_GetRes_targetFile
             // 
-            this.textBox_path.Location = new System.Drawing.Point(272, 396);
-            this.textBox_path.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
-            this.textBox_path.Name = "textBox_path";
-            this.textBox_path.Size = new System.Drawing.Size(852, 38);
-            this.textBox_path.TabIndex = 9;
+            this.textBox_GetRes_targetFile.Location = new System.Drawing.Point(257, 517);
+            this.textBox_GetRes_targetFile.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
+            this.textBox_GetRes_targetFile.Name = "textBox_GetRes_targetFile";
+            this.textBox_GetRes_targetFile.Size = new System.Drawing.Size(468, 38);
+            this.textBox_GetRes_targetFile.TabIndex = 9;
             // 
-            // textBox_style1
+            // textBox_GetRes_strStyle
             // 
-            this.textBox_style1.Location = new System.Drawing.Point(272, 303);
-            this.textBox_style1.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
-            this.textBox_style1.Name = "textBox_style1";
-            this.textBox_style1.Size = new System.Drawing.Size(478, 38);
-            this.textBox_style1.TabIndex = 8;
-            this.textBox_style1.Text = "data,metadata,outputpath,timestamp";
+            this.textBox_GetRes_strStyle.Location = new System.Drawing.Point(257, 87);
+            this.textBox_GetRes_strStyle.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
+            this.textBox_GetRes_strStyle.Multiline = true;
+            this.textBox_GetRes_strStyle.Name = "textBox_GetRes_strStyle";
+            this.textBox_GetRes_strStyle.Size = new System.Drawing.Size(535, 119);
+            this.textBox_GetRes_strStyle.TabIndex = 8;
+            this.textBox_GetRes_strStyle.Text = "data,metadata,outputpath,timestamp";
             // 
-            // textBox_nlength
+            // textBox_GetRes_nLength
             // 
-            this.textBox_nlength.Location = new System.Drawing.Point(272, 208);
-            this.textBox_nlength.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
-            this.textBox_nlength.Name = "textBox_nlength";
-            this.textBox_nlength.Size = new System.Drawing.Size(478, 38);
-            this.textBox_nlength.TabIndex = 7;
-            this.textBox_nlength.Text = "-1";
+            this.textBox_GetRes_nLength.Location = new System.Drawing.Point(257, 260);
+            this.textBox_GetRes_nLength.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
+            this.textBox_GetRes_nLength.Name = "textBox_GetRes_nLength";
+            this.textBox_GetRes_nLength.Size = new System.Drawing.Size(535, 38);
+            this.textBox_GetRes_nLength.TabIndex = 7;
+            this.textBox_GetRes_nLength.Text = "-1";
             // 
-            // textBox_nstart
+            // textBox_GetRes_nStart
             // 
-            this.textBox_nstart.Location = new System.Drawing.Point(272, 136);
-            this.textBox_nstart.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
-            this.textBox_nstart.Name = "textBox_nstart";
-            this.textBox_nstart.Size = new System.Drawing.Size(478, 38);
-            this.textBox_nstart.TabIndex = 6;
-            this.textBox_nstart.Text = "0";
+            this.textBox_GetRes_nStart.Location = new System.Drawing.Point(257, 214);
+            this.textBox_GetRes_nStart.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
+            this.textBox_GetRes_nStart.Name = "textBox_GetRes_nStart";
+            this.textBox_GetRes_nStart.Size = new System.Drawing.Size(535, 38);
+            this.textBox_GetRes_nStart.TabIndex = 6;
+            this.textBox_GetRes_nStart.Text = "0";
             // 
-            // textBox_strrespath
+            // textBox_GetRes_strResPath
             // 
-            this.textBox_strrespath.Location = new System.Drawing.Point(272, 58);
-            this.textBox_strrespath.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
-            this.textBox_strrespath.Name = "textBox_strrespath";
-            this.textBox_strrespath.Size = new System.Drawing.Size(478, 38);
-            this.textBox_strrespath.TabIndex = 5;
+            this.textBox_GetRes_strResPath.Location = new System.Drawing.Point(257, 22);
+            this.textBox_GetRes_strResPath.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
+            this.textBox_GetRes_strResPath.Name = "textBox_GetRes_strResPath";
+            this.textBox_GetRes_strResPath.Size = new System.Drawing.Size(535, 38);
+            this.textBox_GetRes_strResPath.TabIndex = 5;
             // 
             // label51
             // 
             this.label51.AutoSize = true;
-            this.label51.Location = new System.Drawing.Point(26, 411);
+            this.label51.Location = new System.Drawing.Point(63, 520);
             this.label51.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.label51.Name = "label51";
-            this.label51.Size = new System.Drawing.Size(228, 27);
+            this.label51.Size = new System.Drawing.Size(174, 27);
             this.label51.TabIndex = 4;
-            this.label51.Text = "对象文件保存地址";
+            this.label51.Text = "对象保存地址";
             // 
             // label50
             // 
             this.label50.AutoSize = true;
-            this.label50.Location = new System.Drawing.Point(117, 318);
+            this.label50.Location = new System.Drawing.Point(113, 90);
             this.label50.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.label50.Name = "label50";
             this.label50.Size = new System.Drawing.Size(124, 27);
@@ -1627,7 +1638,7 @@
             // label49
             // 
             this.label49.AutoSize = true;
-            this.label49.Location = new System.Drawing.Point(131, 224);
+            this.label49.Location = new System.Drawing.Point(127, 271);
             this.label49.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.label49.Name = "label49";
             this.label49.Size = new System.Drawing.Size(110, 27);
@@ -1637,7 +1648,7 @@
             // label48
             // 
             this.label48.AutoSize = true;
-            this.label48.Location = new System.Drawing.Point(145, 141);
+            this.label48.Location = new System.Drawing.Point(141, 225);
             this.label48.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.label48.Name = "label48";
             this.label48.Size = new System.Drawing.Size(96, 27);
@@ -1647,7 +1658,7 @@
             // label47
             // 
             this.label47.AutoSize = true;
-            this.label47.Location = new System.Drawing.Point(89, 63);
+            this.label47.Location = new System.Drawing.Point(85, 25);
             this.label47.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.label47.Name = "label47";
             this.label47.Size = new System.Drawing.Size(152, 27);
@@ -1704,7 +1715,7 @@
             this.tabPage_WriteRes.Location = new System.Drawing.Point(10, 46);
             this.tabPage_WriteRes.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.tabPage_WriteRes.Name = "tabPage_WriteRes";
-            this.tabPage_WriteRes.Size = new System.Drawing.Size(1732, 885);
+            this.tabPage_WriteRes.Size = new System.Drawing.Size(1732, 747);
             this.tabPage_WriteRes.TabIndex = 13;
             this.tabPage_WriteRes.Text = "WriteRes";
             this.tabPage_WriteRes.UseVisualStyleBackColor = true;
@@ -1712,7 +1723,7 @@
             // 
             // button_WriteRes_autoTimestamp
             // 
-            this.button_WriteRes_autoTimestamp.Location = new System.Drawing.Point(560, 169);
+            this.button_WriteRes_autoTimestamp.Location = new System.Drawing.Point(564, 169);
             this.button_WriteRes_autoTimestamp.Name = "button_WriteRes_autoTimestamp";
             this.button_WriteRes_autoTimestamp.Size = new System.Drawing.Size(139, 45);
             this.button_WriteRes_autoTimestamp.TabIndex = 44;
@@ -1734,7 +1745,7 @@
             // 
             this.button_WriteRes_WriteMetadata.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.button_WriteRes_WriteMetadata.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button_WriteRes_WriteMetadata.Location = new System.Drawing.Point(655, 371);
+            this.button_WriteRes_WriteMetadata.Location = new System.Drawing.Point(676, 380);
             this.button_WriteRes_WriteMetadata.Name = "button_WriteRes_WriteMetadata";
             this.button_WriteRes_WriteMetadata.Size = new System.Drawing.Size(175, 89);
             this.button_WriteRes_WriteMetadata.TabIndex = 41;
@@ -1785,7 +1796,7 @@
             // 
             this.button_writeresForText.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.button_writeresForText.Font = new System.Drawing.Font("宋体", 10.66667F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button_writeresForText.Location = new System.Drawing.Point(17, 741);
+            this.button_writeresForText.Location = new System.Drawing.Point(21, 603);
             this.button_writeresForText.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.button_writeresForText.Name = "button_writeresForText";
             this.button_writeresForText.Size = new System.Drawing.Size(539, 70);
@@ -1798,17 +1809,17 @@
             // 
             this.textBox_WriteRes_baContent.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
-            this.textBox_WriteRes_baContent.Location = new System.Drawing.Point(17, 339);
+            this.textBox_WriteRes_baContent.Location = new System.Drawing.Point(21, 339);
             this.textBox_WriteRes_baContent.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.textBox_WriteRes_baContent.Multiline = true;
             this.textBox_WriteRes_baContent.Name = "textBox_WriteRes_baContent";
             this.textBox_WriteRes_baContent.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBox_WriteRes_baContent.Size = new System.Drawing.Size(651, 394);
+            this.textBox_WriteRes_baContent.Size = new System.Drawing.Size(651, 256);
             this.textBox_WriteRes_baContent.TabIndex = 13;
             // 
             // textBox_WriteRes_baInputTimestamp
             // 
-            this.textBox_WriteRes_baInputTimestamp.Location = new System.Drawing.Point(258, 168);
+            this.textBox_WriteRes_baInputTimestamp.Location = new System.Drawing.Point(262, 168);
             this.textBox_WriteRes_baInputTimestamp.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.textBox_WriteRes_baInputTimestamp.Name = "textBox_WriteRes_baInputTimestamp";
             this.textBox_WriteRes_baInputTimestamp.Size = new System.Drawing.Size(294, 38);
@@ -1822,12 +1833,12 @@
             this.textBox_WriteRes_strMetadata.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.textBox_WriteRes_strMetadata.Multiline = true;
             this.textBox_WriteRes_strMetadata.Name = "textBox_WriteRes_strMetadata";
-            this.textBox_WriteRes_strMetadata.Size = new System.Drawing.Size(427, 207);
+            this.textBox_WriteRes_strMetadata.Size = new System.Drawing.Size(448, 207);
             this.textBox_WriteRes_strMetadata.TabIndex = 11;
             // 
             // textBox_WriteRes_strStyle
             // 
-            this.textBox_WriteRes_strStyle.Location = new System.Drawing.Point(258, 111);
+            this.textBox_WriteRes_strStyle.Location = new System.Drawing.Point(262, 111);
             this.textBox_WriteRes_strStyle.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.textBox_WriteRes_strStyle.Name = "textBox_WriteRes_strStyle";
             this.textBox_WriteRes_strStyle.Size = new System.Drawing.Size(410, 38);
@@ -1835,7 +1846,7 @@
             // 
             // textBox_WriteRes_strResPath
             // 
-            this.textBox_WriteRes_strResPath.Location = new System.Drawing.Point(258, 51);
+            this.textBox_WriteRes_strResPath.Location = new System.Drawing.Point(262, 51);
             this.textBox_WriteRes_strResPath.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.textBox_WriteRes_strResPath.Name = "textBox_WriteRes_strResPath";
             this.textBox_WriteRes_strResPath.Size = new System.Drawing.Size(414, 38);
@@ -1844,7 +1855,7 @@
             // label59
             // 
             this.label59.AutoSize = true;
-            this.label59.Location = new System.Drawing.Point(12, 298);
+            this.label59.Location = new System.Drawing.Point(16, 298);
             this.label59.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.label59.Name = "label59";
             this.label59.Size = new System.Drawing.Size(382, 27);
@@ -1854,7 +1865,7 @@
             // label58
             // 
             this.label58.AutoSize = true;
-            this.label58.Location = new System.Drawing.Point(12, 178);
+            this.label58.Location = new System.Drawing.Point(16, 178);
             this.label58.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.label58.Name = "label58";
             this.label58.Size = new System.Drawing.Size(236, 27);
@@ -1874,7 +1885,7 @@
             // label56
             // 
             this.label56.AutoSize = true;
-            this.label56.Location = new System.Drawing.Point(124, 122);
+            this.label56.Location = new System.Drawing.Point(128, 122);
             this.label56.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.label56.Name = "label56";
             this.label56.Size = new System.Drawing.Size(124, 27);
@@ -1884,7 +1895,7 @@
             // label53
             // 
             this.label53.AutoSize = true;
-            this.label53.Location = new System.Drawing.Point(96, 54);
+            this.label53.Location = new System.Drawing.Point(100, 54);
             this.label53.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.label53.Name = "label53";
             this.label53.Size = new System.Drawing.Size(152, 27);
@@ -1964,7 +1975,7 @@
             this.splitContainer1.Panel2.BackColor = System.Drawing.SystemColors.Info;
             this.splitContainer1.Panel2.Controls.Add(this.textBox_result);
             this.splitContainer1.Size = new System.Drawing.Size(1778, 1068);
-            this.splitContainer1.SplitterDistance = 966;
+            this.splitContainer1.SplitterDistance = 836;
             this.splitContainer1.TabIndex = 21;
             // 
             // groupBox2
@@ -1984,9 +1995,9 @@
             this.groupBox2.Controls.Add(this.button_autoWriteRes);
             this.groupBox2.Controls.Add(this.button_selectFile);
             this.groupBox2.Controls.Add(this.label61);
-            this.groupBox2.Location = new System.Drawing.Point(812, 12);
+            this.groupBox2.Location = new System.Drawing.Point(832, 12);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(893, 846);
+            this.groupBox2.Size = new System.Drawing.Size(873, 708);
             this.groupBox2.TabIndex = 45;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "写下级对象";
@@ -2008,7 +2019,7 @@
             this.groupBox3.Controls.Add(this.textBox_WriteRes_baInputTimestamp);
             this.groupBox3.Location = new System.Drawing.Point(64, 12);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(705, 846);
+            this.groupBox3.Size = new System.Drawing.Size(722, 708);
             this.groupBox3.TabIndex = 46;
             this.groupBox3.TabStop = false;
             // 
@@ -2053,12 +2064,59 @@
             this.checkBox_WriteRes_redoByNewTimestamp.AutoSize = true;
             this.checkBox_WriteRes_redoByNewTimestamp.Checked = true;
             this.checkBox_WriteRes_redoByNewTimestamp.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox_WriteRes_redoByNewTimestamp.Location = new System.Drawing.Point(17, 232);
+            this.checkBox_WriteRes_redoByNewTimestamp.Location = new System.Drawing.Point(21, 232);
             this.checkBox_WriteRes_redoByNewTimestamp.Name = "checkBox_WriteRes_redoByNewTimestamp";
             this.checkBox_WriteRes_redoByNewTimestamp.Size = new System.Drawing.Size(530, 31);
             this.checkBox_WriteRes_redoByNewTimestamp.TabIndex = 45;
             this.checkBox_WriteRes_redoByNewTimestamp.Text = "当时间戳不对时，按返回的时间戳重做。";
             this.checkBox_WriteRes_redoByNewTimestamp.UseVisualStyleBackColor = true;
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(13, 15);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(55, 117);
+            this.button1.TabIndex = 44;
+            this.button1.Text = "帮助";
+            this.button1.UseVisualStyleBackColor = true;
+            // 
+            // textBox_GetRes_chunkSize
+            // 
+            this.textBox_GetRes_chunkSize.Location = new System.Drawing.Point(257, 444);
+            this.textBox_GetRes_chunkSize.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
+            this.textBox_GetRes_chunkSize.Name = "textBox_GetRes_chunkSize";
+            this.textBox_GetRes_chunkSize.Size = new System.Drawing.Size(316, 38);
+            this.textBox_GetRes_chunkSize.TabIndex = 45;
+            // 
+            // label62
+            // 
+            this.label62.AutoSize = true;
+            this.label62.Location = new System.Drawing.Point(58, 447);
+            this.label62.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label62.Name = "label62";
+            this.label62.Size = new System.Drawing.Size(204, 27);
+            this.label62.TabIndex = 46;
+            this.label62.Text = "小包尺寸(Byte)";
+            // 
+            // button_GetResByChunk
+            // 
+            this.button_GetResByChunk.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.button_GetResByChunk.Location = new System.Drawing.Point(581, 436);
+            this.button_GetResByChunk.Name = "button_GetResByChunk";
+            this.button_GetResByChunk.Size = new System.Drawing.Size(211, 48);
+            this.button_GetResByChunk.TabIndex = 47;
+            this.button_GetResByChunk.Text = "分片获取全部";
+            this.button_GetResByChunk.UseVisualStyleBackColor = true;
+            // 
+            // button_GetRes_getFile
+            // 
+            this.button_GetRes_getFile.Location = new System.Drawing.Point(733, 517);
+            this.button_GetRes_getFile.Name = "button_GetRes_getFile";
+            this.button_GetRes_getFile.Size = new System.Drawing.Size(76, 52);
+            this.button_GetRes_getFile.TabIndex = 48;
+            this.button_GetRes_getFile.Text = "...";
+            this.button_GetRes_getFile.UseVisualStyleBackColor = true;
+            this.button_GetRes_getFile.Click += new System.EventHandler(this.button_GetRes_getFile_Click);
             // 
             // Form_main
             // 
@@ -2245,12 +2303,12 @@
         private System.Windows.Forms.TabPage tabPage_GetRes;
         private System.Windows.Forms.TabPage tabPage_GetRecord;
         private System.Windows.Forms.TabPage tabPage_WriteRes;
-        private System.Windows.Forms.Button button_getres;
-        private System.Windows.Forms.TextBox textBox_path;
-        private System.Windows.Forms.TextBox textBox_style1;
-        private System.Windows.Forms.TextBox textBox_nlength;
-        private System.Windows.Forms.TextBox textBox_nstart;
-        private System.Windows.Forms.TextBox textBox_strrespath;
+        private System.Windows.Forms.Button button_GetRes;
+        private System.Windows.Forms.TextBox textBox_GetRes_targetFile;
+        private System.Windows.Forms.TextBox textBox_GetRes_strStyle;
+        private System.Windows.Forms.TextBox textBox_GetRes_nLength;
+        private System.Windows.Forms.TextBox textBox_GetRes_nStart;
+        private System.Windows.Forms.TextBox textBox_GetRes_strResPath;
         private System.Windows.Forms.Label label51;
         private System.Windows.Forms.Label label50;
         private System.Windows.Forms.Label label49;
@@ -2286,6 +2344,11 @@
         private System.Windows.Forms.Label label54;
         private System.Windows.Forms.TextBox textBox_WriteRes_object_strResPath;
         private System.Windows.Forms.CheckBox checkBox_WriteRes_redoByNewTimestamp;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.TextBox textBox_GetRes_chunkSize;
+        private System.Windows.Forms.Label label62;
+        private System.Windows.Forms.Button button_GetResByChunk;
+        private System.Windows.Forms.Button button_GetRes_getFile;
     }
 }
 

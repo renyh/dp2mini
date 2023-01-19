@@ -630,10 +630,10 @@ public long SearchItem(string strItemDbName,
         private void button_getres_Click(object sender, EventArgs e)
         {
             RestChannel channel = GetChannel();
-            string path = textBox_strrespath.Text.Trim();
-            long start = long.Parse(textBox_nstart.Text.Trim());
-            int length = Convert.ToInt32(textBox_nlength.Text.Trim());
-            string style = textBox_style1.Text.Trim();
+            string path = textBox_GetRes_strResPath.Text.Trim();
+            long start = long.Parse(textBox_GetRes_nStart.Text.Trim());
+            int length = Convert.ToInt32(textBox_GetRes_nLength.Text.Trim());
+            string style = textBox_GetRes_strStyle.Text.Trim();
             string[] words = path.Split('/');
 
             try
@@ -668,7 +668,7 @@ public long SearchItem(string strItemDbName,
                             //如果对象文件尺寸不为空
                             if (getRes.GetResResult.Value != -1)
                             {
-                                using (FileStream fs = new FileStream(textBox_path.Text, FileMode.Create, FileAccess.Write))
+                                using (FileStream fs = new FileStream(textBox_GetRes_targetFile.Text, FileMode.Create, FileAccess.Write))
                                 {
                                     //textBox_result.Text += "data:\r\n" + baContent;
                                     fs.Write(getRes.baContent, 0, getRes.baContent.Length);
@@ -1701,8 +1701,29 @@ REDO:
             }
         }
 
+        private void button_GetRes_getFile_Click(object sender, EventArgs e)
+        {
+            //询问文件名
+            SaveFileDialog dlg = new SaveFileDialog
+            {
+                Title = "请指定文件名",
+                CreatePrompt = false,
+                OverwritePrompt = true,
+                //FileName = tempFileName,
+
+                //InitialDirectory = Environment.CurrentDirectory,
+                Filter = "All files (*.*)|*.*",
+
+                RestoreDirectory = true
+            };
+
+            // 如果在询问文件名对话框，点了取消，退不处理，返回0，
+            if (dlg.ShowDialog() != DialogResult.OK)
+                return;
 
 
+            this.textBox_GetRes_targetFile.Text = dlg.FileName;
+        }
     }
 
 
