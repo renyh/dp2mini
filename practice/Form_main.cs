@@ -1746,8 +1746,29 @@ out string strError);
             // strStyle
             string strStyle = this.textBox_GetRes_strStyle.Text.Trim();// "prev/ myself/ next/ metadata/ timestamp / data / all";
 
+            string strStart = this.textBox_GetRes_nStart.Text.Trim();
             long lStart = 0;
+            try
+            {
+                lStart = Convert.ToInt64(strStart);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, "Start格式不正确:"+ex.Message);
+                return;
+            }
+
             int lLength = -1;
+            string strLength = this.textBox_GetRes_nLength.Text.Trim();
+            try
+            {
+                lLength = Convert.ToInt32(strLength);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, "Length格式不正确:" + ex.Message);
+                return;
+            }
 
             // 开始干活
             RestChannel channel = this.GetChannel();
