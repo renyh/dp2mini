@@ -96,7 +96,7 @@
             this.button_GetResByChunk = new System.Windows.Forms.Button();
             this.textBox_GetRes_chunkSize = new System.Windows.Forms.TextBox();
             this.label62 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
+            this.button_GetRes_help = new System.Windows.Forms.Button();
             this.button_GetRes = new System.Windows.Forms.Button();
             this.textBox_GetRes_targetFile = new System.Windows.Forms.TextBox();
             this.textBox_GetRes_strStyle = new System.Windows.Forms.TextBox();
@@ -936,7 +936,7 @@
             this.tabPage_GetRes.Controls.Add(this.button_GetResByChunk);
             this.tabPage_GetRes.Controls.Add(this.textBox_GetRes_chunkSize);
             this.tabPage_GetRes.Controls.Add(this.label62);
-            this.tabPage_GetRes.Controls.Add(this.button1);
+            this.tabPage_GetRes.Controls.Add(this.button_GetRes_help);
             this.tabPage_GetRes.Controls.Add(this.button_GetRes);
             this.tabPage_GetRes.Controls.Add(this.textBox_GetRes_targetFile);
             this.tabPage_GetRes.Controls.Add(this.textBox_GetRes_strStyle);
@@ -973,7 +973,7 @@
             this.button_GetResByChunk.Name = "button_GetResByChunk";
             this.button_GetResByChunk.Size = new System.Drawing.Size(321, 66);
             this.button_GetResByChunk.TabIndex = 47;
-            this.button_GetResByChunk.Text = "分片获取对象到文件";
+            this.button_GetResByChunk.Text = "分片获取资源到文件";
             this.button_GetResByChunk.UseVisualStyleBackColor = true;
             this.button_GetResByChunk.Click += new System.EventHandler(this.button_GetResByChunk_Click);
             // 
@@ -995,14 +995,15 @@
             this.label62.TabIndex = 46;
             this.label62.Text = "小包尺寸(Byte)";
             // 
-            // button1
+            // button_GetRes_help
             // 
-            this.button1.Location = new System.Drawing.Point(13, 15);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(55, 117);
-            this.button1.TabIndex = 44;
-            this.button1.Text = "帮助";
-            this.button1.UseVisualStyleBackColor = true;
+            this.button_GetRes_help.Location = new System.Drawing.Point(13, 15);
+            this.button_GetRes_help.Name = "button_GetRes_help";
+            this.button_GetRes_help.Size = new System.Drawing.Size(55, 117);
+            this.button_GetRes_help.TabIndex = 44;
+            this.button_GetRes_help.Text = "帮助";
+            this.button_GetRes_help.UseVisualStyleBackColor = true;
+            this.button_GetRes_help.Click += new System.EventHandler(this.button_GetRes_help_Click);
             // 
             // button_GetRes
             // 
@@ -2345,7 +2346,7 @@
         private System.Windows.Forms.Label label54;
         private System.Windows.Forms.TextBox textBox_WriteRes_object_strResPath;
         private System.Windows.Forms.CheckBox checkBox_WriteRes_redoByNewTimestamp;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button button_GetRes_help;
         private System.Windows.Forms.TextBox textBox_GetRes_chunkSize;
         private System.Windows.Forms.Label label62;
         private System.Windows.Forms.Button button_GetResByChunk;

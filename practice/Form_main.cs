@@ -1735,7 +1735,110 @@ out string strError);
         // 获取资源
         private void button_GetRes_Click(object sender, EventArgs e)
         {
+            // strResPath
+            string strResPath = textBox_GetRes_strResPath.Text.Trim();
+            if (string.IsNullOrEmpty(strResPath) == true)
+            {
+                MessageBox.Show(this, "资源路径不能为空。");
+                return;
+            }
 
+            // strStyle
+            string strStyle = this.textBox_GetRes_strStyle.Text.Trim();// "prev/ myself/ next/ metadata/ timestamp / data / all";
+
+            long lStart = 0;
+            int lLength = -1;
+
+            // 开始干活
+            RestChannel channel = this.GetChannel();
+            try
+            {
+                string strMetadata = "";
+                string strOutputResPath = "";
+                byte[] baOutputTimestamp = null;
+
+                using (MemoryStream m = new MemoryStream())
+                {
+                    long lTotalLength = -1;
+                    //byte[] baTotal = null;
+                    byte[] baContent = null;
+
+                    for (; ; )
+                    {
+                        GetResResponse response = channel.GetRes(strResPath,
+                            lStart,
+                            lLength,
+                            strStyle);
+                        if (response.GetResResult.Value == -1)
+                        {
+                            MessageBox.Show(this, "获得服务器文件 '" + strResPath + "' 时发生错误： " + response.GetResResult.ErrorInfo);
+                            return;
+                        }
+
+                        // 一些返回值，如果style里对应参数，则会返回
+                        strMetadata = response.strMetadata;
+                        strOutputResPath = response.strOutputResPath;
+                        baOutputTimestamp = response.baOutputTimestamp;
+
+                        // 返回的value表示资源内容的总长度
+                        lTotalLength = response.GetResResult.Value;
+
+                        // 内容
+                        baContent = response.baContent;
+                        if (baContent != null && baContent.Length > 0)
+                        {
+                            // 写入本地文件
+                            m.Write(baContent, 0, baContent.Length);
+
+                            lStart += baContent.Length;
+                        }
+
+                        // 获取完了
+                        if (lStart >= lTotalLength
+                            || baContent == null
+                            || baContent.Length == 0)
+                        {
+                            break;
+                        }
+
+                    } // end of for
+
+
+
+                    // 把返回的其它信息显示在界面上
+                    string strOutputTimestamp = "";
+                    if (baOutputTimestamp != null && baOutputTimestamp.Length > 0)
+                        strOutputTimestamp = ByteArray.GetHexTimeStampString(baOutputTimestamp);
+
+                    this.textBox_result.Text = "strMetadata:" + strMetadata + "\r\n"
+                        + "strOutputResPath:" + strOutputResPath + "\r\n"
+                        + "baOutputTimestamp:" + strOutputTimestamp+"\r\n";
+
+                    // 转成byte数组
+                    byte[] bt = m.ToArray();
+                    if (bt != null && bt.Length > 0)
+                    {
+                        string text= Encoding.UTF8.GetString(bt);
+                        this.textBox_result.Text += "文本:" + text + "\r\n\r\n";
+
+                        string hex = ByteArray.GetHexTimeStampString(bt);
+                        this.textBox_result.Text += "十六进制:" + hex + "\r\n\r\n";
+                    }
+
+
+
+                }
+
+            }
+            catch (Exception ex)
+            {
+                //this.OutputInfo(ExceptionUtil.GetDebugText(ex));
+                return;
+            }
+            finally
+            {
+                this._channelPool.ReturnChannel(channel);
+            }
         }
 
         // 分片获取资源 
@@ -1868,9 +1971,15 @@ out string strError);
         }
 
 
+
         #endregion
 
+        private void button_GetRes_help_Click(object sender, EventArgs e)
+        {
+            // WriteRes API 帮助文档
+            Process.Start("https://jihulab.com/DigitalPlatform/dp2doc/-/issues/39#note_1982698");
 
+        }
     }
 
 
