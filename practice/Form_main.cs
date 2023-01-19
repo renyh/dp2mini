@@ -160,7 +160,6 @@ namespace practice
         #endregion
 
 
-
         #region 登录相关
 
         private void button_getVersion_Click(object sender, EventArgs e)
@@ -241,8 +240,7 @@ namespace practice
 
         #endregion
 
-
-        #region 多线程练习题
+        #region 菜单功能
 
         private void 通用练习题ToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -250,7 +248,15 @@ namespace practice
             dlg.ShowDialog(this);
         }
 
+        // Z39.50功能
+        private void z3950ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Form_Z3950 dlg = new Form_Z3950();
+            dlg.ShowDialog(this);
+        }
+
         #endregion
+
 
         #region 检索书目SearchBiblio 和 GetSearchResult
 
@@ -345,9 +351,56 @@ namespace practice
             }
         }
 
+        private void button_searchItem_Click(object sender, EventArgs e)
+        {
+
+            RestChannel channel = this.GetChannel();
+            try
+            {
+                int nPerMax = 0;
+                if (this.searchItem_nPerMax.Text == "")
+                    nPerMax = -1;
+                else
+                    nPerMax = Convert.ToInt32(this.searchItem_nPerMax.Text);
+                /*
+                 * 
+public long SearchItem(string strItemDbName,
+    string strQueryWord,
+    int nPerMax,
+    string strFrom,
+    string strMatchStyle,
+    string strResultSetName,
+    string strSearchStyle,
+     string strOutputStyle,
+    out string strError)
+                 */
+                //SearchBiblioResponse response 
+                long lRet = channel.SearchItem(this.searchItem_strItemDbName.Text,
+                    this.searchItem_strQueryWord.Text,
+                    nPerMax,
+                    this.searchItem_strFrom.Text,
+                    this.searchItem_strMatchStyle.Text,
+                    this.searchItem_strResultSetName.Text,
+                    this.searchItem_strSearchStyle.Text,
+                    this.searchItem_strOutputStyle.Text,
+                    out string strError);
+                if (lRet == -1)
+                {
+                    this.textBox_result.Text = "error:" + strError;
+                }
+                else
+                {
+                    this.textBox_result.Text = "count:" + lRet;
+                }
+            }
+            finally
+            {
+                this._channelPool.ReturnChannel(channel);
+            }
+        }
         #endregion
 
-        #region
+        #region 获取书目
 
         private void button_GetBiblioInfo_Click(object sender, EventArgs e)
         {
@@ -404,6 +457,10 @@ namespace practice
             }
         }
 
+        #endregion
+
+        #region 预约
+
         private void button__Reservation_start_Click(object sender, EventArgs e)
         {
             RestChannel channel = this.GetChannel();
@@ -424,6 +481,71 @@ namespace practice
                 this._channelPool.ReturnChannel(channel);
             }
         }
+
+        #endregion
+
+
+        #region SearchCharging
+
+        // SearchCharging
+        private void button_SearchCharging_begin_Click(object sender, EventArgs e)
+        {
+            this.textBox_result.Text = "";
+
+            RestChannel channel = this.GetChannel();
+            try
+            {
+
+                string strStart = this.textBox_searchCharging_start.Text.Trim();
+                if (strStart == "")
+                    strStart = "0";
+                long start = Convert.ToInt64(strStart);
+
+                string strCount = this.textBox_searchCharging_count.Text.Trim();
+                if (strCount == "")
+                    strCount = "10";
+                long count = Convert.ToInt64(strCount);
+
+                ChargingItemWrapper[] itemWarpperList = null;
+
+                //SearchBiblioResponse response 
+                long lRet = channel.SearchCharging(this.textBox_SearchCharging_patronBarcode.Text.Trim(),
+                    this.textBox_SearchCharging_timeRange.Text.Trim(),
+                    this.textBox_searchCharging_actions.Text.Trim(),
+                    this.textBox_searchCharging_order.Text.Trim(),
+                    start,
+                    count,
+                    out itemWarpperList,
+                    out string strError);
+                if (lRet == -1)
+                {
+                    this.textBox_result.Text += "error:" + strError;
+                }
+                else
+                {
+                    this.textBox_result.Text += "count:" + lRet;
+
+                    if (itemWarpperList != null && itemWarpperList.Length > 0)
+                    {
+                        string temp = "";
+                        foreach (ChargingItemWrapper one in itemWarpperList)
+                        {
+                            temp += one.Item.ItemBarcode + "\r\n";
+                        }
+
+                        this.textBox_result.Text += temp;
+                    }
+                }
+            }
+            finally
+            {
+                this._channelPool.ReturnChannel(channel);
+            }
+        }
+
+        #endregion
+
+        #region 创建书目
 
         // 创建书目
         private void button_setBiblioInfo_Click(object sender, EventArgs e)
@@ -533,116 +655,10 @@ namespace practice
 
         }
 
-        private void button_searchItem_Click(object sender, EventArgs e)
-        {
+        #endregion
 
-            RestChannel channel = this.GetChannel();
-            try
-            {
-                int nPerMax = 0;
-                if (this.searchItem_nPerMax.Text == "")
-                    nPerMax = -1;
-                else
-                    nPerMax = Convert.ToInt32(this.searchItem_nPerMax.Text);
-                /*
-                 * 
-public long SearchItem(string strItemDbName,
-    string strQueryWord,
-    int nPerMax,
-    string strFrom,
-    string strMatchStyle,
-    string strResultSetName,
-    string strSearchStyle,
-     string strOutputStyle,
-    out string strError)
-                 */
-                //SearchBiblioResponse response 
-                long lRet = channel.SearchItem(this.searchItem_strItemDbName.Text,
-                    this.searchItem_strQueryWord.Text,
-                    nPerMax,
-                    this.searchItem_strFrom.Text,
-                    this.searchItem_strMatchStyle.Text,
-                    this.searchItem_strResultSetName.Text,
-                    this.searchItem_strSearchStyle.Text,
-                    this.searchItem_strOutputStyle.Text,
-                    out string strError);
-                if (lRet == -1)
-                {
-                    this.textBox_result.Text = "error:" + strError;
-                }
-                else
-                {
-                    this.textBox_result.Text = "count:" + lRet;
-                }
-            }
-            finally
-            {
-                this._channelPool.ReturnChannel(channel);
-            }
-        }
 
-        // 借阅报表
-        private void button_SearchCharging_begin_Click(object sender, EventArgs e)
-        {
-            this.textBox_result.Text = "";
 
-            RestChannel channel = this.GetChannel();
-            try
-            {
-
-                string strStart = this.textBox_searchCharging_start.Text.Trim();
-                if (strStart == "")
-                    strStart = "0";
-                long start = Convert.ToInt64(strStart);
-
-                string strCount = this.textBox_searchCharging_count.Text.Trim();
-                if (strCount == "")
-                    strCount = "10";
-                long count = Convert.ToInt64(strCount);
-
-                ChargingItemWrapper[] itemWarpperList = null;
-
-                //SearchBiblioResponse response 
-                long lRet = channel.SearchCharging(this.textBox_SearchCharging_patronBarcode.Text.Trim(),
-                    this.textBox_SearchCharging_timeRange.Text.Trim(),
-                    this.textBox_searchCharging_actions.Text.Trim(),
-                    this.textBox_searchCharging_order.Text.Trim(),
-                    start,
-                    count,
-                    out itemWarpperList,
-                    out string strError);
-                if (lRet == -1)
-                {
-                    this.textBox_result.Text += "error:" + strError;
-                }
-                else
-                {
-                    this.textBox_result.Text += "count:" + lRet;
-
-                    if (itemWarpperList != null && itemWarpperList.Length > 0)
-                    {
-                        string temp = "";
-                        foreach (ChargingItemWrapper one in itemWarpperList)
-                        {
-                            temp += one.Item.ItemBarcode + "\r\n";
-                        }
-
-                        this.textBox_result.Text += temp;
-                    }
-                }
-            }
-            finally
-            {
-                this._channelPool.ReturnChannel(channel);
-            }
-        }
-
-        // Z39.50功能
-        private void z3950ToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Form_Z3950 dlg = new Form_Z3950();
-            dlg.ShowDialog(this);
-        }
 
 
 #if NO
