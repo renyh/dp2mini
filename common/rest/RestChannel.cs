@@ -2353,9 +2353,10 @@ namespace DigitalPlatform.LibraryRestClient
         public long WriteText(
             string strResPath,
             string strText,
-            bool bInlucdePreamble,  //是否包括utf8的标志
+            //bool bInlucdePreamble,  //是否包括utf8的标志
             string strStyle,
-            byte[] baInputTimestamp,
+            byte[] baInputTimestamp1,
+            bool redoWhenTimestampError,  //当时间戳不对时，是否重做。
             out byte[] baOutputTimestamp,
             out string strOutputPath,
             out string strError)
@@ -2364,16 +2365,15 @@ namespace DigitalPlatform.LibraryRestClient
             strOutputPath = "";
             baOutputTimestamp = null;
 
+            // 小包尺寸
             int nChunkMaxLength = 4096;	// chunk
 
             int nStart = 0;
-
-            byte[] baInputTimeStamp = null;
-
-            byte[] baPreamble = Encoding.UTF8.GetPreamble();
-
             byte[] baTotal = Encoding.UTF8.GetBytes(strText);
 
+
+            /* 关于增加utf前3个字符
+            byte[] baPreamble = Encoding.UTF8.GetPreamble();
             if (bInlucdePreamble == true
                 && baPreamble != null && baPreamble.Length > 0)
             {
@@ -2381,13 +2381,10 @@ namespace DigitalPlatform.LibraryRestClient
                 temp = ByteArray.Add(temp, baPreamble);
                 baTotal = ByteArray.Add(temp, baTotal);
             }
+            */
+
 
             int nTotalLength = baTotal.Length;
-
-            if (baInputTimestamp != null)
-            {
-                baInputTimeStamp = ByteArray.Add(baInputTimeStamp, baInputTimestamp);
-            }
 
             while (true)
             {
@@ -2408,15 +2405,25 @@ namespace DigitalPlatform.LibraryRestClient
                 string strMetadata = "";
                 string strRange = Convert.ToString(nStart) + "-" + Convert.ToString(nStart + baChunk.Length - 1);
 
+                REDO:
+
                 WriteResResponse response = WriteRes(strResPath,
                     strRange,
                     nTotalLength,
                     baChunk,
                     strMetadata,
                     strStyle,
-                    baInputTimeStamp);
+                    baInputTimestamp1);
                 if (response.WriteResResult.Value == -1)
-                {
+                {                            
+                    // 间戳不匹配，自动重试
+                    if (response.WriteResResult.ErrorCode == ErrorCode.TimestampMismatch
+                    && redoWhenTimestampError ==true)
+                    {
+                        baInputTimestamp1 = response.baOutputTimestamp;
+                        goto REDO;
+                    }
+
                     strError = response.WriteResResult.ErrorInfo;
                     return -1;
                 }
@@ -2432,7 +2439,7 @@ namespace DigitalPlatform.LibraryRestClient
                 Debug.Assert(strOutputPath != "", "outputpath不能为空");
 
                 strResPath = strOutputPath;	// 如果第一次的strPath中包含'?'id, 必须用outputpath才能正确继续
-                baInputTimeStamp = baOutputTimestamp;	//baOutputTimeStamp;
+                baInputTimestamp1 = baOutputTimestamp;	//baOutputTimeStamp;
             }
 
             return 0;

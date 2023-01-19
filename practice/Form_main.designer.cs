@@ -168,7 +168,7 @@
             this.WriteRes = new System.Windows.Forms.TabPage();
             this.button_WriteRes_autoTimestamp = new System.Windows.Forms.Button();
             this.button_WriteRes_help = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
+            this.button_WriteRes_WriteMetadata = new System.Windows.Forms.Button();
             this.textBox_WriteRes_chunkSize = new System.Windows.Forms.TextBox();
             this.button_autoWriteRes = new System.Windows.Forms.Button();
             this.button_selectFile = new System.Windows.Forms.Button();
@@ -191,6 +191,13 @@
             this.通用练习题ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.z3950ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.label54 = new System.Windows.Forms.Label();
+            this.textBox_WriteRes_object_strResPath = new System.Windows.Forms.TextBox();
+            this.label55 = new System.Windows.Forms.Label();
+            this.textBox_WriteRes_object_strStyle = new System.Windows.Forms.TextBox();
+            this.checkBox_WriteRes_redoByNewTimestamp = new System.Windows.Forms.CheckBox();
             this.tabPage_SearchBiblio.SuspendLayout();
             this.tabPage_Server.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -210,6 +217,8 @@
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
+            this.groupBox2.SuspendLayout();
+            this.groupBox3.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabPage_SearchBiblio
@@ -438,7 +447,7 @@
             this.textBox_result.Name = "textBox_result";
             this.textBox_result.ReadOnly = true;
             this.textBox_result.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.textBox_result.Size = new System.Drawing.Size(1428, 187);
+            this.textBox_result.Size = new System.Drawing.Size(1750, 83);
             this.textBox_result.TabIndex = 20;
             // 
             // tabPage_Server
@@ -606,7 +615,7 @@
             this.tabControl1.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(1430, 840);
+            this.tabControl1.Size = new System.Drawing.Size(1752, 941);
             this.tabControl1.TabIndex = 6;
             // 
             // tabPage_SearchItem
@@ -1689,30 +1698,13 @@
             // 
             // WriteRes
             // 
-            this.WriteRes.Controls.Add(this.button_WriteRes_autoTimestamp);
+            this.WriteRes.Controls.Add(this.groupBox3);
+            this.WriteRes.Controls.Add(this.groupBox2);
             this.WriteRes.Controls.Add(this.button_WriteRes_help);
-            this.WriteRes.Controls.Add(this.button1);
-            this.WriteRes.Controls.Add(this.textBox_WriteRes_chunkSize);
-            this.WriteRes.Controls.Add(this.button_autoWriteRes);
-            this.WriteRes.Controls.Add(this.button_selectFile);
-            this.WriteRes.Controls.Add(this.textBox_WriteRes_fileName);
-            this.WriteRes.Controls.Add(this.button_writeresForText);
-            this.WriteRes.Controls.Add(this.textBox_WriteRes_baContent);
-            this.WriteRes.Controls.Add(this.textBox_WriteRes_baInputTimestamp);
-            this.WriteRes.Controls.Add(this.textBox_WriteRes_strMetadata);
-            this.WriteRes.Controls.Add(this.textBox_WriteRes_strStyle);
-            this.WriteRes.Controls.Add(this.textBox_WriteRes_strResPath);
-            this.WriteRes.Controls.Add(this.label59);
-            this.WriteRes.Controls.Add(this.label58);
-            this.WriteRes.Controls.Add(this.label57);
-            this.WriteRes.Controls.Add(this.label56);
-            this.WriteRes.Controls.Add(this.label53);
-            this.WriteRes.Controls.Add(this.label61);
-            this.WriteRes.Controls.Add(this.label60);
             this.WriteRes.Location = new System.Drawing.Point(10, 46);
             this.WriteRes.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.WriteRes.Name = "WriteRes";
-            this.WriteRes.Size = new System.Drawing.Size(1410, 784);
+            this.WriteRes.Size = new System.Drawing.Size(1732, 885);
             this.WriteRes.TabIndex = 13;
             this.WriteRes.Text = "WriteRes";
             this.WriteRes.UseVisualStyleBackColor = true;
@@ -1720,11 +1712,11 @@
             // 
             // button_WriteRes_autoTimestamp
             // 
-            this.button_WriteRes_autoTimestamp.Location = new System.Drawing.Point(571, 153);
+            this.button_WriteRes_autoTimestamp.Location = new System.Drawing.Point(560, 169);
             this.button_WriteRes_autoTimestamp.Name = "button_WriteRes_autoTimestamp";
-            this.button_WriteRes_autoTimestamp.Size = new System.Drawing.Size(108, 45);
+            this.button_WriteRes_autoTimestamp.Size = new System.Drawing.Size(139, 45);
             this.button_WriteRes_autoTimestamp.TabIndex = 44;
-            this.button_WriteRes_autoTimestamp.Text = "随机";
+            this.button_WriteRes_autoTimestamp.Text = "随机产生";
             this.button_WriteRes_autoTimestamp.UseVisualStyleBackColor = true;
             this.button_WriteRes_autoTimestamp.Click += new System.EventHandler(this.button_WriteRes_autoTimestamp_Click);
             // 
@@ -1732,43 +1724,47 @@
             // 
             this.button_WriteRes_help.Location = new System.Drawing.Point(3, 0);
             this.button_WriteRes_help.Name = "button_WriteRes_help";
-            this.button_WriteRes_help.Size = new System.Drawing.Size(108, 45);
+            this.button_WriteRes_help.Size = new System.Drawing.Size(55, 117);
             this.button_WriteRes_help.TabIndex = 43;
             this.button_WriteRes_help.Text = "帮助";
             this.button_WriteRes_help.UseVisualStyleBackColor = true;
             this.button_WriteRes_help.Click += new System.EventHandler(this.button_WriteRes_help_Click);
             // 
-            // button1
+            // button_WriteRes_WriteMetadata
             // 
-            this.button1.Location = new System.Drawing.Point(916, 312);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(245, 53);
-            this.button1.TabIndex = 41;
-            this.button1.Text = "单独写metadata";
-            this.button1.UseVisualStyleBackColor = true;
+            this.button_WriteRes_WriteMetadata.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.button_WriteRes_WriteMetadata.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.button_WriteRes_WriteMetadata.Location = new System.Drawing.Point(655, 371);
+            this.button_WriteRes_WriteMetadata.Name = "button_WriteRes_WriteMetadata";
+            this.button_WriteRes_WriteMetadata.Size = new System.Drawing.Size(175, 89);
+            this.button_WriteRes_WriteMetadata.TabIndex = 41;
+            this.button_WriteRes_WriteMetadata.Text = "仅写入metadata";
+            this.button_WriteRes_WriteMetadata.UseVisualStyleBackColor = true;
+            this.button_WriteRes_WriteMetadata.Click += new System.EventHandler(this.button_WriteRes_WriteMetadata_Click);
             // 
             // textBox_WriteRes_chunkSize
             // 
-            this.textBox_WriteRes_chunkSize.Location = new System.Drawing.Point(916, 218);
+            this.textBox_WriteRes_chunkSize.Location = new System.Drawing.Point(220, 502);
             this.textBox_WriteRes_chunkSize.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.textBox_WriteRes_chunkSize.Name = "textBox_WriteRes_chunkSize";
-            this.textBox_WriteRes_chunkSize.Size = new System.Drawing.Size(137, 38);
+            this.textBox_WriteRes_chunkSize.Size = new System.Drawing.Size(448, 38);
             this.textBox_WriteRes_chunkSize.TabIndex = 38;
             // 
             // button_autoWriteRes
             // 
-            this.button_autoWriteRes.Location = new System.Drawing.Point(1068, 212);
+            this.button_autoWriteRes.Font = new System.Drawing.Font("宋体", 10.66667F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.button_autoWriteRes.Location = new System.Drawing.Point(221, 571);
             this.button_autoWriteRes.Name = "button_autoWriteRes";
-            this.button_autoWriteRes.Size = new System.Drawing.Size(322, 45);
+            this.button_autoWriteRes.Size = new System.Drawing.Size(327, 70);
             this.button_autoWriteRes.TabIndex = 37;
-            this.button_autoWriteRes.Text = "分片上传文件";
+            this.button_autoWriteRes.Text = "分片上传对象";
             this.button_autoWriteRes.UseVisualStyleBackColor = true;
             this.button_autoWriteRes.Click += new System.EventHandler(this.button_autoWriteRes_Click);
             // 
             // button_selectFile
             // 
             this.button_selectFile.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button_selectFile.Location = new System.Drawing.Point(1327, 35);
+            this.button_selectFile.Location = new System.Drawing.Point(676, 198);
             this.button_selectFile.Margin = new System.Windows.Forms.Padding(7, 6, 7, 6);
             this.button_selectFile.Name = "button_selectFile";
             this.button_selectFile.Size = new System.Drawing.Size(63, 48);
@@ -1779,21 +1775,22 @@
             // 
             // textBox_WriteRes_fileName
             // 
-            this.textBox_WriteRes_fileName.Location = new System.Drawing.Point(918, 40);
+            this.textBox_WriteRes_fileName.Location = new System.Drawing.Point(220, 198);
             this.textBox_WriteRes_fileName.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.textBox_WriteRes_fileName.Name = "textBox_WriteRes_fileName";
-            this.textBox_WriteRes_fileName.Size = new System.Drawing.Size(400, 38);
+            this.textBox_WriteRes_fileName.Size = new System.Drawing.Size(448, 38);
             this.textBox_WriteRes_fileName.TabIndex = 15;
             // 
             // button_writeresForText
             // 
             this.button_writeresForText.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.button_writeresForText.Location = new System.Drawing.Point(103, 670);
+            this.button_writeresForText.Font = new System.Drawing.Font("宋体", 10.66667F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.button_writeresForText.Location = new System.Drawing.Point(17, 741);
             this.button_writeresForText.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.button_writeresForText.Name = "button_writeresForText";
-            this.button_writeresForText.Size = new System.Drawing.Size(499, 52);
+            this.button_writeresForText.Size = new System.Drawing.Size(539, 70);
             this.button_writeresForText.TabIndex = 14;
-            this.button_writeresForText.Text = "写入纯文本（内部自动按4K分片上传）";
+            this.button_writeresForText.Text = "写入纯文本（自动按4K分片上传）";
             this.button_writeresForText.UseVisualStyleBackColor = true;
             this.button_writeresForText.Click += new System.EventHandler(this.button_writeresForText_Click);
             // 
@@ -1801,17 +1798,17 @@
             // 
             this.textBox_WriteRes_baContent.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
-            this.textBox_WriteRes_baContent.Location = new System.Drawing.Point(28, 322);
+            this.textBox_WriteRes_baContent.Location = new System.Drawing.Point(17, 339);
             this.textBox_WriteRes_baContent.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.textBox_WriteRes_baContent.Multiline = true;
             this.textBox_WriteRes_baContent.Name = "textBox_WriteRes_baContent";
             this.textBox_WriteRes_baContent.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBox_WriteRes_baContent.Size = new System.Drawing.Size(651, 331);
+            this.textBox_WriteRes_baContent.Size = new System.Drawing.Size(651, 394);
             this.textBox_WriteRes_baContent.TabIndex = 13;
             // 
             // textBox_WriteRes_baInputTimestamp
             // 
-            this.textBox_WriteRes_baInputTimestamp.Location = new System.Drawing.Point(269, 152);
+            this.textBox_WriteRes_baInputTimestamp.Location = new System.Drawing.Point(258, 168);
             this.textBox_WriteRes_baInputTimestamp.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.textBox_WriteRes_baInputTimestamp.Name = "textBox_WriteRes_baInputTimestamp";
             this.textBox_WriteRes_baInputTimestamp.Size = new System.Drawing.Size(294, 38);
@@ -1819,33 +1816,35 @@
             // 
             // textBox_WriteRes_strMetadata
             // 
-            this.textBox_WriteRes_strMetadata.Location = new System.Drawing.Point(918, 106);
+            this.textBox_WriteRes_strMetadata.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBox_WriteRes_strMetadata.Location = new System.Drawing.Point(220, 262);
             this.textBox_WriteRes_strMetadata.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.textBox_WriteRes_strMetadata.Multiline = true;
             this.textBox_WriteRes_strMetadata.Name = "textBox_WriteRes_strMetadata";
-            this.textBox_WriteRes_strMetadata.Size = new System.Drawing.Size(472, 92);
+            this.textBox_WriteRes_strMetadata.Size = new System.Drawing.Size(427, 207);
             this.textBox_WriteRes_strMetadata.TabIndex = 11;
             // 
             // textBox_WriteRes_strStyle
             // 
-            this.textBox_WriteRes_strStyle.Location = new System.Drawing.Point(269, 95);
+            this.textBox_WriteRes_strStyle.Location = new System.Drawing.Point(258, 111);
             this.textBox_WriteRes_strStyle.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.textBox_WriteRes_strStyle.Name = "textBox_WriteRes_strStyle";
-            this.textBox_WriteRes_strStyle.Size = new System.Drawing.Size(346, 38);
+            this.textBox_WriteRes_strStyle.Size = new System.Drawing.Size(410, 38);
             this.textBox_WriteRes_strStyle.TabIndex = 10;
             // 
             // textBox_WriteRes_strResPath
             // 
-            this.textBox_WriteRes_strResPath.Location = new System.Drawing.Point(269, 35);
+            this.textBox_WriteRes_strResPath.Location = new System.Drawing.Point(258, 51);
             this.textBox_WriteRes_strResPath.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.textBox_WriteRes_strResPath.Name = "textBox_WriteRes_strResPath";
-            this.textBox_WriteRes_strResPath.Size = new System.Drawing.Size(346, 38);
+            this.textBox_WriteRes_strResPath.Size = new System.Drawing.Size(414, 38);
             this.textBox_WriteRes_strResPath.TabIndex = 7;
             // 
             // label59
             // 
             this.label59.AutoSize = true;
-            this.label59.Location = new System.Drawing.Point(23, 278);
+            this.label59.Location = new System.Drawing.Point(12, 298);
             this.label59.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.label59.Name = "label59";
             this.label59.Size = new System.Drawing.Size(382, 27);
@@ -1855,7 +1854,7 @@
             // label58
             // 
             this.label58.AutoSize = true;
-            this.label58.Location = new System.Drawing.Point(23, 162);
+            this.label58.Location = new System.Drawing.Point(12, 178);
             this.label58.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.label58.Name = "label58";
             this.label58.Size = new System.Drawing.Size(236, 27);
@@ -1865,7 +1864,7 @@
             // label57
             // 
             this.label57.AutoSize = true;
-            this.label57.Location = new System.Drawing.Point(733, 106);
+            this.label57.Location = new System.Drawing.Point(47, 262);
             this.label57.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.label57.Name = "label57";
             this.label57.Size = new System.Drawing.Size(166, 27);
@@ -1875,7 +1874,7 @@
             // label56
             // 
             this.label56.AutoSize = true;
-            this.label56.Location = new System.Drawing.Point(135, 106);
+            this.label56.Location = new System.Drawing.Point(124, 122);
             this.label56.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.label56.Name = "label56";
             this.label56.Size = new System.Drawing.Size(124, 27);
@@ -1885,7 +1884,7 @@
             // label53
             // 
             this.label53.AutoSize = true;
-            this.label53.Location = new System.Drawing.Point(107, 38);
+            this.label53.Location = new System.Drawing.Point(96, 54);
             this.label53.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.label53.Name = "label53";
             this.label53.Size = new System.Drawing.Size(152, 27);
@@ -1895,7 +1894,7 @@
             // label61
             // 
             this.label61.AutoSize = true;
-            this.label61.Location = new System.Drawing.Point(705, 221);
+            this.label61.Location = new System.Drawing.Point(21, 505);
             this.label61.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.label61.Name = "label61";
             this.label61.Size = new System.Drawing.Size(204, 27);
@@ -1905,7 +1904,7 @@
             // label60
             // 
             this.label60.AutoSize = true;
-            this.label60.Location = new System.Drawing.Point(719, 46);
+            this.label60.Location = new System.Drawing.Point(10, 198);
             this.label60.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.label60.Name = "label60";
             this.label60.Size = new System.Drawing.Size(201, 27);
@@ -1921,7 +1920,7 @@
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Padding = new System.Windows.Forms.Padding(9, 3, 0, 3);
-            this.menuStrip1.Size = new System.Drawing.Size(1456, 45);
+            this.menuStrip1.Size = new System.Drawing.Size(1778, 45);
             this.menuStrip1.TabIndex = 8;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -1964,16 +1963,109 @@
             // 
             this.splitContainer1.Panel2.BackColor = System.Drawing.SystemColors.Info;
             this.splitContainer1.Panel2.Controls.Add(this.textBox_result);
-            this.splitContainer1.Size = new System.Drawing.Size(1456, 1071);
-            this.splitContainer1.SplitterDistance = 865;
+            this.splitContainer1.Size = new System.Drawing.Size(1778, 1068);
+            this.splitContainer1.SplitterDistance = 966;
             this.splitContainer1.TabIndex = 21;
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.groupBox2.Controls.Add(this.label55);
+            this.groupBox2.Controls.Add(this.textBox_WriteRes_object_strStyle);
+            this.groupBox2.Controls.Add(this.label54);
+            this.groupBox2.Controls.Add(this.textBox_WriteRes_object_strResPath);
+            this.groupBox2.Controls.Add(this.label60);
+            this.groupBox2.Controls.Add(this.label57);
+            this.groupBox2.Controls.Add(this.button_WriteRes_WriteMetadata);
+            this.groupBox2.Controls.Add(this.textBox_WriteRes_strMetadata);
+            this.groupBox2.Controls.Add(this.textBox_WriteRes_chunkSize);
+            this.groupBox2.Controls.Add(this.textBox_WriteRes_fileName);
+            this.groupBox2.Controls.Add(this.button_autoWriteRes);
+            this.groupBox2.Controls.Add(this.button_selectFile);
+            this.groupBox2.Controls.Add(this.label61);
+            this.groupBox2.Location = new System.Drawing.Point(812, 12);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(893, 846);
+            this.groupBox2.TabIndex = 45;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "写下级对象";
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.groupBox3.Controls.Add(this.checkBox_WriteRes_redoByNewTimestamp);
+            this.groupBox3.Controls.Add(this.label53);
+            this.groupBox3.Controls.Add(this.label56);
+            this.groupBox3.Controls.Add(this.button_WriteRes_autoTimestamp);
+            this.groupBox3.Controls.Add(this.label58);
+            this.groupBox3.Controls.Add(this.label59);
+            this.groupBox3.Controls.Add(this.button_writeresForText);
+            this.groupBox3.Controls.Add(this.textBox_WriteRes_strResPath);
+            this.groupBox3.Controls.Add(this.textBox_WriteRes_baContent);
+            this.groupBox3.Controls.Add(this.textBox_WriteRes_strStyle);
+            this.groupBox3.Controls.Add(this.textBox_WriteRes_baInputTimestamp);
+            this.groupBox3.Location = new System.Drawing.Point(64, 12);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(705, 846);
+            this.groupBox3.TabIndex = 46;
+            this.groupBox3.TabStop = false;
+            // 
+            // label54
+            // 
+            this.label54.AutoSize = true;
+            this.label54.Location = new System.Drawing.Point(5, 62);
+            this.label54.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label54.Name = "label54";
+            this.label54.Size = new System.Drawing.Size(206, 27);
+            this.label54.TabIndex = 42;
+            this.label54.Text = "对象strResPath";
+            // 
+            // textBox_WriteRes_object_strResPath
+            // 
+            this.textBox_WriteRes_object_strResPath.Location = new System.Drawing.Point(221, 51);
+            this.textBox_WriteRes_object_strResPath.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
+            this.textBox_WriteRes_object_strResPath.Name = "textBox_WriteRes_object_strResPath";
+            this.textBox_WriteRes_object_strResPath.Size = new System.Drawing.Size(447, 38);
+            this.textBox_WriteRes_object_strResPath.TabIndex = 43;
+            // 
+            // label55
+            // 
+            this.label55.AutoSize = true;
+            this.label55.Location = new System.Drawing.Point(33, 117);
+            this.label55.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label55.Name = "label55";
+            this.label55.Size = new System.Drawing.Size(178, 27);
+            this.label55.TabIndex = 44;
+            this.label55.Text = "对象strStyle";
+            // 
+            // textBox_WriteRes_object_strStyle
+            // 
+            this.textBox_WriteRes_object_strStyle.Location = new System.Drawing.Point(221, 106);
+            this.textBox_WriteRes_object_strStyle.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
+            this.textBox_WriteRes_object_strStyle.Name = "textBox_WriteRes_object_strStyle";
+            this.textBox_WriteRes_object_strStyle.Size = new System.Drawing.Size(447, 38);
+            this.textBox_WriteRes_object_strStyle.TabIndex = 45;
+            // 
+            // checkBox_WriteRes_redoByNewTimestamp
+            // 
+            this.checkBox_WriteRes_redoByNewTimestamp.AutoSize = true;
+            this.checkBox_WriteRes_redoByNewTimestamp.Checked = true;
+            this.checkBox_WriteRes_redoByNewTimestamp.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBox_WriteRes_redoByNewTimestamp.Location = new System.Drawing.Point(17, 232);
+            this.checkBox_WriteRes_redoByNewTimestamp.Name = "checkBox_WriteRes_redoByNewTimestamp";
+            this.checkBox_WriteRes_redoByNewTimestamp.Size = new System.Drawing.Size(530, 31);
+            this.checkBox_WriteRes_redoByNewTimestamp.TabIndex = 45;
+            this.checkBox_WriteRes_redoByNewTimestamp.Text = "当时间戳不对时，按返回的时间戳重做。";
+            this.checkBox_WriteRes_redoByNewTimestamp.UseVisualStyleBackColor = true;
             // 
             // Form_main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(14F, 27F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
-            this.ClientSize = new System.Drawing.Size(1456, 1116);
+            this.ClientSize = new System.Drawing.Size(1778, 1113);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.menuStrip1);
             this.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
@@ -2007,7 +2099,6 @@
             this.tabPage_GetRecord.ResumeLayout(false);
             this.tabPage_GetRecord.PerformLayout();
             this.WriteRes.ResumeLayout(false);
-            this.WriteRes.PerformLayout();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.splitContainer1.Panel1.ResumeLayout(false);
@@ -2015,6 +2106,10 @@
             this.splitContainer1.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
+            this.groupBox3.ResumeLayout(false);
+            this.groupBox3.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -2181,9 +2276,16 @@
         private System.Windows.Forms.Label label61;
         private System.Windows.Forms.TextBox textBox_WriteRes_chunkSize;
         private System.Windows.Forms.Button button_autoWriteRes;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button button_WriteRes_WriteMetadata;
         private System.Windows.Forms.Button button_WriteRes_help;
         private System.Windows.Forms.Button button_WriteRes_autoTimestamp;
+        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.Label label55;
+        private System.Windows.Forms.TextBox textBox_WriteRes_object_strStyle;
+        private System.Windows.Forms.Label label54;
+        private System.Windows.Forms.TextBox textBox_WriteRes_object_strResPath;
+        private System.Windows.Forms.CheckBox checkBox_WriteRes_redoByNewTimestamp;
     }
 }
 

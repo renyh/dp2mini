@@ -17,6 +17,7 @@ using System.Windows.Forms;
 using System.IO;
 using System.Diagnostics;
 using System.Xml;
+using DigitalPlatform.IO;
 
 namespace practice
 {
@@ -69,7 +70,7 @@ namespace practice
                 throw new Exception("尚未设置dp2library url或用户名");
             }
 
-            RestChannel channel= this._channelPool.GetChannel(this.ServerUrl, this.UserName);
+            RestChannel channel = this._channelPool.GetChannel(this.ServerUrl, this.UserName);
 
             return channel;
         }
@@ -86,7 +87,7 @@ namespace practice
             e.UserName = this.UserName;
             e.Password = this.Password;
             e.Parameters = this.Parameters;//"type=worker,client=dp2analysis|0.01";
-            
+
         }
 
 
@@ -126,18 +127,18 @@ namespace practice
             Properties.Settings.Default.login_parameters = this.Login_textBox_parameters.Text;
 
 
-            Properties.Settings.Default.searchBiblio_biblioDbNames=this.SearchBiblio_textBox_BiblioDbNames.Text;
-            Properties.Settings.Default.searchBiblio_queryWord=this.SearchBiblio_textBox_QueryWord.Text;
-            Properties.Settings.Default.searchBiblio_perMax=this.SearchBiblio_textBox_PerMax.Text;
-            Properties.Settings.Default.searchBiblio_fromStyle=this.SearchBiblio_textBox_FromStyle.Text;
-            Properties.Settings.Default.searchBiblio_matchStyle= this.SearchBiblio_comboBox_MatchStyle.Text;
-            Properties.Settings.Default.searchBiblio_resultSetName=this.SearchBiblio_textBox_ResultSetName.Text;
-            Properties.Settings.Default.searchBiblio_searchStyle=this.SearchBiblio_textBox_SearchStyle.Text;
+            Properties.Settings.Default.searchBiblio_biblioDbNames = this.SearchBiblio_textBox_BiblioDbNames.Text;
+            Properties.Settings.Default.searchBiblio_queryWord = this.SearchBiblio_textBox_QueryWord.Text;
+            Properties.Settings.Default.searchBiblio_perMax = this.SearchBiblio_textBox_PerMax.Text;
+            Properties.Settings.Default.searchBiblio_fromStyle = this.SearchBiblio_textBox_FromStyle.Text;
+            Properties.Settings.Default.searchBiblio_matchStyle = this.SearchBiblio_comboBox_MatchStyle.Text;
+            Properties.Settings.Default.searchBiblio_resultSetName = this.SearchBiblio_textBox_ResultSetName.Text;
+            Properties.Settings.Default.searchBiblio_searchStyle = this.SearchBiblio_textBox_SearchStyle.Text;
 
-            Properties.Settings.Default.getSearchResult_resultsetName=this.GetSearchResult_textBox_ResultSetName.Text;
-            Properties.Settings.Default.getSearchResult_start=this.GetSearchResult_textBox_Start.Text;
-            Properties.Settings.Default.getSearchResult_count=this.GetSearchResult_textBox_Count.Text;
-            Properties.Settings.Default.getSearchResult_browseInfoStyle=this.GetSearchResult_textBox_BrowseInfoStyle.Text ;
+            Properties.Settings.Default.getSearchResult_resultsetName = this.GetSearchResult_textBox_ResultSetName.Text;
+            Properties.Settings.Default.getSearchResult_start = this.GetSearchResult_textBox_Start.Text;
+            Properties.Settings.Default.getSearchResult_count = this.GetSearchResult_textBox_Count.Text;
+            Properties.Settings.Default.getSearchResult_browseInfoStyle = this.GetSearchResult_textBox_BrowseInfoStyle.Text;
 
 
             // 一定要调save函数才能把信息保存下来
@@ -150,11 +151,11 @@ namespace practice
             //    //textBox_result.Text = string.Empty;
 
             //else
-            textBox_result.Text += text+"\r\n";
+            textBox_result.Text += text + "\r\n";
         }
         private void ClearDisplay()
         {
-            textBox_result.Clear(); 
+            textBox_result.Clear();
         }
         private void 通用练习题ToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -169,7 +170,7 @@ namespace practice
             RestChannel channel = this.GetChannel();
             try
             {
-                GetVersionResponse response= channel.GetVersion();
+                GetVersionResponse response = channel.GetVersion();
                 if (response.GetVersionResult.Value == -1)
                 {
                     this.textBox_result.Text += "获取版本出错：" + response.GetVersionResult.ErrorInfo;
@@ -212,8 +213,8 @@ namespace practice
                     this.textBox_result.Text = "登录失败\r\n";
                 }
 
-                this.textBox_result.Text += "Result:" 
-                    + response.LoginResult.ErrorCode 
+                this.textBox_result.Text += "Result:"
+                    + response.LoginResult.ErrorCode
                     + response.LoginResult.ErrorInfo + "\r\n"
                     + "Rights:" + response.strRights + "\r\n"
                     + "UserName:" + response.strOutputUserName;
@@ -229,9 +230,9 @@ namespace practice
             RestChannel channel = this.GetChannel();
             try
             {
-               LogoutResponse response = channel.Logout();
-                this.textBox_result.Text = "Result:" 
-                    + response.LogoutResult.ErrorCode 
+                LogoutResponse response = channel.Logout();
+                this.textBox_result.Text = "Result:"
+                    + response.LogoutResult.ErrorCode
                     + response.LogoutResult.ErrorInfo;
             }
             finally
@@ -256,7 +257,7 @@ namespace practice
 
 
                 //SearchBiblioResponse response 
-                long lRet= channel.SearchBiblio(this.SearchBiblio_textBox_BiblioDbNames.Text,
+                long lRet = channel.SearchBiblio(this.SearchBiblio_textBox_BiblioDbNames.Text,
                     this.SearchBiblio_textBox_QueryWord.Text,
                     nPerMax,
                     this.SearchBiblio_textBox_FromStyle.Text,
@@ -344,7 +345,7 @@ namespace practice
                 this.textBox_result.Text = "Result:" + response.GetBiblioInfoResult.ErrorCode
                     + response.GetBiblioInfoResult.ErrorInfo + "\r\n"
                     + response.strBiblio + "\r\n";
-                    //+ response.
+                //+ response.
             }
             finally
             {
@@ -359,7 +360,7 @@ namespace practice
             {
 
                 string strformats = GetBiblioInfos_textBox_Formats.Text;
-                string[] formats = strformats.Split(new char[] { ','});
+                string[] formats = strformats.Split(new char[] { ',' });
 
                 GetBiblioInfosResponse response = channel.GetBiblioInfos(this.GetBiblioInfos_textBox_BiblioRecPath.Text,
                     formats);
@@ -379,7 +380,7 @@ namespace practice
                     + response.GetBiblioInfosResult.ErrorInfo + "\r\n"
                     + "timestamp:" + strTimestamp + "\r\n"
                 + strResult;
-                    
+
                 //+ response.
             }
             finally
@@ -418,7 +419,7 @@ namespace practice
             string biblioType = this.textBox_biblioType.Text;
             string biblio = this.textBox_biblio.Text;
 
-            string timestamp=this.textBox_timestamp.Text;
+            string timestamp = this.textBox_timestamp.Text;
             byte[] baTimestamp = ByteArray.GetTimeStampByteArray(timestamp);
             string strComment = "";
             string strStyle = this.textBox_style.Text;
@@ -450,7 +451,7 @@ namespace practice
                 }
 
                 this.textBox_result.Text = "strOutputPath=" + strOutputPath + "\r\n"
-                    + "baNewTimestamp=" + ByteArray.GetHexTimeStampString(baNewTimestamp) +"\r\n"
+                    + "baNewTimestamp=" + ByteArray.GetHexTimeStampString(baNewTimestamp) + "\r\n"
                     + "strError=" + strError
                     + "lRet=" + lRet.ToString();
 
@@ -479,8 +480,8 @@ namespace practice
             }
 
             // 显示在界面上
-            this.textBox_result.Text =MarcHelper.GetFields(strMarc, strFieldMap);
-            
+            this.textBox_result.Text = MarcHelper.GetFields(strMarc, strFieldMap);
+
         }
 
         private void button_setField_Click(object sender, EventArgs e)
@@ -510,7 +511,7 @@ namespace practice
                 return;
             }
 
-            string marc =MarcHelper.SetFields(strMarc, fieldList);
+            string marc = MarcHelper.SetFields(strMarc, fieldList);
 
             this.textBox_result.Text = marc;
 
@@ -519,7 +520,7 @@ namespace practice
 
         private void button_searchItem_Click(object sender, EventArgs e)
         {
-            
+
             RestChannel channel = this.GetChannel();
             try
             {
@@ -572,7 +573,7 @@ public long SearchItem(string strItemDbName,
             RestChannel channel = this.GetChannel();
             try
             {
-                
+
                 string strStart = this.textBox_searchCharging_start.Text.Trim();
                 if (strStart == "")
                     strStart = "0";
@@ -610,7 +611,7 @@ public long SearchItem(string strItemDbName,
                             temp += one.Item.ItemBarcode + "\r\n";
                         }
 
-                        this.textBox_result.Text+= temp;
+                        this.textBox_result.Text += temp;
                     }
                 }
             }
@@ -654,7 +655,7 @@ public long SearchItem(string strItemDbName,
                     if (getRes.baContent == null)
                         // Display("Empty");
                         ClearDisplay();
-                        Display(getRes.GetResResult.ErrorInfo);
+                    Display(getRes.GetResResult.ErrorInfo);
 
                     if (getRes.baContent != null)
                     {
@@ -713,7 +714,7 @@ public long SearchItem(string strItemDbName,
                 }
 
                 //写入时间戳
-               // textBox_result.Text += "\r\n" + "strTimestamp" + "\r\n" + strTimestamp;
+                // textBox_result.Text += "\r\n" + "strTimestamp" + "\r\n" + strTimestamp;
 
                 //如果是“XXX/1”格式的，表示获得XML记录
                 if (words.Length == 2)
@@ -738,13 +739,13 @@ public long SearchItem(string strItemDbName,
                                 Display(getRes.strMetadata);
                                 Display("数据");
                                 Display(strbaContent);
-                              //  textBox_result.Text = "获取成功\r\n";
-                              //  textBox_result.Text += getRes.GetResResult.Value + "\r\n";
-                              //  textBox_result.Text += "\r\n" + "strTimestamp" + "\r\n"
-                              //      + strTimestamp + "\r\n"
-                              // + "元数据" + "\r\n"
-                              //+ getRes.strMetadata + "\r\n"
-                              //+ "数据\r\n" + strbaContent;
+                                //  textBox_result.Text = "获取成功\r\n";
+                                //  textBox_result.Text += getRes.GetResResult.Value + "\r\n";
+                                //  textBox_result.Text += "\r\n" + "strTimestamp" + "\r\n"
+                                //      + strTimestamp + "\r\n"
+                                // + "元数据" + "\r\n"
+                                //+ getRes.strMetadata + "\r\n"
+                                //+ "数据\r\n" + strbaContent;
                                 //+"XMl\r\n"+newStr;
                             }
                         }
@@ -765,11 +766,11 @@ public long SearchItem(string strItemDbName,
 
                         //textBox_result.Text = getRes.GetResResult.ErrorInfo;
                     }
-                        
+
                 }
 
                 //其他情况
-                if(words.Length!=2)
+                if (words.Length != 2)
                 {
                     if (words.Length != 4)
                     {
@@ -1443,7 +1444,16 @@ out string strError);
                 if (dlg.ShowDialog() != DialogResult.OK)
                     return;
 
-                this.textBox_WriteRes_fileName.Text = dlg.FileName;
+
+                string localPath = dlg.FileName;
+                this.textBox_WriteRes_fileName.Text = localPath;
+
+                // 获取minitype
+                string minitype = PathUtil.MimeTypeFrom(localPath);
+
+                // 组成metadata xml字符串
+                this.textBox_WriteRes_strMetadata.Text = BuildMetadata(minitype, localPath);
+
             }
 
         }
@@ -1458,8 +1468,8 @@ out string strError);
             }
 
             string strStyle = textBox_WriteRes_strStyle.Text.Trim();// 可输入ignorechecktimestamp忽略时间戳
-            //string strMetadata = textBox_WriteRes_strMetadata.Text.Trim();
-                        
+                                                                    //string strMetadata = textBox_WriteRes_strMetadata.Text.Trim();
+
             //时间戳
             string timestamp = textBox_WriteRes_baInputTimestamp.Text;
             byte[] baTimestamp = ByteArray.GetTimeStampByteArray(timestamp);
@@ -1470,12 +1480,13 @@ out string strError);
             RestChannel channel = this.GetChannel();
             try
             {
-                long lRet =channel.WriteText(
+                long lRet = channel.WriteText(
                      strResPath,
                      strText,
-                    false, //bInlucdePreamble,
+                     //false, //bInlucdePreamble,
                      strStyle,
                     baTimestamp,
+                    this.checkBox_WriteRes_redoByNewTimestamp.Checked,
                     out byte[] baOutputTimestamp,
                     out string strOutputPath,
                     out string strError);
@@ -1493,7 +1504,7 @@ out string strError);
 
                 string info = "路径：" + strOutputPath + "\r\n"
                     + "时间戳：" + strOutuptTimestamp;
-                this.textBox_result.Text= info;
+                this.textBox_result.Text = info;
 
                 MessageBox.Show(this, "成功");
 
@@ -1538,17 +1549,17 @@ out string strError);
             }
             catch (Exception ex)
             {
-                MessageBox.Show(this, "包尺寸格式不合法，须为数值型。"+ex.Message);
+                MessageBox.Show(this, "包尺寸格式不合法，须为数值型。" + ex.Message);
                 return;
             }
 
-            string strResPath = textBox_WriteRes_strResPath.Text.Trim();
+            string strResPath = textBox_WriteRes_object_strResPath.Text.Trim();
             if (string.IsNullOrEmpty(strResPath) == true)
             {
                 MessageBox.Show(this, "资源路径不能为空。");
                 return;
             }
-            string strStyle = textBox_WriteRes_strStyle.Text.Trim();// 可输入ignorechecktimestamp忽略时间戳
+            string strStyle = textBox_WriteRes_object_strStyle.Text.Trim();// 可输入ignorechecktimestamp忽略时间戳
             string strMetadata = textBox_WriteRes_strMetadata.Text.Trim();
 
 
@@ -1611,6 +1622,10 @@ out string strError);
                 strError = "Exception :" + ex.Message;
                 goto ERROR1;
             }
+            finally
+            {
+                this._channelPool.ReturnChannel(channel);
+            }
 
             MessageBox.Show(this, "WriteRes() complete");
             return;
@@ -1636,6 +1651,58 @@ out string strError);
                     strLocalPath);
             return dom.DocumentElement.OuterXml;
         }
+
+        private void button_WriteRes_WriteMetadata_Click(object sender, EventArgs e)
+        {
+            string strResPath = textBox_WriteRes_object_strResPath.Text.Trim();
+            if (string.IsNullOrEmpty(strResPath) == true)
+            {
+                MessageBox.Show(this, "资源路径不能为空。");
+                return;
+            }
+            string strStyle = textBox_WriteRes_object_strStyle.Text.Trim();// 可输入ignorechecktimestamp忽略时间戳
+            string strMetadata = textBox_WriteRes_strMetadata.Text.Trim();
+            // 开始做事
+            string strError = "";
+            RestChannel channel = this.GetChannel();
+            try
+            {
+                byte[] baInputTimestamp = null;
+REDO:
+                WriteResResponse response = channel.WriteRes(strResPath,
+                    "",
+                    -1,  //lTotalLength
+                    null,  //baContent
+                    strMetadata,
+                    strStyle,
+                    baInputTimestamp);
+                if (response.WriteResResult.Value == -1)
+                {
+                    // 间戳不匹配，自动重试
+                    if (response.WriteResResult.ErrorCode == ErrorCode.TimestampMismatch)
+                    {
+                        baInputTimestamp = response.baOutputTimestamp;
+                        goto REDO;
+                    }
+
+                    MessageBox.Show(this, "写入metadata出错:" + response.WriteResResult.ErrorInfo);
+                    return;
+                }
+                else
+                {
+                    MessageBox.Show(this, "写入metadata成功。");
+                    return;
+                }
+
+            }
+            finally
+            {
+                this._channelPool.ReturnChannel(channel);
+            }
+        }
+
+
+
     }
 
 
