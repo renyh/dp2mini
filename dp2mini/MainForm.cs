@@ -12,7 +12,6 @@ using System.Windows.Forms;
 using System.Xml;
 using DigitalPlatform;
 using DigitalPlatform.CirculationClient;
-using DigitalPlatform.Forms;
 //using DigitalPlatform.Forms;
 using DigitalPlatform.LibraryRestClient;
 using DigitalPlatform.Text;

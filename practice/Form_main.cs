@@ -16,6 +16,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
 using System.Diagnostics;
+using System.Xml;
 
 namespace practice
 {
@@ -1548,7 +1549,7 @@ out string strError);
                 return;
             }
             string strStyle = textBox_WriteRes_strStyle.Text.Trim();// 可输入ignorechecktimestamp忽略时间戳
-            //string strMetadata = textBox_WriteRes_strMetadata.Text.Trim();
+            string strMetadata = textBox_WriteRes_strMetadata.Text.Trim();
 
 
             // 开始做事
@@ -1556,11 +1557,6 @@ out string strError);
             RestChannel channel = this.GetChannel();
             try
             {
-                
-                
-
-
-
                 using (FileStream s = new FileStream(fileName, FileMode.Open))
                 {
                     byte[] baInputTimestamp = null;  // 分片写入，界面输入的时间戳无意义
@@ -1584,7 +1580,7 @@ out string strError);
                             strRanges,
                             lTotalLength,
                             baContent,
-                            "",
+                            strMetadata,  //todo可以在最后一次再传metadata
                             strStyle,
                             baInputTimestamp);
                         if (response.WriteResResult.Value == -1)
@@ -1620,6 +1616,25 @@ out string strError);
             return;
         ERROR1:
             MessageBox.Show(this, strError);
+        }
+
+
+        // 2016/9/26 增加 if xxx != null 判断
+        public static string BuildMetadata(string strMime,
+            string strLocalPath)
+        {
+            // string strMetadata = "<file mimetype='" + strMime + "' localpath='" + strLocalPath + "'/>";
+            XmlDocument dom = new XmlDocument();
+            dom.LoadXml("<file />");
+            if (strMime != null)
+                dom.DocumentElement.SetAttribute(
+                    "mimetype",
+                    strMime);
+            if (strLocalPath != null)
+                dom.DocumentElement.SetAttribute(
+                    "localpath",
+                    strLocalPath);
+            return dom.DocumentElement.OuterXml;
         }
     }
 

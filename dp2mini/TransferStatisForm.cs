@@ -10,7 +10,6 @@ using System.Drawing.Printing;
 
 using DigitalPlatform.Xml;
 using DigitalPlatform.Marc;
-using DigitalPlatform.Forms;
 using DigitalPlatform.LibraryRestClient;
 using System.Collections.Generic;
 using DigitalPlatform.IO;
