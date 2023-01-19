@@ -566,6 +566,7 @@ public long SearchItem(string strItemDbName,
             }
         }
 
+        // 借阅报表
         private void button_SearchCharging_begin_Click(object sender, EventArgs e)
         {
             this.textBox_result.Text = "";
@@ -621,226 +622,13 @@ public long SearchItem(string strItemDbName,
             }
         }
 
+        // Z39.50功能
         private void z3950ToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Form_Z3950 dlg = new Form_Z3950();
             dlg.ShowDialog(this);
         }
 
-        private void button_getres_Click(object sender, EventArgs e)
-        {
-            RestChannel channel = GetChannel();
-            string path = textBox_GetRes_strResPath.Text.Trim();
-            long start = long.Parse(textBox_GetRes_nStart.Text.Trim());
-            int length = Convert.ToInt32(textBox_GetRes_nLength.Text.Trim());
-            string style = textBox_GetRes_strStyle.Text.Trim();
-            string[] words = path.Split('/');
-
-            try
-            {
-                GetResResponse getRes = channel.GetRes(path, start, length, style);
-
-                //获得16进制时间戳
-                string strTimestamp = ByteArray.GetHexTimeStampString(getRes.baOutputTimestamp);
-                //value
-                // string strbaContent = GetHexTimeStampString(getRes.baContent);
-
-                //获得文件总尺寸
-                long start1 = getRes.GetResResult.Value;
-
-                //当路径为“XXX/1/object/1”时，是想获取对象文件
-                if (words.Length == 4)
-                {
-                    //判断是否为空
-                    if (getRes.baContent == null)
-                        // Display("Empty");
-                        ClearDisplay();
-                    Display(getRes.GetResResult.ErrorInfo);
-
-                    if (getRes.baContent != null)
-                    {
-                        //获得初始偏移量，为循环做准备
-                        long size = getRes.baContent.Length;
-
-                        //创建文件，开始以二进制方式写入
-                        if (string.IsNullOrEmpty(path) == false)
-                        {
-                            //如果对象文件尺寸不为空
-                            if (getRes.GetResResult.Value != -1)
-                            {
-                                using (FileStream fs = new FileStream(textBox_GetRes_targetFile.Text, FileMode.Create, FileAccess.Write))
-                                {
-                                    //textBox_result.Text += "data:\r\n" + baContent;
-                                    fs.Write(getRes.baContent, 0, getRes.baContent.Length);
-                                    //+ "Metadata:\r\n" + getRes.strMetadata + "\r\n"
-                                    //+ "strOutputResPath:\r\n" + getRes.strOutputResPath + "\r\n"
-                                    //+ "baOutputTimestamp\r\n" + strTimestamp;
-
-                                    //循环写入对象文件，但是不 Dispose
-                                    for (; ; )
-                                    {
-                                        if (size == start1)
-                                            break;
-                                        else
-                                        {
-                                            GetResResponse getRes1 = channel.GetRes(path, size, length, "data");
-                                            fs.Write(getRes1.baContent, 0, getRes1.baContent.Length);
-                                            size += getRes1.baContent.Length;
-                                        }
-                                    }
-                                    //循环结束，Dispose
-                                    fs.Dispose();
-                                    MessageBox.Show("对象文件下载成功");
-                                }
-
-                                //textBox_result.Text = String.Empty;
-                                //Display("Empty");
-                                ClearDisplay();
-                                //textBox_result.Text += "获取成功\r\n";
-                                //textBox_result.Text += getRes.GetResResult.Value + "\r\n";
-                                Display("获取成功");
-                                Display(getRes.GetResResult.Value.ToString());
-                            }
-                            //当尺寸为空时
-                            else
-                            {
-                                //Display("Empty");
-                                ClearDisplay();
-                                Display(getRes.GetResResult.ErrorInfo);
-                                //textBox_result.Text += getRes.GetResResult.ErrorInfo;
-                            }
-                        }
-                    }
-                }
-
-                //写入时间戳
-                // textBox_result.Text += "\r\n" + "strTimestamp" + "\r\n" + strTimestamp;
-
-                //如果是“XXX/1”格式的，表示获得XML记录
-                if (words.Length == 2)
-                {
-                    //将二进制数据转换为string（XML格式）
-                    if (getRes.baContent != null)
-                    {
-                        string strbaContent = System.Text.Encoding.UTF8.GetString(getRes.baContent);
-
-                        //路径不为空
-                        if (string.IsNullOrEmpty(path) == false)
-                        {
-                            //参照上面同样的判断，值不为1，注意这里的value表示XML元数据。
-                            if (getRes.GetResResult.Value != -1)
-                            {
-                                ClearDisplay();
-                                Display("获取成功");
-                                Display(getRes.GetResResult.Value.ToString());
-                                Display("strTimestamp");
-                                Display(strTimestamp);
-                                Display("元数据");
-                                Display(getRes.strMetadata);
-                                Display("数据");
-                                Display(strbaContent);
-                                //  textBox_result.Text = "获取成功\r\n";
-                                //  textBox_result.Text += getRes.GetResResult.Value + "\r\n";
-                                //  textBox_result.Text += "\r\n" + "strTimestamp" + "\r\n"
-                                //      + strTimestamp + "\r\n"
-                                // + "元数据" + "\r\n"
-                                //+ getRes.strMetadata + "\r\n"
-                                //+ "数据\r\n" + strbaContent;
-                                //+"XMl\r\n"+newStr;
-                            }
-                        }
-                        else
-                        {
-                            ClearDisplay();
-
-                            //Display("Empty");
-                            Display(getRes.GetResResult.ErrorInfo);
-                            //textBox_result.Text = getRes.GetResResult.ErrorInfo;
-                        }
-                    }
-                    else
-                    {
-                        ClearDisplay();
-                        //Display("Empty");
-                        Display(getRes.GetResResult.ErrorInfo);
-
-                        //textBox_result.Text = getRes.GetResResult.ErrorInfo;
-                    }
-
-                }
-
-                //其他情况
-                if (words.Length != 2)
-                {
-                    if (words.Length != 4)
-                    {
-                        ClearDisplay();
-                        //Display("Empty");
-                        Display(getRes.GetResResult.ErrorInfo);
-                    }
-                    //textBox_result.Text = getRes.GetResResult.ErrorInfo;
-                }
-            }
-            finally { this._channelPool.ReturnChannel(channel); }
-
-        }
-
-        private void button_getrecord_Click(object sender, EventArgs e)
-        {
-            RestChannel restChannel = GetChannel();
-            // string[] timestamp = 
-
-            try
-            {
-                string path = textBox_strPath.Text.Trim();
-                GetRecordResponse getRecord = restChannel.GetRecord(path);
-                //string baContent = GetHexTimeStampString(getRecord.timestamp);
-                //string newStr = Encoding.UTF8.GetString(getRecord.timestamp);
-                string value = getRecord.strXml.Length.ToString();
-                if (getRecord.GetRecordResult.Value == 0)
-                {
-                    Display("Empty");
-                    Display("获取成功");
-                    //textBox_result.Text = "获取成功\r\n";
-                    string strTimestamp = ByteArray.GetHexTimeStampString(getRecord.timestamp);
-                    Display("strXML");
-                    Display(getRecord.strXml);
-                    Display("时间戳");
-                    Display(strTimestamp);
-                    //textBox_result.Text +=
-                    //    "strXML:\r\n" +
-                    //    getRecord.strXml +
-                    //    "时间戳:\r\n" + strTimestamp;
-                    //  + "时间戳（文本）"+newStr
-                    //+ "\r\n"+value;
-
-                }
-                else
-                {
-                    Display("Empty");
-                    Display(getRecord.GetRecordResult.ErrorInfo);
-                    //textBox_result.Text = "获取失败";
-                }
-            }
-            finally { this._channelPool.ReturnChannel(restChannel); }
-        }
-
-
-
-        private void WriteRes_Click(object sender, EventArgs e)
-        {
-        }
-
-        static byte[] GetRandomTimestamp()
-        {
-            List<byte> results = new List<byte>();
-            for (int i = 0; i < 16; i++)
-            {
-                results.Add((byte)i);
-            }
-
-            return results.ToArray();
-        }
 
 #if NO
         //参考dp2kernelTestApi
@@ -1372,7 +1160,7 @@ out string strError);
 
 #endif
 
-        #region wuyang原来函数
+#if wuyang原来函数
 
         /*
         private void button_writeres_Click(object sender, EventArgs e)
@@ -1428,11 +1216,237 @@ out string strError);
         }
         */
 
-        #endregion
+                private void button_getres_Click(object sender, EventArgs e)
+        {
+            RestChannel channel = GetChannel();
+            string path = textBox_GetRes_strResPath.Text.Trim();
+            long start = long.Parse(textBox_GetRes_nStart.Text.Trim());
+            int length = Convert.ToInt32(textBox_GetRes_nLength.Text.Trim());
+            string style = textBox_GetRes_strStyle.Text.Trim();
+            string[] words = path.Split('/');
+
+            try
+            {
+                GetResResponse getRes = channel.GetRes(path, start, length, style);
+
+                //获得16进制时间戳
+                string strTimestamp = ByteArray.GetHexTimeStampString(getRes.baOutputTimestamp);
+                //value
+                // string strbaContent = GetHexTimeStampString(getRes.baContent);
+
+                //获得文件总尺寸
+                long start1 = getRes.GetResResult.Value;
+
+                //当路径为“XXX/1/object/1”时，是想获取对象文件
+                if (words.Length == 4)
+                {
+                    //判断是否为空
+                    if (getRes.baContent == null)
+                        // Display("Empty");
+                        ClearDisplay();
+                    Display(getRes.GetResResult.ErrorInfo);
+
+                    if (getRes.baContent != null)
+                    {
+                        //获得初始偏移量，为循环做准备
+                        long size = getRes.baContent.Length;
+
+                        //创建文件，开始以二进制方式写入
+                        if (string.IsNullOrEmpty(path) == false)
+                        {
+                            //如果对象文件尺寸不为空
+                            if (getRes.GetResResult.Value != -1)
+                            {
+                                using (FileStream fs = new FileStream(textBox_GetRes_targetFile.Text, FileMode.Create, FileAccess.Write))
+                                {
+                                    //textBox_result.Text += "data:\r\n" + baContent;
+                                    fs.Write(getRes.baContent, 0, getRes.baContent.Length);
+                                    //+ "Metadata:\r\n" + getRes.strMetadata + "\r\n"
+                                    //+ "strOutputResPath:\r\n" + getRes.strOutputResPath + "\r\n"
+                                    //+ "baOutputTimestamp\r\n" + strTimestamp;
+
+                                    //循环写入对象文件，但是不 Dispose
+                                    for (; ; )
+                                    {
+                                        if (size == start1)
+                                            break;
+                                        else
+                                        {
+                                            GetResResponse getRes1 = channel.GetRes(path, size, length, "data");
+                                            fs.Write(getRes1.baContent, 0, getRes1.baContent.Length);
+                                            size += getRes1.baContent.Length;
+                                        }
+                                    }
+                                    //循环结束，Dispose
+                                    fs.Dispose();
+                                    MessageBox.Show("对象文件下载成功");
+                                }
+
+                                //textBox_result.Text = String.Empty;
+                                //Display("Empty");
+                                ClearDisplay();
+                                //textBox_result.Text += "获取成功\r\n";
+                                //textBox_result.Text += getRes.GetResResult.Value + "\r\n";
+                                Display("获取成功");
+                                Display(getRes.GetResResult.Value.ToString());
+                            }
+                            //当尺寸为空时
+                            else
+                            {
+                                //Display("Empty");
+                                ClearDisplay();
+                                Display(getRes.GetResResult.ErrorInfo);
+                                //textBox_result.Text += getRes.GetResResult.ErrorInfo;
+                            }
+                        }
+                    }
+                }
+
+                //写入时间戳
+                // textBox_result.Text += "\r\n" + "strTimestamp" + "\r\n" + strTimestamp;
+
+                //如果是“XXX/1”格式的，表示获得XML记录
+                if (words.Length == 2)
+                {
+                    //将二进制数据转换为string（XML格式）
+                    if (getRes.baContent != null)
+                    {
+                        string strbaContent = System.Text.Encoding.UTF8.GetString(getRes.baContent);
+
+                        //路径不为空
+                        if (string.IsNullOrEmpty(path) == false)
+                        {
+                            //参照上面同样的判断，值不为1，注意这里的value表示XML元数据。
+                            if (getRes.GetResResult.Value != -1)
+                            {
+                                ClearDisplay();
+                                Display("获取成功");
+                                Display(getRes.GetResResult.Value.ToString());
+                                Display("strTimestamp");
+                                Display(strTimestamp);
+                                Display("元数据");
+                                Display(getRes.strMetadata);
+                                Display("数据");
+                                Display(strbaContent);
+                                //  textBox_result.Text = "获取成功\r\n";
+                                //  textBox_result.Text += getRes.GetResResult.Value + "\r\n";
+                                //  textBox_result.Text += "\r\n" + "strTimestamp" + "\r\n"
+                                //      + strTimestamp + "\r\n"
+                                // + "元数据" + "\r\n"
+                                //+ getRes.strMetadata + "\r\n"
+                                //+ "数据\r\n" + strbaContent;
+                                //+"XMl\r\n"+newStr;
+                            }
+                        }
+                        else
+                        {
+                            ClearDisplay();
+
+                            //Display("Empty");
+                            Display(getRes.GetResResult.ErrorInfo);
+                            //textBox_result.Text = getRes.GetResResult.ErrorInfo;
+                        }
+                    }
+                    else
+                    {
+                        ClearDisplay();
+                        //Display("Empty");
+                        Display(getRes.GetResResult.ErrorInfo);
+
+                        //textBox_result.Text = getRes.GetResResult.ErrorInfo;
+                    }
+
+                }
+
+                //其他情况
+                if (words.Length != 2)
+                {
+                    if (words.Length != 4)
+                    {
+                        ClearDisplay();
+                        //Display("Empty");
+                        Display(getRes.GetResResult.ErrorInfo);
+                    }
+                    //textBox_result.Text = getRes.GetResResult.ErrorInfo;
+                }
+            }
+            finally { this._channelPool.ReturnChannel(channel); }
+
+        }
+
+        private void button_getrecord_Click(object sender, EventArgs e)
+        {
+            RestChannel restChannel = GetChannel();
+            // string[] timestamp = 
+
+            try
+            {
+                string path = textBox_strPath.Text.Trim();
+                GetRecordResponse getRecord = restChannel.GetRecord(path);
+                //string baContent = GetHexTimeStampString(getRecord.timestamp);
+                //string newStr = Encoding.UTF8.GetString(getRecord.timestamp);
+                string value = getRecord.strXml.Length.ToString();
+                if (getRecord.GetRecordResult.Value == 0)
+                {
+                    Display("Empty");
+                    Display("获取成功");
+                    //textBox_result.Text = "获取成功\r\n";
+                    string strTimestamp = ByteArray.GetHexTimeStampString(getRecord.timestamp);
+                    Display("strXML");
+                    Display(getRecord.strXml);
+                    Display("时间戳");
+                    Display(strTimestamp);
+                    //textBox_result.Text +=
+                    //    "strXML:\r\n" +
+                    //    getRecord.strXml +
+                    //    "时间戳:\r\n" + strTimestamp;
+                    //  + "时间戳（文本）"+newStr
+                    //+ "\r\n"+value;
+
+                }
+                else
+                {
+                    Display("Empty");
+                    Display(getRecord.GetRecordResult.ErrorInfo);
+                    //textBox_result.Text = "获取失败";
+                }
+            }
+            finally { this._channelPool.ReturnChannel(restChannel); }
+        }
+        
+
+#endif
 
 
+        #region WriteRes相关
 
-        // 选择一个文件上传
+        // WriteRes帮助
+        private void button_WriteRes_help_Click(object sender, EventArgs e)
+        {
+            // WriteRes API 帮助文档
+            Process.Start("https://jihulab.com/DigitalPlatform/dp2doc/-/issues/39#note_1981539");
+        }
+
+        // 产生一个随机时间戳
+        private void button_WriteRes_GetRandomTimestamp_Click(object sender, EventArgs e)
+        {
+            this.textBox_WriteRes_baInputTimestamp.Text = ByteArray.GetHexTimeStampString(GetRandomTimestamp());
+        }
+
+        // 产生一个随机的时间戳
+        static byte[] GetRandomTimestamp()
+        {
+            List<byte> results = new List<byte>();
+            for (int i = 0; i < 16; i++)
+            {
+                results.Add((byte)i);
+            }
+
+            return results.ToArray();
+        }
+
+
+        // 选择上传的文件
         private void button_selectFile_Click(object sender, EventArgs e)
         {
             using (OpenFileDialog dlg = new OpenFileDialog())
@@ -1458,7 +1472,8 @@ out string strError);
 
         }
 
-        private void button_writeresForText_Click(object sender, EventArgs e)
+        // 用WriteRes写文本字符
+        private void button_writeResForText_Click(object sender, EventArgs e)
         {
             string strResPath = textBox_WriteRes_strResPath.Text.Trim();
             if (string.IsNullOrEmpty(strResPath) == true)
@@ -1516,22 +1531,8 @@ out string strError);
 
         }
 
-        // 帮助
-        private void button_WriteRes_help_Click(object sender, EventArgs e)
-        {
-            // WriteRes API 帮助文档
-            Process.Start("https://jihulab.com/DigitalPlatform/dp2doc/-/issues/39#note_1981539");
-        }
-
-        private void button_WriteRes_autoTimestamp_Click(object sender, EventArgs e)
-        {
-            this.textBox_WriteRes_baInputTimestamp.Text = ByteArray.GetHexTimeStampString(GetRandomTimestamp());
-
-        }
-
-
-        // 分块写入文件
-        private void button_autoWriteRes_Click(object sender, EventArgs e)
+        // 分块写入对象
+        private void button_writeObjectByChunk_Click(object sender, EventArgs e)
         {
             // 校验一下参数
             string fileName = this.textBox_WriteRes_fileName.Text.Trim();
@@ -1633,8 +1634,7 @@ out string strError);
             MessageBox.Show(this, strError);
         }
 
-
-        // 2016/9/26 增加 if xxx != null 判断
+        // 组装metadata xml
         public static string BuildMetadata(string strMime,
             string strLocalPath)
         {
@@ -1652,6 +1652,7 @@ out string strError);
             return dom.DocumentElement.OuterXml;
         }
 
+        // 仅写入metadata
         private void button_WriteRes_WriteMetadata_Click(object sender, EventArgs e)
         {
             string strResPath = textBox_WriteRes_object_strResPath.Text.Trim();
@@ -1668,7 +1669,7 @@ out string strError);
             try
             {
                 byte[] baInputTimestamp = null;
-REDO:
+            REDO:
                 WriteResResponse response = channel.WriteRes(strResPath,
                     "",
                     -1,  //lTotalLength
@@ -1701,6 +1702,12 @@ REDO:
             }
         }
 
+        #endregion
+
+
+        #region GetRes相关
+
+        // 选择一个目标文件
         private void button_GetRes_getFile_Click(object sender, EventArgs e)
         {
             //询问文件名
@@ -1724,6 +1731,25 @@ REDO:
 
             this.textBox_GetRes_targetFile.Text = dlg.FileName;
         }
+
+
+        private void button_GetRes_Click(object sender, EventArgs e)
+        {
+
+        }
+        #endregion
+
+
+        #region GetRecord相关
+
+        private void button_GetRecord_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        #endregion
+
+
     }
 
 
