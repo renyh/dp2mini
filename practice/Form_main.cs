@@ -1492,6 +1492,213 @@ out string strError);
 
 
 
+        // 编辑baContent
+        private void button_editContent_Click(object sender, EventArgs e)
+        {
+            // 显示电话通知内容
+            //string info = this.GetResultInfo(noteId);
+            //noticeForm dlg = new noticeForm();
+
+            // 把二进制 或 文件名传过去
+
+            Form_editBaContent dlg = new Form_editBaContent();
+            dlg.StartPosition = FormStartPosition.CenterScreen;
+
+
+            // 如果是文件，把文件名传到对话框
+            dlg.FileName = this.textBox_WriteRes_fileName.Text.Trim();
+            if (string.IsNullOrEmpty(dlg.FileName) == true)
+            {
+                // 设上值
+                string baContent = this.textBox_WriteRes_baContent.Text.Trim();
+                if (string.IsNullOrEmpty(baContent) == false)
+                {
+                    byte[] b = ByteArray.GetTimeStampByteArray(baContent);
+                    dlg.Conent = Encoding.UTF8.GetString(b);
+                }
+            }
+
+            DialogResult ret = dlg.ShowDialog(this);
+            if (ret == DialogResult.Cancel)
+            {
+                // 用户取消操作，则不做什么事情
+                return;
+            }
+
+
+            // 首先要清空
+            this.textBox_WriteRes_baContent.Text = "";
+            this.textBox_WriteRes_fileName.Text = "";
+
+            // 尺寸也清空
+            this.textBox_WriteRes_strRanges.Text = "";
+            this.textBox_WriteRes_lTotalLength.Text = "";
+
+            // 将文本转成hex
+            string text = dlg.Conent;
+            if (string.IsNullOrEmpty(text) == false)
+            {
+                byte[] b = Encoding.UTF8.GetBytes(text);  //文本到二进制
+                this.textBox_WriteRes_baContent.Text = ByteArray.GetHexTimeStampString(b); //2转16
+            }
+
+            string fileName = dlg.FileName;
+            if (string.IsNullOrEmpty(fileName) == false)
+            {
+                FileInfo file = new FileInfo(fileName);
+                if (file.Length <= 1024 * 4)  //<=4K，则不显示二进制
+                {
+                    using (FileStream s = new FileStream(fileName, FileMode.Open))
+                    {
+                        byte[] bf = new byte[file.Length];
+                        s.Read(bf, 0, bf.Length);
+                        this.textBox_WriteRes_baContent.Text = ByteArray.GetHexTimeStampString(bf); //2转16
+                    }
+                }
+                else
+                {
+                    this.textBox_WriteRes_baContent.Text = "info:由于文件超过4K，所以此处不再显示内容，写入时会直接从文件中读取。";
+                }
+            }
+            this.textBox_WriteRes_fileName.Text = fileName;
+
+        }
+
+
+        // 根据baContent产生range和size
+        private void button_calculate_size_Click(object sender, EventArgs e)
+        {
+            // 先清空
+            this.textBox_WriteRes_lTotalLength.Text = "";
+            this.textBox_WriteRes_strRanges.Text = "";
+
+            string baContent = this.textBox_WriteRes_baContent.Text.Trim();
+            if (baContent.Length > 5 && baContent.Substring(0, 5) == "info:")
+            {
+                string fileName = this.textBox_WriteRes_fileName.Text.Trim();
+                if (string.IsNullOrEmpty(fileName) == false)
+                {
+                    FileInfo f = new FileInfo(fileName);
+                    this.textBox_WriteRes_lTotalLength.Text=f.Length.ToString();
+                    this.textBox_WriteRes_strRanges.Text = "0-" + (f.Length - 1).ToString();
+                }
+            }
+            else
+            {
+                byte[] b = Encoding.UTF8.GetBytes(baContent);
+                this.textBox_WriteRes_lTotalLength.Text = b.Length.ToString();
+                this.textBox_WriteRes_strRanges.Text = "0-" + (b.Length - 1).ToString();
+            }
+
+
+        }
+
+        // 原始WriteRes调用
+        private void button_WriteRes_Click(object sender, EventArgs e)
+        {
+            string strResPath = textBox_WriteRes_strResPath.Text.Trim();
+            if (string.IsNullOrEmpty(strResPath) == true)
+            {
+                MessageBox.Show(this, "strResPath不能为空。");
+                return;
+            }
+
+            string strRanges = textBox_WriteRes_strRanges.Text.Trim();
+            //if (string.IsNullOrEmpty(strRanges) == true)
+            //{
+            //    MessageBox.Show(this, "strRanges不能为空。");
+            //    return;
+            //}
+
+            string strTotalLength = textBox_WriteRes_lTotalLength.Text.Trim();
+            if (string.IsNullOrEmpty(strTotalLength) == true)
+            {
+                MessageBox.Show(this, "lTotalLength不能为空。");
+                return;
+            }
+            long lTotalLength = 0;
+            try
+            {
+                lTotalLength = Convert.ToInt64(strTotalLength);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, "lTotalLength格式不合法，须为数值型。");
+                return;
+            }
+
+            string strStyle = textBox_WriteRes_strStyle.Text.Trim();// 可输入ignorechecktimestamp忽略时间戳
+            string strMetadata = textBox_WriteRes_strMetadata.Text.Trim();
+
+            //时间戳
+            string strTimestamp = textBox_WriteRes_baInputTimestamp.Text;
+            byte[] baInputTimestamp = ByteArray.GetTimeStampByteArray(strTimestamp);
+
+            // 写入的内容
+            byte[] baContent = null;
+            string strContent = textBox_WriteRes_baContent.Text.Trim();
+            if (strContent.Length > 5 && strContent.Substring(0, 5) == "info:")
+            {
+                string fileName = this.textBox_WriteRes_fileName.Text;
+                using (FileStream s = new FileStream(fileName, FileMode.Open))
+                {
+                    baContent = new byte[s.Length];
+                    s.Read(baContent, 0, baContent.Length);
+                }
+            }
+            else
+            {
+                if (string.IsNullOrEmpty(strContent) == false)
+                    baContent = Encoding.UTF8.GetBytes(strContent);
+            }
+
+            RestChannel channel = this.GetChannel();
+            try
+            {
+            REDO:
+
+                // 调WriteRes接口
+                WriteResResponse response = channel.WriteRes(strResPath,
+                            strRanges,
+                            lTotalLength,
+                            baContent,
+                            strMetadata,  //todo可以在最后一次再传metadata
+                            strStyle,
+                            baInputTimestamp);
+                if (response.WriteResResult.Value == -1)
+                {
+
+                    // 第一次的时间戳不匹配，自动重试
+                    if (response.WriteResResult.ErrorCode == ErrorCode.TimestampMismatch
+                        && this.checkBox_WriteRes_redoByNewTimestamp.Checked == true)
+                    {
+                        // 设上时间戳
+                        baInputTimestamp = response.baOutputTimestamp;
+                        goto REDO;
+                    }
+
+                    string info = "WriteRes() Error:" + response.WriteResResult.ErrorInfo;
+                    MessageBox.Show(this, info);
+                    this.textBox_result.Text = info;
+                    return;
+                }
+
+
+                MessageBox.Show(this, "WriteRes() complete");
+                return;
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, "WriteRes() 异常:" + ex.Message);
+                return;
+            }
+            finally
+            {
+                this._channelPool.ReturnChannel(channel);
+            }
+        }
+
 
         // 用WriteRes写文本字符
         private void button_writeResForText_Click(object sender, EventArgs e)
@@ -1555,6 +1762,9 @@ out string strError);
         // 分块写入对象
         private void button_writeObjectByChunk_Click(object sender, EventArgs e)
         {
+            MessageBox.Show(this, "修改中...");
+            return;
+
             // 校验一下参数
             string fileName = this.textBox_WriteRes_fileName.Text.Trim();
             if (string.IsNullOrEmpty(fileName) == true)
@@ -2056,81 +2266,11 @@ out string strError);
 
 
 
+
+
         #endregion
 
 
-
-        private void button_editContent_Click(object sender, EventArgs e)
-        {
-            // 显示电话通知内容
-            //string info = this.GetResultInfo(noteId);
-            //noticeForm dlg = new noticeForm();
-
-            // 把二进制 或 文件名传过去
-
-            Form_editBaContent dlg = new Form_editBaContent();
-            dlg.StartPosition = FormStartPosition.CenterScreen;
-
-
-            // 如果是文件，把文件名传到对话框
-            dlg.FileName = this.textBox_WriteRes_fileName.Text.Trim();
-            if (string.IsNullOrEmpty(dlg.FileName) == true)
-            {
-                // 设上值
-                string baContent = this.textBox_WriteRes_baContent.Text.Trim();
-                if (string.IsNullOrEmpty(baContent) == false)
-                {
-                    byte[] b = ByteArray.GetTimeStampByteArray(baContent);
-                    dlg.Conent = Encoding.UTF8.GetString(b);
-                }
-            }
-
-            DialogResult ret = dlg.ShowDialog(this);
-            if (ret == DialogResult.Cancel)
-            {
-                // 用户取消操作，则不做什么事情
-                return;
-            }
-
-
-            // 首先要清空
-            this.textBox_WriteRes_baContent.Text = "";
-            this.textBox_WriteRes_fileName.Text = "";
-
-            // 将文本转成hex
-            string text = dlg.Conent;
-            if (string.IsNullOrEmpty(text) == false)
-            {
-                byte[] b = Encoding.UTF8.GetBytes(text);  //文本到二进制
-                this.textBox_WriteRes_baContent.Text = ByteArray.GetHexTimeStampString(b); //2转16
-            }
-
-            string fileName = dlg.FileName;
-            if (string.IsNullOrEmpty(fileName) == false)
-            {
-                FileInfo file = new FileInfo(fileName);
-                if (file.Length <= 1024 * 4)  //<=4K，则不显示二进制
-                {
-                    using (FileStream s = new FileStream(fileName, FileMode.Open))
-                    {
-                        byte[] bf = new byte[file.Length];
-                        s.Read(bf, 0, bf.Length);
-                        this.textBox_WriteRes_baContent.Text = ByteArray.GetHexTimeStampString(bf); //2转16
-                    }
-                }
-                else
-                {
-                    this.textBox_WriteRes_baContent.Text = "info:由于文件超过4K，所以此处不再显示内容，写入时会直接从文件中读取。";
-                }
-            }
-            this.textBox_WriteRes_fileName.Text = fileName;
-
-        }
-
-        private void button_WriteRes_Click(object sender, EventArgs e)
-        {
-
-        }
     }
 
 

@@ -203,6 +203,7 @@
             this.z3950ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.textBox_WriteRes_fileName = new System.Windows.Forms.TextBox();
+            this.button_calculate_size = new System.Windows.Forms.Button();
             this.tabPage_SearchBiblio.SuspendLayout();
             this.tabPage_Server.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -624,6 +625,7 @@
             // 
             // tabPage_WriteRes
             // 
+            this.tabPage_WriteRes.Controls.Add(this.button_calculate_size);
             this.tabPage_WriteRes.Controls.Add(this.textBox_WriteRes_fileName);
             this.tabPage_WriteRes.Controls.Add(this.checkBox_WriteRes_redoByNewTimestamp);
             this.tabPage_WriteRes.Controls.Add(this.button2);
@@ -673,9 +675,9 @@
             this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.button2.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
             this.button2.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button2.Location = new System.Drawing.Point(973, 347);
+            this.button2.Location = new System.Drawing.Point(954, 347);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(170, 50);
+            this.button2.Size = new System.Drawing.Size(199, 50);
             this.button2.TabIndex = 52;
             this.button2.Text = "随机生成";
             this.button2.UseVisualStyleBackColor = false;
@@ -685,9 +687,9 @@
             this.button_editContent.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.button_editContent.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
             this.button_editContent.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button_editContent.Location = new System.Drawing.Point(973, 539);
+            this.button_editContent.Location = new System.Drawing.Point(954, 539);
             this.button_editContent.Name = "button_editContent";
-            this.button_editContent.Size = new System.Drawing.Size(170, 71);
+            this.button_editContent.Size = new System.Drawing.Size(199, 71);
             this.button_editContent.TabIndex = 51;
             this.button_editContent.Text = "编辑baContent";
             this.button_editContent.UseVisualStyleBackColor = false;
@@ -710,7 +712,7 @@
             this.textBox_WriteRes_strRanges.Location = new System.Drawing.Point(309, 99);
             this.textBox_WriteRes_strRanges.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.textBox_WriteRes_strRanges.Name = "textBox_WriteRes_strRanges";
-            this.textBox_WriteRes_strRanges.Size = new System.Drawing.Size(656, 38);
+            this.textBox_WriteRes_strRanges.Size = new System.Drawing.Size(637, 38);
             this.textBox_WriteRes_strRanges.TabIndex = 49;
             // 
             // button_writeObjectByChunk
@@ -733,7 +735,7 @@
             this.textBox_WriteRes_lTotalLength.Location = new System.Drawing.Point(309, 151);
             this.textBox_WriteRes_lTotalLength.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.textBox_WriteRes_lTotalLength.Name = "textBox_WriteRes_lTotalLength";
-            this.textBox_WriteRes_lTotalLength.Size = new System.Drawing.Size(656, 38);
+            this.textBox_WriteRes_lTotalLength.Size = new System.Drawing.Size(637, 38);
             this.textBox_WriteRes_lTotalLength.TabIndex = 50;
             // 
             // label55
@@ -864,7 +866,7 @@
             this.textBox_WriteRes_strStyle.Location = new System.Drawing.Point(309, 297);
             this.textBox_WriteRes_strStyle.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.textBox_WriteRes_strStyle.Name = "textBox_WriteRes_strStyle";
-            this.textBox_WriteRes_strStyle.Size = new System.Drawing.Size(656, 38);
+            this.textBox_WriteRes_strStyle.Size = new System.Drawing.Size(637, 38);
             this.textBox_WriteRes_strStyle.TabIndex = 10;
             // 
             // textBox_WriteRes_strMetadata
@@ -875,7 +877,7 @@
             this.textBox_WriteRes_strMetadata.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.textBox_WriteRes_strMetadata.Multiline = true;
             this.textBox_WriteRes_strMetadata.Name = "textBox_WriteRes_strMetadata";
-            this.textBox_WriteRes_strMetadata.Size = new System.Drawing.Size(656, 77);
+            this.textBox_WriteRes_strMetadata.Size = new System.Drawing.Size(637, 77);
             this.textBox_WriteRes_strMetadata.TabIndex = 11;
             // 
             // textBox_WriteRes_baInputTimestamp
@@ -885,7 +887,7 @@
             this.textBox_WriteRes_baInputTimestamp.Location = new System.Drawing.Point(309, 353);
             this.textBox_WriteRes_baInputTimestamp.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.textBox_WriteRes_baInputTimestamp.Name = "textBox_WriteRes_baInputTimestamp";
-            this.textBox_WriteRes_baInputTimestamp.Size = new System.Drawing.Size(656, 38);
+            this.textBox_WriteRes_baInputTimestamp.Size = new System.Drawing.Size(637, 38);
             this.textBox_WriteRes_baInputTimestamp.TabIndex = 12;
             // 
             // label58
@@ -909,7 +911,7 @@
             this.textBox_WriteRes_baContent.Name = "textBox_WriteRes_baContent";
             this.textBox_WriteRes_baContent.ReadOnly = true;
             this.textBox_WriteRes_baContent.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBox_WriteRes_baContent.Size = new System.Drawing.Size(656, 211);
+            this.textBox_WriteRes_baContent.Size = new System.Drawing.Size(637, 211);
             this.textBox_WriteRes_baContent.TabIndex = 13;
             // 
             // label59
@@ -929,7 +931,7 @@
             this.textBox_WriteRes_strResPath.Location = new System.Drawing.Point(309, 39);
             this.textBox_WriteRes_strResPath.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.textBox_WriteRes_strResPath.Name = "textBox_WriteRes_strResPath";
-            this.textBox_WriteRes_strResPath.Size = new System.Drawing.Size(656, 38);
+            this.textBox_WriteRes_strResPath.Size = new System.Drawing.Size(637, 38);
             this.textBox_WriteRes_strResPath.TabIndex = 7;
             // 
             // tabPage_GetRes
@@ -2142,8 +2144,21 @@
             this.textBox_WriteRes_fileName.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.textBox_WriteRes_fileName.Name = "textBox_WriteRes_fileName";
             this.textBox_WriteRes_fileName.ReadOnly = true;
-            this.textBox_WriteRes_fileName.Size = new System.Drawing.Size(656, 38);
+            this.textBox_WriteRes_fileName.Size = new System.Drawing.Size(637, 38);
             this.textBox_WriteRes_fileName.TabIndex = 53;
+            // 
+            // button_calculate_size
+            // 
+            this.button_calculate_size.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.button_calculate_size.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
+            this.button_calculate_size.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.button_calculate_size.Location = new System.Drawing.Point(954, 99);
+            this.button_calculate_size.Name = "button_calculate_size";
+            this.button_calculate_size.Size = new System.Drawing.Size(239, 90);
+            this.button_calculate_size.TabIndex = 54;
+            this.button_calculate_size.Text = "根据baContent产生";
+            this.button_calculate_size.UseVisualStyleBackColor = false;
+            this.button_calculate_size.Click += new System.EventHandler(this.button_calculate_size_Click);
             // 
             // Form_main
             // 
@@ -2375,6 +2390,7 @@
         private System.Windows.Forms.TextBox textBox_WriteRes_lTotalLength;
         private System.Windows.Forms.Label label55;
         private System.Windows.Forms.TextBox textBox_WriteRes_fileName;
+        private System.Windows.Forms.Button button_calculate_size;
     }
 }
 
