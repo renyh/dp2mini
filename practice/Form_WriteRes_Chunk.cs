@@ -55,6 +55,18 @@ namespace practice
                 this.textBox_WriteRes_chunkSize.Text = value;
             }
         }
+        
+        public string Info
+        {
+            get {
+            
+                return this.label_info.Text;
+            }
+            set
+            {
+                this.label_info.Text = value;
+            }
+        }
 
         private void button_cancel_Click(object sender, EventArgs e)
         {

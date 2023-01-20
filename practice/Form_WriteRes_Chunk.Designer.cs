@@ -28,24 +28,23 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.label2 = new System.Windows.Forms.Label();
+            this.label_info = new System.Windows.Forms.Label();
             this.button_cancel = new System.Windows.Forms.Button();
             this.button_ok = new System.Windows.Forms.Button();
             this.textBox_WriteRes_chunkSize = new System.Windows.Forms.TextBox();
             this.label61 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
-            // label2
+            // label_info
             // 
-            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.label_info.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.label2.BackColor = System.Drawing.SystemColors.Info;
-            this.label2.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label2.Location = new System.Drawing.Point(33, 32);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(725, 117);
-            this.label2.TabIndex = 40;
-            this.label2.Text = "（分片写入功能，是将资源完整内容通过分包多次发送WriteRes请求，写入服务器。所以界面上的strRangs与lTotalLength参数将无效。）";
+            this.label_info.BackColor = System.Drawing.SystemColors.Info;
+            this.label_info.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label_info.Location = new System.Drawing.Point(33, 32);
+            this.label_info.Name = "label_info";
+            this.label_info.Size = new System.Drawing.Size(725, 117);
+            this.label_info.TabIndex = 40;
             // 
             // button_cancel
             // 
@@ -98,16 +97,16 @@
             this.Controls.Add(this.label61);
             this.Controls.Add(this.button_cancel);
             this.Controls.Add(this.button_ok);
-            this.Controls.Add(this.label2);
+            this.Controls.Add(this.label_info);
             this.Name = "Form_WriteRes_Chunk";
-            this.Text = "编辑baContent";
+            this.Text = "设置包尺寸";
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
 
         #endregion
-        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label_info;
         private System.Windows.Forms.Button button_cancel;
         private System.Windows.Forms.Button button_ok;
         private System.Windows.Forms.TextBox textBox_WriteRes_chunkSize;

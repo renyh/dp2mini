@@ -2455,11 +2455,11 @@ namespace DigitalPlatform.LibraryRestClient
                 int chunkSize,  //4096
                 bool redoWhenTimestampError,  //当时间戳不对时，是否重做。
                 out byte[] baOutputTimestamp,
-                out string strOutputPath,
+                out string strOutputResPath,
                 out string strError)
         {
             strError = "";
-            strOutputPath = "";
+            strOutputResPath = "";
             baOutputTimestamp = null;
 
 
@@ -2508,13 +2508,14 @@ namespace DigitalPlatform.LibraryRestClient
                     return -1;
                 }
 
+                // 返回值
                 baOutputTimestamp = response.baOutputTimestamp;
-                strOutputPath = response.strOutputResPath;
+                strOutputResPath = response.strOutputResPath;
 
                 nStart += baChunk.Length;
 
-                Debug.Assert(strOutputPath != "", "outputpath不能为空");
-                strResPath = strOutputPath;	// 如果第一次的strPath中包含'?'id, 必须用outputpath才能正确继续
+                Debug.Assert(strOutputResPath != "", "outputpath不能为空");
+                strResPath = strOutputResPath;	// 如果第一次的strPath中包含'?'id, 必须用outputpath才能正确继续
                 baInputTimestamp = baOutputTimestamp;	//baOutputTimeStamp;
 
 
@@ -2590,6 +2591,11 @@ namespace DigitalPlatform.LibraryRestClient
 
                     strResPath = response.strOutputResPath;  //// 如果第一次的strPath中包含'?'id, 必须用outputpath才能正确继续
                     baInputTimestamp = response.baOutputTimestamp;
+
+
+                    // 返回值
+                    strOutputPath = response.strOutputResPath;
+                    baOutputTimestamp = response.baOutputTimestamp;
 
                 } //end of while
 

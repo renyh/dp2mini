@@ -1771,6 +1771,8 @@ out string strError);
             // 打开输入小包尺寸的对话框
             Form_WriteRes_Chunk dlg = new Form_WriteRes_Chunk();
             dlg.StartPosition = FormStartPosition.CenterScreen;
+            dlg.Info = "（分片写入功能，是将资源完整内容通过分包多次发送WriteRes请求，写入服务器。所以界面上的strRangs与lTotalLength参数将无效。）";
+
             DialogResult ret = dlg.ShowDialog(this);
             if (ret == DialogResult.Cancel)
             {
@@ -1934,6 +1936,17 @@ out string strError);
                 return;
             }
 
+            string fileName = "";
+            if (this.checkBox_saveRes2File.Checked == true)
+            {
+                fileName = this.textBox_GetRes_targetFile.Text.Trim();
+                if (string.IsNullOrEmpty(fileName) == true)
+                {
+                    MessageBox.Show(this, "当勾中'把资源保存到文件'时，请先设置好目标文件。");
+                    return;
+                }
+            }
+
             // 开始干活
             RestChannel channel = this.GetChannel();
             try
@@ -1942,80 +1955,73 @@ out string strError);
                 string strOutputResPath = "";
                 byte[] baOutputTimestamp = null;
 
-                using (MemoryStream m = new MemoryStream())
+
+                long lTotalLength = -1;
+                //byte[] baTotal = null;
+                byte[] baContent = null;
+
+
+                GetResResponse response = channel.GetRes(strResPath,
+                    lStart,
+                    lLength,
+                    strStyle);
+                if (response.GetResResult.Value == -1)
                 {
-                    long lTotalLength = -1;
-                    //byte[] baTotal = null;
-                    byte[] baContent = null;
-
-                    for (; ; )
-                    {
-                        GetResResponse response = channel.GetRes(strResPath,
-                            lStart,
-                            lLength,
-                            strStyle);
-                        if (response.GetResResult.Value == -1)
-                        {
-                            MessageBox.Show(this, "获得服务器文件 '" + strResPath + "' 时发生错误： " + response.GetResResult.ErrorInfo);
-                            return;
-                        }
-
-                        // 一些返回值，如果style里对应参数，则会返回
-                        strMetadata = response.strMetadata;
-                        strOutputResPath = response.strOutputResPath;
-                        baOutputTimestamp = response.baOutputTimestamp;
-
-                        // 返回的value表示资源内容的总长度
-                        lTotalLength = response.GetResResult.Value;
-
-                        // 内容
-                        baContent = response.baContent;
-                        if (baContent != null && baContent.Length > 0)
-                        {
-                            // 写入本地文件
-                            m.Write(baContent, 0, baContent.Length);
-
-                            lStart += baContent.Length;
-                        }
-
-                        // 获取完了
-                        if (lStart >= lTotalLength
-                            || baContent == null
-                            || baContent.Length == 0)
-                        {
-                            break;
-                        }
-
-                    } // end of for
-
-
-
-                    // 把返回的其它信息显示在界面上
-                    string strOutputTimestamp = "";
-                    if (baOutputTimestamp != null && baOutputTimestamp.Length > 0)
-                        strOutputTimestamp = ByteArray.GetHexTimeStampString(baOutputTimestamp);
-
-                    this.textBox_result.Text = "strMetadata:" + strMetadata + "\r\n"
-                        + "strOutputResPath:" + strOutputResPath + "\r\n"
-                        + "baOutputTimestamp:" + strOutputTimestamp + "\r\n";
-
-                    // 转成byte数组
-                    byte[] bt = m.ToArray();
-                    if (bt != null && bt.Length > 0)
-                    {
-                        string text = Encoding.UTF8.GetString(bt);
-                        this.textBox_result.Text += "文本:" + text + "\r\n\r\n";
-
-                        string hex = ByteArray.GetHexTimeStampString(bt);
-                        this.textBox_result.Text += "十六进制:" + hex + "\r\n\r\n";
-                    }
-
+                    MessageBox.Show(this, "GetRes() 出错： " + response.GetResResult.ErrorInfo);
+                    return;
                 }
+
+                // 一些返回值，如果style里对应参数，则会返回
+                strMetadata = response.strMetadata;
+                strOutputResPath = response.strOutputResPath;
+                baOutputTimestamp = response.baOutputTimestamp;
+
+                // 返回的value表示资源内容的总长度
+                lTotalLength = response.GetResResult.Value;
+
+                // 内容
+                baContent = response.baContent;
+
+
+                // 把返回的其它信息显示在界面上
+                string strOutputTimestamp = "";
+                if (baOutputTimestamp != null && baOutputTimestamp.Length > 0)
+                    strOutputTimestamp = ByteArray.GetHexTimeStampString(baOutputTimestamp);
+
+                this.textBox_result.Text = "strMetadata:" + strMetadata + "\r\n"
+                    + "strOutputResPath:" + strOutputResPath + "\r\n"
+                    + "baOutputTimestamp:" + strOutputTimestamp + "\r\n"
+                    + "lTotalLength:"+ lTotalLength.ToString()+"\r\n";
+
+                // 将byte转成字符串
+                if (baContent != null && baContent.Length > 0)
+                {
+                    if (string.IsNullOrEmpty(fileName) == false)
+                    {
+                        // 写入文件，只写一次
+                        using (FileStream fs = new FileStream(fileName, FileMode.Create, FileAccess.Write))
+                        {
+                            fs.Write(baContent, 0, baContent.Length);
+                            fs.Close();
+                        }
+
+                        // 自动打开文件
+                        Process.Start(fileName);
+                    }
+                    else
+                    {
+                        string text = Encoding.UTF8.GetString(baContent);
+                        this.textBox_result.Text += "content:" + text + "\r\n\r\n";
+                    }
+                }
+
+                MessageBox.Show(this, "GetRes() 成功");
+                return;
 
             }
             catch (Exception ex)
             {
-                //this.OutputInfo(ExceptionUtil.GetDebugText(ex));
+                MessageBox.Show(this, "GetRes() 异常："+ex.Message);
                 return;
             }
             finally
@@ -2038,89 +2044,100 @@ out string strError);
             // strStyle
             string strStyle = this.textBox_GetRes_strStyle.Text.Trim();// "prev/ myself/ next/ metadata/ timestamp / data / all";
 
-            // 目标文件
-            string fileName = this.textBox_GetRes_targetFile.Text.Trim();//this.Dir + "/" + this._mainForm.LibraryName + "-library.xml";
-            if (string.IsNullOrEmpty(fileName) == true)
+
+            string fileName = "";
+            if (this.checkBox_saveRes2File.Checked == true)
             {
-                MessageBox.Show(this, "请输入目标文件名。");
-                return;
+                fileName = this.textBox_GetRes_targetFile.Text.Trim();
+                if (string.IsNullOrEmpty(fileName) == true)
+                {
+                    MessageBox.Show(this, "当勾中'把资源保存到文件'时，请先设置好目标文件。");
+                    return;
+                }
             }
 
-            //检查是否输入了包尺寸
-            string strChunkSize = this.textBox_GetRes_chunkSize.Text.Trim();
-            int chunkSize = 0;
-            try
+            // 打开输入小包尺寸的对话框
+            Form_WriteRes_Chunk dlg = new Form_WriteRes_Chunk();
+            dlg.StartPosition = FormStartPosition.CenterScreen;
+            dlg.Info = "（分片获取资源功能，是通过多次发送GetRes请求，获取资源完整内容。所以界面上的nStart与nLength参数将无效。）";
+
+            DialogResult ret = dlg.ShowDialog(this);
+            if (ret == DialogResult.Cancel)
             {
-                chunkSize = Convert.ToInt32(strChunkSize);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(this, "包尺寸格式不合法，须为数值型。" + ex.Message);
+                // 用户取消操作，则不做什么事情
                 return;
             }
+            int chunkSize = dlg.ChunkSize;
+            int times = 0;//次数
 
             // 开始干活
             RestChannel channel = this.GetChannel();
+            Stream stream = null;
             try
             {
                 string strMetadata = "";
                 string strOutputResPath = "";
                 byte[] baOutputTimestamp = null;
 
-
-                // 目标文件如果已经存在，先删除
+                //如果写入文件，直接打开文件流写入；否则写入内存stream
                 if (string.IsNullOrEmpty(fileName) == false)
                 {
-                    if (File.Exists(fileName) == true)
-                        File.Delete(fileName);
+                    stream = new FileStream(fileName, FileMode.Create, FileAccess.Write);
                 }
-                using (FileStream stream = File.Create(fileName))
+                else
                 {
-                    long lTotalLength = -1;
-                    //byte[] baTotal = null;
-                    byte[] baContent = null;
-                    long lStart = 0;
-                    for (; ; )
+                    stream = new MemoryStream(); //内存流
+                }
+
+
+                long lTotalLength = -1;
+                //byte[] baTotal = null;
+                byte[] baContent = null;
+                long lStart = 0;
+                for (; ; )
+                {
+                    times++;//获取次数
+
+                    GetResResponse response = channel.GetRes(strResPath,
+                        lStart,
+                        chunkSize,
+                        strStyle);
+                    if (response.GetResResult.Value == -1)
                     {
-                        GetResResponse response = channel.GetRes(strResPath,
-                            lStart,
-                            chunkSize,
-                            strStyle);
-                        if (response.GetResResult.Value == -1)
-                        {
-                            MessageBox.Show(this, "获得服务器文件 '" + strResPath + "' 时发生错误： " + response.GetResResult.ErrorInfo);
-                            return;
-                        }
+                        MessageBox.Show(this, "获得服务器文件 '" + strResPath + "' 时发生错误： " + response.GetResResult.ErrorInfo);
+                        return;
+                    }
 
-                        // 一些返回值，如果style里对应参数，则会返回
-                        strMetadata = response.strMetadata;
-                        strOutputResPath = response.strOutputResPath;
-                        baOutputTimestamp = response.baOutputTimestamp;
+                    // 一些返回值，如果style里对应参数，则会返回
+                    strMetadata = response.strMetadata;
+                    strOutputResPath = response.strOutputResPath;
+                    baOutputTimestamp = response.baOutputTimestamp;
 
-                        // 返回的value表示资源内容的总长度
-                        lTotalLength = response.GetResResult.Value;
+                    // 返回的value表示资源内容的总长度
+                    lTotalLength = response.GetResResult.Value;
 
-                        // 内容
-                        baContent = response.baContent;
-                        if (baContent != null && baContent.Length > 0)
-                        {
-                            // 写入本地文件
-                            stream.Write(baContent, 0, baContent.Length);
-                            stream.Flush();
-                            lStart += baContent.Length;
-                        }
+                    // 内容
+                    baContent = response.baContent;
+                    if (baContent != null && baContent.Length > 0)
+                    {
+                        // 写入本地文件
+                        stream.Seek(0, SeekOrigin.End);
+                        stream.Write(baContent, 0, baContent.Length);
+                        stream.Flush();
 
-                        // 获取完了
-                        if (lStart >= lTotalLength
-                            || baContent == null
-                            || baContent.Length == 0)
-                        {
-                            break;
-                        }
+                        lStart += baContent.Length;
+                    }
 
-                    } // end of for
+                    // 获取完了
+                    if (lStart >= lTotalLength
+                        || baContent == null
+                        || baContent.Length == 0)
+                    {
+                        break;
+                    }
 
-                }// end of using
+                } // end of for
+
 
 
                 // 把返回的其它信息显示在界面上
@@ -2128,18 +2145,43 @@ out string strError);
                 if (baOutputTimestamp != null && baOutputTimestamp.Length > 0)
                     strOutputTimestamp = ByteArray.GetHexTimeStampString(baOutputTimestamp);
 
-                this.textBox_result.Text = "strMetadata:" + strMetadata + "\r\n"
+                this.textBox_result.Text = "共请求了["+times+"]次。\r\n"
+                    + "strMetadata:" + strMetadata + "\r\n"
                     + "strOutputResPath:" + strOutputResPath + "\r\n"
-                    + "baOutputTimestamp:" + strOutputTimestamp;
+                    + "baOutputTimestamp:" + strOutputTimestamp + "\r\n\r\n";
+
+                // 如果没有文件，则转成字符串显示
+                if (string.IsNullOrEmpty(fileName) == true
+                    && stream != null)
+                {
+                    // 转成byte数组
+                    byte[] bt = ((MemoryStream)stream).ToArray();
+                    if (bt != null && bt.Length > 0)
+                    {
+                        string hex = ByteArray.GetHexTimeStampString(bt);
+                        this.textBox_result.Text += "hex:" + hex + "\r\n\r\n";
+
+                        string text = Encoding.UTF8.GetString(bt);
+                        this.textBox_result.Text += "content:" + text + "\r\n\r\n";
+
+
+                    }
+                }
+
+                MessageBox.Show(this, "GetRes分片获取资源成功。");
+                return;
 
             }
             catch (Exception ex)
             {
-                //this.OutputInfo(ExceptionUtil.GetDebugText(ex));
+                MessageBox.Show(this, "GetRes分片获取资源异常：" + ex.Message);
                 return;
             }
             finally
             {
+                if (stream != null)
+                    stream.Close();
+
                 this._channelPool.ReturnChannel(channel);
             }
         }
@@ -2203,10 +2245,26 @@ out string strError);
 
 
 
+
+
         #endregion
 
+        // 根据checkbox决定目标文件是否可用
+        private void checkBox_saveRes2File_CheckedChanged(object sender, EventArgs e)
+        {
+            if (this.checkBox_saveRes2File.Checked == true)
+            {
+                this.textBox_GetRes_targetFile.Enabled = true;
+                this.button_GetRes_getFile.Enabled = true;
+            }
+            else
+            {
+                this.textBox_GetRes_targetFile.Enabled = false;
+                this.button_GetRes_getFile.Enabled = false;
 
-
+                this.textBox_GetRes_targetFile.Text = "";
+            }
+        }
     }
 
 
