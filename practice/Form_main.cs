@@ -1733,8 +1733,11 @@ out string strError);
                     return;
                 }
 
-
+                
                 MessageBox.Show(this, "WriteRes() complete");
+
+                this.textBox_result.Text = "strOutputResPath:" + response.strOutputResPath + "\r\n"
+                    + "baOutputTimestamp:" + ByteArray.GetHexTimeStampString(response.baOutputTimestamp) + "\r\n";
                 return;
 
             }

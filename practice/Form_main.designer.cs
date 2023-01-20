@@ -64,6 +64,7 @@
             this.label4 = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage_WriteRes = new System.Windows.Forms.TabPage();
+            this.button_WriteRes_createMetadata = new System.Windows.Forms.Button();
             this.button_calculate_size = new System.Windows.Forms.Button();
             this.textBox_WriteRes_fileName = new System.Windows.Forms.TextBox();
             this.checkBox_WriteRes_redoByNewTimestamp = new System.Windows.Forms.CheckBox();
@@ -87,6 +88,8 @@
             this.label59 = new System.Windows.Forms.Label();
             this.textBox_WriteRes_strResPath = new System.Windows.Forms.TextBox();
             this.tabPage_GetRes = new System.Windows.Forms.TabPage();
+            this.label51 = new System.Windows.Forms.Label();
+            this.checkBox_saveRes2File = new System.Windows.Forms.CheckBox();
             this.button_GetRes_getFile = new System.Windows.Forms.Button();
             this.button_GetResByChunk = new System.Windows.Forms.Button();
             this.button_GetRes_help = new System.Windows.Forms.Button();
@@ -196,9 +199,6 @@
             this.通用练习题ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.z3950ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.button_WriteRes_createMetadata = new System.Windows.Forms.Button();
-            this.checkBox_saveRes2File = new System.Windows.Forms.CheckBox();
-            this.label51 = new System.Windows.Forms.Label();
             this.tabPage_SearchBiblio.SuspendLayout();
             this.tabPage_Server.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -244,7 +244,7 @@
             this.tabPage_SearchBiblio.Location = new System.Drawing.Point(10, 46);
             this.tabPage_SearchBiblio.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.tabPage_SearchBiblio.Name = "tabPage_SearchBiblio";
-            this.tabPage_SearchBiblio.Size = new System.Drawing.Size(1196, 786);
+            this.tabPage_SearchBiblio.Size = new System.Drawing.Size(1358, 732);
             this.tabPage_SearchBiblio.TabIndex = 3;
             this.tabPage_SearchBiblio.Text = "SearchBiblio";
             this.tabPage_SearchBiblio.UseVisualStyleBackColor = true;
@@ -446,7 +446,7 @@
             this.textBox_result.Name = "textBox_result";
             this.textBox_result.ReadOnly = true;
             this.textBox_result.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.textBox_result.Size = new System.Drawing.Size(1376, 77);
+            this.textBox_result.Size = new System.Drawing.Size(1376, 79);
             this.textBox_result.TabIndex = 20;
             // 
             // tabPage_Server
@@ -461,7 +461,7 @@
             this.tabPage_Server.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.tabPage_Server.Name = "tabPage_Server";
             this.tabPage_Server.Padding = new System.Windows.Forms.Padding(5, 3, 5, 3);
-            this.tabPage_Server.Size = new System.Drawing.Size(1196, 793);
+            this.tabPage_Server.Size = new System.Drawing.Size(1358, 739);
             this.tabPage_Server.TabIndex = 0;
             this.tabPage_Server.Text = "服务器信息";
             this.tabPage_Server.UseVisualStyleBackColor = true;
@@ -614,7 +614,7 @@
             this.tabControl1.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(1378, 788);
+            this.tabControl1.Size = new System.Drawing.Size(1378, 795);
             this.tabControl1.TabIndex = 6;
             // 
             // tabPage_WriteRes
@@ -645,10 +645,23 @@
             this.tabPage_WriteRes.Location = new System.Drawing.Point(10, 46);
             this.tabPage_WriteRes.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.tabPage_WriteRes.Name = "tabPage_WriteRes";
-            this.tabPage_WriteRes.Size = new System.Drawing.Size(1358, 732);
+            this.tabPage_WriteRes.Size = new System.Drawing.Size(1358, 739);
             this.tabPage_WriteRes.TabIndex = 13;
             this.tabPage_WriteRes.Text = "WriteRes";
             this.tabPage_WriteRes.UseVisualStyleBackColor = true;
+            // 
+            // button_WriteRes_createMetadata
+            // 
+            this.button_WriteRes_createMetadata.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.button_WriteRes_createMetadata.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
+            this.button_WriteRes_createMetadata.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.button_WriteRes_createMetadata.Location = new System.Drawing.Point(1116, 212);
+            this.button_WriteRes_createMetadata.Name = "button_WriteRes_createMetadata";
+            this.button_WriteRes_createMetadata.Size = new System.Drawing.Size(239, 74);
+            this.button_WriteRes_createMetadata.TabIndex = 55;
+            this.button_WriteRes_createMetadata.Text = "为文件生成metadata";
+            this.button_WriteRes_createMetadata.UseVisualStyleBackColor = false;
+            this.button_WriteRes_createMetadata.Click += new System.EventHandler(this.button_WriteRes_createMetadata_Click);
             // 
             // button_calculate_size
             // 
@@ -667,7 +680,7 @@
             // 
             this.textBox_WriteRes_fileName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox_WriteRes_fileName.Location = new System.Drawing.Point(309, 556);
+            this.textBox_WriteRes_fileName.Location = new System.Drawing.Point(309, 563);
             this.textBox_WriteRes_fileName.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.textBox_WriteRes_fileName.Name = "textBox_WriteRes_fileName";
             this.textBox_WriteRes_fileName.ReadOnly = true;
@@ -679,7 +692,7 @@
             this.checkBox_WriteRes_redoByNewTimestamp.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.checkBox_WriteRes_redoByNewTimestamp.AutoSize = true;
             this.checkBox_WriteRes_redoByNewTimestamp.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
-            this.checkBox_WriteRes_redoByNewTimestamp.Location = new System.Drawing.Point(309, 606);
+            this.checkBox_WriteRes_redoByNewTimestamp.Location = new System.Drawing.Point(309, 613);
             this.checkBox_WriteRes_redoByNewTimestamp.Name = "checkBox_WriteRes_redoByNewTimestamp";
             this.checkBox_WriteRes_redoByNewTimestamp.Size = new System.Drawing.Size(530, 31);
             this.checkBox_WriteRes_redoByNewTimestamp.TabIndex = 45;
@@ -704,7 +717,7 @@
             this.button_editContent.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.button_editContent.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
             this.button_editContent.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button_editContent.Location = new System.Drawing.Point(1116, 477);
+            this.button_editContent.Location = new System.Drawing.Point(1116, 484);
             this.button_editContent.Name = "button_editContent";
             this.button_editContent.Size = new System.Drawing.Size(199, 71);
             this.button_editContent.TabIndex = 51;
@@ -737,7 +750,7 @@
             this.button_writeObjectByChunk.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.button_writeObjectByChunk.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
             this.button_writeObjectByChunk.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button_writeObjectByChunk.Location = new System.Drawing.Point(571, 657);
+            this.button_writeObjectByChunk.Location = new System.Drawing.Point(571, 664);
             this.button_writeObjectByChunk.Name = "button_writeObjectByChunk";
             this.button_writeObjectByChunk.Size = new System.Drawing.Size(218, 70);
             this.button_writeObjectByChunk.TabIndex = 37;
@@ -769,7 +782,7 @@
             // 
             this.button_WriteRes.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.button_WriteRes.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button_WriteRes.Location = new System.Drawing.Point(309, 657);
+            this.button_WriteRes.Location = new System.Drawing.Point(309, 664);
             this.button_WriteRes.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.button_WriteRes.Name = "button_WriteRes";
             this.button_WriteRes.Size = new System.Drawing.Size(239, 70);
@@ -870,7 +883,7 @@
             this.textBox_WriteRes_baContent.Name = "textBox_WriteRes_baContent";
             this.textBox_WriteRes_baContent.ReadOnly = true;
             this.textBox_WriteRes_baContent.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBox_WriteRes_baContent.Size = new System.Drawing.Size(799, 149);
+            this.textBox_WriteRes_baContent.Size = new System.Drawing.Size(799, 156);
             this.textBox_WriteRes_baContent.TabIndex = 13;
             // 
             // label59
@@ -917,6 +930,29 @@
             this.tabPage_GetRes.TabIndex = 11;
             this.tabPage_GetRes.Text = "GetRes";
             this.tabPage_GetRes.UseVisualStyleBackColor = true;
+            // 
+            // label51
+            // 
+            this.label51.AutoSize = true;
+            this.label51.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
+            this.label51.Location = new System.Drawing.Point(127, 415);
+            this.label51.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label51.Name = "label51";
+            this.label51.Size = new System.Drawing.Size(120, 27);
+            this.label51.TabIndex = 50;
+            this.label51.Text = "目标文件";
+            // 
+            // checkBox_saveRes2File
+            // 
+            this.checkBox_saveRes2File.AutoSize = true;
+            this.checkBox_saveRes2File.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
+            this.checkBox_saveRes2File.Location = new System.Drawing.Point(132, 360);
+            this.checkBox_saveRes2File.Name = "checkBox_saveRes2File";
+            this.checkBox_saveRes2File.Size = new System.Drawing.Size(260, 31);
+            this.checkBox_saveRes2File.TabIndex = 49;
+            this.checkBox_saveRes2File.Text = "把资源保存到文件";
+            this.checkBox_saveRes2File.UseVisualStyleBackColor = false;
+            this.checkBox_saveRes2File.CheckedChanged += new System.EventHandler(this.checkBox_saveRes2File_CheckedChanged);
             // 
             // button_GetRes_getFile
             // 
@@ -1125,7 +1161,7 @@
             this.tabPage_SearchItem.Controls.Add(this.label41);
             this.tabPage_SearchItem.Location = new System.Drawing.Point(10, 46);
             this.tabPage_SearchItem.Name = "tabPage_SearchItem";
-            this.tabPage_SearchItem.Size = new System.Drawing.Size(1196, 786);
+            this.tabPage_SearchItem.Size = new System.Drawing.Size(1358, 732);
             this.tabPage_SearchItem.TabIndex = 9;
             this.tabPage_SearchItem.Text = "SearchItem";
             this.tabPage_SearchItem.UseVisualStyleBackColor = true;
@@ -1311,7 +1347,7 @@
             this.tabPage_GetSearchResult.Location = new System.Drawing.Point(10, 46);
             this.tabPage_GetSearchResult.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.tabPage_GetSearchResult.Name = "tabPage_GetSearchResult";
-            this.tabPage_GetSearchResult.Size = new System.Drawing.Size(1196, 786);
+            this.tabPage_GetSearchResult.Size = new System.Drawing.Size(1358, 732);
             this.tabPage_GetSearchResult.TabIndex = 4;
             this.tabPage_GetSearchResult.Text = "GetSearchResult";
             this.tabPage_GetSearchResult.UseVisualStyleBackColor = true;
@@ -1412,7 +1448,7 @@
             this.tabPage_GetBiblioInfo.Location = new System.Drawing.Point(10, 46);
             this.tabPage_GetBiblioInfo.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.tabPage_GetBiblioInfo.Name = "tabPage_GetBiblioInfo";
-            this.tabPage_GetBiblioInfo.Size = new System.Drawing.Size(1196, 786);
+            this.tabPage_GetBiblioInfo.Size = new System.Drawing.Size(1358, 732);
             this.tabPage_GetBiblioInfo.TabIndex = 5;
             this.tabPage_GetBiblioInfo.Text = "GetBiblioInfo";
             this.tabPage_GetBiblioInfo.UseVisualStyleBackColor = true;
@@ -1487,7 +1523,7 @@
             this.tabPage_GetBiblioInfos.Location = new System.Drawing.Point(10, 46);
             this.tabPage_GetBiblioInfos.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.tabPage_GetBiblioInfos.Name = "tabPage_GetBiblioInfos";
-            this.tabPage_GetBiblioInfos.Size = new System.Drawing.Size(1196, 786);
+            this.tabPage_GetBiblioInfos.Size = new System.Drawing.Size(1358, 732);
             this.tabPage_GetBiblioInfos.TabIndex = 6;
             this.tabPage_GetBiblioInfos.Text = "GetBiblioInfos";
             this.tabPage_GetBiblioInfos.UseVisualStyleBackColor = true;
@@ -1554,7 +1590,7 @@
             this.tabPage_Reservation.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.tabPage_Reservation.Name = "tabPage_Reservation";
             this.tabPage_Reservation.Padding = new System.Windows.Forms.Padding(5, 4, 5, 4);
-            this.tabPage_Reservation.Size = new System.Drawing.Size(1196, 786);
+            this.tabPage_Reservation.Size = new System.Drawing.Size(1358, 732);
             this.tabPage_Reservation.TabIndex = 7;
             this.tabPage_Reservation.Text = "Reservation";
             // 
@@ -1657,7 +1693,7 @@
             this.tabPage_SetBiblioInfo.Controls.Add(this.label25);
             this.tabPage_SetBiblioInfo.Location = new System.Drawing.Point(10, 46);
             this.tabPage_SetBiblioInfo.Name = "tabPage_SetBiblioInfo";
-            this.tabPage_SetBiblioInfo.Size = new System.Drawing.Size(1196, 786);
+            this.tabPage_SetBiblioInfo.Size = new System.Drawing.Size(1358, 732);
             this.tabPage_SetBiblioInfo.TabIndex = 8;
             this.tabPage_SetBiblioInfo.Text = "SetBiblioInfo";
             this.tabPage_SetBiblioInfo.UseVisualStyleBackColor = true;
@@ -1750,7 +1786,7 @@
             this.textBox_biblio.Multiline = true;
             this.textBox_biblio.Name = "textBox_biblio";
             this.textBox_biblio.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.textBox_biblio.Size = new System.Drawing.Size(435, 648);
+            this.textBox_biblio.Size = new System.Drawing.Size(597, 594);
             this.textBox_biblio.TabIndex = 48;
             // 
             // label26
@@ -1890,7 +1926,7 @@
             this.tabPage_SearchCharging.Controls.Add(this.label44);
             this.tabPage_SearchCharging.Location = new System.Drawing.Point(10, 46);
             this.tabPage_SearchCharging.Name = "tabPage_SearchCharging";
-            this.tabPage_SearchCharging.Size = new System.Drawing.Size(1196, 786);
+            this.tabPage_SearchCharging.Size = new System.Drawing.Size(1358, 732);
             this.tabPage_SearchCharging.TabIndex = 10;
             this.tabPage_SearchCharging.Text = "SearchCharging";
             this.tabPage_SearchCharging.UseVisualStyleBackColor = true;
@@ -2024,7 +2060,7 @@
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Padding = new System.Windows.Forms.Padding(9, 3, 0, 3);
-            this.menuStrip1.Size = new System.Drawing.Size(1404, 54);
+            this.menuStrip1.Size = new System.Drawing.Size(1404, 45);
             this.menuStrip1.TabIndex = 8;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -2034,7 +2070,7 @@
             this.通用练习题ToolStripMenuItem,
             this.z3950ToolStripMenuItem});
             this.文件ToolStripMenuItem.Name = "文件ToolStripMenuItem";
-            this.文件ToolStripMenuItem.Size = new System.Drawing.Size(91, 48);
+            this.文件ToolStripMenuItem.Size = new System.Drawing.Size(91, 39);
             this.文件ToolStripMenuItem.Text = "文件";
             // 
             // 通用练习题ToolStripMenuItem
@@ -2054,7 +2090,7 @@
             // splitContainer1
             // 
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer1.Location = new System.Drawing.Point(0, 54);
+            this.splitContainer1.Location = new System.Drawing.Point(0, 45);
             this.splitContainer1.Name = "splitContainer1";
             this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
@@ -2067,45 +2103,9 @@
             // 
             this.splitContainer1.Panel2.BackColor = System.Drawing.SystemColors.Info;
             this.splitContainer1.Panel2.Controls.Add(this.textBox_result);
-            this.splitContainer1.Size = new System.Drawing.Size(1404, 906);
-            this.splitContainer1.SplitterDistance = 803;
+            this.splitContainer1.Size = new System.Drawing.Size(1404, 915);
+            this.splitContainer1.SplitterDistance = 810;
             this.splitContainer1.TabIndex = 21;
-            // 
-            // button_WriteRes_createMetadata
-            // 
-            this.button_WriteRes_createMetadata.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button_WriteRes_createMetadata.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
-            this.button_WriteRes_createMetadata.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button_WriteRes_createMetadata.Location = new System.Drawing.Point(1116, 212);
-            this.button_WriteRes_createMetadata.Name = "button_WriteRes_createMetadata";
-            this.button_WriteRes_createMetadata.Size = new System.Drawing.Size(239, 74);
-            this.button_WriteRes_createMetadata.TabIndex = 55;
-            this.button_WriteRes_createMetadata.Text = "为文件生成metadata";
-            this.button_WriteRes_createMetadata.UseVisualStyleBackColor = false;
-            this.button_WriteRes_createMetadata.Click += new System.EventHandler(this.button_WriteRes_createMetadata_Click);
-            // 
-            // checkBox_saveRes2File
-            // 
-            this.checkBox_saveRes2File.AutoSize = true;
-            this.checkBox_saveRes2File.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
-            this.checkBox_saveRes2File.Location = new System.Drawing.Point(132, 360);
-            this.checkBox_saveRes2File.Name = "checkBox_saveRes2File";
-            this.checkBox_saveRes2File.Size = new System.Drawing.Size(260, 31);
-            this.checkBox_saveRes2File.TabIndex = 49;
-            this.checkBox_saveRes2File.Text = "把资源保存到文件";
-            this.checkBox_saveRes2File.UseVisualStyleBackColor = false;
-            this.checkBox_saveRes2File.CheckedChanged += new System.EventHandler(this.checkBox_saveRes2File_CheckedChanged);
-            // 
-            // label51
-            // 
-            this.label51.AutoSize = true;
-            this.label51.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
-            this.label51.Location = new System.Drawing.Point(127, 415);
-            this.label51.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
-            this.label51.Name = "label51";
-            this.label51.Size = new System.Drawing.Size(120, 27);
-            this.label51.TabIndex = 50;
-            this.label51.Text = "目标文件";
             // 
             // Form_main
             // 
