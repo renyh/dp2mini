@@ -1472,11 +1472,7 @@ out string strError);
             Process.Start("https://jihulab.com/DigitalPlatform/dp2doc/-/issues/39#note_1981539");
         }
 
-        // 产生一个随机时间戳
-        private void button_WriteRes_GetRandomTimestamp_Click(object sender, EventArgs e)
-        {
-            this.textBox_WriteRes_baInputTimestamp.Text = ByteArray.GetHexTimeStampString(GetRandomTimestamp());
-        }
+
 
         // 产生一个随机的时间戳
         static byte[] GetRandomTimestamp()
@@ -1490,7 +1486,10 @@ out string strError);
             return results.ToArray();
         }
 
-
+        private void button_WriteRes_createTimestamp_Click(object sender, EventArgs e)
+        {
+            this.textBox_WriteRes_baInputTimestamp.Text = ByteArray.GetHexTimeStampString(GetRandomTimestamp());
+        }
 
         // 编辑baContent
         private void button_editContent_Click(object sender, EventArgs e)
@@ -1894,6 +1893,23 @@ out string strError);
             return dom.DocumentElement.OuterXml;
         }
 
+        // 生成metadata
+        private void button_WriteRes_createMetadata_Click(object sender, EventArgs e)
+        {
+
+            string fileName = this.textBox_WriteRes_fileName.Text.Trim();
+            if (string.IsNullOrEmpty(fileName) == true)
+            {
+                MessageBox.Show(this, "尚未选择要上传的文件，请在点'编辑baContent'选择文件。");
+                return;
+            }
+            // 获取minitype
+            string minitype = PathUtil.MimeTypeFrom(fileName);
+
+            // 组成metadata xml字符串
+            this.textBox_WriteRes_strMetadata.Text = BuildMetadata(minitype, fileName);
+        }
+
         // 仅写入metadata
         private void button_WriteRes_WriteMetadata_Click(object sender, EventArgs e)
         {
@@ -2279,7 +2295,10 @@ out string strError);
 
 
 
+
+
         #endregion
+
 
 
     }
