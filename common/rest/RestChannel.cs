@@ -2445,6 +2445,159 @@ namespace DigitalPlatform.LibraryRestClient
             return 0;
         }
 
+        // 把字节数组分块写入文件
+        public int WriteResByChunk(
+                string strResPath,
+                byte[] baContent,
+                string strStyle,
+                string strMetadata,
+                byte[] baInputTimestamp,
+                int chunkSize,  //4096
+                bool redoWhenTimestampError,  //当时间戳不对时，是否重做。
+                out byte[] baOutputTimestamp,
+                out string strOutputPath,
+                out string strError)
+        {
+            strError = "";
+            strOutputPath = "";
+            baOutputTimestamp = null;
+
+
+            int nStart = 0;
+            int nTotalLength = baContent.Length;
+
+            while (true)
+            {
+                DoIdle();
+
+                int nThisChunkSize = chunkSize;
+
+                if (nThisChunkSize + nStart > nTotalLength)
+                {
+                    nThisChunkSize = nTotalLength - nStart;	// 最后一次
+                    if (nThisChunkSize <= 0)
+                        break;
+                }
+
+                byte[] baChunk = new byte[nThisChunkSize];
+                Array.Copy(baContent, nStart, baChunk, 0, baChunk.Length);
+
+                string strRange = Convert.ToString(nStart) + "-" + Convert.ToString(nStart + baChunk.Length - 1);
+
+            REDO:
+
+                WriteResResponse response = WriteRes(strResPath,
+                    strRange,
+                    nTotalLength,
+                    baChunk,
+                    strMetadata,
+                    strStyle,
+                    baInputTimestamp);
+                if (response.WriteResResult.Value == -1)
+                {
+                    // 第一次间戳不匹配，自动重试
+                    if (response.WriteResResult.ErrorCode == ErrorCode.TimestampMismatch
+                        && nStart == 0
+                        && redoWhenTimestampError == true)
+                    {
+                        baInputTimestamp = response.baOutputTimestamp;
+                        goto REDO;
+                    }
+
+                    strError = response.WriteResResult.ErrorInfo;
+                    return -1;
+                }
+
+                baOutputTimestamp = response.baOutputTimestamp;
+                strOutputPath = response.strOutputResPath;
+
+                nStart += baChunk.Length;
+
+                Debug.Assert(strOutputPath != "", "outputpath不能为空");
+                strResPath = strOutputPath;	// 如果第一次的strPath中包含'?'id, 必须用outputpath才能正确继续
+                baInputTimestamp = baOutputTimestamp;	//baOutputTimeStamp;
+
+
+                if (nStart >= nTotalLength)
+                    break;
+            }
+
+            return 0;
+        }
+
+        // 以分块的方式把文件写入服务器
+        public int WriteResOfFile(
+            string strResPath,
+            string fileName,
+            string strStyle,
+            string strMetadata,
+            byte[] baInputTimestamp,
+            int chunkSize,  //4096
+            bool redoWhenTimestampError,  //当时间戳不对时，是否重做。
+            out byte[] baOutputTimestamp,
+            out string strOutputPath,
+            out string strError)
+        {
+            strError = "";
+            strOutputPath = "";
+            baOutputTimestamp = null;
+
+            using (FileStream s = new FileStream(fileName, FileMode.Open))
+            {
+                int nStart = 0;
+
+                // 资源总尺寸
+                long lTotalLength = s.Length;
+
+                while (s.Position < s.Length)
+                {
+                    // 与文件剩余尺寸比对，谁小用小
+                    long realChunkSize = Math.Min(chunkSize, s.Length - nStart);
+
+
+                    // 从文件中读出指出尺寸的数据到baContent
+                    byte[] baContent = new byte[realChunkSize];
+                    int nLength = s.Read(baContent, 0, baContent.Length);
+
+                    // 本次尺寸范围
+                    string strRanges = nStart.ToString() + "-" + (nStart + nLength - 1).ToString();
+
+                    // 调WriteRes
+                    WriteResResponse response = this.WriteRes(strResPath,
+                        strRanges,
+                        lTotalLength,
+                        baContent,
+                        strMetadata,  //todo可以在最后一次再传metadata
+                        strStyle,
+                        baInputTimestamp);
+                    if (response.WriteResResult.Value == -1)
+                    {
+                        // 第一次的时间戳不匹配，根据界面设置，自动重试
+                        if (response.WriteResResult.ErrorCode == ErrorCode.TimestampMismatch
+                                && nStart == 0
+                                && redoWhenTimestampError == true)
+                        {
+                            baInputTimestamp = response.baOutputTimestamp;
+                            s.Position = nStart;
+                            continue;
+                        }
+                        strError = response.WriteResResult.ErrorInfo;
+                        return -1;
+                    }
+
+                    // 下一轮取文件的开始位置
+                    nStart += nLength;
+
+                    strResPath = response.strOutputResPath;  //// 如果第一次的strPath中包含'?'id, 必须用outputpath才能正确继续
+                    baInputTimestamp = response.baOutputTimestamp;
+
+                } //end of while
+
+            } //end of using
+
+            return 0;
+        }
+
         public GetResResponse GetRes(
             string strResPath,
             long lStart,

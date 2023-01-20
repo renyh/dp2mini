@@ -77,11 +77,6 @@
             this.button_WriteRes = new System.Windows.Forms.Button();
             this.label53 = new System.Windows.Forms.Label();
             this.label56 = new System.Windows.Forms.Label();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.button_WriteRes_WriteMetadata = new System.Windows.Forms.Button();
-            this.textBox_WriteRes_chunkSize = new System.Windows.Forms.TextBox();
-            this.button_writeResForText = new System.Windows.Forms.Button();
-            this.label61 = new System.Windows.Forms.Label();
             this.label57 = new System.Windows.Forms.Label();
             this.button_WriteRes_help = new System.Windows.Forms.Button();
             this.textBox_WriteRes_strStyle = new System.Windows.Forms.TextBox();
@@ -210,7 +205,6 @@
             this.groupBox1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage_WriteRes.SuspendLayout();
-            this.groupBox2.SuspendLayout();
             this.tabPage_GetRes.SuspendLayout();
             this.tabPage_GetRecord.SuspendLayout();
             this.tabPage_SearchItem.SuspendLayout();
@@ -453,7 +447,7 @@
             this.textBox_result.Name = "textBox_result";
             this.textBox_result.ReadOnly = true;
             this.textBox_result.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.textBox_result.Size = new System.Drawing.Size(1214, 85);
+            this.textBox_result.Size = new System.Drawing.Size(1376, 78);
             this.textBox_result.TabIndex = 20;
             // 
             // tabPage_Server
@@ -621,7 +615,7 @@
             this.tabControl1.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(1216, 849);
+            this.tabControl1.Size = new System.Drawing.Size(1378, 796);
             this.tabControl1.TabIndex = 6;
             // 
             // tabPage_WriteRes
@@ -640,7 +634,6 @@
             this.tabPage_WriteRes.Controls.Add(this.button_WriteRes);
             this.tabPage_WriteRes.Controls.Add(this.label53);
             this.tabPage_WriteRes.Controls.Add(this.label56);
-            this.tabPage_WriteRes.Controls.Add(this.groupBox2);
             this.tabPage_WriteRes.Controls.Add(this.label57);
             this.tabPage_WriteRes.Controls.Add(this.button_WriteRes_help);
             this.tabPage_WriteRes.Controls.Add(this.textBox_WriteRes_strStyle);
@@ -653,7 +646,7 @@
             this.tabPage_WriteRes.Location = new System.Drawing.Point(10, 46);
             this.tabPage_WriteRes.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.tabPage_WriteRes.Name = "tabPage_WriteRes";
-            this.tabPage_WriteRes.Size = new System.Drawing.Size(1196, 793);
+            this.tabPage_WriteRes.Size = new System.Drawing.Size(1358, 740);
             this.tabPage_WriteRes.TabIndex = 13;
             this.tabPage_WriteRes.Text = "WriteRes";
             this.tabPage_WriteRes.UseVisualStyleBackColor = true;
@@ -663,7 +656,7 @@
             this.button_calculate_size.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.button_calculate_size.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
             this.button_calculate_size.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button_calculate_size.Location = new System.Drawing.Point(954, 99);
+            this.button_calculate_size.Location = new System.Drawing.Point(1116, 99);
             this.button_calculate_size.Name = "button_calculate_size";
             this.button_calculate_size.Size = new System.Drawing.Size(239, 90);
             this.button_calculate_size.TabIndex = 54;
@@ -675,11 +668,11 @@
             // 
             this.textBox_WriteRes_fileName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox_WriteRes_fileName.Location = new System.Drawing.Point(309, 617);
+            this.textBox_WriteRes_fileName.Location = new System.Drawing.Point(309, 564);
             this.textBox_WriteRes_fileName.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.textBox_WriteRes_fileName.Name = "textBox_WriteRes_fileName";
             this.textBox_WriteRes_fileName.ReadOnly = true;
-            this.textBox_WriteRes_fileName.Size = new System.Drawing.Size(637, 38);
+            this.textBox_WriteRes_fileName.Size = new System.Drawing.Size(799, 38);
             this.textBox_WriteRes_fileName.TabIndex = 53;
             // 
             // checkBox_WriteRes_redoByNewTimestamp
@@ -687,7 +680,7 @@
             this.checkBox_WriteRes_redoByNewTimestamp.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.checkBox_WriteRes_redoByNewTimestamp.AutoSize = true;
             this.checkBox_WriteRes_redoByNewTimestamp.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
-            this.checkBox_WriteRes_redoByNewTimestamp.Location = new System.Drawing.Point(309, 667);
+            this.checkBox_WriteRes_redoByNewTimestamp.Location = new System.Drawing.Point(309, 614);
             this.checkBox_WriteRes_redoByNewTimestamp.Name = "checkBox_WriteRes_redoByNewTimestamp";
             this.checkBox_WriteRes_redoByNewTimestamp.Size = new System.Drawing.Size(530, 31);
             this.checkBox_WriteRes_redoByNewTimestamp.TabIndex = 45;
@@ -699,7 +692,7 @@
             this.button_WriteRes_createTimestamp.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.button_WriteRes_createTimestamp.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
             this.button_WriteRes_createTimestamp.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button_WriteRes_createTimestamp.Location = new System.Drawing.Point(954, 347);
+            this.button_WriteRes_createTimestamp.Location = new System.Drawing.Point(1116, 347);
             this.button_WriteRes_createTimestamp.Name = "button_WriteRes_createTimestamp";
             this.button_WriteRes_createTimestamp.Size = new System.Drawing.Size(199, 50);
             this.button_WriteRes_createTimestamp.TabIndex = 52;
@@ -712,7 +705,7 @@
             this.button_editContent.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.button_editContent.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
             this.button_editContent.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button_editContent.Location = new System.Drawing.Point(954, 538);
+            this.button_editContent.Location = new System.Drawing.Point(1116, 485);
             this.button_editContent.Name = "button_editContent";
             this.button_editContent.Size = new System.Drawing.Size(199, 71);
             this.button_editContent.TabIndex = 51;
@@ -737,7 +730,7 @@
             this.textBox_WriteRes_strRanges.Location = new System.Drawing.Point(309, 99);
             this.textBox_WriteRes_strRanges.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.textBox_WriteRes_strRanges.Name = "textBox_WriteRes_strRanges";
-            this.textBox_WriteRes_strRanges.Size = new System.Drawing.Size(637, 38);
+            this.textBox_WriteRes_strRanges.Size = new System.Drawing.Size(799, 38);
             this.textBox_WriteRes_strRanges.TabIndex = 49;
             // 
             // button_writeObjectByChunk
@@ -745,9 +738,9 @@
             this.button_writeObjectByChunk.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.button_writeObjectByChunk.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
             this.button_writeObjectByChunk.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button_writeObjectByChunk.Location = new System.Drawing.Point(571, 718);
+            this.button_writeObjectByChunk.Location = new System.Drawing.Point(571, 665);
             this.button_writeObjectByChunk.Name = "button_writeObjectByChunk";
-            this.button_writeObjectByChunk.Size = new System.Drawing.Size(188, 70);
+            this.button_writeObjectByChunk.Size = new System.Drawing.Size(218, 70);
             this.button_writeObjectByChunk.TabIndex = 37;
             this.button_writeObjectByChunk.Text = "分片写入";
             this.button_writeObjectByChunk.UseVisualStyleBackColor = false;
@@ -760,7 +753,7 @@
             this.textBox_WriteRes_lTotalLength.Location = new System.Drawing.Point(309, 151);
             this.textBox_WriteRes_lTotalLength.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.textBox_WriteRes_lTotalLength.Name = "textBox_WriteRes_lTotalLength";
-            this.textBox_WriteRes_lTotalLength.Size = new System.Drawing.Size(637, 38);
+            this.textBox_WriteRes_lTotalLength.Size = new System.Drawing.Size(799, 38);
             this.textBox_WriteRes_lTotalLength.TabIndex = 50;
             // 
             // label55
@@ -777,7 +770,7 @@
             // 
             this.button_WriteRes.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.button_WriteRes.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button_WriteRes.Location = new System.Drawing.Point(309, 718);
+            this.button_WriteRes.Location = new System.Drawing.Point(309, 665);
             this.button_WriteRes.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.button_WriteRes.Name = "button_WriteRes";
             this.button_WriteRes.Size = new System.Drawing.Size(239, 70);
@@ -806,64 +799,6 @@
             this.label56.TabIndex = 3;
             this.label56.Text = "strStyle";
             // 
-            // groupBox2
-            // 
-            this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
-            this.groupBox2.Controls.Add(this.button_WriteRes_WriteMetadata);
-            this.groupBox2.Controls.Add(this.textBox_WriteRes_chunkSize);
-            this.groupBox2.Controls.Add(this.button_writeResForText);
-            this.groupBox2.Controls.Add(this.label61);
-            this.groupBox2.Location = new System.Drawing.Point(1295, 705);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(207, 41);
-            this.groupBox2.TabIndex = 45;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "写下级对象";
-            this.groupBox2.Visible = false;
-            // 
-            // button_WriteRes_WriteMetadata
-            // 
-            this.button_WriteRes_WriteMetadata.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button_WriteRes_WriteMetadata.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button_WriteRes_WriteMetadata.Location = new System.Drawing.Point(-260, 111);
-            this.button_WriteRes_WriteMetadata.Name = "button_WriteRes_WriteMetadata";
-            this.button_WriteRes_WriteMetadata.Size = new System.Drawing.Size(175, 89);
-            this.button_WriteRes_WriteMetadata.TabIndex = 41;
-            this.button_WriteRes_WriteMetadata.Text = "仅写入metadata";
-            this.button_WriteRes_WriteMetadata.UseVisualStyleBackColor = true;
-            this.button_WriteRes_WriteMetadata.Click += new System.EventHandler(this.button_WriteRes_WriteMetadata_Click);
-            // 
-            // textBox_WriteRes_chunkSize
-            // 
-            this.textBox_WriteRes_chunkSize.Location = new System.Drawing.Point(70, 292);
-            this.textBox_WriteRes_chunkSize.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
-            this.textBox_WriteRes_chunkSize.Name = "textBox_WriteRes_chunkSize";
-            this.textBox_WriteRes_chunkSize.Size = new System.Drawing.Size(321, 38);
-            this.textBox_WriteRes_chunkSize.TabIndex = 38;
-            // 
-            // button_writeResForText
-            // 
-            this.button_writeResForText.Font = new System.Drawing.Font("宋体", 10.66667F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button_writeResForText.Location = new System.Drawing.Point(38, 52);
-            this.button_writeResForText.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
-            this.button_writeResForText.Name = "button_writeResForText";
-            this.button_writeResForText.Size = new System.Drawing.Size(194, 52);
-            this.button_writeResForText.TabIndex = 14;
-            this.button_writeResForText.Text = "写入纯文本";
-            this.button_writeResForText.UseVisualStyleBackColor = true;
-            this.button_writeResForText.Click += new System.EventHandler(this.button_writeResForText_Click);
-            // 
-            // label61
-            // 
-            this.label61.AutoSize = true;
-            this.label61.Location = new System.Drawing.Point(65, 228);
-            this.label61.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
-            this.label61.Name = "label61";
-            this.label61.Size = new System.Drawing.Size(204, 27);
-            this.label61.TabIndex = 39;
-            this.label61.Text = "小包尺寸(Byte)";
-            // 
             // label57
             // 
             this.label57.AutoSize = true;
@@ -891,7 +826,7 @@
             this.textBox_WriteRes_strStyle.Location = new System.Drawing.Point(309, 297);
             this.textBox_WriteRes_strStyle.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.textBox_WriteRes_strStyle.Name = "textBox_WriteRes_strStyle";
-            this.textBox_WriteRes_strStyle.Size = new System.Drawing.Size(637, 38);
+            this.textBox_WriteRes_strStyle.Size = new System.Drawing.Size(799, 38);
             this.textBox_WriteRes_strStyle.TabIndex = 10;
             // 
             // textBox_WriteRes_strMetadata
@@ -902,7 +837,7 @@
             this.textBox_WriteRes_strMetadata.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.textBox_WriteRes_strMetadata.Multiline = true;
             this.textBox_WriteRes_strMetadata.Name = "textBox_WriteRes_strMetadata";
-            this.textBox_WriteRes_strMetadata.Size = new System.Drawing.Size(637, 77);
+            this.textBox_WriteRes_strMetadata.Size = new System.Drawing.Size(799, 77);
             this.textBox_WriteRes_strMetadata.TabIndex = 11;
             // 
             // textBox_WriteRes_baInputTimestamp
@@ -912,7 +847,7 @@
             this.textBox_WriteRes_baInputTimestamp.Location = new System.Drawing.Point(309, 353);
             this.textBox_WriteRes_baInputTimestamp.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.textBox_WriteRes_baInputTimestamp.Name = "textBox_WriteRes_baInputTimestamp";
-            this.textBox_WriteRes_baInputTimestamp.Size = new System.Drawing.Size(637, 38);
+            this.textBox_WriteRes_baInputTimestamp.Size = new System.Drawing.Size(799, 38);
             this.textBox_WriteRes_baInputTimestamp.TabIndex = 12;
             // 
             // label58
@@ -936,7 +871,7 @@
             this.textBox_WriteRes_baContent.Name = "textBox_WriteRes_baContent";
             this.textBox_WriteRes_baContent.ReadOnly = true;
             this.textBox_WriteRes_baContent.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBox_WriteRes_baContent.Size = new System.Drawing.Size(637, 210);
+            this.textBox_WriteRes_baContent.Size = new System.Drawing.Size(799, 157);
             this.textBox_WriteRes_baContent.TabIndex = 13;
             // 
             // label59
@@ -956,7 +891,7 @@
             this.textBox_WriteRes_strResPath.Location = new System.Drawing.Point(309, 39);
             this.textBox_WriteRes_strResPath.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.textBox_WriteRes_strResPath.Name = "textBox_WriteRes_strResPath";
-            this.textBox_WriteRes_strResPath.Size = new System.Drawing.Size(637, 38);
+            this.textBox_WriteRes_strResPath.Size = new System.Drawing.Size(799, 38);
             this.textBox_WriteRes_strResPath.TabIndex = 7;
             // 
             // tabPage_GetRes
@@ -2114,7 +2049,7 @@
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Padding = new System.Windows.Forms.Padding(9, 3, 0, 3);
-            this.menuStrip1.Size = new System.Drawing.Size(1242, 45);
+            this.menuStrip1.Size = new System.Drawing.Size(1404, 45);
             this.menuStrip1.TabIndex = 8;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -2157,8 +2092,8 @@
             // 
             this.splitContainer1.Panel2.BackColor = System.Drawing.SystemColors.Info;
             this.splitContainer1.Panel2.Controls.Add(this.textBox_result);
-            this.splitContainer1.Size = new System.Drawing.Size(1242, 975);
-            this.splitContainer1.SplitterDistance = 864;
+            this.splitContainer1.Size = new System.Drawing.Size(1404, 915);
+            this.splitContainer1.SplitterDistance = 811;
             this.splitContainer1.TabIndex = 21;
             // 
             // button_WriteRes_createMetadata
@@ -2166,7 +2101,7 @@
             this.button_WriteRes_createMetadata.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.button_WriteRes_createMetadata.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
             this.button_WriteRes_createMetadata.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button_WriteRes_createMetadata.Location = new System.Drawing.Point(954, 212);
+            this.button_WriteRes_createMetadata.Location = new System.Drawing.Point(1116, 212);
             this.button_WriteRes_createMetadata.Name = "button_WriteRes_createMetadata";
             this.button_WriteRes_createMetadata.Size = new System.Drawing.Size(239, 74);
             this.button_WriteRes_createMetadata.TabIndex = 55;
@@ -2179,7 +2114,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(14F, 27F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
-            this.ClientSize = new System.Drawing.Size(1242, 1020);
+            this.ClientSize = new System.Drawing.Size(1404, 960);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.menuStrip1);
             this.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
@@ -2196,8 +2131,6 @@
             this.tabControl1.ResumeLayout(false);
             this.tabPage_WriteRes.ResumeLayout(false);
             this.tabPage_WriteRes.PerformLayout();
-            this.groupBox2.ResumeLayout(false);
-            this.groupBox2.PerformLayout();
             this.tabPage_GetRes.ResumeLayout(false);
             this.tabPage_GetRes.PerformLayout();
             this.tabPage_GetRecord.ResumeLayout(false);
@@ -2372,7 +2305,6 @@
         private System.Windows.Forms.Label label52;
         private System.Windows.Forms.TextBox textBox_GetRecord_strPath;
         private System.Windows.Forms.Button button_GetRecord;
-        private System.Windows.Forms.Button button_writeResForText;
         private System.Windows.Forms.TextBox textBox_WriteRes_baContent;
         private System.Windows.Forms.TextBox textBox_WriteRes_baInputTimestamp;
         private System.Windows.Forms.TextBox textBox_WriteRes_strMetadata;
@@ -2383,12 +2315,8 @@
         private System.Windows.Forms.Label label57;
         private System.Windows.Forms.Label label56;
         private System.Windows.Forms.Label label53;
-        private System.Windows.Forms.Label label61;
-        private System.Windows.Forms.TextBox textBox_WriteRes_chunkSize;
         private System.Windows.Forms.Button button_writeObjectByChunk;
-        private System.Windows.Forms.Button button_WriteRes_WriteMetadata;
         private System.Windows.Forms.Button button_WriteRes_help;
-        private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.CheckBox checkBox_WriteRes_redoByNewTimestamp;
         private System.Windows.Forms.Button button_GetRes_help;
         private System.Windows.Forms.TextBox textBox_GetRes_chunkSize;

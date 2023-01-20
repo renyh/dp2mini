@@ -1465,6 +1465,8 @@ out string strError);
 
         #region WriteRes相关
 
+        #region 一些友好功能
+
         // WriteRes帮助
         private void button_WriteRes_help_Click(object sender, EventArgs e)
         {
@@ -1578,7 +1580,7 @@ out string strError);
                 if (string.IsNullOrEmpty(fileName) == false)
                 {
                     FileInfo f = new FileInfo(fileName);
-                    this.textBox_WriteRes_lTotalLength.Text=f.Length.ToString();
+                    this.textBox_WriteRes_lTotalLength.Text = f.Length.ToString();
                     this.textBox_WriteRes_strRanges.Text = "0-" + (f.Length - 1).ToString();
                 }
             }
@@ -1595,6 +1597,42 @@ out string strError);
 
 
         }
+
+        // 组装metadata xml
+        public static string BuildMetadata(string strMime,
+            string strLocalPath)
+        {
+            // string strMetadata = "<file mimetype='" + strMime + "' localpath='" + strLocalPath + "'/>";
+            XmlDocument dom = new XmlDocument();
+            dom.LoadXml("<file />");
+            if (strMime != null)
+                dom.DocumentElement.SetAttribute(
+                    "mimetype",
+                    strMime);
+            if (strLocalPath != null)
+                dom.DocumentElement.SetAttribute(
+                    "localpath",
+                    strLocalPath);
+            return dom.DocumentElement.OuterXml;
+        }
+
+        // 生成metadata
+        private void button_WriteRes_createMetadata_Click(object sender, EventArgs e)
+        {
+            string fileName = this.textBox_WriteRes_fileName.Text.Trim();
+            if (string.IsNullOrEmpty(fileName) == true)
+            {
+                MessageBox.Show(this, "尚未选择要上传的文件，请在点'编辑baContent'选择文件。");
+                return;
+            }
+            // 获取minitype
+            string minitype = PathUtil.MimeTypeFrom(fileName);
+
+            // 组成metadata xml字符串
+            this.textBox_WriteRes_strMetadata.Text = BuildMetadata(minitype, fileName);
+        }
+        #endregion
+
 
         // 原始WriteRes调用
         private void button_WriteRes_Click(object sender, EventArgs e)
@@ -1642,6 +1680,7 @@ out string strError);
             string strContent = textBox_WriteRes_baContent.Text.Trim();
             if (strContent.Length > 5 && strContent.Substring(0, 5) == "info:")
             {
+                // 文件的情况
                 string fileName = this.textBox_WriteRes_fileName.Text;
                 using (FileStream s = new FileStream(fileName, FileMode.Open))
                 {
@@ -1651,6 +1690,7 @@ out string strError);
             }
             else
             {
+                // 界面输入的字符串
                 if (string.IsNullOrEmpty(strContent) == false)
                 {
                     baContent= ByteArray.GetTimeStampByteArray(strContent);
@@ -1710,255 +1750,121 @@ out string strError);
         }
 
 
-        // 用WriteRes写文本字符
-        private void button_writeResForText_Click(object sender, EventArgs e)
-        {
-            string strResPath = textBox_WriteRes_strResPath.Text.Trim();
-            if (string.IsNullOrEmpty(strResPath) == true)
-            {
-                MessageBox.Show(this, "资源路径不能为空。");
-                return;
-            }
-
-            string strStyle = textBox_WriteRes_strStyle.Text.Trim();// 可输入ignorechecktimestamp忽略时间戳
-                                                                    //string strMetadata = textBox_WriteRes_strMetadata.Text.Trim();
-
-            //时间戳
-            string timestamp = textBox_WriteRes_baInputTimestamp.Text;
-            byte[] baTimestamp = ByteArray.GetTimeStampByteArray(timestamp);
-
-            // 写入的内容
-            string strText = textBox_WriteRes_baContent.Text.Trim();
-
-            RestChannel channel = this.GetChannel();
-            try
-            {
-                long lRet = channel.WriteText(
-                     strResPath,
-                     strText,
-                     //false, //bInlucdePreamble,
-                     strStyle,
-                    baTimestamp,
-                    this.checkBox_WriteRes_redoByNewTimestamp.Checked,
-                    out byte[] baOutputTimestamp,
-                    out string strOutputPath,
-                    out string strError);
-                if (lRet == -1)  //出错的情况
-                {
-
-                    this.textBox_result.Text = "出错：" + strError;
-
-                    MessageBox.Show(this, "出错：" + strError);
-                    return;
-                }
-
-                // 成功的情况
-                string strOutuptTimestamp = ByteArray.GetHexTimeStampString(baOutputTimestamp);
-
-                string info = "路径：" + strOutputPath + "\r\n"
-                    + "时间戳：" + strOutuptTimestamp;
-                this.textBox_result.Text = info;
-
-                MessageBox.Show(this, "成功");
-
-            }
-            finally
-            {
-                this._channelPool.ReturnChannel(channel);
-            }
-
-        }
 
         // 分块写入对象
         private void button_writeObjectByChunk_Click(object sender, EventArgs e)
         {
-            MessageBox.Show(this, "修改中...");
-            return;
-
-            // 校验一下参数
-            string fileName = this.textBox_WriteRes_fileName.Text.Trim();
-            if (string.IsNullOrEmpty(fileName) == true)
-            {
-                MessageBox.Show(this, "请先选择要上传的文件");
-                return;
-            }
-            //检查是否输入了包尺寸
-            string strChunkSize = this.textBox_WriteRes_chunkSize.Text.Trim();
-            long inputChunkSize = 0;
-            try
-            {
-                inputChunkSize = Convert.ToInt64(strChunkSize);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(this, "包尺寸格式不合法，须为数值型。" + ex.Message);
-                return;
-            }
-
             string strResPath = textBox_WriteRes_strResPath.Text.Trim();
             if (string.IsNullOrEmpty(strResPath) == true)
             {
-                MessageBox.Show(this, "资源路径不能为空。");
+                MessageBox.Show(this, "strResPath不能为空。");
                 return;
             }
             string strStyle = textBox_WriteRes_strStyle.Text.Trim();// 可输入ignorechecktimestamp忽略时间戳
             string strMetadata = textBox_WriteRes_strMetadata.Text.Trim();
 
+            //时间戳
+            string strTimestamp = textBox_WriteRes_baInputTimestamp.Text;
+            byte[] baInputTimestamp = ByteArray.GetTimeStampByteArray(strTimestamp);
 
-            // 开始做事
+
+            // 打开输入小包尺寸的对话框
+            Form_WriteRes_Chunk dlg = new Form_WriteRes_Chunk();
+            dlg.StartPosition = FormStartPosition.CenterScreen;
+            DialogResult ret = dlg.ShowDialog(this);
+            if (ret == DialogResult.Cancel)
+            {
+                // 用户取消操作，则不做什么事情
+                return;
+            }
+            int chunkSize = dlg.ChunkSize;
+           
             string strError = "";
+            int nRet = 0;
+            byte[] baOutputTimestamp = null;
+            string strOutputResPath = "";
+
             RestChannel channel = this.GetChannel();
             try
             {
-                using (FileStream s = new FileStream(fileName, FileMode.Open))
+                string strContent = textBox_WriteRes_baContent.Text.Trim();
+                if (strContent.Length > 5 && strContent.Substring(0, 5) == "info:")
                 {
-                    byte[] baInputTimestamp = null;  // 分片写入，界面输入的时间戳无意义
-                    int nStart = 0;
-
-                    long lTotalLength = s.Length;
-
-                    while (s.Position < s.Length)
+                    // 文件的情况
+                    string fileName = this.textBox_WriteRes_fileName.Text.Trim();
+                    if (string.IsNullOrEmpty(fileName) == true)
                     {
-                        // 与文件剩余尺寸比对，谁小用小
-                        long realChunkSize = Math.Min(inputChunkSize, s.Length - nStart);
-                        byte[] baContent = new byte[realChunkSize];
-
-                        // 从文件中读出指出尺寸的数据到baContent
-                        int nLength = s.Read(baContent, 0, baContent.Length);
-
-                        // 尺寸范围
-                        string strRanges = nStart.ToString() + "-" + (nStart + nLength - 1).ToString();
-
-                        WriteResResponse response = channel.WriteRes(strResPath,
-                            strRanges,
-                            lTotalLength,
-                            baContent,
-                            strMetadata,  //todo可以在最后一次再传metadata
-                            strStyle,
-                            baInputTimestamp);
-                        if (response.WriteResResult.Value == -1)
-                        {
-
-                            // 第一次的时间戳不匹配，自动重试
-                            if (response.WriteResResult.ErrorCode == ErrorCode.TimestampMismatch
-                            && nStart == 0)
-                            {
-                                baInputTimestamp = response.baOutputTimestamp;
-                                s.Position = nStart;
-                                continue;
-                            }
-                            strError = response.WriteResResult.ErrorInfo;
-                            goto ERROR1;
-                        }
-
-                        // 下一轮取文件的开始位置
-                        nStart += nLength;
-
-                        strResPath = response.strOutputResPath;  //// 如果第一次的strPath中包含'?'id, 必须用outputpath才能正确继续
-                        baInputTimestamp = response.baOutputTimestamp;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                strError = "Exception :" + ex.Message;
-                goto ERROR1;
-            }
-            finally
-            {
-                this._channelPool.ReturnChannel(channel);
-            }
-
-            MessageBox.Show(this, "WriteRes() complete");
-            return;
-        ERROR1:
-            MessageBox.Show(this, strError);
-        }
-
-        // 组装metadata xml
-        public static string BuildMetadata(string strMime,
-            string strLocalPath)
-        {
-            // string strMetadata = "<file mimetype='" + strMime + "' localpath='" + strLocalPath + "'/>";
-            XmlDocument dom = new XmlDocument();
-            dom.LoadXml("<file />");
-            if (strMime != null)
-                dom.DocumentElement.SetAttribute(
-                    "mimetype",
-                    strMime);
-            if (strLocalPath != null)
-                dom.DocumentElement.SetAttribute(
-                    "localpath",
-                    strLocalPath);
-            return dom.DocumentElement.OuterXml;
-        }
-
-        // 生成metadata
-        private void button_WriteRes_createMetadata_Click(object sender, EventArgs e)
-        {
-
-            string fileName = this.textBox_WriteRes_fileName.Text.Trim();
-            if (string.IsNullOrEmpty(fileName) == true)
-            {
-                MessageBox.Show(this, "尚未选择要上传的文件，请在点'编辑baContent'选择文件。");
-                return;
-            }
-            // 获取minitype
-            string minitype = PathUtil.MimeTypeFrom(fileName);
-
-            // 组成metadata xml字符串
-            this.textBox_WriteRes_strMetadata.Text = BuildMetadata(minitype, fileName);
-        }
-
-        // 仅写入metadata
-        private void button_WriteRes_WriteMetadata_Click(object sender, EventArgs e)
-        {
-            string strResPath = textBox_WriteRes_strResPath.Text.Trim();
-            if (string.IsNullOrEmpty(strResPath) == true)
-            {
-                MessageBox.Show(this, "资源路径不能为空。");
-                return;
-            }
-            string strStyle = textBox_WriteRes_strStyle.Text.Trim();// 可输入ignorechecktimestamp忽略时间戳
-            string strMetadata = textBox_WriteRes_strMetadata.Text.Trim();
-            // 开始做事
-            string strError = "";
-            RestChannel channel = this.GetChannel();
-            try
-            {
-                byte[] baInputTimestamp = null;
-            REDO:
-                WriteResResponse response = channel.WriteRes(strResPath,
-                    "",
-                    -1,  //lTotalLength
-                    null,  //baContent
-                    strMetadata,
-                    strStyle,
-                    baInputTimestamp);
-                if (response.WriteResResult.Value == -1)
-                {
-                    // 间戳不匹配，自动重试
-                    if (response.WriteResResult.ErrorCode == ErrorCode.TimestampMismatch)
-                    {
-                        baInputTimestamp = response.baOutputTimestamp;
-                        goto REDO;
+                        MessageBox.Show(this, "尚未选择要上传的文件，请在点'编辑baContent'选择文件。");
+                        return;
                     }
 
-                    MessageBox.Show(this, "写入metadata出错:" + response.WriteResResult.ErrorInfo);
-                    return;
+                    nRet = channel.WriteResOfFile(strResPath,
+                        fileName,
+                        strStyle,
+                        strMetadata,
+                        baInputTimestamp,
+                        chunkSize,
+                        this.checkBox_WriteRes_redoByNewTimestamp.Checked,
+                        out baOutputTimestamp,
+                        out strOutputResPath,
+                        out strError);
+                    if (nRet == -1)
+                    {
+                       this.ShowMessage("WriteResOfFile出错：" + strError);
+                        return;
+                    }
                 }
                 else
                 {
-                    MessageBox.Show(this, "写入metadata成功。");
-                    return;
+                    byte[] baContent = ByteArray.GetTimeStampByteArray(strContent);
+
+                   nRet =  channel.WriteResByChunk(strResPath,
+                        baContent,
+                        strStyle,
+                        strMetadata,
+                        baInputTimestamp,
+                        chunkSize,
+                        this.checkBox_WriteRes_redoByNewTimestamp.Checked,
+                        out baOutputTimestamp,
+                        out strOutputResPath,
+                        out strError);
+                    if (nRet == -1)
+                    {
+                        this.ShowMessage("WriteResByChunk：" + strError);
+                        return;
+                    }
                 }
 
+                // 成功 // 把时间戳和strOutputResPath显示一下
+                this.ShowMessage("分片写入成功。\r\n"
+                    + "baOutputTimestamp:" +ByteArray.GetHexTimeStampString(baOutputTimestamp)+ "\r\n"
+                    + "strOutputResPath:"+ strOutputResPath);
+
+                return;
+
+            }
+            catch (Exception ex)
+            {
+                this.ShowMessage("Exception :" + ex.Message);
+                return;
             }
             finally
             {
                 this._channelPool.ReturnChannel(channel);
             }
         }
+
+        public void ShowMessage(string info)
+        {
+            MessageBox.Show(this, info);
+            this.OutputInfo(info);
+        }
+
+        public void OutputInfo(string info)
+        {
+            this.textBox_result.Text = info;
+        }
+
 
         #endregion
 

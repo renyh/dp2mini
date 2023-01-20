@@ -43,18 +43,18 @@
             this.textBox_content.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox_content.Location = new System.Drawing.Point(109, 89);
+            this.textBox_content.Location = new System.Drawing.Point(109, 142);
             this.textBox_content.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.textBox_content.Multiline = true;
             this.textBox_content.Name = "textBox_content";
             this.textBox_content.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBox_content.Size = new System.Drawing.Size(852, 358);
+            this.textBox_content.Size = new System.Drawing.Size(710, 393);
             this.textBox_content.TabIndex = 15;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(35, 89);
+            this.label1.Location = new System.Drawing.Point(35, 132);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(66, 27);
             this.label1.TabIndex = 16;
@@ -64,7 +64,7 @@
             // 
             this.label60.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label60.AutoSize = true;
-            this.label60.Location = new System.Drawing.Point(8, 486);
+            this.label60.Location = new System.Drawing.Point(8, 574);
             this.label60.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.label60.Name = "label60";
             this.label60.Size = new System.Drawing.Size(93, 27);
@@ -73,18 +73,19 @@
             // 
             // textBox_fileName
             // 
-            this.textBox_fileName.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.textBox_fileName.Location = new System.Drawing.Point(109, 486);
+            this.textBox_fileName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBox_fileName.Location = new System.Drawing.Point(109, 574);
             this.textBox_fileName.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.textBox_fileName.Name = "textBox_fileName";
-            this.textBox_fileName.Size = new System.Drawing.Size(766, 38);
+            this.textBox_fileName.Size = new System.Drawing.Size(624, 38);
             this.textBox_fileName.TabIndex = 37;
             // 
             // button_selectFile
             // 
-            this.button_selectFile.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.button_selectFile.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.button_selectFile.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button_selectFile.Location = new System.Drawing.Point(887, 486);
+            this.button_selectFile.Location = new System.Drawing.Point(745, 574);
             this.button_selectFile.Margin = new System.Windows.Forms.Padding(7, 6, 7, 6);
             this.button_selectFile.Name = "button_selectFile";
             this.button_selectFile.Size = new System.Drawing.Size(72, 48);
@@ -97,19 +98,18 @@
             // 
             this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.label2.AutoSize = true;
             this.label2.BackColor = System.Drawing.SystemColors.Info;
             this.label2.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label2.Location = new System.Drawing.Point(104, 39);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(888, 27);
+            this.label2.Size = new System.Drawing.Size(680, 77);
             this.label2.TabIndex = 40;
             this.label2.Text = "（请输入WriteRes要写入的文本，或者选择要上传的文件，二选一。）";
             // 
             // button_cancel
             // 
             this.button_cancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button_cancel.Location = new System.Drawing.Point(804, 559);
+            this.button_cancel.Location = new System.Drawing.Point(662, 647);
             this.button_cancel.Margin = new System.Windows.Forms.Padding(6, 4, 6, 4);
             this.button_cancel.Name = "button_cancel";
             this.button_cancel.Size = new System.Drawing.Size(157, 62);
@@ -121,7 +121,7 @@
             // button_ok
             // 
             this.button_ok.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button_ok.Location = new System.Drawing.Point(646, 559);
+            this.button_ok.Location = new System.Drawing.Point(504, 647);
             this.button_ok.Margin = new System.Windows.Forms.Padding(6, 4, 6, 4);
             this.button_ok.Name = "button_ok";
             this.button_ok.Size = new System.Drawing.Size(146, 62);
@@ -134,7 +134,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(14F, 27F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(992, 641);
+            this.ClientSize = new System.Drawing.Size(850, 729);
             this.Controls.Add(this.button_cancel);
             this.Controls.Add(this.button_ok);
             this.Controls.Add(this.label2);
