@@ -1491,31 +1491,7 @@ out string strError);
         }
 
 
-        // 选择上传的文件
-        private void button_selectFile_Click(object sender, EventArgs e)
-        {
-            using (OpenFileDialog dlg = new OpenFileDialog())
-            {
-                dlg.Title = "请指定一个上传的文件";
-                dlg.FileName = "";
-                dlg.Filter = "All files (*.*)|*.*";
-                dlg.RestoreDirectory = true;
-                if (dlg.ShowDialog() != DialogResult.OK)
-                    return;
 
-
-                string localPath = dlg.FileName;
-                this.textBox_WriteRes_fileName.Text = localPath;
-
-                // 获取minitype
-                string minitype = PathUtil.MimeTypeFrom(localPath);
-
-                // 组成metadata xml字符串
-                this.textBox_WriteRes_strMetadata.Text = BuildMetadata(minitype, localPath);
-
-            }
-
-        }
 
         // 用WriteRes写文本字符
         private void button_writeResForText_Click(object sender, EventArgs e)
@@ -1599,13 +1575,13 @@ out string strError);
                 return;
             }
 
-            string strResPath = textBox_WriteRes_object_strResPath.Text.Trim();
+            string strResPath = textBox_WriteRes_strResPath.Text.Trim();
             if (string.IsNullOrEmpty(strResPath) == true)
             {
                 MessageBox.Show(this, "资源路径不能为空。");
                 return;
             }
-            string strStyle = textBox_WriteRes_object_strStyle.Text.Trim();// 可输入ignorechecktimestamp忽略时间戳
+            string strStyle = textBox_WriteRes_strStyle.Text.Trim();// 可输入ignorechecktimestamp忽略时间戳
             string strMetadata = textBox_WriteRes_strMetadata.Text.Trim();
 
 
@@ -1700,13 +1676,13 @@ out string strError);
         // 仅写入metadata
         private void button_WriteRes_WriteMetadata_Click(object sender, EventArgs e)
         {
-            string strResPath = textBox_WriteRes_object_strResPath.Text.Trim();
+            string strResPath = textBox_WriteRes_strResPath.Text.Trim();
             if (string.IsNullOrEmpty(strResPath) == true)
             {
                 MessageBox.Show(this, "资源路径不能为空。");
                 return;
             }
-            string strStyle = textBox_WriteRes_object_strStyle.Text.Trim();// 可输入ignorechecktimestamp忽略时间戳
+            string strStyle = textBox_WriteRes_strStyle.Text.Trim();// 可输入ignorechecktimestamp忽略时间戳
             string strMetadata = textBox_WriteRes_strMetadata.Text.Trim();
             // 开始做事
             string strError = "";
@@ -1799,7 +1775,7 @@ out string strError);
             }
             catch (Exception ex)
             {
-                MessageBox.Show(this, "Start格式不正确:"+ex.Message);
+                MessageBox.Show(this, "Start格式不正确:" + ex.Message);
                 return;
             }
 
@@ -1878,13 +1854,13 @@ out string strError);
 
                     this.textBox_result.Text = "strMetadata:" + strMetadata + "\r\n"
                         + "strOutputResPath:" + strOutputResPath + "\r\n"
-                        + "baOutputTimestamp:" + strOutputTimestamp+"\r\n";
+                        + "baOutputTimestamp:" + strOutputTimestamp + "\r\n";
 
                     // 转成byte数组
                     byte[] bt = m.ToArray();
                     if (bt != null && bt.Length > 0)
                     {
-                        string text= Encoding.UTF8.GetString(bt);
+                        string text = Encoding.UTF8.GetString(bt);
                         this.textBox_result.Text += "文本:" + text + "\r\n\r\n";
 
                         string hex = ByteArray.GetHexTimeStampString(bt);
@@ -1983,8 +1959,8 @@ out string strError);
 
                         // 内容
                         baContent = response.baContent;
-                        if (baContent !=null && baContent.Length > 0)
-                        { 
+                        if (baContent != null && baContent.Length > 0)
+                        {
                             // 写入本地文件
                             stream.Write(baContent, 0, baContent.Length);
                             stream.Flush();
@@ -1992,9 +1968,9 @@ out string strError);
                         }
 
                         // 获取完了
-                        if (lStart >= lTotalLength 
-                            || baContent==null 
-                            || baContent.Length==0)
+                        if (lStart >= lTotalLength
+                            || baContent == null
+                            || baContent.Length == 0)
                         {
                             break;
                         }
@@ -2056,14 +2032,14 @@ out string strError);
                 GetRecordResponse response = channel.GetRecord(strPath);
 
                 string xml = response.strXml;
-                if (string.IsNullOrEmpty (xml) == false)
-                    xml=DomUtil.GetIndentXml(xml); 
+                if (string.IsNullOrEmpty(xml) == false)
+                    xml = DomUtil.GetIndentXml(xml);
 
                 this.textBox_result.Text = "Value:" + response.GetRecordResult.Value + "\r\n"
                     + "ErrorCode:" + response.GetRecordResult.ErrorCode + "\r\n"
                     + "ErrorInfo" + response.GetRecordResult.ErrorInfo + "\r\n"
                     + "timestamp:" + ByteArray.GetHexTimeStampString(response.timestamp) + "\r\n"
-                    + "strXml:" + "\r\n"+ xml;
+                    + "strXml:" + "\r\n" + xml;
             }
             finally
             {
@@ -2079,9 +2055,82 @@ out string strError);
         }
 
 
+
         #endregion
 
 
+
+        private void button_editContent_Click(object sender, EventArgs e)
+        {
+            // 显示电话通知内容
+            //string info = this.GetResultInfo(noteId);
+            //noticeForm dlg = new noticeForm();
+
+            // 把二进制 或 文件名传过去
+
+            Form_editBaContent dlg = new Form_editBaContent();
+            dlg.StartPosition = FormStartPosition.CenterScreen;
+
+
+            // 如果是文件，把文件名传到对话框
+            dlg.FileName = this.textBox_WriteRes_fileName.Text.Trim();
+            if (string.IsNullOrEmpty(dlg.FileName) == true)
+            {
+                // 设上值
+                string baContent = this.textBox_WriteRes_baContent.Text.Trim();
+                if (string.IsNullOrEmpty(baContent) == false)
+                {
+                    byte[] b = ByteArray.GetTimeStampByteArray(baContent);
+                    dlg.Conent = Encoding.UTF8.GetString(b);
+                }
+            }
+
+            DialogResult ret = dlg.ShowDialog(this);
+            if (ret == DialogResult.Cancel)
+            {
+                // 用户取消操作，则不做什么事情
+                return;
+            }
+
+
+            // 首先要清空
+            this.textBox_WriteRes_baContent.Text = "";
+            this.textBox_WriteRes_fileName.Text = "";
+
+            // 将文本转成hex
+            string text = dlg.Conent;
+            if (string.IsNullOrEmpty(text) == false)
+            {
+                byte[] b = Encoding.UTF8.GetBytes(text);  //文本到二进制
+                this.textBox_WriteRes_baContent.Text = ByteArray.GetHexTimeStampString(b); //2转16
+            }
+
+            string fileName = dlg.FileName;
+            if (string.IsNullOrEmpty(fileName) == false)
+            {
+                FileInfo file = new FileInfo(fileName);
+                if (file.Length <= 1024 * 4)  //<=4K，则不显示二进制
+                {
+                    using (FileStream s = new FileStream(fileName, FileMode.Open))
+                    {
+                        byte[] bf = new byte[file.Length];
+                        s.Read(bf, 0, bf.Length);
+                        this.textBox_WriteRes_baContent.Text = ByteArray.GetHexTimeStampString(bf); //2转16
+                    }
+                }
+                else
+                {
+                    this.textBox_WriteRes_baContent.Text = "info:由于文件超过4K，所以此处不再显示内容，写入时会直接从文件中读取。";
+                }
+            }
+            this.textBox_WriteRes_fileName.Text = fileName;
+
+        }
+
+        private void button_WriteRes_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 
 
