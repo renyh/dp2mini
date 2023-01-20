@@ -1585,7 +1585,11 @@ out string strError);
             }
             else
             {
-                byte[] b = Encoding.UTF8.GetBytes(baContent);
+                byte[] b = ByteArray.GetTimeStampByteArray(baContent); //Encoding.UTF8.GetBytes(baContent);
+                //string str = Encoding.UTF8.GetString(b);
+                //byte[] b2 = Encoding.UTF8.GetBytes(str);
+
+
                 this.textBox_WriteRes_lTotalLength.Text = b.Length.ToString();
                 this.textBox_WriteRes_strRanges.Text = "0-" + (b.Length - 1).ToString();
             }
@@ -1649,7 +1653,14 @@ out string strError);
             else
             {
                 if (string.IsNullOrEmpty(strContent) == false)
-                    baContent = Encoding.UTF8.GetBytes(strContent);
+                {
+                    baContent= ByteArray.GetTimeStampByteArray(strContent);
+
+
+                    //byte[] b = ByteArray.GetTimeStampByteArray(strContent);
+                    //string str=Encoding.UTF8.GetString(b);
+                    //baContent=Encoding.UTF8.GetBytes(str);
+                }
             }
 
             RestChannel channel = this.GetChannel();
