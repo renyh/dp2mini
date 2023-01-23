@@ -2070,7 +2070,7 @@ out string strError);
                 // 用户取消操作，则不做什么事情
                 return;
             }
-            int chunkSize = dlg.ChunkSize;
+            int chunkSize1 = dlg.ChunkSize;
             int times = 0;//次数
 
             // 开始干活
@@ -2101,9 +2101,15 @@ out string strError);
                 {
                     times++;//获取次数
 
+                    // 2023/1/23加：将包尺寸与对象剩余尺寸比对，谁小用小
+                    int realChunkSize = chunkSize1;
+                    if (lTotalLength != -1)
+                        realChunkSize = Math.Min(chunkSize1, (int)(lTotalLength - lStart));
+
+
                     GetResResponse response = channel.GetRes(strResPath,
                         lStart,
-                        chunkSize,
+                        realChunkSize,
                         strStyle);
                     if (response.GetResResult.Value == -1)
                     {
