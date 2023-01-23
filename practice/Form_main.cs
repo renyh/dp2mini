@@ -216,6 +216,11 @@ namespace practice
                     + "Rights:" + response.strRights + "\r\n"
                     + "UserName:" + response.strOutputUserName;
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, "Login() 出错：" + ex.Message);
+                    return;
+            }
             finally
             {
                 this._channelPool.ReturnChannel(channel);
@@ -228,9 +233,18 @@ namespace practice
             try
             {
                 LogoutResponse response = channel.Logout();
-                this.textBox_result.Text = "Result:"
-                    + response.LogoutResult.ErrorCode
-                    + response.LogoutResult.ErrorInfo;
+
+                if (response != null)
+                {
+                    this.textBox_result.Text = "Result:"
+                        + response.LogoutResult.ErrorCode
+                        + response.LogoutResult.ErrorInfo;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, "Logout() 出错：" + ex.Message);
+                return;
             }
             finally
             {

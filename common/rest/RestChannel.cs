@@ -62,7 +62,13 @@ namespace DigitalPlatform.LibraryRestClient
         public void Close()
         {
             // 调logout接口
-            this.Logout();
+            try
+            {
+                this.Logout();
+            }
+            catch (WebException ex) // 2023/1/23 增加，这里捕捉web异常，可能服务器已经访问不通了，
+            { 
+            }
         }
 
         /// <summary>
@@ -111,9 +117,22 @@ namespace DigitalPlatform.LibraryRestClient
             CookieAwareWebClient client = this.GetClient();
 
             byte[] data = new byte[0];
-            byte[] result = client.UploadData(GetRestfulApiUrl("logout"),
-                "POST",
-                data);
+            byte[] result = null;
+            //try
+            //{
+                result = client.UploadData(GetRestfulApiUrl("logout"),
+                    "POST",
+                    data);
+            //}
+            //catch (WebException ex)
+            //{
+            //    //System.Net.WebException:“远程服务器返回错误: (404) 未找到。”
+            //    return null;
+            //}
+            //catch (Exception ex)
+            //{
+            //    return null;
+            //}
 
             string strResult = Encoding.UTF8.GetString(result);
             LogoutResponse response = Deserialize<LogoutResponse>(strResult);
