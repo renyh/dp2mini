@@ -59,6 +59,18 @@ namespace practice
             this.Close();
         }
 
+        public string Ranges
+        {
+            get
+            {
+                return this.textBox_WriteRes_strRanges.Text.Trim();
+            }
+            set
+            {
+                this.textBox_WriteRes_strRanges.Text = value;
+            }
+        }
+
         public string Conent
         {
             get

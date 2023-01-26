@@ -19,6 +19,7 @@ using System.Diagnostics;
 using System.Xml;
 using DigitalPlatform.IO;
 using DigitalPlatform.Xml;
+using DigitalPlatform.Core;
 
 namespace practice
 {
@@ -1549,33 +1550,79 @@ out string strError);
             this.textBox_WriteRes_strRanges.Text = "";
             this.textBox_WriteRes_lTotalLength.Text = "";
 
+            byte[] baTotal = null;
             // 将文本转成hex
             string text = dlg.Conent;
             if (string.IsNullOrEmpty(text) == false)
             {
-                byte[] b = Encoding.UTF8.GetBytes(text);  //文本到二进制
-                this.textBox_WriteRes_baContent.Text = ByteArray.GetHexTimeStampString(b); //2转16
+                baTotal = Encoding.UTF8.GetBytes(text);  //文本到二进制
+                //this.textBox_WriteRes_baContent.Text = ByteArray.GetHexTimeStampString(b); //2转16
             }
 
             string fileName = dlg.FileName;
             if (string.IsNullOrEmpty(fileName) == false)
             {
                 FileInfo file = new FileInfo(fileName);
-                if (file.Length <= 1024 * 4)  //<=4K，则不显示二进制
+                if (file.Length <= 1024 * 100)  
                 {
                     using (FileStream s = new FileStream(fileName, FileMode.Open))
                     {
-                        byte[] bf = new byte[file.Length];
-                        s.Read(bf, 0, bf.Length);
-                        this.textBox_WriteRes_baContent.Text = ByteArray.GetHexTimeStampString(bf); //2转16
+                        baTotal = new byte[file.Length];
+                        s.Read(baTotal, 0, (int)s.Length);
+                        //this.textBox_WriteRes_baContent.Text = ByteArray.GetHexTimeStampString(bf); //2转16
                     }
                 }
                 else
                 {
-                    this.textBox_WriteRes_baContent.Text = "info:由于文件超过4K，所以此处不再显示内容，写入时会直接从文件中读取。";
+                    this.textBox_WriteRes_baContent.Text = "info:由于文件过大，所以此处不再显示内容，写入时会直接从文件中读取。";
                 }
             }
             this.textBox_WriteRes_fileName.Text = fileName;
+
+            MemoryStream stream = new MemoryStream();
+
+            byte[] chunk_contents = new byte[0];
+            // 可能会抛出异常
+            if (string.IsNullOrEmpty(dlg.Ranges) == false)
+            {
+                var rangeList = new RangeList(dlg.Ranges);
+
+                // 先把range合起来的总长度计算出来，好初始化byte[]的尺寸
+                long rangesLength = 0;
+                foreach (var one_range in rangeList)
+                {
+                    rangesLength+= one_range.lLength;
+                }
+                chunk_contents = new byte[rangesLength];
+
+                   
+                int offset = 0;
+                //long tail = 0;  // 写入到达的尾部位置
+                foreach (var one_range in rangeList)
+                {
+                    //   chunk_contents
+
+                    //chunk_contents = new byte[end_offs - (start_offs + delta) + 1];
+                    Array.Copy(baTotal, one_range.lStart,
+                        chunk_contents, offset, one_range.lLength);//, (start_offs + delta), chunk_contents, 0, chunk_contents.Length);
+
+                    //stream.Seek(one_range.lStart, SeekOrigin.Begin);
+                    //stream.Write(chunk, offset, (int)one_range.lLength);
+                    offset += (int)one_range.lLength;
+
+                    //tail = one_range.lStart + one_range.lLength;
+                }
+            }
+            else
+            {
+                Array.Copy(baTotal, chunk_contents, baTotal.Length);
+            }
+
+
+            // 把对话框的range带过来
+            this.textBox_WriteRes_strRanges.Text = dlg.Ranges;
+            if (this.textBox_WriteRes_baContent.Text=="")
+                this.textBox_WriteRes_baContent.Text = ByteArray.GetHexTimeStampString(chunk_contents); //2转16
 
         }
 
