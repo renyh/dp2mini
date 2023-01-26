@@ -1690,29 +1690,36 @@ out string strError);
             byte[] baInputTimestamp = ByteArray.GetTimeStampByteArray(strTimestamp);
 
             // 写入的内容
-            byte[] baContent = null;
+            byte[] baContent = new byte[0];
             string strContent = textBox_WriteRes_baContent.Text.Trim();
-            if (strContent.Length > 5 && strContent.Substring(0, 5) == "info:")
+            if (checkBox_WriteRes_baContent.Checked == true)
             {
-                // 文件的情况
-                string fileName = this.textBox_WriteRes_fileName.Text;
-                using (FileStream s = new FileStream(fileName, FileMode.Open))
-                {
-                    baContent = new byte[s.Length];
-                    s.Read(baContent, 0, baContent.Length);
-                }
+                baContent = null;
             }
             else
             {
-                // 界面输入的字符串
-                if (string.IsNullOrEmpty(strContent) == false)
+                if (strContent.Length > 5 && strContent.Substring(0, 5) == "info:")
                 {
-                    baContent= ByteArray.GetTimeStampByteArray(strContent);
+                    // 文件的情况
+                    string fileName = this.textBox_WriteRes_fileName.Text;
+                    using (FileStream s = new FileStream(fileName, FileMode.Open))
+                    {
+                        baContent = new byte[s.Length];
+                        s.Read(baContent, 0, baContent.Length);
+                    }
+                }
+                else
+                {
+                    // 界面输入的字符串
+                    if (string.IsNullOrEmpty(strContent) == false)
+                    {
+                        baContent = ByteArray.GetTimeStampByteArray(strContent);
 
 
-                    //byte[] b = ByteArray.GetTimeStampByteArray(strContent);
-                    //string str=Encoding.UTF8.GetString(b);
-                    //baContent=Encoding.UTF8.GetBytes(str);
+                        //byte[] b = ByteArray.GetTimeStampByteArray(strContent);
+                        //string str=Encoding.UTF8.GetString(b);
+                        //baContent=Encoding.UTF8.GetBytes(str);
+                    }
                 }
             }
 
