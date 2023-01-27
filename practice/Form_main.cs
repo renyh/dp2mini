@@ -1563,7 +1563,7 @@ out string strError);
             if (string.IsNullOrEmpty(fileName) == false)
             {
                 FileInfo file = new FileInfo(fileName);
-                if (file.Length <= 1024 * 100)  
+                if (file.Length <= 1024 * 500)  
                 {
                     using (FileStream s = new FileStream(fileName, FileMode.Open))
                     {
@@ -1582,7 +1582,7 @@ out string strError);
             MemoryStream stream = new MemoryStream();
 
             byte[] chunk_contents = new byte[0];
-            // 可能会抛出异常
+            // 设置了范围
             if (string.IsNullOrEmpty(dlg.Ranges) == false)
             {
                 var rangeList = new RangeList(dlg.Ranges);
@@ -1615,12 +1615,22 @@ out string strError);
             }
             else
             {
-                Array.Copy(baTotal, chunk_contents, baTotal.Length);
+                // 不是过大的文件，且没设范围（代表一次性的数据）
+                if (this.textBox_WriteRes_baContent.Text == "")
+                {
+                    chunk_contents = new byte[baTotal.Length];
+                    Array.Copy(baTotal, chunk_contents, baTotal.Length);
+                }
             }
-
 
             // 把对话框的range带过来
             this.textBox_WriteRes_strRanges.Text = dlg.Ranges;
+
+            // 把总长度设置上
+            if (baTotal !=null )
+                 this.textBox_WriteRes_lTotalLength.Text = baTotal.Length.ToString();
+
+            // 如果没有info:xxx的信息，则设置上十六进制
             if (this.textBox_WriteRes_baContent.Text=="")
                 this.textBox_WriteRes_baContent.Text = ByteArray.GetHexTimeStampString(chunk_contents); //2转16
 
