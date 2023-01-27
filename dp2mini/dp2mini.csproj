@@ -214,6 +214,7 @@
       <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.4\lib\net461\System.Threading.Tasks.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="System.Web" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -221,12 +222,11 @@
     <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Net.Http" />
-    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="api.cs" />
+    <Content Include="api.txt" />
     <Compile Include="core\PriceUtil.cs" />
     <Content Include="core\StringUtil1.txt" />
     <Compile Include="Database\EntityDbManager.cs" />
@@ -299,8 +299,6 @@
     <Compile Include="opeLog\OperLogLoader.cs" />
     <Compile Include="opeLog\ProgressEstimate.cs" />
     <Compile Include="opeLog\Stop.cs" />
-    <Content Include="io\DateTimeUtil.txt" />
-    <Compile Include="io\PathUtil.cs" />
     <Compile Include="LoginForm.cs">
       <SubType>Form</SubType>
     </Compile>

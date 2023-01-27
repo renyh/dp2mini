@@ -46,6 +46,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Form_WriteRes_Chunk.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form_WriteRes_Chunk.Designer.cs">
+      <DependentUpon>Form_WriteRes_Chunk.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form_editBaContent.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form_editBaContent.Designer.cs">
+      <DependentUpon>Form_editBaContent.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form_main.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -97,6 +109,12 @@
       <DependentUpon>Form_cancel4.cs</DependentUpon>
     </Compile>
     <Compile Include="worker.cs" />
+    <EmbeddedResource Include="Form_WriteRes_Chunk.resx">
+      <DependentUpon>Form_WriteRes_Chunk.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form_editBaContent.resx">
+      <DependentUpon>Form_editBaContent.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form_main.resx">
       <DependentUpon>Form_main.cs</DependentUpon>
     </EmbeddedResource>
