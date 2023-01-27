@@ -1723,20 +1723,23 @@ out string strError);
             //}
 
             string strTotalLength = textBox_WriteRes_lTotalLength.Text.Trim();
-            if (string.IsNullOrEmpty(strTotalLength) == true)
-            {
-                MessageBox.Show(this, "lTotalLength不能为空。");
-                return;
-            }
+            //if (string.IsNullOrEmpty(strTotalLength) == true)
+            //{
+            //    MessageBox.Show(this, "lTotalLength不能为空。");
+            //    return;
+            //}
             long lTotalLength = 0;
-            try
+            if (string.IsNullOrEmpty(strTotalLength) == false)
             {
-                lTotalLength = Convert.ToInt64(strTotalLength);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(this, "lTotalLength格式不合法，须为数值型。");
-                return;
+                try
+                {
+                    lTotalLength = Convert.ToInt64(strTotalLength);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(this, "lTotalLength格式不合法，须为数值型。");
+                    return;
+                }
             }
 
             string strStyle = textBox_WriteRes_strStyle.Text.Trim();// 可输入ignorechecktimestamp忽略时间戳
