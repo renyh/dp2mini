@@ -423,23 +423,13 @@ public long SearchItem(string strItemDbName,
 
         #region 获取书目
 
-        private void button_GetBiblioInfo_Click(object sender, EventArgs e)
-        {
-            RestChannel channel = this.GetChannel();
-            try
-            {
-                GetBiblioInfoResponse response = channel.GetBiblioInfo(this.GetBiblioInfo_textBox_BiblioRecPath.Text,
-                    this.GetBiblioInfo_textBox_BiblioType.Text);
 
-                this.textBox_result.Text = "Result:" + response.GetBiblioInfoResult.ErrorCode
-                    + response.GetBiblioInfoResult.ErrorInfo + "\r\n"
-                    + response.strBiblio + "\r\n";
-                //+ response.
-            }
-            finally
-            {
-                this._channelPool.ReturnChannel(channel);
-            }
+        private void button_help_GetBiblioInfos_Click(object sender, EventArgs e)
+        {
+
+            // GetBiblioInfos API 帮助文档
+            Process.Start("https://jihulab.com/DigitalPlatform/dp2doc/-/issues/39#note_1998508");
+
         }
 
         // 常用函数
@@ -472,10 +462,20 @@ public long SearchItem(string strItemDbName,
 
                 string strTimestamp = ByteArray.GetHexTimeStampString(response.baTimestamp);
 
-                this.textBox_result.Text = "Result:" + response.GetBiblioInfosResult.ErrorCode
-                    + response.GetBiblioInfosResult.ErrorInfo + "\r\n"
+                this.textBox_result.Text = "ErrorCode:" + response.GetBiblioInfosResult.ErrorCode+"\r\n'"
+                    +"ErrorInfo:"+response.GetBiblioInfosResult.ErrorInfo + "\r\n"
                     + "timestamp:" + strTimestamp + "\r\n"
-                + strResult;
+                    + strResult;
+
+                if (response.GetBiblioInfosResult.Value == -1)
+                {
+                    MessageBox.Show(this, "GetBiblioInfos()出错：" + response.GetBiblioInfosResult.ErrorInfo);
+                    return;
+                }
+                else
+                {
+                    MessageBox.Show(this, "GetBiblioInfos()成功");
+                }
 
                 //+ response.
             }
@@ -484,6 +484,28 @@ public long SearchItem(string strItemDbName,
                 this._channelPool.ReturnChannel(channel);
             }
         }
+
+
+        private void button_GetBiblioInfo_Click(object sender, EventArgs e)
+        {
+            RestChannel channel = this.GetChannel();
+            try
+            {
+                GetBiblioInfoResponse response = channel.GetBiblioInfo(this.GetBiblioInfo_textBox_BiblioRecPath.Text,
+                    this.GetBiblioInfo_textBox_BiblioType.Text);
+
+                this.textBox_result.Text = "Result:" + response.GetBiblioInfoResult.ErrorCode
+                    + response.GetBiblioInfoResult.ErrorInfo + "\r\n"
+                    + response.strBiblio + "\r\n";
+                //+ response.
+            }
+            finally
+            {
+                this._channelPool.ReturnChannel(channel);
+            }
+        }
+
+
 
         #endregion
 
@@ -574,6 +596,14 @@ public long SearchItem(string strItemDbName,
         #endregion
 
         #region SetBiblioInfo
+
+        // SetBiblioInfo帮助
+        private void button_help_SetBiblioInfo_Click(object sender, EventArgs e)
+        {
+            // SetBiblioInfo API 帮助文档
+            Process.Start("https://jihulab.com/DigitalPlatform/dp2doc/-/issues/39#note_1975295");
+
+        }
 
         // 创建书目
         private void button_setBiblioInfo_Click(object sender, EventArgs e)
@@ -1949,6 +1979,23 @@ out string strError);
             this.textBox_GetRes_targetFile.Text = dlg.FileName;
         }
 
+        // 根据checkbox决定目标文件是否可用
+        private void checkBox_saveRes2File_CheckedChanged(object sender, EventArgs e)
+        {
+            if (this.checkBox_saveRes2File.Checked == true)
+            {
+                this.textBox_GetRes_targetFile.Enabled = true;
+                this.button_GetRes_getFile.Enabled = true;
+            }
+            else
+            {
+                this.textBox_GetRes_targetFile.Enabled = false;
+                this.button_GetRes_getFile.Enabled = false;
+
+                this.textBox_GetRes_targetFile.Text = "";
+            }
+        }
+
         // 获取资源
         private void button_GetRes_Click(object sender, EventArgs e)
         {
@@ -2247,7 +2294,7 @@ out string strError);
         // GetRes help
         private void button_GetRes_help_Click(object sender, EventArgs e)
         {
-            // WriteRes API 帮助文档
+            // GetRes API 帮助文档
             Process.Start("https://jihulab.com/DigitalPlatform/dp2doc/-/issues/39#note_1982698");
 
         }
@@ -2304,26 +2351,136 @@ out string strError);
 
 
 
+
+
+
+
         #endregion
 
-        // 根据checkbox决定目标文件是否可用
-        private void checkBox_saveRes2File_CheckedChanged(object sender, EventArgs e)
-        {
-            if (this.checkBox_saveRes2File.Checked == true)
-            {
-                this.textBox_GetRes_targetFile.Enabled = true;
-                this.button_GetRes_getFile.Enabled = true;
-            }
-            else
-            {
-                this.textBox_GetRes_targetFile.Enabled = false;
-                this.button_GetRes_getFile.Enabled = false;
 
-                this.textBox_GetRes_targetFile.Text = "";
+        #region SetReaderInfo
+        
+        // SetReaderInfo
+        private void button_SetReaderInfo_Click(object sender, EventArgs e)
+        {
+            string strError = "";
+            string strAction = this.textBox_SetReaderInfo_strAction.Text;
+            string strRecPath = this.textBox_SetReaderInfo_strRecPath.Text;
+            if (string.IsNullOrEmpty(strRecPath) == true)
+            {
+                MessageBox.Show(this, "strRecPath参数不能为空");
+                return;
+            }
+
+            string strNewXml = this.textBox_SetReaderInfo_strNewXml.Text;
+            string strOldXml = this.textBox_SetReaderInfo_strOldXml.Text;
+
+            string strTimestamp = this.textBox_SetReaderInfo_baOldTimestamp.Text;
+            byte[] baOldTimestamp = ByteArray.GetTimeStampByteArray(strTimestamp);
+
+            RestChannel channel = this.GetChannel();
+            try
+            {
+                long lRet = channel.SetReaderInfo(
+                    strAction,
+                    strRecPath,
+                    strNewXml,
+                    strOldXml,
+                    baOldTimestamp,
+                    out string strExistingXml,
+                    out string strSavedXml,
+                    out string strSavedRecPath,
+                    out byte[] baNewTimestamp,
+                    out strError);
+                if (lRet == -1)
+                {
+                    this.textBox_result.Text = strError;
+                    MessageBox.Show(this, strError);
+                    //return;
+                }
+
+                this.textBox_result.Text = "strSavedRecPath=" + strSavedRecPath + "\r\n"
+                    + "baNewTimestamp=" + ByteArray.GetHexTimeStampString(baNewTimestamp) + "\r\n"
+                    + "strError=" + strError  +"\r\n"
+                    + "lRet=" + lRet.ToString()+"\r\n"
+                    + "strSavedXml="+ strSavedXml +"\r\n\r\n"
+                    + "strExistingXml=" + strExistingXml;
+
+            }
+            finally
+            {
+                this._channelPool.ReturnChannel(channel);
             }
         }
 
 
+        // SetReaderInfo 帮助
+        private void button_help_SetReaderInfo_Click(object sender, EventArgs e)
+        {
+            Process.Start("https://jihulab.com/DigitalPlatform/dp2doc/-/issues/39#note_1998595");
+        }
+
+
+        #endregion
+
+
+        #region GetReaderInfo
+
+        private void button_GetReaderInfo_Click(object sender, EventArgs e)
+        {
+            string strBarcode = this.textBox_GetReaderInfo_strBarcode.Text;
+            if (string.IsNullOrEmpty(strBarcode) == true)
+            {
+                MessageBox.Show(this, "strBarcode参数不能为空。");
+                return;
+            }
+
+            RestChannel channel = this.GetChannel();
+            try
+            {
+
+
+                string strResultTypeList = this.textBox_GetReaderInfo_strResultTypeList.Text;
+               // string[] formats = strformats.Split(new char[] { ',' });
+
+                int nRet= channel.GetReaderInfo(strBarcode,
+                    strResultTypeList,
+                    out string[] results,
+                    out string strRecPath,
+                    out string strError);
+                if (nRet == -1)
+                {
+                    MessageBox.Show(this, "GetBiblioInfos()出错：" + strError);
+                    return;
+                }
+                else
+                {
+                    MessageBox.Show(this, "GetBiblioInfos()成功");
+                }
+
+                string strResult = "result:\r\n";
+                if (results != null && results.Length > 0)
+                {
+                    foreach (string s in results)
+                    {
+                        strResult += s + "\r\n";
+                    }
+                }
+
+                this.textBox_result.Text =strResult;
+            }
+            finally
+            {
+                this._channelPool.ReturnChannel(channel);
+            }
+        }
+
+        private void button_help_GetReaderInfo_Click(object sender, EventArgs e)
+        {
+            Process.Start("https://jihulab.com/DigitalPlatform/dp2doc/-/issues/39#note_1998731");
+        }
+
+        #endregion
     }
 
 

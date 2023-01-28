@@ -196,6 +196,26 @@
             this.textBox_SetBiblioInfo_strComment = new System.Windows.Forms.TextBox();
             this.button_help_SetBiblioInfo = new System.Windows.Forms.Button();
             this.button_help_GetBiblioInfos = new System.Windows.Forms.Button();
+            this.tabPage_GetReaderInfo = new System.Windows.Forms.TabPage();
+            this.tabPage_SetReaderInfo = new System.Windows.Forms.TabPage();
+            this.label24 = new System.Windows.Forms.Label();
+            this.textBox_SetReaderInfo_strOldXml = new System.Windows.Forms.TextBox();
+            this.label60 = new System.Windows.Forms.Label();
+            this.textBox_SetReaderInfo_baOldTimestamp = new System.Windows.Forms.TextBox();
+            this.label62 = new System.Windows.Forms.Label();
+            this.textBox_SetReaderInfo_strNewXml = new System.Windows.Forms.TextBox();
+            this.label63 = new System.Windows.Forms.Label();
+            this.textBox_SetReaderInfo_strAction = new System.Windows.Forms.TextBox();
+            this.label64 = new System.Windows.Forms.Label();
+            this.textBox_SetReaderInfo_strRecPath = new System.Windows.Forms.TextBox();
+            this.button_SetReaderInfo = new System.Windows.Forms.Button();
+            this.button_help_SetReaderInfo = new System.Windows.Forms.Button();
+            this.button_help_GetReaderInfo = new System.Windows.Forms.Button();
+            this.button_GetReaderInfo = new System.Windows.Forms.Button();
+            this.textBox_GetReaderInfo_strResultTypeList = new System.Windows.Forms.TextBox();
+            this.textBox_GetReaderInfo_strBarcode = new System.Windows.Forms.TextBox();
+            this.label25 = new System.Windows.Forms.Label();
+            this.label61 = new System.Windows.Forms.Label();
             this.tabPage_SearchBiblio.SuspendLayout();
             this.tabPage_Server.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -215,6 +235,8 @@
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
+            this.tabPage_GetReaderInfo.SuspendLayout();
+            this.tabPage_SetReaderInfo.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabPage_SearchBiblio
@@ -241,7 +263,7 @@
             this.tabPage_SearchBiblio.Location = new System.Drawing.Point(10, 46);
             this.tabPage_SearchBiblio.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.tabPage_SearchBiblio.Name = "tabPage_SearchBiblio";
-            this.tabPage_SearchBiblio.Size = new System.Drawing.Size(1358, 738);
+            this.tabPage_SearchBiblio.Size = new System.Drawing.Size(1123, 641);
             this.tabPage_SearchBiblio.TabIndex = 3;
             this.tabPage_SearchBiblio.Text = "SearchBiblio";
             this.tabPage_SearchBiblio.UseVisualStyleBackColor = true;
@@ -443,7 +465,7 @@
             this.textBox_result.Name = "textBox_result";
             this.textBox_result.ReadOnly = true;
             this.textBox_result.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.textBox_result.Size = new System.Drawing.Size(1141, 68);
+            this.textBox_result.Size = new System.Drawing.Size(1283, 80);
             this.textBox_result.TabIndex = 20;
             // 
             // tabPage_Server
@@ -458,7 +480,7 @@
             this.tabPage_Server.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.tabPage_Server.Name = "tabPage_Server";
             this.tabPage_Server.Padding = new System.Windows.Forms.Padding(5, 3, 5, 3);
-            this.tabPage_Server.Size = new System.Drawing.Size(1358, 738);
+            this.tabPage_Server.Size = new System.Drawing.Size(1123, 641);
             this.tabPage_Server.TabIndex = 0;
             this.tabPage_Server.Text = "服务器信息";
             this.tabPage_Server.UseVisualStyleBackColor = true;
@@ -601,6 +623,8 @@
             this.tabControl1.Controls.Add(this.tabPage_GetRecord);
             this.tabControl1.Controls.Add(this.tabPage_SetBiblioInfo);
             this.tabControl1.Controls.Add(this.tabPage_GetBiblioInfos);
+            this.tabControl1.Controls.Add(this.tabPage_SetReaderInfo);
+            this.tabControl1.Controls.Add(this.tabPage_GetReaderInfo);
             this.tabControl1.Controls.Add(this.tabPage_SearchBiblio);
             this.tabControl1.Controls.Add(this.tabPage_SearchItem);
             this.tabControl1.Controls.Add(this.tabPage_GetSearchResult);
@@ -611,7 +635,7 @@
             this.tabControl1.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(1143, 697);
+            this.tabControl1.Size = new System.Drawing.Size(1285, 793);
             this.tabControl1.TabIndex = 6;
             // 
             // tabPage_WriteRes
@@ -643,7 +667,7 @@
             this.tabPage_WriteRes.Location = new System.Drawing.Point(10, 46);
             this.tabPage_WriteRes.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.tabPage_WriteRes.Name = "tabPage_WriteRes";
-            this.tabPage_WriteRes.Size = new System.Drawing.Size(1358, 738);
+            this.tabPage_WriteRes.Size = new System.Drawing.Size(1123, 641);
             this.tabPage_WriteRes.TabIndex = 13;
             this.tabPage_WriteRes.Text = "WriteRes";
             this.tabPage_WriteRes.UseVisualStyleBackColor = true;
@@ -664,7 +688,7 @@
             this.button_WriteRes_createMetadata.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.button_WriteRes_createMetadata.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
             this.button_WriteRes_createMetadata.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button_WriteRes_createMetadata.Location = new System.Drawing.Point(1116, 193);
+            this.button_WriteRes_createMetadata.Location = new System.Drawing.Point(881, 193);
             this.button_WriteRes_createMetadata.Name = "button_WriteRes_createMetadata";
             this.button_WriteRes_createMetadata.Size = new System.Drawing.Size(239, 74);
             this.button_WriteRes_createMetadata.TabIndex = 55;
@@ -677,7 +701,7 @@
             this.button_calculate_size.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.button_calculate_size.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
             this.button_calculate_size.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button_calculate_size.Location = new System.Drawing.Point(1116, 80);
+            this.button_calculate_size.Location = new System.Drawing.Point(881, 80);
             this.button_calculate_size.Name = "button_calculate_size";
             this.button_calculate_size.Size = new System.Drawing.Size(239, 90);
             this.button_calculate_size.TabIndex = 54;
@@ -689,11 +713,11 @@
             // 
             this.textBox_WriteRes_fileName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox_WriteRes_fileName.Location = new System.Drawing.Point(309, 539);
+            this.textBox_WriteRes_fileName.Location = new System.Drawing.Point(309, 442);
             this.textBox_WriteRes_fileName.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.textBox_WriteRes_fileName.Name = "textBox_WriteRes_fileName";
             this.textBox_WriteRes_fileName.ReadOnly = true;
-            this.textBox_WriteRes_fileName.Size = new System.Drawing.Size(799, 38);
+            this.textBox_WriteRes_fileName.Size = new System.Drawing.Size(564, 38);
             this.textBox_WriteRes_fileName.TabIndex = 53;
             // 
             // checkBox_WriteRes_redoByNewTimestamp
@@ -701,7 +725,7 @@
             this.checkBox_WriteRes_redoByNewTimestamp.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.checkBox_WriteRes_redoByNewTimestamp.AutoSize = true;
             this.checkBox_WriteRes_redoByNewTimestamp.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
-            this.checkBox_WriteRes_redoByNewTimestamp.Location = new System.Drawing.Point(309, 600);
+            this.checkBox_WriteRes_redoByNewTimestamp.Location = new System.Drawing.Point(309, 503);
             this.checkBox_WriteRes_redoByNewTimestamp.Name = "checkBox_WriteRes_redoByNewTimestamp";
             this.checkBox_WriteRes_redoByNewTimestamp.Size = new System.Drawing.Size(530, 31);
             this.checkBox_WriteRes_redoByNewTimestamp.TabIndex = 45;
@@ -713,7 +737,7 @@
             this.button_WriteRes_createTimestamp.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.button_WriteRes_createTimestamp.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
             this.button_WriteRes_createTimestamp.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button_WriteRes_createTimestamp.Location = new System.Drawing.Point(1116, 324);
+            this.button_WriteRes_createTimestamp.Location = new System.Drawing.Point(881, 324);
             this.button_WriteRes_createTimestamp.Name = "button_WriteRes_createTimestamp";
             this.button_WriteRes_createTimestamp.Size = new System.Drawing.Size(199, 50);
             this.button_WriteRes_createTimestamp.TabIndex = 52;
@@ -726,7 +750,7 @@
             this.button_editContent.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.button_editContent.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
             this.button_editContent.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button_editContent.Location = new System.Drawing.Point(1116, 460);
+            this.button_editContent.Location = new System.Drawing.Point(881, 363);
             this.button_editContent.Name = "button_editContent";
             this.button_editContent.Size = new System.Drawing.Size(199, 71);
             this.button_editContent.TabIndex = 51;
@@ -751,7 +775,7 @@
             this.textBox_WriteRes_strRanges.Location = new System.Drawing.Point(309, 80);
             this.textBox_WriteRes_strRanges.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.textBox_WriteRes_strRanges.Name = "textBox_WriteRes_strRanges";
-            this.textBox_WriteRes_strRanges.Size = new System.Drawing.Size(799, 38);
+            this.textBox_WriteRes_strRanges.Size = new System.Drawing.Size(564, 38);
             this.textBox_WriteRes_strRanges.TabIndex = 49;
             // 
             // button_writeObjectByChunk
@@ -759,7 +783,7 @@
             this.button_writeObjectByChunk.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.button_writeObjectByChunk.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
             this.button_writeObjectByChunk.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button_writeObjectByChunk.Location = new System.Drawing.Point(571, 651);
+            this.button_writeObjectByChunk.Location = new System.Drawing.Point(571, 554);
             this.button_writeObjectByChunk.Name = "button_writeObjectByChunk";
             this.button_writeObjectByChunk.Size = new System.Drawing.Size(218, 70);
             this.button_writeObjectByChunk.TabIndex = 37;
@@ -774,7 +798,7 @@
             this.textBox_WriteRes_lTotalLength.Location = new System.Drawing.Point(309, 132);
             this.textBox_WriteRes_lTotalLength.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.textBox_WriteRes_lTotalLength.Name = "textBox_WriteRes_lTotalLength";
-            this.textBox_WriteRes_lTotalLength.Size = new System.Drawing.Size(799, 38);
+            this.textBox_WriteRes_lTotalLength.Size = new System.Drawing.Size(564, 38);
             this.textBox_WriteRes_lTotalLength.TabIndex = 50;
             // 
             // label55
@@ -791,7 +815,7 @@
             // 
             this.button_WriteRes.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.button_WriteRes.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button_WriteRes.Location = new System.Drawing.Point(309, 651);
+            this.button_WriteRes.Location = new System.Drawing.Point(309, 554);
             this.button_WriteRes.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.button_WriteRes.Name = "button_WriteRes";
             this.button_WriteRes.Size = new System.Drawing.Size(239, 70);
@@ -847,7 +871,7 @@
             this.textBox_WriteRes_strStyle.Location = new System.Drawing.Point(309, 278);
             this.textBox_WriteRes_strStyle.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.textBox_WriteRes_strStyle.Name = "textBox_WriteRes_strStyle";
-            this.textBox_WriteRes_strStyle.Size = new System.Drawing.Size(799, 38);
+            this.textBox_WriteRes_strStyle.Size = new System.Drawing.Size(564, 38);
             this.textBox_WriteRes_strStyle.TabIndex = 10;
             // 
             // textBox_WriteRes_strMetadata
@@ -858,7 +882,7 @@
             this.textBox_WriteRes_strMetadata.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.textBox_WriteRes_strMetadata.Multiline = true;
             this.textBox_WriteRes_strMetadata.Name = "textBox_WriteRes_strMetadata";
-            this.textBox_WriteRes_strMetadata.Size = new System.Drawing.Size(799, 77);
+            this.textBox_WriteRes_strMetadata.Size = new System.Drawing.Size(564, 77);
             this.textBox_WriteRes_strMetadata.TabIndex = 11;
             // 
             // textBox_WriteRes_baInputTimestamp
@@ -868,7 +892,7 @@
             this.textBox_WriteRes_baInputTimestamp.Location = new System.Drawing.Point(309, 330);
             this.textBox_WriteRes_baInputTimestamp.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.textBox_WriteRes_baInputTimestamp.Name = "textBox_WriteRes_baInputTimestamp";
-            this.textBox_WriteRes_baInputTimestamp.Size = new System.Drawing.Size(799, 38);
+            this.textBox_WriteRes_baInputTimestamp.Size = new System.Drawing.Size(564, 38);
             this.textBox_WriteRes_baInputTimestamp.TabIndex = 12;
             // 
             // label58
@@ -892,7 +916,7 @@
             this.textBox_WriteRes_baContent.Name = "textBox_WriteRes_baContent";
             this.textBox_WriteRes_baContent.ReadOnly = true;
             this.textBox_WriteRes_baContent.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBox_WriteRes_baContent.Size = new System.Drawing.Size(799, 155);
+            this.textBox_WriteRes_baContent.Size = new System.Drawing.Size(564, 58);
             this.textBox_WriteRes_baContent.TabIndex = 13;
             // 
             // label59
@@ -912,7 +936,7 @@
             this.textBox_WriteRes_strResPath.Location = new System.Drawing.Point(309, 20);
             this.textBox_WriteRes_strResPath.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.textBox_WriteRes_strResPath.Name = "textBox_WriteRes_strResPath";
-            this.textBox_WriteRes_strResPath.Size = new System.Drawing.Size(799, 38);
+            this.textBox_WriteRes_strResPath.Size = new System.Drawing.Size(564, 38);
             this.textBox_WriteRes_strResPath.TabIndex = 7;
             // 
             // tabPage_GetRes
@@ -935,7 +959,7 @@
             this.tabPage_GetRes.Location = new System.Drawing.Point(10, 46);
             this.tabPage_GetRes.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.tabPage_GetRes.Name = "tabPage_GetRes";
-            this.tabPage_GetRes.Size = new System.Drawing.Size(1358, 738);
+            this.tabPage_GetRes.Size = new System.Drawing.Size(1123, 641);
             this.tabPage_GetRes.TabIndex = 11;
             this.tabPage_GetRes.Text = "GetRes";
             this.tabPage_GetRes.UseVisualStyleBackColor = true;
@@ -1170,7 +1194,7 @@
             this.tabPage_SearchItem.Controls.Add(this.label41);
             this.tabPage_SearchItem.Location = new System.Drawing.Point(10, 46);
             this.tabPage_SearchItem.Name = "tabPage_SearchItem";
-            this.tabPage_SearchItem.Size = new System.Drawing.Size(1358, 738);
+            this.tabPage_SearchItem.Size = new System.Drawing.Size(1123, 641);
             this.tabPage_SearchItem.TabIndex = 9;
             this.tabPage_SearchItem.Text = "SearchItem";
             this.tabPage_SearchItem.UseVisualStyleBackColor = true;
@@ -1356,7 +1380,7 @@
             this.tabPage_GetSearchResult.Location = new System.Drawing.Point(10, 46);
             this.tabPage_GetSearchResult.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.tabPage_GetSearchResult.Name = "tabPage_GetSearchResult";
-            this.tabPage_GetSearchResult.Size = new System.Drawing.Size(1358, 738);
+            this.tabPage_GetSearchResult.Size = new System.Drawing.Size(1123, 641);
             this.tabPage_GetSearchResult.TabIndex = 4;
             this.tabPage_GetSearchResult.Text = "GetSearchResult";
             this.tabPage_GetSearchResult.UseVisualStyleBackColor = true;
@@ -1457,7 +1481,7 @@
             this.tabPage_GetBiblioInfo.Location = new System.Drawing.Point(10, 46);
             this.tabPage_GetBiblioInfo.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.tabPage_GetBiblioInfo.Name = "tabPage_GetBiblioInfo";
-            this.tabPage_GetBiblioInfo.Size = new System.Drawing.Size(1358, 738);
+            this.tabPage_GetBiblioInfo.Size = new System.Drawing.Size(1123, 641);
             this.tabPage_GetBiblioInfo.TabIndex = 5;
             this.tabPage_GetBiblioInfo.Text = "GetBiblioInfo";
             this.tabPage_GetBiblioInfo.UseVisualStyleBackColor = true;
@@ -1533,14 +1557,14 @@
             this.tabPage_GetBiblioInfos.Location = new System.Drawing.Point(10, 46);
             this.tabPage_GetBiblioInfos.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.tabPage_GetBiblioInfos.Name = "tabPage_GetBiblioInfos";
-            this.tabPage_GetBiblioInfos.Size = new System.Drawing.Size(1123, 641);
+            this.tabPage_GetBiblioInfos.Size = new System.Drawing.Size(1265, 737);
             this.tabPage_GetBiblioInfos.TabIndex = 6;
             this.tabPage_GetBiblioInfos.Text = "GetBiblioInfos";
             this.tabPage_GetBiblioInfos.UseVisualStyleBackColor = true;
             // 
             // button_GetBiblioInfos
             // 
-            this.button_GetBiblioInfos.Location = new System.Drawing.Point(319, 143);
+            this.button_GetBiblioInfos.Location = new System.Drawing.Point(324, 164);
             this.button_GetBiblioInfos.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.button_GetBiblioInfos.Name = "button_GetBiblioInfos";
             this.button_GetBiblioInfos.Size = new System.Drawing.Size(277, 62);
@@ -1552,24 +1576,24 @@
             // 
             // textBox_GetBiblioInfos_formats
             // 
-            this.textBox_GetBiblioInfos_formats.Location = new System.Drawing.Point(319, 76);
+            this.textBox_GetBiblioInfos_formats.Location = new System.Drawing.Point(324, 103);
             this.textBox_GetBiblioInfos_formats.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.textBox_GetBiblioInfos_formats.Name = "textBox_GetBiblioInfos_formats";
-            this.textBox_GetBiblioInfos_formats.Size = new System.Drawing.Size(382, 38);
+            this.textBox_GetBiblioInfos_formats.Size = new System.Drawing.Size(660, 38);
             this.textBox_GetBiblioInfos_formats.TabIndex = 49;
             // 
             // textBox_GetBiblioInfos_strBiblioRecPath
             // 
-            this.textBox_GetBiblioInfos_strBiblioRecPath.Location = new System.Drawing.Point(319, 24);
+            this.textBox_GetBiblioInfos_strBiblioRecPath.Location = new System.Drawing.Point(324, 39);
             this.textBox_GetBiblioInfos_strBiblioRecPath.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.textBox_GetBiblioInfos_strBiblioRecPath.Name = "textBox_GetBiblioInfos_strBiblioRecPath";
-            this.textBox_GetBiblioInfos_strBiblioRecPath.Size = new System.Drawing.Size(382, 38);
+            this.textBox_GetBiblioInfos_strBiblioRecPath.Size = new System.Drawing.Size(660, 38);
             this.textBox_GetBiblioInfos_strBiblioRecPath.TabIndex = 47;
             // 
             // label17
             // 
             this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(199, 76);
+            this.label17.Location = new System.Drawing.Point(204, 109);
             this.label17.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.label17.Name = "label17";
             this.label17.Size = new System.Drawing.Size(110, 27);
@@ -1579,7 +1603,7 @@
             // label18
             // 
             this.label18.AutoSize = true;
-            this.label18.Location = new System.Drawing.Point(73, 24);
+            this.label18.Location = new System.Drawing.Point(78, 45);
             this.label18.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.label18.Name = "label18";
             this.label18.Size = new System.Drawing.Size(236, 27);
@@ -1600,7 +1624,7 @@
             this.tabPage_Reservation.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.tabPage_Reservation.Name = "tabPage_Reservation";
             this.tabPage_Reservation.Padding = new System.Windows.Forms.Padding(5, 4, 5, 4);
-            this.tabPage_Reservation.Size = new System.Drawing.Size(1358, 738);
+            this.tabPage_Reservation.Size = new System.Drawing.Size(1123, 641);
             this.tabPage_Reservation.TabIndex = 7;
             this.tabPage_Reservation.Text = "Reservation";
             // 
@@ -1697,7 +1721,7 @@
             this.tabPage_SetBiblioInfo.Controls.Add(this.button_setBiblioInfo);
             this.tabPage_SetBiblioInfo.Location = new System.Drawing.Point(10, 46);
             this.tabPage_SetBiblioInfo.Name = "tabPage_SetBiblioInfo";
-            this.tabPage_SetBiblioInfo.Size = new System.Drawing.Size(1123, 641);
+            this.tabPage_SetBiblioInfo.Size = new System.Drawing.Size(1265, 737);
             this.tabPage_SetBiblioInfo.TabIndex = 8;
             this.tabPage_SetBiblioInfo.Text = "SetBiblioInfo";
             this.tabPage_SetBiblioInfo.UseVisualStyleBackColor = true;
@@ -1719,7 +1743,7 @@
             this.textBox_SetBiblioInfo_strStyle.Location = new System.Drawing.Point(318, 345);
             this.textBox_SetBiblioInfo_strStyle.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.textBox_SetBiblioInfo_strStyle.Name = "textBox_SetBiblioInfo_strStyle";
-            this.textBox_SetBiblioInfo_strStyle.Size = new System.Drawing.Size(777, 38);
+            this.textBox_SetBiblioInfo_strStyle.Size = new System.Drawing.Size(898, 38);
             this.textBox_SetBiblioInfo_strStyle.TabIndex = 52;
             // 
             // label31
@@ -1739,7 +1763,7 @@
             this.textBox_SetBiblioInfo_baTimestamp.Location = new System.Drawing.Point(318, 212);
             this.textBox_SetBiblioInfo_baTimestamp.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.textBox_SetBiblioInfo_baTimestamp.Name = "textBox_SetBiblioInfo_baTimestamp";
-            this.textBox_SetBiblioInfo_baTimestamp.Size = new System.Drawing.Size(777, 38);
+            this.textBox_SetBiblioInfo_baTimestamp.Size = new System.Drawing.Size(898, 38);
             this.textBox_SetBiblioInfo_baTimestamp.TabIndex = 50;
             // 
             // label29
@@ -1762,7 +1786,7 @@
             this.textBox_SetBiblioInfo_strBiblio.Multiline = true;
             this.textBox_SetBiblioInfo_strBiblio.Name = "textBox_SetBiblioInfo_strBiblio";
             this.textBox_SetBiblioInfo_strBiblio.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.textBox_SetBiblioInfo_strBiblio.Size = new System.Drawing.Size(778, 111);
+            this.textBox_SetBiblioInfo_strBiblio.Size = new System.Drawing.Size(899, 207);
             this.textBox_SetBiblioInfo_strBiblio.TabIndex = 48;
             // 
             // label26
@@ -1782,7 +1806,7 @@
             this.textBox_SetBiblioInfo_strBiblioType.Location = new System.Drawing.Point(318, 162);
             this.textBox_SetBiblioInfo_strBiblioType.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.textBox_SetBiblioInfo_strBiblioType.Name = "textBox_SetBiblioInfo_strBiblioType";
-            this.textBox_SetBiblioInfo_strBiblioType.Size = new System.Drawing.Size(777, 38);
+            this.textBox_SetBiblioInfo_strBiblioType.Size = new System.Drawing.Size(898, 38);
             this.textBox_SetBiblioInfo_strBiblioType.TabIndex = 46;
             // 
             // label27
@@ -1802,7 +1826,7 @@
             this.textBox_SetBiblioInfo_strAction.Location = new System.Drawing.Point(318, 42);
             this.textBox_SetBiblioInfo_strAction.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.textBox_SetBiblioInfo_strAction.Name = "textBox_SetBiblioInfo_strAction";
-            this.textBox_SetBiblioInfo_strAction.Size = new System.Drawing.Size(777, 38);
+            this.textBox_SetBiblioInfo_strAction.Size = new System.Drawing.Size(898, 38);
             this.textBox_SetBiblioInfo_strAction.TabIndex = 44;
             // 
             // label28
@@ -1822,13 +1846,13 @@
             this.textBox_SetBiblioInfo_strBiblioRecPath.Location = new System.Drawing.Point(318, 109);
             this.textBox_SetBiblioInfo_strBiblioRecPath.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.textBox_SetBiblioInfo_strBiblioRecPath.Name = "textBox_SetBiblioInfo_strBiblioRecPath";
-            this.textBox_SetBiblioInfo_strBiblioRecPath.Size = new System.Drawing.Size(777, 38);
+            this.textBox_SetBiblioInfo_strBiblioRecPath.Size = new System.Drawing.Size(898, 38);
             this.textBox_SetBiblioInfo_strBiblioRecPath.TabIndex = 42;
             // 
             // button_setBiblioInfo
             // 
             this.button_setBiblioInfo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.button_setBiblioInfo.Location = new System.Drawing.Point(258, 532);
+            this.button_setBiblioInfo.Location = new System.Drawing.Point(318, 632);
             this.button_setBiblioInfo.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.button_setBiblioInfo.Name = "button_setBiblioInfo";
             this.button_setBiblioInfo.Size = new System.Drawing.Size(223, 56);
@@ -1855,7 +1879,7 @@
             this.tabPage_SearchCharging.Controls.Add(this.label44);
             this.tabPage_SearchCharging.Location = new System.Drawing.Point(10, 46);
             this.tabPage_SearchCharging.Name = "tabPage_SearchCharging";
-            this.tabPage_SearchCharging.Size = new System.Drawing.Size(1358, 738);
+            this.tabPage_SearchCharging.Size = new System.Drawing.Size(1123, 641);
             this.tabPage_SearchCharging.TabIndex = 10;
             this.tabPage_SearchCharging.Text = "SearchCharging";
             this.tabPage_SearchCharging.UseVisualStyleBackColor = true;
@@ -1989,7 +2013,7 @@
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Padding = new System.Windows.Forms.Padding(9, 3, 0, 3);
-            this.menuStrip1.Size = new System.Drawing.Size(1169, 45);
+            this.menuStrip1.Size = new System.Drawing.Size(1311, 45);
             this.menuStrip1.TabIndex = 8;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -2033,8 +2057,8 @@
             // 
             this.splitContainer1.Panel2.BackColor = System.Drawing.SystemColors.Info;
             this.splitContainer1.Panel2.Controls.Add(this.textBox_result);
-            this.splitContainer1.Size = new System.Drawing.Size(1169, 806);
-            this.splitContainer1.SplitterDistance = 712;
+            this.splitContainer1.Size = new System.Drawing.Size(1311, 914);
+            this.splitContainer1.SplitterDistance = 808;
             this.splitContainer1.TabIndex = 21;
             // 
             // 处理MARC字段ToolStripMenuItem
@@ -2061,7 +2085,7 @@
             this.textBox_SetBiblioInfo_strComment.Location = new System.Drawing.Point(319, 272);
             this.textBox_SetBiblioInfo_strComment.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.textBox_SetBiblioInfo_strComment.Name = "textBox_SetBiblioInfo_strComment";
-            this.textBox_SetBiblioInfo_strComment.Size = new System.Drawing.Size(777, 38);
+            this.textBox_SetBiblioInfo_strComment.Size = new System.Drawing.Size(898, 38);
             this.textBox_SetBiblioInfo_strComment.TabIndex = 54;
             // 
             // button_help_SetBiblioInfo
@@ -2072,6 +2096,7 @@
             this.button_help_SetBiblioInfo.TabIndex = 56;
             this.button_help_SetBiblioInfo.Text = "帮助";
             this.button_help_SetBiblioInfo.UseVisualStyleBackColor = true;
+            this.button_help_SetBiblioInfo.Click += new System.EventHandler(this.button_help_SetBiblioInfo_Click);
             // 
             // button_help_GetBiblioInfos
             // 
@@ -2081,13 +2106,234 @@
             this.button_help_GetBiblioInfos.TabIndex = 57;
             this.button_help_GetBiblioInfos.Text = "帮助";
             this.button_help_GetBiblioInfos.UseVisualStyleBackColor = true;
+            this.button_help_GetBiblioInfos.Click += new System.EventHandler(this.button_help_GetBiblioInfos_Click);
+            // 
+            // tabPage_GetReaderInfo
+            // 
+            this.tabPage_GetReaderInfo.Controls.Add(this.button_help_GetReaderInfo);
+            this.tabPage_GetReaderInfo.Controls.Add(this.button_GetReaderInfo);
+            this.tabPage_GetReaderInfo.Controls.Add(this.textBox_GetReaderInfo_strResultTypeList);
+            this.tabPage_GetReaderInfo.Controls.Add(this.textBox_GetReaderInfo_strBarcode);
+            this.tabPage_GetReaderInfo.Controls.Add(this.label25);
+            this.tabPage_GetReaderInfo.Controls.Add(this.label61);
+            this.tabPage_GetReaderInfo.Location = new System.Drawing.Point(10, 46);
+            this.tabPage_GetReaderInfo.Name = "tabPage_GetReaderInfo";
+            this.tabPage_GetReaderInfo.Size = new System.Drawing.Size(1265, 737);
+            this.tabPage_GetReaderInfo.TabIndex = 14;
+            this.tabPage_GetReaderInfo.Text = "GetReaderInfo";
+            this.tabPage_GetReaderInfo.UseVisualStyleBackColor = true;
+            // 
+            // tabPage_SetReaderInfo
+            // 
+            this.tabPage_SetReaderInfo.Controls.Add(this.button_help_SetReaderInfo);
+            this.tabPage_SetReaderInfo.Controls.Add(this.label24);
+            this.tabPage_SetReaderInfo.Controls.Add(this.textBox_SetReaderInfo_strOldXml);
+            this.tabPage_SetReaderInfo.Controls.Add(this.label60);
+            this.tabPage_SetReaderInfo.Controls.Add(this.textBox_SetReaderInfo_baOldTimestamp);
+            this.tabPage_SetReaderInfo.Controls.Add(this.label62);
+            this.tabPage_SetReaderInfo.Controls.Add(this.textBox_SetReaderInfo_strNewXml);
+            this.tabPage_SetReaderInfo.Controls.Add(this.label63);
+            this.tabPage_SetReaderInfo.Controls.Add(this.textBox_SetReaderInfo_strAction);
+            this.tabPage_SetReaderInfo.Controls.Add(this.label64);
+            this.tabPage_SetReaderInfo.Controls.Add(this.textBox_SetReaderInfo_strRecPath);
+            this.tabPage_SetReaderInfo.Controls.Add(this.button_SetReaderInfo);
+            this.tabPage_SetReaderInfo.Location = new System.Drawing.Point(10, 46);
+            this.tabPage_SetReaderInfo.Name = "tabPage_SetReaderInfo";
+            this.tabPage_SetReaderInfo.Size = new System.Drawing.Size(1265, 737);
+            this.tabPage_SetReaderInfo.TabIndex = 15;
+            this.tabPage_SetReaderInfo.Text = "SetReaderInfo";
+            this.tabPage_SetReaderInfo.UseVisualStyleBackColor = true;
+            // 
+            // label24
+            // 
+            this.label24.AutoSize = true;
+            this.label24.Location = new System.Drawing.Point(88, 401);
+            this.label24.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label24.Name = "label24";
+            this.label24.Size = new System.Drawing.Size(138, 27);
+            this.label24.TabIndex = 70;
+            this.label24.Text = "strOldXml";
+            // 
+            // textBox_SetReaderInfo_strOldXml
+            // 
+            this.textBox_SetReaderInfo_strOldXml.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBox_SetReaderInfo_strOldXml.Location = new System.Drawing.Point(236, 398);
+            this.textBox_SetReaderInfo_strOldXml.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.textBox_SetReaderInfo_strOldXml.Multiline = true;
+            this.textBox_SetReaderInfo_strOldXml.Name = "textBox_SetReaderInfo_strOldXml";
+            this.textBox_SetReaderInfo_strOldXml.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.textBox_SetReaderInfo_strOldXml.Size = new System.Drawing.Size(957, 128);
+            this.textBox_SetReaderInfo_strOldXml.TabIndex = 69;
+            // 
+            // label60
+            // 
+            this.label60.AutoSize = true;
+            this.label60.Location = new System.Drawing.Point(18, 545);
+            this.label60.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label60.Name = "label60";
+            this.label60.Size = new System.Drawing.Size(208, 27);
+            this.label60.TabIndex = 66;
+            this.label60.Text = "baOldTimestamp";
+            // 
+            // textBox_SetReaderInfo_baOldTimestamp
+            // 
+            this.textBox_SetReaderInfo_baOldTimestamp.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBox_SetReaderInfo_baOldTimestamp.Location = new System.Drawing.Point(236, 542);
+            this.textBox_SetReaderInfo_baOldTimestamp.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.textBox_SetReaderInfo_baOldTimestamp.Name = "textBox_SetReaderInfo_baOldTimestamp";
+            this.textBox_SetReaderInfo_baOldTimestamp.Size = new System.Drawing.Size(957, 38);
+            this.textBox_SetReaderInfo_baOldTimestamp.TabIndex = 65;
+            // 
+            // label62
+            // 
+            this.label62.AutoSize = true;
+            this.label62.Location = new System.Drawing.Point(88, 162);
+            this.label62.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label62.Name = "label62";
+            this.label62.Size = new System.Drawing.Size(138, 27);
+            this.label62.TabIndex = 62;
+            this.label62.Text = "strNewXml";
+            // 
+            // textBox_SetReaderInfo_strNewXml
+            // 
+            this.textBox_SetReaderInfo_strNewXml.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBox_SetReaderInfo_strNewXml.Location = new System.Drawing.Point(236, 159);
+            this.textBox_SetReaderInfo_strNewXml.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.textBox_SetReaderInfo_strNewXml.Multiline = true;
+            this.textBox_SetReaderInfo_strNewXml.Name = "textBox_SetReaderInfo_strNewXml";
+            this.textBox_SetReaderInfo_strNewXml.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.textBox_SetReaderInfo_strNewXml.Size = new System.Drawing.Size(957, 221);
+            this.textBox_SetReaderInfo_strNewXml.TabIndex = 61;
+            // 
+            // label63
+            // 
+            this.label63.AutoSize = true;
+            this.label63.Location = new System.Drawing.Point(88, 42);
+            this.label63.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label63.Name = "label63";
+            this.label63.Size = new System.Drawing.Size(138, 27);
+            this.label63.TabIndex = 60;
+            this.label63.Text = "strAction";
+            // 
+            // textBox_SetReaderInfo_strAction
+            // 
+            this.textBox_SetReaderInfo_strAction.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBox_SetReaderInfo_strAction.Location = new System.Drawing.Point(236, 39);
+            this.textBox_SetReaderInfo_strAction.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.textBox_SetReaderInfo_strAction.Name = "textBox_SetReaderInfo_strAction";
+            this.textBox_SetReaderInfo_strAction.Size = new System.Drawing.Size(957, 38);
+            this.textBox_SetReaderInfo_strAction.TabIndex = 59;
+            // 
+            // label64
+            // 
+            this.label64.AutoSize = true;
+            this.label64.Location = new System.Drawing.Point(74, 106);
+            this.label64.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label64.Name = "label64";
+            this.label64.Size = new System.Drawing.Size(152, 27);
+            this.label64.TabIndex = 58;
+            this.label64.Text = "strRecPath";
+            // 
+            // textBox_SetReaderInfo_strRecPath
+            // 
+            this.textBox_SetReaderInfo_strRecPath.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBox_SetReaderInfo_strRecPath.Location = new System.Drawing.Point(236, 106);
+            this.textBox_SetReaderInfo_strRecPath.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.textBox_SetReaderInfo_strRecPath.Name = "textBox_SetReaderInfo_strRecPath";
+            this.textBox_SetReaderInfo_strRecPath.Size = new System.Drawing.Size(957, 38);
+            this.textBox_SetReaderInfo_strRecPath.TabIndex = 57;
+            // 
+            // button_SetReaderInfo
+            // 
+            this.button_SetReaderInfo.Location = new System.Drawing.Point(236, 604);
+            this.button_SetReaderInfo.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.button_SetReaderInfo.Name = "button_SetReaderInfo";
+            this.button_SetReaderInfo.Size = new System.Drawing.Size(223, 56);
+            this.button_SetReaderInfo.TabIndex = 56;
+            this.button_SetReaderInfo.Tag = "";
+            this.button_SetReaderInfo.Text = "SetReaderInfo";
+            this.button_SetReaderInfo.UseVisualStyleBackColor = true;
+            this.button_SetReaderInfo.Click += new System.EventHandler(this.button_SetReaderInfo_Click);
+            // 
+            // button_help_SetReaderInfo
+            // 
+            this.button_help_SetReaderInfo.Location = new System.Drawing.Point(3, -3);
+            this.button_help_SetReaderInfo.Name = "button_help_SetReaderInfo";
+            this.button_help_SetReaderInfo.Size = new System.Drawing.Size(55, 117);
+            this.button_help_SetReaderInfo.TabIndex = 71;
+            this.button_help_SetReaderInfo.Text = "帮助";
+            this.button_help_SetReaderInfo.UseVisualStyleBackColor = true;
+            this.button_help_SetReaderInfo.Click += new System.EventHandler(this.button_help_SetReaderInfo_Click);
+            // 
+            // button_help_GetReaderInfo
+            // 
+            this.button_help_GetReaderInfo.Location = new System.Drawing.Point(-1, -1);
+            this.button_help_GetReaderInfo.Name = "button_help_GetReaderInfo";
+            this.button_help_GetReaderInfo.Size = new System.Drawing.Size(55, 117);
+            this.button_help_GetReaderInfo.TabIndex = 63;
+            this.button_help_GetReaderInfo.Text = "帮助";
+            this.button_help_GetReaderInfo.UseVisualStyleBackColor = true;
+            this.button_help_GetReaderInfo.Click += new System.EventHandler(this.button_help_GetReaderInfo_Click);
+            // 
+            // button_GetReaderInfo
+            // 
+            this.button_GetReaderInfo.Location = new System.Drawing.Point(320, 166);
+            this.button_GetReaderInfo.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.button_GetReaderInfo.Name = "button_GetReaderInfo";
+            this.button_GetReaderInfo.Size = new System.Drawing.Size(277, 62);
+            this.button_GetReaderInfo.TabIndex = 62;
+            this.button_GetReaderInfo.Tag = "";
+            this.button_GetReaderInfo.Text = "GetReaderInfo";
+            this.button_GetReaderInfo.UseVisualStyleBackColor = true;
+            this.button_GetReaderInfo.Click += new System.EventHandler(this.button_GetReaderInfo_Click);
+            // 
+            // textBox_GetReaderInfo_strResultTypeList
+            // 
+            this.textBox_GetReaderInfo_strResultTypeList.Location = new System.Drawing.Point(320, 105);
+            this.textBox_GetReaderInfo_strResultTypeList.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.textBox_GetReaderInfo_strResultTypeList.Name = "textBox_GetReaderInfo_strResultTypeList";
+            this.textBox_GetReaderInfo_strResultTypeList.Size = new System.Drawing.Size(724, 38);
+            this.textBox_GetReaderInfo_strResultTypeList.TabIndex = 60;
+            // 
+            // textBox_GetReaderInfo_strBarcode
+            // 
+            this.textBox_GetReaderInfo_strBarcode.Location = new System.Drawing.Point(320, 41);
+            this.textBox_GetReaderInfo_strBarcode.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.textBox_GetReaderInfo_strBarcode.Name = "textBox_GetReaderInfo_strBarcode";
+            this.textBox_GetReaderInfo_strBarcode.Size = new System.Drawing.Size(724, 38);
+            this.textBox_GetReaderInfo_strBarcode.TabIndex = 58;
+            // 
+            // label25
+            // 
+            this.label25.AutoSize = true;
+            this.label25.Location = new System.Drawing.Point(60, 108);
+            this.label25.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label25.Name = "label25";
+            this.label25.Size = new System.Drawing.Size(250, 27);
+            this.label25.TabIndex = 61;
+            this.label25.Text = "strResultTypeList";
+            // 
+            // label61
+            // 
+            this.label61.AutoSize = true;
+            this.label61.Location = new System.Drawing.Point(158, 44);
+            this.label61.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label61.Name = "label61";
+            this.label61.Size = new System.Drawing.Size(152, 27);
+            this.label61.TabIndex = 59;
+            this.label61.Text = "strBarcode";
             // 
             // Form_main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(14F, 27F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
-            this.ClientSize = new System.Drawing.Size(1169, 851);
+            this.ClientSize = new System.Drawing.Size(1311, 959);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.menuStrip1);
             this.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
@@ -2129,6 +2375,10 @@
             this.splitContainer1.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
+            this.tabPage_GetReaderInfo.ResumeLayout(false);
+            this.tabPage_GetReaderInfo.PerformLayout();
+            this.tabPage_SetReaderInfo.ResumeLayout(false);
+            this.tabPage_SetReaderInfo.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -2303,6 +2553,26 @@
         private System.Windows.Forms.TextBox textBox_SetBiblioInfo_strComment;
         private System.Windows.Forms.Button button_help_SetBiblioInfo;
         private System.Windows.Forms.Button button_help_GetBiblioInfos;
+        private System.Windows.Forms.TabPage tabPage_GetReaderInfo;
+        private System.Windows.Forms.TabPage tabPage_SetReaderInfo;
+        private System.Windows.Forms.Button button_help_SetReaderInfo;
+        private System.Windows.Forms.Label label24;
+        private System.Windows.Forms.TextBox textBox_SetReaderInfo_strOldXml;
+        private System.Windows.Forms.Label label60;
+        private System.Windows.Forms.TextBox textBox_SetReaderInfo_baOldTimestamp;
+        private System.Windows.Forms.Label label62;
+        private System.Windows.Forms.TextBox textBox_SetReaderInfo_strNewXml;
+        private System.Windows.Forms.Label label63;
+        private System.Windows.Forms.TextBox textBox_SetReaderInfo_strAction;
+        private System.Windows.Forms.Label label64;
+        private System.Windows.Forms.TextBox textBox_SetReaderInfo_strRecPath;
+        private System.Windows.Forms.Button button_SetReaderInfo;
+        private System.Windows.Forms.Button button_help_GetReaderInfo;
+        private System.Windows.Forms.Button button_GetReaderInfo;
+        private System.Windows.Forms.TextBox textBox_GetReaderInfo_strResultTypeList;
+        private System.Windows.Forms.TextBox textBox_GetReaderInfo_strBarcode;
+        private System.Windows.Forms.Label label25;
+        private System.Windows.Forms.Label label61;
     }
 }
 

@@ -1158,28 +1158,28 @@ namespace DigitalPlatform.LibraryRestClient
         /// <para>0:    成功</para>
         /// <para>1:    成功，但部分字段被拒绝</para>
         /// </returns>
-        public long SetReaderInfoForWeiXin(
-            string strRecPath,
-            string strNewXml,
-            string strOldTimestamp,
-            out string strError)
-        {
-            string strExistingXml = "";
-            string strSavedXml = "";
-            string strSavedRecPath = "";
-            byte[] baNewTimestamp = null;
+        //public long SetReaderInfoForWeiXin(
+        //    string strRecPath,
+        //    string strNewXml,
+        //    string strOldTimestamp,
+        //    out string strError)
+        //{
+        //    string strExistingXml = "";
+        //    string strSavedXml = "";
+        //    string strSavedRecPath = "";
+        //    byte[] baNewTimestamp = null;
 
-            return this.SetReaderInfo("change",
-                strRecPath,
-                strNewXml,
-                "",
-                strOldTimestamp,
-                out strExistingXml,
-                out strSavedXml,
-                out strSavedRecPath,
-                out baNewTimestamp,
-                out strError);
-        }
+        //    return this.SetReaderInfo("change",
+        //        strRecPath,
+        //        strNewXml,
+        //        "",
+        //        strOldTimestamp,
+        //        out strExistingXml,
+        //        out strSavedXml,
+        //        out strSavedRecPath,
+        //        out baNewTimestamp,
+        //        out strError);
+        //}
 
 
         /// <summary>
@@ -1207,7 +1207,7 @@ namespace DigitalPlatform.LibraryRestClient
             string strRecPath,
             string strNewXml,
             string strOldXml,
-            string strOldTimestamp,
+            byte[] baOldTimestamp,
             out string strExistingXml,
             out string strSavedXml,
             out string strSavedRecPath,
@@ -1233,7 +1233,7 @@ namespace DigitalPlatform.LibraryRestClient
                 request.strRecPath = strRecPath;
                 request.strNewXml = strNewXml;
                 request.strOldXml = strOldXml;
-                request.baOldTimestamp = ByteArray.GetTimeStampByteArray(strOldTimestamp);
+                request.baOldTimestamp = baOldTimestamp;// ByteArray.GetTimeStampByteArray(strOldTimestamp);
                 byte[] baData = Encoding.UTF8.GetBytes(Serialize(request));
                 byte[] result = client.UploadData(this.GetRestfulApiUrl("setreaderinfo"),
                     "POST",
@@ -1255,6 +1255,12 @@ namespace DigitalPlatform.LibraryRestClient
                     //this.ErrorCode = response.SetReaderInfoResult.ErrorCode;
                 }
                 this.ClearRedoCount();
+
+                strExistingXml = response.strExistingXml;
+                strSavedXml = response.strSavedXml;
+                strSavedRecPath = response.strSavedRecPath;
+                baNewTimestamp = response.baNewTimestamp;
+
                 return response.SetReaderInfoResult.Value;
             }
             catch (Exception ex)
