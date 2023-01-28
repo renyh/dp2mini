@@ -46,6 +46,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Form_marcField.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form_marcField.Designer.cs">
+      <DependentUpon>Form_marcField.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form_WriteRes_Chunk.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -109,6 +115,9 @@
       <DependentUpon>Form_cancel4.cs</DependentUpon>
     </Compile>
     <Compile Include="worker.cs" />
+    <EmbeddedResource Include="Form_marcField.resx">
+      <DependentUpon>Form_marcField.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form_WriteRes_Chunk.resx">
       <DependentUpon>Form_WriteRes_Chunk.cs</DependentUpon>
     </EmbeddedResource>

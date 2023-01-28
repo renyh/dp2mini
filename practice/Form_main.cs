@@ -270,6 +270,12 @@ namespace practice
             dlg.ShowDialog(this);
         }
 
+        private void 处理MARC字段ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Form_marcField dlg = new Form_marcField();
+            dlg.ShowDialog(this);
+        }
+
         #endregion
 
 
@@ -436,16 +442,23 @@ public long SearchItem(string strItemDbName,
             }
         }
 
+        // 常用函数
         private void button_GetBiblioInfos_Click(object sender, EventArgs e)
         {
             RestChannel channel = this.GetChannel();
             try
             {
+                string strBiblioRecPath = this.textBox_GetBiblioInfos_strBiblioRecPath.Text;
+                if (string.IsNullOrEmpty(strBiblioRecPath) == true)
+                {
+                    MessageBox.Show(this, "strBiblioRecPath参数不能为空。");
+                    return;
+                }
 
-                string strformats = GetBiblioInfos_textBox_Formats.Text;
+                string strformats = textBox_GetBiblioInfos_formats.Text;
                 string[] formats = strformats.Split(new char[] { ',' });
 
-                GetBiblioInfosResponse response = channel.GetBiblioInfos(this.GetBiblioInfos_textBox_BiblioRecPath.Text,
+                GetBiblioInfosResponse response = channel.GetBiblioInfos(strBiblioRecPath,
                     formats);
 
                 string strResult = "result:\r\n";
@@ -560,35 +573,43 @@ public long SearchItem(string strItemDbName,
 
         #endregion
 
-        #region 创建书目
+        #region SetBiblioInfo
 
         // 创建书目
         private void button_setBiblioInfo_Click(object sender, EventArgs e)
         {
             string strError = "";
-            string strAction = this.textBox_action.Text;
-            string biblioRecPath = this.textBox_biblioPath.Text;
-            string biblioType = this.textBox_biblioType.Text;
-            string biblio = this.textBox_biblio.Text;
+            string strAction = this.textBox_SetBiblioInfo_strAction.Text;
+            string strBiblioRecPath = this.textBox_SetBiblioInfo_strBiblioRecPath.Text;
+            if (string.IsNullOrEmpty(strBiblioRecPath) == true)
+            {
+                MessageBox.Show(this, "strBiblioRecPath参数不能为空");
+                return;
+            }
 
-            string timestamp = this.textBox_timestamp.Text;
-            byte[] baTimestamp = ByteArray.GetTimeStampByteArray(timestamp);
-            string strComment = "";
-            string strStyle = this.textBox_style.Text;
+
+
+            string strBiblioType = this.textBox_SetBiblioInfo_strBiblioType.Text;
+            string strBiblio = this.textBox_SetBiblioInfo_strBiblio.Text;
+
+            string strTimestamp = this.textBox_SetBiblioInfo_baTimestamp.Text;
+            byte[] baTimestamp = ByteArray.GetTimeStampByteArray(strTimestamp);
+
+            string strComment = this.textBox_SetBiblioInfo_strComment.Text;
+            string strStyle = this.textBox_SetBiblioInfo_strStyle.Text;
 
             RestChannel channel = this.GetChannel();
             try
             {
-
 
                 byte[] baNewTimestamp = null;
                 string strOutputPath = "";
 
                 long lRet = channel.SetBiblioInfo(
                     strAction,
-                    biblioRecPath,
-                    biblioType,
-                    biblio,
+                    strBiblioRecPath,
+                    strBiblioType,
+                    strBiblio,
                     baTimestamp,
                     strComment,
                     strStyle,
@@ -614,61 +635,7 @@ public long SearchItem(string strItemDbName,
             }
         }
 
-        private void button_getField_Click(object sender, EventArgs e)
-        {
-            string strFieldMap = this.textBox_map.Text.Trim();
-            if (string.IsNullOrEmpty(strFieldMap) == true)
-            {
-                MessageBox.Show(this, "尚未配置字段提取规则。");
-                return;
-            }
 
-            //
-            string strMarc = this.textBox_biblio.Text.Trim();
-            if (string.IsNullOrEmpty(strMarc) == true)
-            {
-                MessageBox.Show(this, "尚未设置marc数据。");
-                return;
-            }
-
-            // 显示在界面上
-            this.textBox_result.Text = MarcHelper.GetFields(strMarc, strFieldMap);
-
-        }
-
-        private void button_setField_Click(object sender, EventArgs e)
-        {
-            string strFieldMap = this.textBox_map.Text.Trim();
-            if (string.IsNullOrEmpty(strFieldMap) == true)
-            {
-                MessageBox.Show(this, "尚未配置字段提取规则。");
-                return;
-            }
-            List<FieldItem> fieldList = null;
-            try
-            {
-                fieldList = MarcHelper.ParseFieldMap(strFieldMap);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(this, ex.Message);
-                return;
-            }
-
-            //
-            string strMarc = this.textBox_biblio.Text.Trim();
-            if (string.IsNullOrEmpty(strMarc) == true)
-            {
-                MessageBox.Show(this, "尚未设置marc数据。");
-                return;
-            }
-
-            string marc = MarcHelper.SetFields(strMarc, fieldList);
-
-            this.textBox_result.Text = marc;
-
-
-        }
 
         #endregion
 
@@ -2355,6 +2322,8 @@ out string strError);
                 this.textBox_GetRes_targetFile.Text = "";
             }
         }
+
+
     }
 
 
