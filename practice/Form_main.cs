@@ -390,7 +390,7 @@ namespace practice
 
                         if (record.Keys != null)
                         {
-                            browse.AppendLine("Keys:");
+                            browse.AppendLine("=以下为返回的Keys=");
                             foreach (KeyFrom one in record.Keys)
                             {
                                 browse.AppendLine("Logic=" + one.Logic + "--" + "Key=" + one.Key + "" + "--From=" + one.From + ""  );
@@ -399,7 +399,7 @@ namespace practice
 
                         if (record.RecordBody != null)
                         {
-                            browse.AppendLine("RecordBody:");
+                            browse.AppendLine("=以下为返回的RecordBody=");
 
                             browse.AppendLine("Result.Value:" + record.RecordBody.Result.Value);
                             browse.AppendLine("Result.ErrorCode:" + record.RecordBody.Result.ErrorCode);
@@ -411,7 +411,7 @@ namespace practice
                         }
 
 
-                        browse.AppendLine("======");
+                        browse.AppendLine("===============");
 
                         
                     }
