@@ -52,10 +52,10 @@ namespace practice
             this.SearchBiblio_textBox_ResultSetName.Text = Properties.Settings.Default.searchBiblio_resultSetName;
             this.SearchBiblio_textBox_SearchStyle.Text = Properties.Settings.Default.searchBiblio_searchStyle;
 
-            this.GetSearchResult_textBox_ResultSetName.Text = Properties.Settings.Default.getSearchResult_resultsetName;
-            this.GetSearchResult_textBox_Start.Text = Properties.Settings.Default.getSearchResult_start;
-            this.GetSearchResult_textBox_Count.Text = Properties.Settings.Default.getSearchResult_count;
-            this.GetSearchResult_textBox_BrowseInfoStyle.Text = Properties.Settings.Default.getSearchResult_browseInfoStyle;
+            this.textBox_GetSearchResult_strResultSetName.Text = Properties.Settings.Default.getSearchResult_resultsetName;
+            this.textBox_GetSearchResult_lStart.Text = Properties.Settings.Default.getSearchResult_start;
+            this.textBox_GetSearchResult_lCount.Text = Properties.Settings.Default.getSearchResult_count;
+            this.textBox_GetSearchResult_strBrowseInfoStyle.Text = Properties.Settings.Default.getSearchResult_browseInfoStyle;
         }
 
         // 关闭时
@@ -78,10 +78,10 @@ namespace practice
             Properties.Settings.Default.searchBiblio_resultSetName = this.SearchBiblio_textBox_ResultSetName.Text;
             Properties.Settings.Default.searchBiblio_searchStyle = this.SearchBiblio_textBox_SearchStyle.Text;
 
-            Properties.Settings.Default.getSearchResult_resultsetName = this.GetSearchResult_textBox_ResultSetName.Text;
-            Properties.Settings.Default.getSearchResult_start = this.GetSearchResult_textBox_Start.Text;
-            Properties.Settings.Default.getSearchResult_count = this.GetSearchResult_textBox_Count.Text;
-            Properties.Settings.Default.getSearchResult_browseInfoStyle = this.GetSearchResult_textBox_BrowseInfoStyle.Text;
+            Properties.Settings.Default.getSearchResult_resultsetName = this.textBox_GetSearchResult_strResultSetName.Text;
+            Properties.Settings.Default.getSearchResult_start = this.textBox_GetSearchResult_lStart.Text;
+            Properties.Settings.Default.getSearchResult_count = this.textBox_GetSearchResult_lCount.Text;
+            Properties.Settings.Default.getSearchResult_browseInfoStyle = this.textBox_GetSearchResult_strBrowseInfoStyle.Text;
 
 
             // 一定要调save函数才能把信息保存下来
@@ -324,47 +324,101 @@ namespace practice
 
         private void button_GetSearchResult_Click(object sender, EventArgs e)
         {
+            // 将下方显示信息置空
             this.textBox_result.Text = "";
+
+            string strResultSetName = this.textBox_GetSearchResult_strResultSetName.Text.Trim();
+            string strlStart = this.textBox_GetSearchResult_lStart.Text.Trim();
+            long lStart = 0;
+            try
+            {
+                lStart = Convert.ToInt64(strlStart);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, "lStart格式不合法，须为数值型。" + ex.Message);
+                return;
+            }
+
+            string strlCount = this.textBox_GetSearchResult_lCount.Text.Trim();
+            long lCount = 0;
+            try
+            {
+                lCount = Convert.ToInt64(strlCount);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, "lStart格式不合法，须为数值型。" + ex.Message);
+                return;
+            }
+
+            string strBrowseInfoStyle = this.textBox_GetSearchResult_strBrowseInfoStyle.Text.Trim();
+
+            string strLang = this.textBox_GetSearchResult_strLang.Text.Trim(); 
+
 
             RestChannel channel = this.GetChannel();
             try
             {
                 //GetSearchResultResponse response
-                long lRet = channel.GetSearchResult(this.GetSearchResult_textBox_ResultSetName.Text,
-                    Convert.ToInt64(this.GetSearchResult_textBox_Start.Text),
-                    Convert.ToInt64(this.GetSearchResult_textBox_Count.Text),
-                    this.GetSearchResult_textBox_BrowseInfoStyle.Text,
-                    "",
+                long lRet = channel.GetSearchResult(strResultSetName,
+                    lStart,
+                   lCount,
+                    strBrowseInfoStyle,
+                    strLang,
                     out Record[] records,
                     out string strError);
-
                 if (lRet == -1)
                 {
-                    this.textBox_result.Text = "errorInfo:" + strError;
+                    MessageBox.Show(this, "GetSearchResult() error:" + strError);
+                    this.textBox_result.Text = "errorInfo:" + strError +"\r\n";
                 }
 
+                this.textBox_result.Text += "返回值Value:" + lRet + "\r\n";
 
-
-                if (records != null && records.Length > 0)
+                if (records != null)
                 {
-                    this.textBox_result.Text = "命中'" + lRet + "'条，本次返回'" + records.Length + "'条。\r\n";
+                    this.textBox_result.Text += "命中'" + lRet + "'条，本次返回'" + records.Length + "'条。\r\n";
 
                     StringBuilder browse = new StringBuilder();
                     foreach (Record record in records)
                     {
-                        browse.AppendLine(record.Path);
+                        browse.AppendLine("path:"+record.Path);
 
-                        if (record.Cols != null && record.Cols.Length > 0)
-                            browse.AppendLine(string.Join(",", record.Cols));
-                        if (record.RecordBody != null && string.IsNullOrEmpty(record.RecordBody.Xml) == false)
-                            browse.AppendLine(record.RecordBody.Xml);
+                        if (record.Cols != null)
+                            browse.AppendLine("cols:"+string.Join(",", record.Cols));
+
+                        if (record.Keys != null)
+                        {
+                            browse.AppendLine("Keys:");
+                            foreach (KeyFrom one in record.Keys)
+                            {
+                                browse.AppendLine("Logic=" + one.Logic + "--" + "Key=" + one.Key + "" + "--From=" + one.From + ""  );
+                            }
+                        }
+
+                        if (record.RecordBody != null)
+                        {
+                            browse.AppendLine("RecordBody:");
+
+                            browse.AppendLine("Result.Value:" + record.RecordBody.Result.Value);
+                            browse.AppendLine("Result.ErrorCode:" + record.RecordBody.Result.ErrorCode);
+                            browse.AppendLine("Result.ErrorString:" + record.RecordBody.Result.ErrorString);
+
+                            browse.AppendLine("Timestamp:" + ByteArray.GetHexTimeStampString(record.RecordBody.Timestamp));
+                            browse.AppendLine("Metadata:" + record.RecordBody.Metadata);
+                            browse.AppendLine("xml:" + record.RecordBody.Xml);
+                        }
+
+
+                        browse.AppendLine("======");
+
+                        
                     }
+
                     this.textBox_result.Text += browse.ToString();
                 }
-                else
-                {
-                    this.textBox_result.Text = "命中'" + lRet + "'条，返回'0'条";
-                }
+
             }
             finally
             {

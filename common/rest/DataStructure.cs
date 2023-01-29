@@ -786,10 +786,86 @@ LibraryServerResult.ErrorInfo		出错信息
         [DataMember]
         public long Value = 0; // 命中条数，>=0:正常;<0:出错
 
-        //[DataMember]
-        //public ErrorCodeValue ErrorCode = ErrorCodeValue.NoError;
+        [DataMember]
+        public ErrorCodeValue ErrorCode = ErrorCodeValue.NoError;
         [DataMember]
         public string ErrorString = "错误信息未初始化...";
+    }
+
+    public enum ErrorCodeValue : int
+    {
+
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        NoError = 0,
+
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        CommonError = 1,
+
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        NotLogin = 2,
+
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        UserNameEmpty = 3,
+
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        UserNameOrPasswordMismatch = 4,
+
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        NotHasEnoughRights = 5,
+
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        TimestampMismatch = 9,
+
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        NotFound = 10,
+
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        EmptyContent = 11,
+
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        NotFoundDb = 12,
+
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        PathError = 14,
+
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        PartNotFound = 15,
+
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        ExistDbInfo = 16,
+
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        AlreadyExist = 17,
+
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        AlreadyExistOtherType = 18,
+
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        ApplicationStartError = 19,
+
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        NotFoundSubRes = 20,
+
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        Canceled = 21,
+
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        AccessDenied = 22,
+
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        PartialDenied = 23,
+
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        NotFoundObjectFile = 24,
+
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        Compressed = 25,
+
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        RequestError = 100,
+
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        RequestTimeOut = 112,
     }
 
     [DataContract(Namespace = "http://dp2003.com/dp2kernel/")]
