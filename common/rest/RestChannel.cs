@@ -1031,6 +1031,7 @@ namespace DigitalPlatform.LibraryRestClient
                 }
                 if (response.GetReaderInfoResult.Value == -1)
                 {
+                    strError = "ErrorCode:" + response.GetReaderInfoResult.ErrorCode+"--ErrorInfo:"+response.GetReaderInfoResult.ErrorInfo;
                     return -1;
                 }
                 else if (response.GetReaderInfoResult.Value == 0)

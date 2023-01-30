@@ -2504,12 +2504,12 @@ out string strError);
                     out string strError);
                 if (nRet == -1)
                 {
-                    MessageBox.Show(this, "GetBiblioInfos()出错：" + strError);
-                    return;
+                    MessageBox.Show(this, "GetReaderInfo()出错：" + strError);
+                    //return;  //出错的情况也显示一下信息
                 }
                 else
                 {
-                    MessageBox.Show(this, "GetBiblioInfos()成功");
+                    MessageBox.Show(this, "GetReaderInfo()成功");
                 }
 
                 string strResult = "result:\r\n";
@@ -2520,7 +2520,6 @@ out string strError);
                         strResult += s + "\r\n";
                     }
                 }
-
                 this.textBox_result.Text =strResult;
             }
             finally
