@@ -1869,7 +1869,11 @@ out string strError);
                 MessageBox.Show(this, "WriteRes() complete");
 
                 this.textBox_result.Text = "strOutputResPath:" + response.strOutputResPath + "\r\n"
-                    + "baOutputTimestamp:" + ByteArray.GetHexTimeStampString(response.baOutputTimestamp) + "\r\n";
+                    + "baOutputTimestamp:" + ByteArray.GetHexTimeStampString(response.baOutputTimestamp) + "\r\n"
+                    + "value:" + response.WriteResResult.Value + "\r\n"
+                    + "errorcode:" + response.WriteResResult.ErrorCode + "\r\n"
+                    + "erroronfo:" + response.WriteResResult.ErrorInfo;
+                
                 return;
 
             }
