@@ -103,6 +103,120 @@ namespace DigitalPlatform.LibraryRestClient
             return response;
         }
 
+
+        public static string GetResultInfo(object o)
+        {
+            if (o == null)
+            {
+                return "GetResultInfo()传入的参数不能为null。";
+            }
+
+            if (o is WriteResResponse)
+            {
+                WriteResResponse r = (WriteResResponse)o;
+
+                return GetServerResultInfo(r.WriteResResult) + "\r\n"
+                    + "strOutputResPath:" + r.strOutputResPath + "\r\n"
+                    + "baOutputTimestamp:" + ByteArray.GetHexTimeStampString(r.baOutputTimestamp) + "\r\n";
+            }
+            else if (o is GetResResponse)
+            {
+                GetResResponse r = (GetResResponse)o;
+                string info = GetServerResultInfo(r.GetResResult) + "\r\n"
+                    + "strOutputResPath:" + r.strOutputResPath + "\r\n"
+                    + "baOutputTimestamp:" + ByteArray.GetHexTimeStampString(r.baOutputTimestamp) + "\r\n"
+                    + "strMetadata:" + r.strMetadata + "\r\n";
+
+                if (r.baContent != null)
+                {
+                    info += "baContent:" + r.baContent.Length + "字节" + "\r\n";
+                }
+
+                return info;
+            }
+            else if (o is GetRecordResponse)
+            {
+                GetRecordResponse r = (GetRecordResponse)o;
+
+                string xml = "";
+                if (string.IsNullOrEmpty(r.strXml) == false)
+                    xml = DomUtil.GetIndentXml(r.strXml);
+
+
+                return GetServerResultInfo(r.GetRecordResult) + "\r\n"
+                    + "timestamp:" + ByteArray.GetHexTimeStampString(r.timestamp) + "\r\n"
+                    + "strXml:" + xml + "\r\n'";
+
+
+            }
+            else if (o is SetBiblioInfoResponse)
+            {
+                SetBiblioInfoResponse r = (SetBiblioInfoResponse)o;
+                return GetServerResultInfo(r.SetBiblioInfoResult) + "\r\n"
+                    + "strOutputBiblioRecPath:" + r.strOutputBiblioRecPath + "\r\n"
+                    + "baOutputTimestamp:" + ByteArray.GetHexTimeStampString(r.baOutputTimestamp) + "\r\n'";
+            }
+            else if (o is GetBiblioInfoResponse)
+            {
+                GetBiblioInfoResponse r = (GetBiblioInfoResponse)o;
+                return GetServerResultInfo(r.GetBiblioInfoResult) + "\r\n"
+                    + "strBiblio:" + r.strBiblio + "\r\n";
+            }
+            else if (o is GetBiblioInfosResponse)
+            {
+                GetBiblioInfosResponse r = (GetBiblioInfosResponse)o;
+                string info = GetServerResultInfo(r.GetBiblioInfosResult) + "\r\n"
+                    + "baTimestamp:" + ByteArray.GetHexTimeStampString(r.baTimestamp) + "\r\n";
+
+                info += "result:\r\n";
+                if (r.results != null)
+                {
+                    foreach (string one in r.results)
+                    {
+                        info += one + "\r\n";
+                    }
+                }
+                return info;
+            }
+            else if (o is SetReaderInfoResponse)
+            {
+                SetReaderInfoResponse r = (SetReaderInfoResponse)o;
+
+                return GetServerResultInfo(r.SetReaderInfoResult) + "\r\n"
+                    + "strSavedRecPath:" + r.strSavedRecPath + "\r\n"
+                    + "baNewTimestamp:" + ByteArray.GetHexTimeStampString(r.baNewTimestamp) + "\r\n"
+                    + "strSavedXml:" + r.strSavedXml + "\r\n"
+                    + "strExistingXml:" + r.strExistingXml + "\r\n";
+            }
+            else if (o is GetReaderInfoResponse)
+            {
+                GetReaderInfoResponse r = (GetReaderInfoResponse)o;
+                string info = GetServerResultInfo(r.GetReaderInfoResult) + "\r\n"
+                    + "baTimestamp:" + ByteArray.GetHexTimeStampString(r.baTimestamp) + "\r\n";
+
+                info += "result:\r\n";
+                if (r.results != null)
+                {
+                    foreach (string one in r.results)
+                    {
+                        info += one + "\r\n";
+                    }
+                }
+
+                return info;
+            }
+
+
+            return "未识别的对象" + o.ToString();
+        }
+
+        public static string GetServerResultInfo(LibraryServerResult result)
+        {
+            return "Value:" + result.Value + "\r\n"
+                + "ErrorCode:" + result.ErrorCode + "\r\n"
+                + "ErrorInfo:" + result.ErrorInfo + "\r\n";
+        }
+
         #region 登录相关函数
 
         /// <summary>
@@ -1063,6 +1177,71 @@ namespace DigitalPlatform.LibraryRestClient
         }
 
 
+        public GetReaderInfoResponse GetReaderInfo(string strBarcode,
+            string strResultTypeList)
+        {
+
+        REDO:
+            try
+            {
+                CookieAwareWebClient client = this.GetClient();
+
+
+                GetReaderInfoRequest request = new GetReaderInfoRequest();
+                request.strBarcode = strBarcode;
+                request.strResultTypeList = strResultTypeList;
+                byte[] baData = Encoding.UTF8.GetBytes(Serialize(request));
+                byte[] result = client.UploadData(this.GetRestfulApiUrl("getreaderinfo"),
+                    "POST",
+                    baData);
+
+                string strResult = Encoding.UTF8.GetString(result);
+                GetReaderInfoResponse response = Deserialize<GetReaderInfoResponse>(strResult);
+                return response;
+
+
+                //strRecPath = response.strRecPath;
+
+                //if (response.GetReaderInfoResult.Value == -1
+                //    && response.GetReaderInfoResult.ErrorCode == ErrorCode.NotLogin)
+                //{
+                //    if (DoNotLogin(ref strError) == 1)
+                //        goto REDO;
+                //}
+                //if (response.GetReaderInfoResult.Value == -1)
+                //{
+                //    strError = "ErrorCode:" + response.GetReaderInfoResult.ErrorCode + "--ErrorInfo:" + response.GetReaderInfoResult.ErrorInfo;
+                //    return -1;
+                //}
+                //else if (response.GetReaderInfoResult.Value == 0)
+                //{
+                //    strError = "获取读者记录'" + strBarcode + "'未命中。";// + readerRet.GetReaderInfoResult.ErrorInfo;
+                //    return -1;
+                //}
+                //else if (response.GetReaderInfoResult.Value > 1)
+                //{
+                //    strError = "获取读者记录'" + strBarcode + "'出现多条，数据异常，请联系系统管理员。";// + readerRet.GetReaderInfoResult.ErrorInfo;
+                //    return -1;
+                //}
+
+                //// 返回的数据数组
+                //results = response.results;
+
+
+                //return 0;
+            }
+            catch (Exception ex)
+            {
+                int nRet = ConvertWebError(ex, out string strError);
+                if (nRet == 0)
+                    throw ex;
+
+                // 网络问题重做
+                goto REDO; ;
+            }
+        }
+
+
         /// <summary>
         /// 获得实体记录信息和其从属的书目记录信息
         /// </summary>
@@ -1203,23 +1382,23 @@ namespace DigitalPlatform.LibraryRestClient
         /// <para>0:    成功</para>
         /// <para>1:    成功，但部分字段被拒绝</para>
         /// </returns>
-        public long SetReaderInfo(
+        public SetReaderInfoResponse SetReaderInfo(
             string strAction,
             string strRecPath,
             string strNewXml,
             string strOldXml,
-            byte[] baOldTimestamp,
-            out string strExistingXml,
-            out string strSavedXml,
-            out string strSavedRecPath,
-            out byte[] baNewTimestamp,
-            out string strError)
+            byte[] baOldTimestamp)
+            //out string strExistingXml,
+            //out string strSavedXml,
+            //out string strSavedRecPath,
+            //out byte[] baNewTimestamp,
+            //out string strError)
         {
-            strError = "";
-            strExistingXml = "";
-            strSavedXml = "";
-            strSavedRecPath = "";
-            baNewTimestamp = null;
+            string  strError = "";
+            //strExistingXml = "";
+            //strSavedXml = "";
+            //strSavedRecPath = "";
+            //baNewTimestamp = null;
         REDO:
             try
             {
@@ -1250,45 +1429,48 @@ namespace DigitalPlatform.LibraryRestClient
                     {
                         if (DoNotLogin(ref strError) == 1)
                             goto REDO;
-                        return -1;
+
+                        return response;
                     }
-                    strError = response.SetReaderInfoResult.ErrorInfo;
+
+                    //strError = response.SetReaderInfoResult.ErrorInfo;
                     //this.ErrorCode = response.SetReaderInfoResult.ErrorCode;
                 }
                 this.ClearRedoCount();
 
-                strExistingXml = response.strExistingXml;
-                strSavedXml = response.strSavedXml;
-                strSavedRecPath = response.strSavedRecPath;
-                baNewTimestamp = response.baNewTimestamp;
+                //strExistingXml = response.strExistingXml;
+                //strSavedXml = response.strSavedXml;
+                //strSavedRecPath = response.strSavedRecPath;
+                //baNewTimestamp = response.baNewTimestamp;
 
-                return response.SetReaderInfoResult.Value;
+                return response;//.SetReaderInfoResult.Value;
             }
             catch (Exception ex)
             {
                 int nRet = ConvertWebError(ex, out strError);
                 if (nRet == 0)
-                    return -1;
+                    throw ex;
+
                 goto REDO;
             }
 
         }
 
-        public long SetBiblioInfo(
+        public SetBiblioInfoResponse SetBiblioInfo(
             string strAction,
             string strBiblioRecPath,
             string strBiblioType,
             string strBiblio,
             byte[] baTimestamp,
             string strComment, 
-            string strStyle,
-            out string strOutputBiblioRecPath,
-            out byte[] baOutputTimestamp,
-            out string strError)
+            string strStyle)
+            //out string strOutputBiblioRecPath,
+            //out byte[] baOutputTimestamp,
+            //out string strError)
         {
-            strError = "";
-            strOutputBiblioRecPath = "";
-            baOutputTimestamp = null;
+            string strError = "";
+        //strOutputBiblioRecPath = "";
+        //baOutputTimestamp = null;
         REDO:
             try
             {
@@ -1317,22 +1499,27 @@ namespace DigitalPlatform.LibraryRestClient
                     {
                         if (DoNotLogin(ref strError) == 1)
                             goto REDO;
-                        return -1;
+
+                        return response;
                     }
-                    strError = response.SetBiblioInfoResult.ErrorInfo;
+
+                    //strError = response.SetBiblioInfoResult.ErrorInfo;
                     //this.ErrorCode = response.SetReaderInfoResult.ErrorCode;
                 }
+
                 this.ClearRedoCount();
-                baOutputTimestamp = response.baOutputTimestamp;
-                strOutputBiblioRecPath=response.strOutputBiblioRecPath;
-                strError = response.SetBiblioInfoResult.ErrorInfo;
-                return response.SetBiblioInfoResult.Value;
+
+                //baOutputTimestamp = response.baOutputTimestamp;
+                //strOutputBiblioRecPath=response.strOutputBiblioRecPath;
+                //strError = response.SetBiblioInfoResult.ErrorInfo;
+                return response;
             }
             catch (Exception ex)
             {
                 int nRet = ConvertWebError(ex, out strError);
                 if (nRet == 0)
-                    return -1;
+                    throw ex;
+
                 goto REDO;
             }
 
@@ -2472,34 +2659,33 @@ namespace DigitalPlatform.LibraryRestClient
         }
 
         // 把字节数组分块写入文件
-        public int WriteResByChunk(
+        public WriteResResponse WriteResByChunk(
                 string strResPath,
                 byte[] baContent,
                 string strStyle,
                 string strMetadata,
                 byte[] baInputTimestamp,
                 int chunkSize,  //4096
-                bool redoWhenTimestampError,  //当时间戳不对时，是否重做。
-                out byte[] baOutputTimestamp,
-                out string strOutputResPath,
-                out string strError)
+                bool redoWhenTimestampError)  //当时间戳不对时，是否重做。
+                //out byte[] baOutputTimestamp,
+                //out string strOutputResPath,
+                //out string strError)
         {
-            strError = "";
-            strOutputResPath = "";
-            baOutputTimestamp = null;
+            //strError = "";
+            //strOutputResPath = "";
+            //baOutputTimestamp = null;
 
-
+            WriteResResponse response=null;
             int nStart = 0;
             int nTotalLength = baContent.Length;
-
             while (true)
             {
                 DoIdle();
 
                 int nThisChunkSize = chunkSize;
-
                 if (nThisChunkSize + nStart > nTotalLength)
                 {
+                    // 剩余尺寸
                     nThisChunkSize = nTotalLength - nStart;	// 最后一次
                     if (nThisChunkSize <= 0)
                         break;
@@ -2508,11 +2694,12 @@ namespace DigitalPlatform.LibraryRestClient
                 byte[] baChunk = new byte[nThisChunkSize];
                 Array.Copy(baContent, nStart, baChunk, 0, baChunk.Length);
 
+                // 拼range
                 string strRange = Convert.ToString(nStart) + "-" + Convert.ToString(nStart + baChunk.Length - 1);
 
             REDO:
 
-                WriteResResponse response = WriteRes(strResPath,
+                response = WriteRes(strResPath,
                     strRange,
                     nTotalLength,
                     baChunk,
@@ -2530,44 +2717,48 @@ namespace DigitalPlatform.LibraryRestClient
                         goto REDO;
                     }
 
-                    strError = response.WriteResResult.ErrorInfo;
-                    return -1;
+                    // 其它错误，直接返回
+                    return response;
+                    //strError = response.WriteResResult.ErrorInfo;
+                    //return -1;
                 }
 
-                // 返回值
-                baOutputTimestamp = response.baOutputTimestamp;
-                strOutputResPath = response.strOutputResPath;
+                //// 返回值
+                //baOutputTimestamp = response.baOutputTimestamp;
+                //strOutputResPath = response.strOutputResPath;
 
                 nStart += baChunk.Length;
 
-                Debug.Assert(strOutputResPath != "", "outputpath不能为空");
-                strResPath = strOutputResPath;	// 如果第一次的strPath中包含'?'id, 必须用outputpath才能正确继续
-                baInputTimestamp = baOutputTimestamp;	//baOutputTimeStamp;
+                Debug.Assert(response.strOutputResPath != "", "outputpath不能为空");
+                strResPath = response.strOutputResPath;	// 如果第一次的strPath中包含'?'id, 必须用outputpath才能正确继续
+                baInputTimestamp = response.baOutputTimestamp;	//baOutputTimeStamp;
 
 
                 if (nStart >= nTotalLength)
                     break;
             }
 
-            return 0;
+            return response;
         }
 
         // 以分块的方式把文件写入服务器
-        public int WriteResOfFile(
+        public WriteResResponse WriteResOfFile(
             string strResPath,
             string fileName,
             string strStyle,
             string strMetadata,
             byte[] baInputTimestamp,
             int chunkSize,  //4096
-            bool redoWhenTimestampError,  //当时间戳不对时，是否重做。
-            out byte[] baOutputTimestamp,
-            out string strOutputPath,
-            out string strError)
+            bool redoWhenTimestampError)  //当时间戳不对时，是否重做。
+            //out byte[] baOutputTimestamp,
+            //out string strOutputPath,
+            //out string strError)
         {
-            strError = "";
-            strOutputPath = "";
-            baOutputTimestamp = null;
+            //strError = "";
+            //strOutputPath = "";
+            //baOutputTimestamp = null;
+
+            WriteResResponse response = null;
 
             using (FileStream s = new FileStream(fileName, FileMode.Open))
             {
@@ -2590,7 +2781,7 @@ namespace DigitalPlatform.LibraryRestClient
                     string strRanges = nStart.ToString() + "-" + (nStart + nLength - 1).ToString();
 
                     // 调WriteRes
-                    WriteResResponse response = this.WriteRes(strResPath,
+                     response = this.WriteRes(strResPath,
                         strRanges,
                         lTotalLength,
                         baContent,
@@ -2608,8 +2799,11 @@ namespace DigitalPlatform.LibraryRestClient
                             s.Position = nStart;
                             continue;
                         }
-                        strError = response.WriteResResult.ErrorInfo;
-                        return -1;
+
+                        return response;
+
+                        //strError = response.WriteResResult.ErrorInfo;
+                        //return -1;
                     }
 
                     // 下一轮取文件的开始位置
@@ -2620,14 +2814,14 @@ namespace DigitalPlatform.LibraryRestClient
 
 
                     // 返回值
-                    strOutputPath = response.strOutputResPath;
-                    baOutputTimestamp = response.baOutputTimestamp;
+                    //strOutputPath = response.strOutputResPath;
+                    //baOutputTimestamp = response.baOutputTimestamp;
 
                 } //end of while
 
             } //end of using
 
-            return 0;
+            return response;
         }
 
         public GetResResponse GetRes(

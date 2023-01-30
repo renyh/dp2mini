@@ -489,6 +489,9 @@ public long SearchItem(string strItemDbName,
         // 常用函数
         private void button_GetBiblioInfos_Click(object sender, EventArgs e)
         {
+            // 清空底部输出信息
+            this.ClearResultInfo();
+
             RestChannel channel = this.GetChannel();
             try
             {
@@ -505,33 +508,38 @@ public long SearchItem(string strItemDbName,
                 GetBiblioInfosResponse response = channel.GetBiblioInfos(strBiblioRecPath,
                     formats);
 
-                string strResult = "result:\r\n";
-                if (response.results != null && response.results.Length > 0)
-                {
-                    foreach (string s in response.results)
-                    {
-                        strResult += s + "\r\n";
-                    }
-                }
+                // 显示返回信息
+                this.SetResultInfo("GetBiblioInfos()\r\n" + RestChannel.GetResultInfo(response));
 
-                string strTimestamp = ByteArray.GetHexTimeStampString(response.baTimestamp);
 
-                this.textBox_result.Text = "ErrorCode:" + response.GetBiblioInfosResult.ErrorCode+"\r\n'"
-                    +"ErrorInfo:"+response.GetBiblioInfosResult.ErrorInfo + "\r\n"
-                    + "timestamp:" + strTimestamp + "\r\n"
-                    + strResult;
 
-                if (response.GetBiblioInfosResult.Value == -1)
-                {
-                    MessageBox.Show(this, "GetBiblioInfos()出错：" + response.GetBiblioInfosResult.ErrorInfo);
-                    return;
-                }
-                else
-                {
-                    MessageBox.Show(this, "GetBiblioInfos()成功");
-                }
+                //string strResult = "result:\r\n";
+                //if (response.results != null && response.results.Length > 0)
+                //{
+                //    foreach (string s in response.results)
+                //    {
+                //        strResult += s + "\r\n";
+                //    }
+                //}
 
-                //+ response.
+                //string strTimestamp = ByteArray.GetHexTimeStampString(response.baTimestamp);
+
+                //this.textBox_result.Text = "ErrorCode:" + response.GetBiblioInfosResult.ErrorCode+"\r\n'"
+                //    +"ErrorInfo:"+response.GetBiblioInfosResult.ErrorInfo + "\r\n"
+                //    + "timestamp:" + strTimestamp + "\r\n"
+                //    + strResult;
+
+                //if (response.GetBiblioInfosResult.Value == -1)
+                //{
+                //    MessageBox.Show(this, "GetBiblioInfos()出错：" + response.GetBiblioInfosResult.ErrorInfo);
+                //    return;
+                //}
+                //else
+                //{
+                //    MessageBox.Show(this, "GetBiblioInfos()成功");
+                //}
+
+                ////+ response.
             }
             finally
             {
@@ -662,7 +670,9 @@ public long SearchItem(string strItemDbName,
         // 创建书目
         private void button_setBiblioInfo_Click(object sender, EventArgs e)
         {
-            string strError = "";
+            // 清空底部输出信息
+            this.ClearResultInfo();
+
             string strAction = this.textBox_SetBiblioInfo_strAction.Text;
             string strBiblioRecPath = this.textBox_SetBiblioInfo_strBiblioRecPath.Text;
             if (string.IsNullOrEmpty(strBiblioRecPath) == true)
@@ -670,8 +680,6 @@ public long SearchItem(string strItemDbName,
                 MessageBox.Show(this, "strBiblioRecPath参数不能为空");
                 return;
             }
-
-
 
             string strBiblioType = this.textBox_SetBiblioInfo_strBiblioType.Text;
             string strBiblio = this.textBox_SetBiblioInfo_strBiblio.Text;
@@ -685,33 +693,23 @@ public long SearchItem(string strItemDbName,
             RestChannel channel = this.GetChannel();
             try
             {
-
-                byte[] baNewTimestamp = null;
-                string strOutputPath = "";
-
-                long lRet = channel.SetBiblioInfo(
+                SetBiblioInfoResponse response = channel.SetBiblioInfo(
                     strAction,
                     strBiblioRecPath,
                     strBiblioType,
                     strBiblio,
                     baTimestamp,
                     strComment,
-                    strStyle,
-                    out strOutputPath,
-                    out baNewTimestamp,
-                    out strError);
-                if (lRet == -1)
-                {
-                    this.textBox_result.Text = strError;
-                    MessageBox.Show(this, strError);
-                    return;
-                }
+                    strStyle);
 
-                this.textBox_result.Text = "strOutputPath=" + strOutputPath + "\r\n"
-                    + "baNewTimestamp=" + ByteArray.GetHexTimeStampString(baNewTimestamp) + "\r\n"
-                    + "strError=" + strError
-                    + "lRet=" + lRet.ToString();
+                // 显示返回信息
+                this.SetResultInfo("SetBiblioInfo()\r\n" + RestChannel.GetResultInfo(response));
 
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, "SetBiblioInfo()异常:" + ex.Message);
+                return;
             }
             finally
             {
@@ -1756,9 +1754,22 @@ out string strError);
         #endregion
 
 
+        public void ClearResultInfo()
+        {
+            this.textBox_result.Text = "";
+        }
+
+        public void SetResultInfo(string text)
+        {
+            this.textBox_result.Text = text;
+        }
+
         // 原始WriteRes调用
         private void button_WriteRes_Click(object sender, EventArgs e)
         {
+            // 清空底部输出信息
+            this.ClearResultInfo();
+
             string strResPath = textBox_WriteRes_strResPath.Text.Trim();
             if (string.IsNullOrEmpty(strResPath) == true)
             {
@@ -1849,8 +1860,7 @@ out string strError);
                             baInputTimestamp);
                 if (response.WriteResResult.Value == -1)
                 {
-
-                    // 第一次的时间戳不匹配，自动重试
+                    // 间戳不匹配，自动重试
                     if (response.WriteResResult.ErrorCode == ErrorCode.TimestampMismatch
                         && this.checkBox_WriteRes_redoByNewTimestamp.Checked == true)
                     {
@@ -1858,23 +1868,10 @@ out string strError);
                         baInputTimestamp = response.baOutputTimestamp;
                         goto REDO;
                     }
-
-                    string info = "WriteRes() Error:" + response.WriteResResult.ErrorInfo;
-                    MessageBox.Show(this, info);
-                    this.textBox_result.Text = info;
-                    return;
                 }
 
-                
-                MessageBox.Show(this, "WriteRes() complete");
-
-                this.textBox_result.Text = "strOutputResPath:" + response.strOutputResPath + "\r\n"
-                    + "baOutputTimestamp:" + ByteArray.GetHexTimeStampString(response.baOutputTimestamp) + "\r\n"
-                    + "value:" + response.WriteResResult.Value + "\r\n"
-                    + "errorcode:" + response.WriteResResult.ErrorCode + "\r\n"
-                    + "erroronfo:" + response.WriteResResult.ErrorInfo;
-                
-                return;
+                // 显示接口返回信息
+                this.SetResultInfo("WriteRes()\r\n"+RestChannel.GetResultInfo(response));
 
             }
             catch (Exception ex)
@@ -1890,9 +1887,13 @@ out string strError);
 
 
 
+
         // 分块写入对象
         private void button_writeObjectByChunk_Click(object sender, EventArgs e)
         {
+            // 清空底部输出信息
+            this.ClearResultInfo();
+
             string strResPath = textBox_WriteRes_strResPath.Text.Trim();
             if (string.IsNullOrEmpty(strResPath) == true)
             {
@@ -1928,10 +1929,12 @@ out string strError);
             RestChannel channel = this.GetChannel();
             try
             {
+                WriteResResponse response = null;
+
                 string strContent = textBox_WriteRes_baContent.Text.Trim();
+                // 直接写文件的情况
                 if (strContent.Length > 5 && strContent.Substring(0, 5) == "info:")
                 {
-                    // 文件的情况
                     string fileName = this.textBox_WriteRes_fileName.Text.Trim();
                     if (string.IsNullOrEmpty(fileName) == true)
                     {
@@ -1939,47 +1942,50 @@ out string strError);
                         return;
                     }
 
-                    nRet = channel.WriteResOfFile(strResPath,
+                    response = channel.WriteResOfFile(strResPath,
                         fileName,
                         strStyle,
                         strMetadata,
                         baInputTimestamp,
                         chunkSize,
-                        this.checkBox_WriteRes_redoByNewTimestamp.Checked,
-                        out baOutputTimestamp,
-                        out strOutputResPath,
-                        out strError);
-                    if (nRet == -1)
-                    {
-                       this.ShowMessage("WriteResOfFile出错：" + strError);
-                        return;
-                    }
+                        this.checkBox_WriteRes_redoByNewTimestamp.Checked);
+                        //out baOutputTimestamp,
+                        //out strOutputResPath,
+                        //out strError);
+                    //if (nRet == -1)
+                    //{
+                    //   this.ShowMessage("WriteResOfFile出错：" + strError);
+                    //    return;
+                    //}
                 }
                 else
                 {
                     byte[] baContent = ByteArray.GetTimeStampByteArray(strContent);
 
-                   nRet =  channel.WriteResByChunk(strResPath,
+                    response = channel.WriteResByChunk(strResPath,
                         baContent,
                         strStyle,
                         strMetadata,
                         baInputTimestamp,
                         chunkSize,
-                        this.checkBox_WriteRes_redoByNewTimestamp.Checked,
-                        out baOutputTimestamp,
-                        out strOutputResPath,
-                        out strError);
-                    if (nRet == -1)
-                    {
-                        this.ShowMessage("WriteResByChunk：" + strError);
-                        return;
-                    }
+                        this.checkBox_WriteRes_redoByNewTimestamp.Checked);
+                    //    out baOutputTimestamp,
+                    //    out strOutputResPath,
+                    //    out strError);
+                    //if (nRet == -1)
+                    //{
+                    //    this.ShowMessage("WriteResByChunk：" + strError);
+                    //    return;
+                    //}
                 }
 
-                // 成功 // 把时间戳和strOutputResPath显示一下
-                this.ShowMessage("分片写入成功。\r\n"
-                    + "baOutputTimestamp:" +ByteArray.GetHexTimeStampString(baOutputTimestamp)+ "\r\n"
-                    + "strOutputResPath:"+ strOutputResPath);
+                //// 成功 // 把时间戳和strOutputResPath显示一下
+                //this.ShowMessage("分片写入成功。\r\n"
+                //    + "baOutputTimestamp:" +ByteArray.GetHexTimeStampString(baOutputTimestamp)+ "\r\n"
+                //    + "strOutputResPath:"+ strOutputResPath);
+
+                // 显示接口返回信息
+                this.SetResultInfo("WriteRes()分片写入\r\n" + RestChannel.GetResultInfo(response));
 
                 return;
 
@@ -2057,6 +2063,9 @@ out string strError);
         // 获取资源
         private void button_GetRes_Click(object sender, EventArgs e)
         {
+            // 清空底部输出信息
+            this.ClearResultInfo();
+
             // strResPath
             string strResPath = textBox_GetRes_strResPath.Text.Trim();
             if (string.IsNullOrEmpty(strResPath) == true)
@@ -2107,54 +2116,24 @@ out string strError);
             RestChannel channel = this.GetChannel();
             try
             {
-                string strMetadata = "";
-                string strOutputResPath = "";
-                byte[] baOutputTimestamp = null;
-
-
-                long lTotalLength = -1;
-                //byte[] baTotal = null;
-                byte[] baContent = null;
 
 
                 GetResResponse response = channel.GetRes(strResPath,
                     lStart,
                     lLength,
                     strStyle);
-                if (response.GetResResult.Value == -1)
-                {
-                    MessageBox.Show(this, "GetRes() 出错： " + response.GetResResult.ErrorInfo);
-                    return;
-                }
 
-                // 一些返回值，如果style里对应参数，则会返回
-                strMetadata = response.strMetadata;
-                strOutputResPath = response.strOutputResPath;
-                baOutputTimestamp = response.baOutputTimestamp;
+                // 显示接口返回信息
+                this.SetResultInfo("GetRes()\r\n" + RestChannel.GetResultInfo(response));
 
-                // 返回的value表示资源内容的总长度
-                lTotalLength = response.GetResResult.Value;
 
                 // 内容
-                baContent = response.baContent;
-
-
-                // 把返回的其它信息显示在界面上
-                string strOutputTimestamp = "";
-                if (baOutputTimestamp != null && baOutputTimestamp.Length > 0)
-                    strOutputTimestamp = ByteArray.GetHexTimeStampString(baOutputTimestamp);
-
-                this.textBox_result.Text = "strMetadata:" + strMetadata + "\r\n"
-                    + "strOutputResPath:" + strOutputResPath + "\r\n"
-                    + "baOutputTimestamp:" + strOutputTimestamp + "\r\n"
-                    + "lTotalLength:"+ lTotalLength.ToString()+"\r\n";
-
-                // 将byte转成字符串
+                byte[]  baContent = response.baContent;
                 if (baContent != null && baContent.Length > 0)
                 {
+                    // 写入文件
                     if (string.IsNullOrEmpty(fileName) == false)
                     {
-                        // 写入文件，只写一次
                         using (FileStream fs = new FileStream(fileName, FileMode.Create, FileAccess.Write))
                         {
                             fs.Write(baContent, 0, baContent.Length);
@@ -2166,12 +2145,14 @@ out string strError);
                     }
                     else
                     {
-                        string text = Encoding.UTF8.GetString(baContent);
-                        this.textBox_result.Text += "content:" + text + "\r\n\r\n";
+                        if (baContent.Length <= 1024 * 1000)
+                        {
+                            string text = Encoding.UTF8.GetString(baContent);
+                            this.textBox_result.Text += "content:" + text + "\r\n\r\n";
+                        }
                     }
                 }
 
-                MessageBox.Show(this, "GetRes() 成功");
                 return;
 
             }
@@ -2189,11 +2170,14 @@ out string strError);
         // 分片获取资源 
         private void button_GetResByChunk_Click(object sender, EventArgs e)
         {
+            // 清空底部输出信息
+            this.ClearResultInfo();
+
             // strResPath
             string strResPath = textBox_GetRes_strResPath.Text.Trim();
             if (string.IsNullOrEmpty(strResPath) == true)
             {
-                MessageBox.Show(this, "资源路径不能为空。");
+                MessageBox.Show(this, "strResPath不能为空。");
                 return;
             }
 
@@ -2244,10 +2228,9 @@ out string strError);
                 {
                     stream = new MemoryStream(); //内存流
                 }
-
+                GetResResponse response = null;
 
                 long lTotalLength = -1;
-                //byte[] baTotal = null;
                 byte[] baContent = null;
                 long lStart = 0;
                 for (; ; )
@@ -2260,13 +2243,14 @@ out string strError);
                         realChunkSize = Math.Min(chunkSize1, (int)(lTotalLength - lStart));
 
 
-                    GetResResponse response = channel.GetRes(strResPath,
+                     response = channel.GetRes(strResPath,
                         lStart,
                         realChunkSize,
                         strStyle);
                     if (response.GetResResult.Value == -1)
                     {
-                        MessageBox.Show(this, "获得服务器文件 '" + strResPath + "' 时发生错误： " + response.GetResResult.ErrorInfo);
+                        this.SetResultInfo(RestChannel.GetResultInfo(response));
+                        //MessageBox.Show(this, "获得服务器文件 '" + strResPath + "' 时发生错误： " + response.GetResResult.ErrorInfo);
                         return;
                     }
 
@@ -2301,16 +2285,8 @@ out string strError);
                 } // end of for
 
 
-
-                // 把返回的其它信息显示在界面上
-                string strOutputTimestamp = "";
-                if (baOutputTimestamp != null && baOutputTimestamp.Length > 0)
-                    strOutputTimestamp = ByteArray.GetHexTimeStampString(baOutputTimestamp);
-
-                this.textBox_result.Text = "共请求了["+times+"]次。\r\n"
-                    + "strMetadata:" + strMetadata + "\r\n"
-                    + "strOutputResPath:" + strOutputResPath + "\r\n"
-                    + "baOutputTimestamp:" + strOutputTimestamp + "\r\n\r\n";
+                this.textBox_result.Text = "GetRes()分片获取，共请求了[" + times + "]次。\r\n"
+                    + RestChannel.GetResultInfo(response);
 
                 // 如果没有文件，则转成字符串显示
                 if (string.IsNullOrEmpty(fileName) == true
@@ -2325,12 +2301,9 @@ out string strError);
 
                         string text = Encoding.UTF8.GetString(bt);
                         this.textBox_result.Text += "content:" + text + "\r\n\r\n";
-
-
                     }
                 }
 
-                MessageBox.Show(this, "GetRes分片获取资源成功。");
                 return;
 
             }
@@ -2365,6 +2338,9 @@ out string strError);
         // GetRecord
         private void button_GetRecord_Click(object sender, EventArgs e)
         {
+            // 清空底部输出信息
+            this.ClearResultInfo();
+
             // strResPath
             string strPath = this.textBox_GetRecord_strPath.Text.Trim();
             if (string.IsNullOrEmpty(strPath) == true)
@@ -2378,15 +2354,20 @@ out string strError);
             {
                 GetRecordResponse response = channel.GetRecord(strPath);
 
-                string xml = response.strXml;
-                if (string.IsNullOrEmpty(xml) == false)
-                    xml = DomUtil.GetIndentXml(xml);
+                // 显示返回信息
+                this.SetResultInfo("GetRecord()\r\n" + RestChannel.GetResultInfo(response));
 
-                this.textBox_result.Text = "Value:" + response.GetRecordResult.Value + "\r\n"
-                    + "ErrorCode:" + response.GetRecordResult.ErrorCode + "\r\n"
-                    + "ErrorInfo" + response.GetRecordResult.ErrorInfo + "\r\n"
-                    + "timestamp:" + ByteArray.GetHexTimeStampString(response.timestamp) + "\r\n"
-                    + "strXml:" + "\r\n" + xml;
+                //string xml = response.strXml;
+                //if (string.IsNullOrEmpty(xml) == false)
+                //    xml = DomUtil.GetIndentXml(xml);
+
+                //
+
+                //this.textBox_result.Text = "Value:" + response.GetRecordResult.Value + "\r\n"
+                //    + "ErrorCode:" + response.GetRecordResult.ErrorCode + "\r\n"
+                //    + "ErrorInfo" + response.GetRecordResult.ErrorInfo + "\r\n"
+                //    + "timestamp:" + ByteArray.GetHexTimeStampString(response.timestamp) + "\r\n"
+                //    + "strXml:" + "\r\n" + xml;
             }
             finally
             {
@@ -2421,7 +2402,9 @@ out string strError);
         // SetReaderInfo
         private void button_SetReaderInfo_Click(object sender, EventArgs e)
         {
-            string strError = "";
+            // 清空底部输出信息
+            this.ClearResultInfo();
+
             string strAction = this.textBox_SetReaderInfo_strAction.Text;
             string strRecPath = this.textBox_SetReaderInfo_strRecPath.Text;
             if (string.IsNullOrEmpty(strRecPath) == true)
@@ -2439,30 +2422,34 @@ out string strError);
             RestChannel channel = this.GetChannel();
             try
             {
-                long lRet = channel.SetReaderInfo(
+                SetReaderInfoResponse response = channel.SetReaderInfo(
                     strAction,
                     strRecPath,
                     strNewXml,
                     strOldXml,
-                    baOldTimestamp,
-                    out string strExistingXml,
-                    out string strSavedXml,
-                    out string strSavedRecPath,
-                    out byte[] baNewTimestamp,
-                    out strError);
-                if (lRet == -1)
-                {
-                    this.textBox_result.Text = strError;
-                    MessageBox.Show(this, strError);
-                    //return;
-                }
+                    baOldTimestamp);
 
-                this.textBox_result.Text = "strSavedRecPath=" + strSavedRecPath + "\r\n"
-                    + "baNewTimestamp=" + ByteArray.GetHexTimeStampString(baNewTimestamp) + "\r\n"
-                    + "strError=" + strError  +"\r\n"
-                    + "lRet=" + lRet.ToString()+"\r\n"
-                    + "strSavedXml="+ strSavedXml +"\r\n\r\n"
-                    + "strExistingXml=" + strExistingXml;
+                // 显示返回信息
+                this.SetResultInfo("SetReaderInfo()\r\n" + RestChannel.GetResultInfo(response));
+
+                //out string strExistingXml,
+                //out string strSavedXml,
+                //out string strSavedRecPath,
+                //out byte[] baNewTimestamp,
+                //out strError);
+                //if (lRet == -1)
+                //{
+                //    this.textBox_result.Text = strError;
+                //    MessageBox.Show(this, strError);
+                //    //return;
+                //}
+
+                //this.textBox_result.Text = "strSavedRecPath=" + strSavedRecPath + "\r\n"
+                //    + "baNewTimestamp=" + ByteArray.GetHexTimeStampString(baNewTimestamp) + "\r\n"
+                //    + "strError=" + strError  +"\r\n"
+                //    + "lRet=" + lRet.ToString()+"\r\n"
+                //    + "strSavedXml="+ strSavedXml +"\r\n\r\n"
+                //    + "strExistingXml=" + strExistingXml;
 
             }
             finally
@@ -2486,6 +2473,9 @@ out string strError);
 
         private void button_GetReaderInfo_Click(object sender, EventArgs e)
         {
+            // 清空底部输出信息
+            this.ClearResultInfo();
+
             string strBarcode = this.textBox_GetReaderInfo_strBarcode.Text;
             if (string.IsNullOrEmpty(strBarcode) == true)
             {
@@ -2496,35 +2486,13 @@ out string strError);
             RestChannel channel = this.GetChannel();
             try
             {
-
-
                 string strResultTypeList = this.textBox_GetReaderInfo_strResultTypeList.Text;
-               // string[] formats = strformats.Split(new char[] { ',' });
+                GetReaderInfoResponse  response= channel.GetReaderInfo(strBarcode,
+                    strResultTypeList);
 
-                int nRet= channel.GetReaderInfo(strBarcode,
-                    strResultTypeList,
-                    out string[] results,
-                    out string strRecPath,
-                    out string strError);
-                if (nRet == -1)
-                {
-                    MessageBox.Show(this, "GetReaderInfo()出错：" + strError);
-                    //return;  //出错的情况也显示一下信息
-                }
-                else
-                {
-                    MessageBox.Show(this, "GetReaderInfo()成功");
-                }
+                // 显示返回信息
+                this.SetResultInfo("GetReaderInfo()\r\n" + RestChannel.GetResultInfo(response));
 
-                string strResult = "result:\r\n";
-                if (results != null && results.Length > 0)
-                {
-                    foreach (string s in results)
-                    {
-                        strResult += s + "\r\n";
-                    }
-                }
-                this.textBox_result.Text =strResult;
             }
             finally
             {

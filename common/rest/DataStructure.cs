@@ -665,6 +665,8 @@ LibraryServerResult.ErrorInfo		出错信息
         public byte[] baOutputTimestamp { get; set; }
     }
 
+
+
     #endregion
 
     #region GetRes
