@@ -661,21 +661,23 @@ namespace dp2mini
                     string type = "Book-图书";
                     if (string.IsNullOrEmpty(one.issueDbName) == false)
                         type = "Series-期刊";
-                    string output = "";
-                    long lRet = channel.SearchBiblio(one.biblioDbName,
+                    //string output = "";
+                    //long lRet = 0;
+                    SearchBiblioResponse response = channel.SearchBiblio(one.biblioDbName,
                        "",
                        -1,
                        "recid",
                        "left",
                        "test",
                        "",
-                       "",//strLocationFilter
-                       out output,
-                       out strError);
-                    if (lRet == -1)
+                       "");//strLocationFilter
+                       //out output,
+                       //out strError);
+                    if (response.SearchBiblioResult.Value== -1)
                     {
                         this.OutputInfo("获取数据库[" + one.biblioDbName + "]的书目记录数量出错：" + strError,
                             true, false);
+
                         continue;
                     }
 
@@ -692,14 +694,14 @@ namespace dp2mini
 
 
                     string[] row = {
-            index.ToString(),
-             one.biblioDbName,
-            lRet.ToString(),
-           one.inCirculation.ToString(),
-            one.syntax,
-           type,
-            one.role,
-           string.Join("\r\n",children) //one.itemDbName + "\r\n" + one.orderDbName + "\r\n" + one.commentDbName + "\r\n" + one.issueDbName
+                        index.ToString(),
+                         one.biblioDbName,
+                        response.SearchBiblioResult.Value.ToString(),  //书目库记录总数
+                       one.inCirculation.ToString(),
+                        one.syntax,
+                       type,
+                        one.role,
+                       string.Join("\r\n",children) //one.itemDbName + "\r\n" + one.orderDbName + "\r\n" + one.commentDbName + "\r\n" + one.issueDbName
                     };
 
 
@@ -719,11 +721,11 @@ namespace dp2mini
                     if (one.inCirculation == "true")
                     {
                         cirDbCount++;
-                        lCirCount += lRet;
+                        lCirCount += response.SearchBiblioResult.Value;
                     }
 
                     //总数量
-                    lTotalCount += lRet;
+                    lTotalCount += response.SearchBiblioResult.Value;
                 }
 
                 this.OutputInfo("\r\n图书馆系统中总共有" + index + "个书目库，书目记录总数量为" + lTotalCount
@@ -767,7 +769,7 @@ namespace dp2mini
             Application.DoEvents();
 
             string strError = "";
-            long lRet = 0;
+            //long lRet = 0;
 
             // 记下原来的光标
             Cursor oldCursor = Cursor.Current;
@@ -799,7 +801,7 @@ namespace dp2mini
                     token.ThrowIfCancellationRequested();
 
                     // 检查全部册
-                    lRet = channel.SearchItem(//stop,
+                    SearchItemResponse response = channel.SearchItem(//stop,
                        "<all>",
                        "", // 
                        -1,
@@ -807,21 +809,21 @@ namespace dp2mini
                        "left",
                        "myresult",
                        "",//strSearchStyle
-                       "id,xml",
-                       out strError);
-                    if (lRet == -1)
+                       "id,xml");
+                       //out strError);
+                    if (response.SearchItemResult.Value == -1)
                     {
                         this.OutputInfo("检索册记录出错：" + strError, true, false);
                         return;
                     }
 
                     // 输出命中信息
-                    this.OutputInfo("dp2系统中册数量总计" + lRet.ToString() + "册。", true, false);
+                    this.OutputInfo("dp2系统中册数量总计" + response.SearchItemResult.Value.ToString() + "册。", true, false);
                     Application.DoEvents();
                     //this.OutputInfo("共命中" + lRet.ToString() + "册");
 
 
-                    long lHitCount = lRet;
+                    long lHitCount = response.SearchItemResult.Value;
                     long lStart = 0;
                     long lCount = lHitCount;
 
@@ -834,7 +836,7 @@ namespace dp2mini
 
 
                         Record[] searchresults = null;
-                        lRet = channel.GetSearchResult(
+                        long lRet = channel.GetSearchResult(
                             //stop,
                             "myresult",   // strResultSetName
                             lStart,

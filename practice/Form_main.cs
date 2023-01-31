@@ -44,13 +44,13 @@ namespace practice
             this.Login_textBox_password.Text = Properties.Settings.Default.login_password;
             this.Login_textBox_parameters.Text = Properties.Settings.Default.login_parameters;
 
-            this.SearchBiblio_textBox_BiblioDbNames.Text = Properties.Settings.Default.searchBiblio_biblioDbNames;
-            this.SearchBiblio_textBox_QueryWord.Text = Properties.Settings.Default.searchBiblio_queryWord;
-            this.SearchBiblio_textBox_PerMax.Text = Properties.Settings.Default.searchBiblio_perMax;
-            this.SearchBiblio_textBox_FromStyle.Text = Properties.Settings.Default.searchBiblio_fromStyle;
-            this.SearchBiblio_comboBox_MatchStyle.Text = Properties.Settings.Default.searchBiblio_matchStyle;
-            this.SearchBiblio_textBox_ResultSetName.Text = Properties.Settings.Default.searchBiblio_resultSetName;
-            this.SearchBiblio_textBox_SearchStyle.Text = Properties.Settings.Default.searchBiblio_searchStyle;
+            this.textBox_SearchBiblio_strBiblioDbNames.Text = Properties.Settings.Default.searchBiblio_biblioDbNames;
+            this.textBox_SearchBiblio_strQueryWord.Text = Properties.Settings.Default.searchBiblio_queryWord;
+            this.textBox_SearchBiblio_nPerMax.Text = Properties.Settings.Default.searchBiblio_perMax;
+            this.textBox_SearchBiblio_strFromStyle.Text = Properties.Settings.Default.searchBiblio_fromStyle;
+            this.comboBox_SearchBiblio_strMatchStyle.Text = Properties.Settings.Default.searchBiblio_matchStyle;
+            this.textBox_SearchBiblio_strResultSetName.Text = Properties.Settings.Default.searchBiblio_resultSetName;
+            this.textBox_SearchBiblio_strSearchStyle.Text = Properties.Settings.Default.searchBiblio_searchStyle;
 
             this.textBox_GetSearchResult_strResultSetName.Text = Properties.Settings.Default.getSearchResult_resultsetName;
             this.textBox_GetSearchResult_lStart.Text = Properties.Settings.Default.getSearchResult_start;
@@ -70,13 +70,13 @@ namespace practice
             Properties.Settings.Default.login_parameters = this.Login_textBox_parameters.Text;
 
 
-            Properties.Settings.Default.searchBiblio_biblioDbNames = this.SearchBiblio_textBox_BiblioDbNames.Text;
-            Properties.Settings.Default.searchBiblio_queryWord = this.SearchBiblio_textBox_QueryWord.Text;
-            Properties.Settings.Default.searchBiblio_perMax = this.SearchBiblio_textBox_PerMax.Text;
-            Properties.Settings.Default.searchBiblio_fromStyle = this.SearchBiblio_textBox_FromStyle.Text;
-            Properties.Settings.Default.searchBiblio_matchStyle = this.SearchBiblio_comboBox_MatchStyle.Text;
-            Properties.Settings.Default.searchBiblio_resultSetName = this.SearchBiblio_textBox_ResultSetName.Text;
-            Properties.Settings.Default.searchBiblio_searchStyle = this.SearchBiblio_textBox_SearchStyle.Text;
+            Properties.Settings.Default.searchBiblio_biblioDbNames = this.textBox_SearchBiblio_strBiblioDbNames.Text;
+            Properties.Settings.Default.searchBiblio_queryWord = this.textBox_SearchBiblio_strQueryWord.Text;
+            Properties.Settings.Default.searchBiblio_perMax = this.textBox_SearchBiblio_nPerMax.Text;
+            Properties.Settings.Default.searchBiblio_fromStyle = this.textBox_SearchBiblio_strFromStyle.Text;
+            Properties.Settings.Default.searchBiblio_matchStyle = this.comboBox_SearchBiblio_strMatchStyle.Text;
+            Properties.Settings.Default.searchBiblio_resultSetName = this.textBox_SearchBiblio_strResultSetName.Text;
+            Properties.Settings.Default.searchBiblio_searchStyle = this.textBox_SearchBiblio_strSearchStyle.Text;
 
             Properties.Settings.Default.getSearchResult_resultsetName = this.textBox_GetSearchResult_strResultSetName.Text;
             Properties.Settings.Default.getSearchResult_start = this.textBox_GetSearchResult_lStart.Text;
@@ -279,42 +279,56 @@ namespace practice
         #endregion
 
 
-        #region 检索书目SearchBiblio 和 GetSearchResult
+        #region 检索书目SearchBiblio 
+
+        private void button_help_SearchBiblio_Click(object sender, EventArgs e)
+        {
+            Process.Start("https://jihulab.com/DigitalPlatform/dp2doc/-/issues/39#note_2011425");
+
+        }
 
         private void button_SearchBiblio_Click(object sender, EventArgs e)
         {
+            // 清空底部输出信息
+            this.ClearResultInfo();
+
+            int nPerMax = 0;
+            if (this.textBox_SearchBiblio_nPerMax.Text == "")
+            {
+                nPerMax = -1;
+            }
+            else
+            {
+                try
+                {
+                    nPerMax = Convert.ToInt32(this.textBox_SearchBiblio_nPerMax.Text);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(this, "nPerMax必须为数值型。" + ex.Message);
+                }
+            }
+
 
             RestChannel channel = this.GetChannel();
             try
             {
-                int nPerMax = 0;
-                if (this.SearchBiblio_textBox_PerMax.Text == "")
-                    nPerMax = -1;
-                else
-                    nPerMax = Convert.ToInt32(this.SearchBiblio_textBox_PerMax.Text);
-
-
-                //SearchBiblioResponse response 
-                long lRet = channel.SearchBiblio(this.SearchBiblio_textBox_BiblioDbNames.Text,
-                    this.SearchBiblio_textBox_QueryWord.Text,
+                SearchBiblioResponse response = channel.SearchBiblio(this.textBox_SearchBiblio_strBiblioDbNames.Text,
+                    this.textBox_SearchBiblio_strQueryWord.Text,
                     nPerMax,
-                    this.SearchBiblio_textBox_FromStyle.Text,
-                    this.SearchBiblio_comboBox_MatchStyle.Text,
-                    this.SearchBiblio_textBox_ResultSetName.Text,
-                    SearchBiblio_textBox_OutputStyle.Text,// this.SearchBiblio_textBox_SearchStyle.Text,
-                    this.SearchBiblio_textBox_filter.Text,
-                    out string strQueryXml,
-            out string strError);
+                    this.textBox_SearchBiblio_strFromStyle.Text,
+                    this.comboBox_SearchBiblio_strMatchStyle.Text,
+                    this.textBox_SearchBiblio_strResultSetName.Text,
+                    textBox_SearchBiblio_strOutputStyle.Text,// this.SearchBiblio_textBox_SearchStyle.Text,
+                    this.textBox_SearchBiblio_strLocationFilter.Text);
 
-                if (lRet == -1)
-                {
-                    this.textBox_result.Text = "error:" + strError;
-                }
-                else
-                {
-                    this.textBox_result.Text = "count:" + lRet + "\r\n"
-                        + strQueryXml;
-                }
+                // 显示返回信息
+                this.SetResultInfo("SearchBiblio()\r\n" + RestChannel.GetResultInfo(response));
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, "SearchBiblio()异常：" + ex.Message);
+                return;
             }
             finally
             {
@@ -322,10 +336,76 @@ namespace practice
             }
         }
 
+        #endregion
+
+        #region SearchItem
+
+        private void button_help_SearchItem_Click(object sender, EventArgs e)
+        {
+            Process.Start("https://jihulab.com/DigitalPlatform/dp2doc/-/issues/39#note_2011838");
+        }
+
+        private void button_searchItem_Click(object sender, EventArgs e)
+        {
+            // 清空底部输出信息
+            this.ClearResultInfo();
+
+            RestChannel channel = this.GetChannel();
+            try
+            {
+                int nPerMax = 0;
+                if (this.searchItem_nPerMax.Text == "")
+                    nPerMax = -1;
+                else
+                    nPerMax = Convert.ToInt32(this.searchItem_nPerMax.Text);
+                /*
+                 * 
+public long SearchItem(string strItemDbName,
+    string strQueryWord,
+    int nPerMax,
+    string strFrom,
+    string strMatchStyle,
+    string strResultSetName,
+    string strSearchStyle,
+     string strOutputStyle,
+    out string strError)
+                 */
+                SearchItemResponse response= channel.SearchItem(this.searchItem_strItemDbName.Text,
+                    this.searchItem_strQueryWord.Text,
+                    nPerMax,
+                    this.searchItem_strFrom.Text,
+                    this.searchItem_strMatchStyle.Text,
+                    this.searchItem_strResultSetName.Text,
+                    this.searchItem_strSearchStyle.Text,
+                    this.searchItem_strOutputStyle.Text);
+
+                // 显示返回信息
+                this.SetResultInfo("SearchItem()\r\n" + RestChannel.GetResultInfo(response));
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, "SearchItem()异常：" + ex.Message);
+                return;
+            }
+            finally
+            {
+                this._channelPool.ReturnChannel(channel);
+            }
+        }
+        #endregion
+
+
+        #region GetSearchResult
+
+        private void button_help_GetSearchResult_Click(object sender, EventArgs e)
+        {
+            Process.Start("https://jihulab.com/DigitalPlatform/dp2doc/-/issues/39#note_2001684");
+        }
+
         private void button_GetSearchResult_Click(object sender, EventArgs e)
         {
-            // 将下方显示信息置空
-            this.textBox_result.Text = "";
+            // 清空底部输出信息
+            this.ClearResultInfo();
 
             string strResultSetName = this.textBox_GetSearchResult_strResultSetName.Text.Trim();
             string strlStart = this.textBox_GetSearchResult_lStart.Text.Trim();
@@ -348,77 +428,31 @@ namespace practice
             }
             catch (Exception ex)
             {
-                MessageBox.Show(this, "lStart格式不合法，须为数值型。" + ex.Message);
+                MessageBox.Show(this, "lCount格式不合法，须为数值型。" + ex.Message);
                 return;
             }
 
             string strBrowseInfoStyle = this.textBox_GetSearchResult_strBrowseInfoStyle.Text.Trim();
 
-            string strLang = this.textBox_GetSearchResult_strLang.Text.Trim(); 
+            string strLang = this.textBox_GetSearchResult_strLang.Text.Trim();
 
 
             RestChannel channel = this.GetChannel();
             try
             {
-                //GetSearchResultResponse response
-                long lRet = channel.GetSearchResult(strResultSetName,
+                GetSearchResultResponse response = channel.GetSearchResult(strResultSetName,
                     lStart,
                    lCount,
                     strBrowseInfoStyle,
-                    strLang,
-                    out Record[] records,
-                    out string strError);
-                if (lRet == -1)
-                {
-                    MessageBox.Show(this, "GetSearchResult() error:" + strError);
-                    this.textBox_result.Text = "errorInfo:" + strError +"\r\n";
-                }
+                    strLang);
 
-                this.textBox_result.Text += "返回值Value:" + lRet + "\r\n";
-
-                if (records != null)
-                {
-                    this.textBox_result.Text += "命中'" + lRet + "'条，本次返回'" + records.Length + "'条。\r\n";
-
-                    StringBuilder browse = new StringBuilder();
-                    foreach (Record record in records)
-                    {
-                        browse.AppendLine("path:"+record.Path);
-
-                        if (record.Cols != null)
-                            browse.AppendLine("cols:"+string.Join(",", record.Cols));
-
-                        if (record.Keys != null)
-                        {
-                            browse.AppendLine("\r\n=以下为返回的Keys=");
-                            foreach (KeyFrom one in record.Keys)
-                            {
-                                browse.AppendLine("Logic=" + one.Logic + "--" + "Key=" + one.Key + "" + "--From=" + one.From + ""  );
-                            }
-                        }
-
-                        if (record.RecordBody != null)
-                        {
-                            browse.AppendLine("\r\n=以下为返回的RecordBody=");
-
-                            browse.AppendLine("Result.Value:" + record.RecordBody.Result.Value);
-                            browse.AppendLine("Result.ErrorCode:" + record.RecordBody.Result.ErrorCode);
-                            browse.AppendLine("Result.ErrorString:" + record.RecordBody.Result.ErrorString);
-
-                            browse.AppendLine("Timestamp:" + ByteArray.GetHexTimeStampString(record.RecordBody.Timestamp));
-                            browse.AppendLine("Metadata:" + record.RecordBody.Metadata);
-                            browse.AppendLine("xml:" + record.RecordBody.Xml);
-                        }
-
-
-                        browse.AppendLine("\r\n=================");
-
-                        
-                    }
-
-                    this.textBox_result.Text += browse.ToString();
-                }
-
+                // 显示返回信息
+                this.SetResultInfo("GetSearchResult()\r\n" + RestChannel.GetResultInfo(response));
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, "GetSearchResult()异常：" + ex.Message);
+                return;
             }
             finally
             {
@@ -426,53 +460,6 @@ namespace practice
             }
         }
 
-        private void button_searchItem_Click(object sender, EventArgs e)
-        {
-
-            RestChannel channel = this.GetChannel();
-            try
-            {
-                int nPerMax = 0;
-                if (this.searchItem_nPerMax.Text == "")
-                    nPerMax = -1;
-                else
-                    nPerMax = Convert.ToInt32(this.searchItem_nPerMax.Text);
-                /*
-                 * 
-public long SearchItem(string strItemDbName,
-    string strQueryWord,
-    int nPerMax,
-    string strFrom,
-    string strMatchStyle,
-    string strResultSetName,
-    string strSearchStyle,
-     string strOutputStyle,
-    out string strError)
-                 */
-                //SearchBiblioResponse response 
-                long lRet = channel.SearchItem(this.searchItem_strItemDbName.Text,
-                    this.searchItem_strQueryWord.Text,
-                    nPerMax,
-                    this.searchItem_strFrom.Text,
-                    this.searchItem_strMatchStyle.Text,
-                    this.searchItem_strResultSetName.Text,
-                    this.searchItem_strSearchStyle.Text,
-                    this.searchItem_strOutputStyle.Text,
-                    out string strError);
-                if (lRet == -1)
-                {
-                    this.textBox_result.Text = "error:" + strError;
-                }
-                else
-                {
-                    this.textBox_result.Text = "count:" + lRet;
-                }
-            }
-            finally
-            {
-                this._channelPool.ReturnChannel(channel);
-            }
-        }
         #endregion
 
         #region 获取书目
@@ -512,34 +499,11 @@ public long SearchItem(string strItemDbName,
                 this.SetResultInfo("GetBiblioInfos()\r\n" + RestChannel.GetResultInfo(response));
 
 
-
-                //string strResult = "result:\r\n";
-                //if (response.results != null && response.results.Length > 0)
-                //{
-                //    foreach (string s in response.results)
-                //    {
-                //        strResult += s + "\r\n";
-                //    }
-                //}
-
-                //string strTimestamp = ByteArray.GetHexTimeStampString(response.baTimestamp);
-
-                //this.textBox_result.Text = "ErrorCode:" + response.GetBiblioInfosResult.ErrorCode+"\r\n'"
-                //    +"ErrorInfo:"+response.GetBiblioInfosResult.ErrorInfo + "\r\n"
-                //    + "timestamp:" + strTimestamp + "\r\n"
-                //    + strResult;
-
-                //if (response.GetBiblioInfosResult.Value == -1)
-                //{
-                //    MessageBox.Show(this, "GetBiblioInfos()出错：" + response.GetBiblioInfosResult.ErrorInfo);
-                //    return;
-                //}
-                //else
-                //{
-                //    MessageBox.Show(this, "GetBiblioInfos()成功");
-                //}
-
-                ////+ response.
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, "GetBiblioInfos()异常：" + ex.Message);
+                return;
             }
             finally
             {
@@ -1836,11 +1800,6 @@ out string strError);
                     if (string.IsNullOrEmpty(strContent) == false)
                     {
                         baContent = ByteArray.GetTimeStampByteArray(strContent);
-
-
-                        //byte[] b = ByteArray.GetTimeStampByteArray(strContent);
-                        //string str=Encoding.UTF8.GetString(b);
-                        //baContent=Encoding.UTF8.GetBytes(str);
                     }
                 }
             }
@@ -1969,20 +1928,9 @@ out string strError);
                         baInputTimestamp,
                         chunkSize,
                         this.checkBox_WriteRes_redoByNewTimestamp.Checked);
-                    //    out baOutputTimestamp,
-                    //    out strOutputResPath,
-                    //    out strError);
-                    //if (nRet == -1)
-                    //{
-                    //    this.ShowMessage("WriteResByChunk：" + strError);
-                    //    return;
-                    //}
+
                 }
 
-                //// 成功 // 把时间戳和strOutputResPath显示一下
-                //this.ShowMessage("分片写入成功。\r\n"
-                //    + "baOutputTimestamp:" +ByteArray.GetHexTimeStampString(baOutputTimestamp)+ "\r\n"
-                //    + "strOutputResPath:"+ strOutputResPath);
 
                 // 显示接口返回信息
                 this.SetResultInfo("WriteRes()分片写入\r\n" + RestChannel.GetResultInfo(response));
@@ -1992,7 +1940,7 @@ out string strError);
             }
             catch (Exception ex)
             {
-                this.ShowMessage("Exception :" + ex.Message);
+                this.ShowMessage("WriteRes()分片写入异常:" + ex.Message);
                 return;
             }
             finally
@@ -2146,16 +2094,6 @@ out string strError);
                     else
                     {
                         this.textBox_result.Text+= DisplayByteArray(baContent);
-
-                        //if (baContent.Length <= 1024 * 1000)
-                        //{
-
-                        //    string hex = ByteArray.GetHexTimeStampString(baContent);
-                        //    this.textBox_result.Text += "hex:" + hex + "\r\n\r\n";
-
-                        //    string text = Encoding.UTF8.GetString(baContent);
-                        //    this.textBox_result.Text += "content:" + text + "\r\n\r\n";
-                        //}
                     }
                 }
 
@@ -2303,15 +2241,6 @@ out string strError);
 
                     // 显示
                     this.textBox_result.Text += DisplayByteArray(bt);
-
-                    //if (bt != null && bt.Length > 0)
-                    //{
-                    //    string hex = ByteArray.GetHexTimeStampString(bt);
-                    //    this.textBox_result.Text += "hex:" + hex + "\r\n\r\n";
-
-                    //    string text = Encoding.UTF8.GetString(bt);
-                    //    this.textBox_result.Text += "content:" + text + "\r\n\r\n";
-                    //}
                 }
 
                 return;
@@ -2319,7 +2248,7 @@ out string strError);
             }
             catch (Exception ex)
             {
-                MessageBox.Show(this, "GetRes分片获取资源异常：" + ex.Message);
+                MessageBox.Show(this, "GetRes()分片获取资源异常：" + ex.Message);
                 return;
             }
             finally
@@ -2390,18 +2319,11 @@ out string strError);
 
                 // 显示返回信息
                 this.SetResultInfo("GetRecord()\r\n" + RestChannel.GetResultInfo(response));
-
-                //string xml = response.strXml;
-                //if (string.IsNullOrEmpty(xml) == false)
-                //    xml = DomUtil.GetIndentXml(xml);
-
-                //
-
-                //this.textBox_result.Text = "Value:" + response.GetRecordResult.Value + "\r\n"
-                //    + "ErrorCode:" + response.GetRecordResult.ErrorCode + "\r\n"
-                //    + "ErrorInfo" + response.GetRecordResult.ErrorInfo + "\r\n"
-                //    + "timestamp:" + ByteArray.GetHexTimeStampString(response.timestamp) + "\r\n"
-                //    + "strXml:" + "\r\n" + xml;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, "GetRecord()异常：" + ex.Message);
+                return;
             }
             finally
             {
@@ -2466,25 +2388,11 @@ out string strError);
                 // 显示返回信息
                 this.SetResultInfo("SetReaderInfo()\r\n" + RestChannel.GetResultInfo(response));
 
-                //out string strExistingXml,
-                //out string strSavedXml,
-                //out string strSavedRecPath,
-                //out byte[] baNewTimestamp,
-                //out strError);
-                //if (lRet == -1)
-                //{
-                //    this.textBox_result.Text = strError;
-                //    MessageBox.Show(this, strError);
-                //    //return;
-                //}
-
-                //this.textBox_result.Text = "strSavedRecPath=" + strSavedRecPath + "\r\n"
-                //    + "baNewTimestamp=" + ByteArray.GetHexTimeStampString(baNewTimestamp) + "\r\n"
-                //    + "strError=" + strError  +"\r\n"
-                //    + "lRet=" + lRet.ToString()+"\r\n"
-                //    + "strSavedXml="+ strSavedXml +"\r\n\r\n"
-                //    + "strExistingXml=" + strExistingXml;
-
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, "SetReaderInfo()异常：" + ex.Message);
+                return;
             }
             finally
             {
@@ -2521,12 +2429,17 @@ out string strError);
             try
             {
                 string strResultTypeList = this.textBox_GetReaderInfo_strResultTypeList.Text;
-                GetReaderInfoResponse  response= channel.GetReaderInfo(strBarcode,
+                GetReaderInfoResponse response = channel.GetReaderInfo(strBarcode,
                     strResultTypeList);
 
                 // 显示返回信息
                 this.SetResultInfo("GetReaderInfo()\r\n" + RestChannel.GetResultInfo(response));
 
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, "GetReaderInfo()异常：" + ex.Message);
+                return;
             }
             finally
             {
@@ -2539,7 +2452,57 @@ out string strError);
             Process.Start("https://jihulab.com/DigitalPlatform/dp2doc/-/issues/39#note_1998731");
         }
 
+
+
+
+
+
         #endregion
+
+        private void button_help_GetBrowseRecords_Click(object sender, EventArgs e)
+        {
+            Process.Start("https://jihulab.com/DigitalPlatform/dp2doc/-/issues/39#note_2011950");
+        }
+
+        private void button_GetBrowseRecords_Click(object sender, EventArgs e)
+        {
+            // 清空底部输出信息
+            this.ClearResultInfo();
+
+            string paths = this.textBox_GetBrowseRecords_paths.Text.Trim();
+            if (string.IsNullOrEmpty(paths) == true)
+            {
+                MessageBox.Show(this, "paths参数不能为空。");
+                return;
+            }
+
+            // 转为数组
+            paths = paths.Replace("\r\n", "\n");
+            string[] pathArray=paths.Split('\n');
+
+            string strResultTypeList = this.textBox_GetBrowseRecord_strBrowseInfoStyle.Text;
+
+
+            RestChannel channel = this.GetChannel();
+            try
+            {
+                GetBrowseRecordsResponse response = channel.GetBrowseRecords(pathArray,
+                    strResultTypeList);
+
+                // 显示返回信息
+                this.SetResultInfo("GetBrowseRecords()\r\n" + RestChannel.GetResultInfo(response));
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, "GetBrowseRecords()异常：" + ex.Message);
+                return;
+            }
+            finally
+            {
+                this._channelPool.ReturnChannel(channel);
+            }
+        }
     }
 
 
