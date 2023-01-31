@@ -2071,16 +2071,15 @@ namespace dp2mini
                     index++;
 
                     //string output = "";
-                    long lRet = channel.SearchReader(one.biblioDbName,
+                    SearchReaderResponse response = channel.SearchReader(one.biblioDbName,
                        "",
                        -1,
                        "__id",
                        "left",
                        "zh",
                        "test",
-                       "",
-                       out strError);
-                    if (lRet == -1)
+                       "");
+                    if (response.SearchReaderResult.Value == -1)
                     {
                         this.OutputInfo("获取读者库[" + one.biblioDbName + "]的记录数量出错：" + strError,
                             true, false);
@@ -2089,10 +2088,10 @@ namespace dp2mini
 
                     // 每行内容
                     string[] row = {
-             one.biblioDbName,
+                        one.biblioDbName,
                         one.inCirculation.ToString(),
-             one.libraryCode,
-                       lRet.ToString() };
+                        one.libraryCode,
+                       response.SearchReaderResult.Value .ToString() };
 
 
                     // 写excel
@@ -2107,11 +2106,11 @@ namespace dp2mini
                     if (one.inCirculation == "true")
                     {
                         cirDbCount++;
-                        lCirCount += lRet;
+                        lCirCount += response.SearchReaderResult.Value;
                     }
 
                     //总数量
-                    lTotalCount += lRet;
+                    lTotalCount += response.SearchReaderResult.Value;
                 }
 
                 this.OutputInfo("\r\n图书馆系统中总共有" + index + "个读者库，读者记录总数量为" + lTotalCount
@@ -2149,7 +2148,7 @@ namespace dp2mini
             Application.DoEvents();
 
             string strError = "";
-            long lRet = 0;
+            long lRet1 = 0;
 
 
             // 设置按钮状态
@@ -2180,7 +2179,7 @@ namespace dp2mini
                 token.ThrowIfCancellationRequested();
 
                 // 检查全部册
-                lRet = channel.SearchReader(//stop,
+                SearchReaderResponse response = channel.SearchReader(//stop,
                    this._cirReaderDbs,
                    "", // 
                    -1,
@@ -2188,21 +2187,20 @@ namespace dp2mini
                    "left",
                    "zh",
                    "myresult",
-                   "id,xml",
-                   out strError);
-                if (lRet == -1)
+                   "id,xml");
+                if (response.SearchReaderResult.Value == -1)
                 {
                     this.OutputInfo("检索读者记录出错：" + strError, true, false);
                     return;
                 }
 
                 // 输出命中信息
-                this.OutputInfo("系统中参与流通的读者数量为" + lRet.ToString() + "条。", true, false);
+                this.OutputInfo("系统中参与流通的读者数量为" + response.SearchReaderResult.Value.ToString() + "条。", true, false);
                 Application.DoEvents();
                 //this.OutputInfo("共命中" + lRet.ToString() + "册");
 
 
-                long lHitCount = lRet;
+                long lHitCount = response.SearchReaderResult.Value;
                 long lStart = 0;
                 long lCount = lHitCount;
 
@@ -2215,7 +2213,7 @@ namespace dp2mini
 
 
                     Record[] searchresults = null;
-                    lRet = channel.GetSearchResult(
+                    lRet1 = channel.GetSearchResult(
                         //stop,
                         "myresult",   // strResultSetName
                         lStart,
@@ -2224,7 +2222,7 @@ namespace dp2mini
                         "zh",
                         out searchresults,
                         out strError);
-                    if (lRet == -1)
+                    if (lRet1 == -1)
                     {
                         this.OutputInfo("已获取" + lStart.ToString() + "条，获取结果集出错：" + strError,
                             true, false);
@@ -2232,7 +2230,7 @@ namespace dp2mini
                     }
 
                     // 说明结果集里的记录获取完了。
-                    if (lRet == 0)
+                    if (lRet1 == 0)
                     {
                         break;
                     }

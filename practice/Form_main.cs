@@ -318,8 +318,10 @@ namespace practice
                     nPerMax,
                     this.textBox_SearchBiblio_strFromStyle.Text,
                     this.comboBox_SearchBiblio_strMatchStyle.Text,
+                    this.textBox_SearchBiblio_strLang.Text,
                     this.textBox_SearchBiblio_strResultSetName.Text,
-                    textBox_SearchBiblio_strOutputStyle.Text,// this.SearchBiblio_textBox_SearchStyle.Text,
+                    this.textBox_SearchBiblio_strSearchStyle.Text,
+                    this.textBox_SearchBiblio_strOutputStyle.Text,// this.SearchBiblio_textBox_SearchStyle.Text,
                     this.textBox_SearchBiblio_strLocationFilter.Text);
 
                 // 显示返回信息
@@ -2459,6 +2461,8 @@ out string strError);
 
         #endregion
 
+        #region GetBrowseRecords
+
         private void button_help_GetBrowseRecords_Click(object sender, EventArgs e)
         {
             Process.Start("https://jihulab.com/DigitalPlatform/dp2doc/-/issues/39#note_2011950");
@@ -2503,6 +2507,69 @@ out string strError);
                 this._channelPool.ReturnChannel(channel);
             }
         }
+
+        #endregion
+
+        #region SearchReader
+
+        private void button_help_SearchReader_Click(object sender, EventArgs e)
+        {
+            Process.Start("https://jihulab.com/DigitalPlatform/dp2doc/-/issues/39#note_2012280");
+
+        }
+        private void button_SearchReader_Click(object sender, EventArgs e)
+        {
+            // 清空底部输出信息
+            this.ClearResultInfo();
+
+            int nPerMax = 0;
+            if (this.textBox_SearchReader_nPerMax.Text == "")
+            {
+                nPerMax = -1;
+            }
+            else
+            {
+                try
+                {
+                    nPerMax = Convert.ToInt32(this.textBox_SearchReader_nPerMax.Text);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(this, "nPerMax必须为数值型。" + ex.Message);
+                }
+            }
+
+
+            RestChannel channel = this.GetChannel();
+            try
+            {
+                SearchReaderResponse response = channel.SearchReader(this.textBox_SearchReader_strReaderDbNames.Text,
+                    this.textBox_SearchReader_strQueryWord.Text,
+                    nPerMax,
+                    this.textBox_SearchReader_strFrom.Text,
+                    this.comboBox_SearchReader_strMatchStyle.Text,
+                    this.textBox_SearchReader_strLang.Text,
+                    this.textBox_SearchReader_strResultSetName.Text,
+                    textBox_SearchReader_strOutputStyle.Text);
+
+                // 显示返回信息
+                this.SetResultInfo("SearchReader()\r\n" + RestChannel.GetResultInfo(response));
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, "SearchReader()异常：" + ex.Message);
+                return;
+            }
+            finally
+            {
+                this._channelPool.ReturnChannel(channel);
+            }
+
+        }
+
+        #endregion
+
+
     }
 
 

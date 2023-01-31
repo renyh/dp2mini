@@ -221,7 +221,7 @@ namespace DigitalPlatform.LibraryRestClient
                 if (records != null)
                 {
                     info += "命中'" + r.GetSearchResultResult.Value + "'条，本次返回'" + records.Length + "'条。\r\n";
-                
+
                     info += GetRecordsDisplayInfo(records);
                 }
                 return info;
@@ -242,6 +242,11 @@ namespace DigitalPlatform.LibraryRestClient
                     info += GetRecordsDisplayInfo(records);
                 }
                 return info;
+            }
+            else if (o is SearchReaderResponse)
+            {
+                SearchReaderResponse r = (SearchReaderResponse)o;
+                return GetServerResultInfo(r.SearchReaderResult);
             }
 
             return "未识别的对象" + o.ToString();
@@ -836,17 +841,16 @@ namespace DigitalPlatform.LibraryRestClient
         /// <para>-1:   出错</para>
         /// <para>&gt;=0:  检索命中的记录数</para>
         /// </returns>
-        public long SearchReader(string strReaderDbNames,
+        public SearchReaderResponse SearchReader(string strReaderDbNames,
             string strQueryWord,
             int nPerMax,
             string strFrom,
             string strMatchStyle,
             string strLang,
             string strResultSetName,
-            string strOutputStyle,
-            out string strError)
+            string strOutputStyle)
         {
-            strError = "";
+            string strError = "";
 
         REDO:
 
@@ -869,14 +873,16 @@ namespace DigitalPlatform.LibraryRestClient
                                                 baData);
             string strResult = Encoding.UTF8.GetString(result);
             SearchReaderResponse response = Deserialize<SearchReaderResponse>(strResult);
-            if (response.SearchReaderResult.Value == -1 && response.SearchReaderResult.ErrorCode == ErrorCode.NotLogin)
+            if (response.SearchReaderResult.Value == -1 
+                && response.SearchReaderResult.ErrorCode == ErrorCode.NotLogin)
             {
                 if (DoNotLogin(ref strError) == 1)
                     goto REDO;
-                return -1;
+
+                return response;
             }
 
-            return response.SearchReaderResult.Value;
+            return response;//.SearchReaderResult.Value;
         }
 
 
@@ -2084,7 +2090,9 @@ namespace DigitalPlatform.LibraryRestClient
             int nPerMax,
             string strFromStyle,
             string strMatchStyle,
+            string strLang,
             string strResultSetName,
+            string strSearchStyle,
              string strOutputStyle,
              string strLocationFilter)//,
             //out string strQueryXml,
@@ -2106,9 +2114,9 @@ namespace DigitalPlatform.LibraryRestClient
                 request.strFromStyle = strFromStyle;
                 request.strMatchStyle = strMatchStyle;
 
-                request.strLang = "zh";
+                request.strLang = strLang;// "zh";
                 request.strResultSetName = strResultSetName;
-                request.strSearchStyle = "";// "desc";
+                request.strSearchStyle = strSearchStyle;// "desc";
                 request.strOutputStyle = strOutputStyle;
 
                 request.strLocationFilter = strLocationFilter;
