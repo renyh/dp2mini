@@ -172,6 +172,8 @@
             this.label40 = new System.Windows.Forms.Label();
             this.label41 = new System.Windows.Forms.Label();
             this.tabPage_GetSearchResult = new System.Windows.Forms.TabPage();
+            this.textBox_GetSearchResult_strLang = new System.Windows.Forms.TextBox();
+            this.label65 = new System.Windows.Forms.Label();
             this.button_GetSearchResult = new System.Windows.Forms.Button();
             this.textBox_GetSearchResult_strBrowseInfoStyle = new System.Windows.Forms.TextBox();
             this.label16 = new System.Windows.Forms.Label();
@@ -216,8 +218,6 @@
             this.z3950ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.处理MARC字段ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.textBox_GetSearchResult_strLang = new System.Windows.Forms.TextBox();
-            this.label65 = new System.Windows.Forms.Label();
             this.tabPage_SearchBiblio.SuspendLayout();
             this.tabPage_Server.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -467,7 +467,7 @@
             this.textBox_result.Name = "textBox_result";
             this.textBox_result.ReadOnly = true;
             this.textBox_result.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.textBox_result.Size = new System.Drawing.Size(1283, 80);
+            this.textBox_result.Size = new System.Drawing.Size(1283, 79);
             this.textBox_result.TabIndex = 20;
             // 
             // tabPage_Server
@@ -637,7 +637,7 @@
             this.tabControl1.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(1285, 793);
+            this.tabControl1.Size = new System.Drawing.Size(1285, 785);
             this.tabControl1.TabIndex = 6;
             // 
             // tabPage_WriteRes
@@ -961,7 +961,7 @@
             this.tabPage_GetRes.Location = new System.Drawing.Point(10, 46);
             this.tabPage_GetRes.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.tabPage_GetRes.Name = "tabPage_GetRes";
-            this.tabPage_GetRes.Size = new System.Drawing.Size(1265, 737);
+            this.tabPage_GetRes.Size = new System.Drawing.Size(1265, 729);
             this.tabPage_GetRes.TabIndex = 11;
             this.tabPage_GetRes.Text = "GetRes";
             this.tabPage_GetRes.UseVisualStyleBackColor = true;
@@ -1874,6 +1874,24 @@
             this.tabPage_GetSearchResult.Text = "GetSearchResult";
             this.tabPage_GetSearchResult.UseVisualStyleBackColor = true;
             // 
+            // textBox_GetSearchResult_strLang
+            // 
+            this.textBox_GetSearchResult_strLang.Location = new System.Drawing.Point(314, 239);
+            this.textBox_GetSearchResult_strLang.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.textBox_GetSearchResult_strLang.Name = "textBox_GetSearchResult_strLang";
+            this.textBox_GetSearchResult_strLang.Size = new System.Drawing.Size(382, 38);
+            this.textBox_GetSearchResult_strLang.TabIndex = 38;
+            // 
+            // label65
+            // 
+            this.label65.AutoSize = true;
+            this.label65.Location = new System.Drawing.Point(34, 247);
+            this.label65.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label65.Name = "label65";
+            this.label65.Size = new System.Drawing.Size(110, 27);
+            this.label65.TabIndex = 39;
+            this.label65.Text = "strLang";
+            // 
             // button_GetSearchResult
             // 
             this.button_GetSearchResult.Location = new System.Drawing.Point(314, 332);
@@ -2277,7 +2295,7 @@
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Padding = new System.Windows.Forms.Padding(9, 3, 0, 3);
-            this.menuStrip1.Size = new System.Drawing.Size(1311, 45);
+            this.menuStrip1.Size = new System.Drawing.Size(1311, 54);
             this.menuStrip1.TabIndex = 8;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -2288,7 +2306,7 @@
             this.z3950ToolStripMenuItem,
             this.处理MARC字段ToolStripMenuItem});
             this.文件ToolStripMenuItem.Name = "文件ToolStripMenuItem";
-            this.文件ToolStripMenuItem.Size = new System.Drawing.Size(91, 39);
+            this.文件ToolStripMenuItem.Size = new System.Drawing.Size(91, 48);
             this.文件ToolStripMenuItem.Text = "文件";
             // 
             // 通用练习题ToolStripMenuItem
@@ -2315,7 +2333,7 @@
             // splitContainer1
             // 
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer1.Location = new System.Drawing.Point(0, 45);
+            this.splitContainer1.Location = new System.Drawing.Point(0, 54);
             this.splitContainer1.Name = "splitContainer1";
             this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
@@ -2328,27 +2346,9 @@
             // 
             this.splitContainer1.Panel2.BackColor = System.Drawing.SystemColors.Info;
             this.splitContainer1.Panel2.Controls.Add(this.textBox_result);
-            this.splitContainer1.Size = new System.Drawing.Size(1311, 914);
-            this.splitContainer1.SplitterDistance = 808;
+            this.splitContainer1.Size = new System.Drawing.Size(1311, 905);
+            this.splitContainer1.SplitterDistance = 800;
             this.splitContainer1.TabIndex = 21;
-            // 
-            // textBox_GetSearchResult_strLang
-            // 
-            this.textBox_GetSearchResult_strLang.Location = new System.Drawing.Point(314, 239);
-            this.textBox_GetSearchResult_strLang.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
-            this.textBox_GetSearchResult_strLang.Name = "textBox_GetSearchResult_strLang";
-            this.textBox_GetSearchResult_strLang.Size = new System.Drawing.Size(382, 38);
-            this.textBox_GetSearchResult_strLang.TabIndex = 38;
-            // 
-            // label65
-            // 
-            this.label65.AutoSize = true;
-            this.label65.Location = new System.Drawing.Point(34, 247);
-            this.label65.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
-            this.label65.Name = "label65";
-            this.label65.Size = new System.Drawing.Size(110, 27);
-            this.label65.TabIndex = 39;
-            this.label65.Text = "strLang";
             // 
             // Form_main
             // 

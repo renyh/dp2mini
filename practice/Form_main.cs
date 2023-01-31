@@ -2145,11 +2145,17 @@ out string strError);
                     }
                     else
                     {
-                        if (baContent.Length <= 1024 * 1000)
-                        {
-                            string text = Encoding.UTF8.GetString(baContent);
-                            this.textBox_result.Text += "content:" + text + "\r\n\r\n";
-                        }
+                        this.textBox_result.Text+= DisplayByteArray(baContent);
+
+                        //if (baContent.Length <= 1024 * 1000)
+                        //{
+
+                        //    string hex = ByteArray.GetHexTimeStampString(baContent);
+                        //    this.textBox_result.Text += "hex:" + hex + "\r\n\r\n";
+
+                        //    string text = Encoding.UTF8.GetString(baContent);
+                        //    this.textBox_result.Text += "content:" + text + "\r\n\r\n";
+                        //}
                     }
                 }
 
@@ -2294,14 +2300,18 @@ out string strError);
                 {
                     // 转成byte数组
                     byte[] bt = ((MemoryStream)stream).ToArray();
-                    if (bt != null && bt.Length > 0)
-                    {
-                        string hex = ByteArray.GetHexTimeStampString(bt);
-                        this.textBox_result.Text += "hex:" + hex + "\r\n\r\n";
 
-                        string text = Encoding.UTF8.GetString(bt);
-                        this.textBox_result.Text += "content:" + text + "\r\n\r\n";
-                    }
+                    // 显示
+                    this.textBox_result.Text += DisplayByteArray(bt);
+
+                    //if (bt != null && bt.Length > 0)
+                    //{
+                    //    string hex = ByteArray.GetHexTimeStampString(bt);
+                    //    this.textBox_result.Text += "hex:" + hex + "\r\n\r\n";
+
+                    //    string text = Encoding.UTF8.GetString(bt);
+                    //    this.textBox_result.Text += "content:" + text + "\r\n\r\n";
+                    //}
                 }
 
                 return;
@@ -2319,6 +2329,30 @@ out string strError);
 
                 this._channelPool.ReturnChannel(channel);
             }
+        }
+
+        public static string DisplayByteArray(byte[] baContent)
+        {
+            string info = "\r\n";
+
+            if (baContent != null)
+            {
+                if (baContent.Length <= 1024 * 1000)
+                {
+
+                    string hex = ByteArray.GetHexTimeStampString(baContent);
+                    info += "hex:" + hex + "\r\n\r\n";
+
+                    string text = Encoding.UTF8.GetString(baContent);
+                    info += "content:" + text + "\r\n\r\n";
+                }
+                else
+                {
+                    info += "字节超过1000K，此处不显示。";
+                }
+            }
+
+            return info;
         }
 
 
