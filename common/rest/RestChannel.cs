@@ -145,7 +145,7 @@ namespace DigitalPlatform.LibraryRestClient
 
                 return GetServerResultInfo(r.GetRecordResult) + "\r\n"
                     + "timestamp:" + ByteArray.GetHexTimeStampString(r.timestamp) + "\r\n"
-                    + "strXml:" + xml + "\r\n'";
+                    + "strXml:" + xml + "\r\n";
 
 
             }
@@ -247,6 +247,12 @@ namespace DigitalPlatform.LibraryRestClient
             {
                 SearchReaderResponse r = (SearchReaderResponse)o;
                 return GetServerResultInfo(r.SearchReaderResult);
+            }
+            else if (o is SearchResponse)
+            {
+                SearchResponse r = (SearchResponse)o;
+                return GetServerResultInfo(r.SearchResult);
+
             }
 
             return "未识别的对象" + o.ToString();
@@ -2686,9 +2692,9 @@ namespace DigitalPlatform.LibraryRestClient
         }
 
 
-        public SearchResponse Search(string queryXml,
-            string resultSetName,
-            string outputStyle)
+        public SearchResponse Search(string strQueryXml,
+            string strResultSetName,
+            string strOutputStyle)
         {
         REDO:
             //CookieAwareWebClient client = new CookieAwareWebClient(this.Cookies);
@@ -2699,9 +2705,9 @@ namespace DigitalPlatform.LibraryRestClient
 
             SearchRequest request = new SearchRequest()
             {
-                strQueryXml = queryXml,
-                strResultSetName = resultSetName,
-                strOutputStyle = outputStyle
+                strQueryXml = strQueryXml,
+                strResultSetName = strResultSetName,
+                strOutputStyle = strOutputStyle
             };
             byte[] baData = Encoding.UTF8.GetBytes(Serialize(request));
             byte[] result = client.UploadData(GetRestfulApiUrl("Search"),

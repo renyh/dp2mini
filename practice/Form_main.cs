@@ -2567,9 +2567,49 @@ out string strError);
 
         }
 
+
         #endregion
 
+        #region search
 
+        private void button_Search_Click(object sender, EventArgs e)
+        {
+            // 清空底部输出信息
+            this.ClearResultInfo();
+
+
+            string strQueryXml= this.textBox_Search_strQueryXml.Text.Trim();
+            string strResultSetName = this.textBox_Search_strResultSetName.Text.Trim();
+            string strOutputStyle = this.textBox_Search_strOutputStyle.Text.Trim();
+
+
+            RestChannel channel = this.GetChannel();
+            try
+            {
+                SearchResponse response = channel.Search(strQueryXml,
+                    strResultSetName,
+                    strOutputStyle);
+
+                // 显示返回信息
+                this.SetResultInfo("Search()\r\n" + RestChannel.GetResultInfo(response));
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, "Search()异常：" + ex.Message);
+                return;
+            }
+            finally
+            {
+                this._channelPool.ReturnChannel(channel);
+            }
+        }
+
+        private void button_help_Search_Click(object sender, EventArgs e)
+        {
+            Process.Start("https://jihulab.com/DigitalPlatform/dp2doc/-/issues/39#note_2013326");
+        }
+
+        #endregion
     }
 
 
