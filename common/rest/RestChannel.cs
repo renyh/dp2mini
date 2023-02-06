@@ -660,9 +660,6 @@ namespace DigitalPlatform.LibraryRestClient
 
         REDO:
 
-            //CookieAwareWebClient client = new CookieAwareWebClient(this.Cookies);
-            //client.Headers["Content-type"] = "application/json; charset=utf-8";
-            //client.Headers["User-Agent"] = "dp2LibraryClient";
             CookieAwareWebClient client = this.GetClient();
 
 
@@ -1205,9 +1202,7 @@ namespace DigitalPlatform.LibraryRestClient
         REDO:
             try
             {
-                //CookieAwareWebClient client = new CookieAwareWebClient(this.Cookies);
-                //client.Headers["Content-type"] = "application/json; charset=utf-8";
-                //client.Headers["User-Agent"] = "dp2LibraryClient";
+
                 CookieAwareWebClient client = this.GetClient();
 
 
@@ -1343,9 +1338,6 @@ namespace DigitalPlatform.LibraryRestClient
         REDO:
             try
             {
-                //CookieAwareWebClient client = new CookieAwareWebClient(this.Cookies);
-                //client.Headers["Content-type"] = "application/json; charset=utf-8";
-                //client.Headers["User-Agent"] = "dp2LibraryClient";
                 CookieAwareWebClient client = this.GetClient();
 
 
@@ -1679,23 +1671,11 @@ namespace DigitalPlatform.LibraryRestClient
             string strNewXml,
             string strOldXml,
             byte[] baOldTimestamp)
-            //out string strExistingXml,
-            //out string strSavedXml,
-            //out string strSavedRecPath,
-            //out byte[] baNewTimestamp,
-            //out string strError)
         {
             string  strError = "";
-            //strExistingXml = "";
-            //strSavedXml = "";
-            //strSavedRecPath = "";
-            //baNewTimestamp = null;
         REDO:
             try
             {
-                //CookieAwareWebClient client = new CookieAwareWebClient(this.Cookies);
-                //client.Headers["Content-type"] = "application/json; charset=utf-8";
-                //client.Headers["User-Agent"] = "dp2LibraryClient";
                 CookieAwareWebClient client = this.GetClient();
 
 
@@ -1724,17 +1704,10 @@ namespace DigitalPlatform.LibraryRestClient
                         return response;
                     }
 
-                    //strError = response.SetReaderInfoResult.ErrorInfo;
-                    //this.ErrorCode = response.SetReaderInfoResult.ErrorCode;
                 }
                 this.ClearRedoCount();
 
-                //strExistingXml = response.strExistingXml;
-                //strSavedXml = response.strSavedXml;
-                //strSavedRecPath = response.strSavedRecPath;
-                //baNewTimestamp = response.baNewTimestamp;
-
-                return response;//.SetReaderInfoResult.Value;
+                return response;
             }
             catch (Exception ex)
             {
@@ -1755,13 +1728,8 @@ namespace DigitalPlatform.LibraryRestClient
             byte[] baTimestamp,
             string strComment, 
             string strStyle)
-            //out string strOutputBiblioRecPath,
-            //out byte[] baOutputTimestamp,
-            //out string strError)
         {
             string strError = "";
-        //strOutputBiblioRecPath = "";
-        //baOutputTimestamp = null;
         REDO:
             try
             {
@@ -1794,15 +1762,9 @@ namespace DigitalPlatform.LibraryRestClient
                         return response;
                     }
 
-                    //strError = response.SetBiblioInfoResult.ErrorInfo;
-                    //this.ErrorCode = response.SetReaderInfoResult.ErrorCode;
                 }
 
                 this.ClearRedoCount();
-
-                //baOutputTimestamp = response.baOutputTimestamp;
-                //strOutputBiblioRecPath=response.strOutputBiblioRecPath;
-                //strError = response.SetBiblioInfoResult.ErrorInfo;
                 return response;
             }
             catch (Exception ex)
@@ -2273,7 +2235,8 @@ namespace DigitalPlatform.LibraryRestClient
                 response = Deserialize<SearchBiblioResponse>(strResult);
 
                 // 未登录的情况
-                if (response.SearchBiblioResult.Value == -1 && response.SearchBiblioResult.ErrorCode == ErrorCode.NotLogin)
+                if (response.SearchBiblioResult.Value == -1 
+                    && response.SearchBiblioResult.ErrorCode == ErrorCode.NotLogin)
                 {
                     if (DoNotLogin(ref strError) == 1)
                         goto REDO;
@@ -2357,7 +2320,8 @@ namespace DigitalPlatform.LibraryRestClient
                 response = Deserialize<SearchItemResponse>(strResult);
 
                 // 未登录的情况
-                if (response.SearchItemResult.Value == -1 && response.SearchItemResult.ErrorCode == ErrorCode.NotLogin)
+                if (response.SearchItemResult.Value == -1 
+                    && response.SearchItemResult.ErrorCode == ErrorCode.NotLogin)
                 {
                     if (DoNotLogin(ref strError) == 1)
                         goto REDO;
@@ -2403,9 +2367,6 @@ namespace DigitalPlatform.LibraryRestClient
             try
             {
 
-                //CookieAwareWebClient client = new CookieAwareWebClient(this.Cookies);
-                //client.Headers["Content-type"] = "application/json; charset=utf-8";
-                //client.Headers["User-Agent"] = "dp2LibraryClient";
                 CookieAwareWebClient client = this.GetClient();
 
                 SearchChargingRequest request = new SearchChargingRequest();
@@ -2961,9 +2922,7 @@ namespace DigitalPlatform.LibraryRestClient
             string strOutputStyle)
         {
         REDO:
-            //CookieAwareWebClient client = new CookieAwareWebClient(this.Cookies);
-            //client.Headers["Content-type"] = "application/json; charset=utf-8";
-            //client.Headers["User-Agent"] = "dp2LibraryClient";
+
             CookieAwareWebClient client = this.GetClient();
 
 
