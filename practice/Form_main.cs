@@ -2663,7 +2663,7 @@ out string strError);
 
             string fun = this.comboBox__GetEntities_fun.Text.Trim();
 
-            string strItemDbType = this.textBox_GetEntities_strBiblioRecPath.Text;
+            string strBiblioRecPath = this.textBox_GetEntities_strBiblioRecPath.Text;
 
             string strlStart = this.textBox_GetEntities_lStart.Text;
             long lStart = 0;
@@ -2696,7 +2696,7 @@ out string strError);
             {
                 if (fun == "GetEntities")
                 {
-                    GetEntitiesResponse response = channel.GetEntities(strItemDbType,
+                    GetEntitiesResponse response = channel.GetEntities(strBiblioRecPath,
                         lStart,
                         lCount,
                         strStyle,
@@ -2704,6 +2704,39 @@ out string strError);
 
                     // 显示返回信息
                     this.SetResultInfo("GetEntities()\r\n" + RestChannel.GetResultInfo(response));
+                }
+                else if (fun == "GetOrders")
+                {
+                    GetOrdersResponse response = channel.GetOrders(strBiblioRecPath,
+                        lStart,
+                        lCount,
+                        strStyle,
+                        strLang);
+
+                    // 显示返回信息
+                    this.SetResultInfo("GetOrders()\r\n" + RestChannel.GetResultInfo(response));
+                }
+                else if (fun == "GetIssues")
+                {
+                    GetIssuesResponse response = channel.GetIssues(strBiblioRecPath,
+                        lStart,
+                        lCount,
+                        strStyle,
+                        strLang);
+
+                    // 显示返回信息
+                    this.SetResultInfo("GetIssues()\r\n" + RestChannel.GetResultInfo(response));
+                }
+                else if (fun == "GetComments")
+                {
+                    GetCommentsResponse response = channel.GetComments(strBiblioRecPath,
+                        lStart,
+                        lCount,
+                        strStyle,
+                        strLang);
+
+                    // 显示返回信息
+                    this.SetResultInfo("GetComments()\r\n" + RestChannel.GetResultInfo(response));
                 }
                 else
                 {

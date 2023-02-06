@@ -269,41 +269,66 @@ namespace DigitalPlatform.LibraryRestClient
             else if (o is GetEntitiesResponse)
             {
                 GetEntitiesResponse r = (GetEntitiesResponse)o;
-                string info = GetServerResultInfo(r.GetEntitiesResult) + "\r\n";
-                if (r.entityinfos != null)
-                {
-                    info += "\r\n";
-                    int nIndex = 0; 
-                    foreach (EntityInfo e in r.entityinfos)
-                    {
-                        info += nIndex.ToString()+"\r\n";
+                return GetServerResultInfo(r.GetEntitiesResult) + "\r\n"
+                    + DisplayEntityInfos(r.entityinfos);
+            }
+            else if (o is GetOrdersResponse)
+            {
+                GetOrdersResponse r = (GetOrdersResponse)o;
+                return GetServerResultInfo(r.GetOrdersResult) + "\r\n"
+                    + DisplayEntityInfos(r.orderinfos);
+            }
+            else if (o is GetIssuesResponse)
+            {
+                GetIssuesResponse r = (GetIssuesResponse)o;
+                return GetServerResultInfo(r.GetIssuesResult) + "\r\n"
+                    + DisplayEntityInfos(r.issueinfos);
+            }
+            else if (o is GetCommentsResponse)
+            {
+                GetCommentsResponse r = (GetCommentsResponse)o;
+                return GetServerResultInfo(r.GetCommentsResult) + "\r\n"
+                    + DisplayEntityInfos(r.commentinfos);
+            }
+            return "未识别的对象" + o.ToString();
+        }
+
+        public static string DisplayEntityInfos(EntityInfo[] entityinfos)
+        {
+            if (entityinfos == null)
+                return "";
+
+            
+               string info = "\r\n";
+                int nIndex = 1;
+            foreach (EntityInfo e in entityinfos)
+            {
+                info += nIndex.ToString() + "\r\n";
 
 
-                        info += "Action:" + e.Action + "\r\n"
-                            + "Style:" + e.Style + "\r\n"
-                            + "ErrorInfo:" + e.ErrorInfo + "\r\n"
-                            + "ErrorCode:" + e.ErrorCode + "\r\n"
-                            + "\r\n"
-                            + "RefID:" + e.RefID + "\r\n"
-                            + "OldRecPath:" + e.OldRecPath + "\r\n"
-                            + "OldRecord:" + e.OldRecord + "\r\n"
-                            + "OldTimestamp:" + ByteArray.GetHexTimeStampString(e.OldTimestamp) + "\r\n"
-                            + "\r\n"
-                            + "NewRecPath:" + e.NewRecPath + "\r\n"
-                            + "NewRecord:" + e.NewRecord + "\r\n"
-                            + "NewTimestamp:" + ByteArray.GetHexTimeStampString(e.NewTimestamp) + "\r\n"
-                            + "========\r\n";
+                info += "Action:" + e.Action + "\r\n"
+                    + "Style:" + e.Style + "\r\n"
+                    + "ErrorInfo:" + e.ErrorInfo + "\r\n"
+                    + "ErrorCode:" + e.ErrorCode + "\r\n"
+                    + "\r\n"
+                    + "RefID:" + e.RefID + "\r\n"
+                    + "OldRecPath:" + e.OldRecPath + "\r\n"
+                    + "OldRecord:" + e.OldRecord + "\r\n"
+                    + "OldTimestamp:" + ByteArray.GetHexTimeStampString(e.OldTimestamp) + "\r\n"
+                    + "\r\n"
+                    + "NewRecPath:" + e.NewRecPath + "\r\n"
+                    + "NewRecord:" + e.NewRecord + "\r\n"
+                    + "NewTimestamp:" + ByteArray.GetHexTimeStampString(e.NewTimestamp) + "\r\n"
+                    + "========\r\n";
 
 
 
-                        info += "\r\n";
-                        nIndex++;
-                    }
-                }
-                return info;
+                info += "\r\n";
+                nIndex++;
+
             }
 
-            return "未识别的对象" + o.ToString();
+            return info;
         }
 
         public static string GetRecordsDisplayInfo(Record[] records)
@@ -2453,13 +2478,10 @@ namespace DigitalPlatform.LibraryRestClient
              string strError = "";
             GetEntitiesResponse response = null;
 
-
         REDO:
             try
             {
                 CookieAwareWebClient client = this.GetClient();
-
-
                 GetEntitiesRequest request = new GetEntitiesRequest();
                 request.strBiblioRecPath = strBiblioRecPath;
                 request.lStart = lStart;
@@ -2482,15 +2504,150 @@ namespace DigitalPlatform.LibraryRestClient
                     if (DoNotLogin(ref strError) == 1)
                         goto REDO;
                 }
+                return response;
+            }
+            catch (Exception ex)
+            {
+                int nRet = ConvertWebError(ex, out strError);
+                if (nRet == 0)
+                    return response;
 
-                /*
-                entities = response.entityinfos;
-                strError = response.GetEntitiesResult.ErrorInfo;
-                //this.ErrorCode = response.GetEntitiesResult.ErrorCode;
-                this.ClearRedoCount();
-                return response.GetEntitiesResult.Value;
-                */
+                goto REDO;
+            }
+        }
 
+
+        public GetOrdersResponse GetOrders(string strBiblioRecPath,
+            long lStart,
+            long lCount,
+            string strStyle,
+            string strLang)
+        {
+            string strError = "";
+            GetOrdersResponse response = null;
+
+        REDO:
+            try
+            {
+                CookieAwareWebClient client = this.GetClient();
+                GetOrdersRequest request = new GetOrdersRequest();
+                request.strBiblioRecPath = strBiblioRecPath;
+                request.lStart = lStart;
+                request.lCount = lCount;
+                request.strStyle = strStyle; 
+                request.strLang = strLang;
+                byte[] baData = Encoding.UTF8.GetBytes(Serialize(request));
+
+                string strRequest = Encoding.UTF8.GetString(baData);
+                byte[] result = client.UploadData(this.GetRestfulApiUrl("GetOrders"),
+                                "POST",
+                                 baData);
+
+                string strResult = Encoding.UTF8.GetString(result);
+                response = Deserialize<GetOrdersResponse>(strResult);
+
+                // 未登录的情况
+                if (response.GetOrdersResult.Value == -1 && response.GetOrdersResult.ErrorCode == ErrorCode.NotLogin)
+                {
+                    if (DoNotLogin(ref strError) == 1)
+                        goto REDO;
+                }
+                return response;
+            }
+            catch (Exception ex)
+            {
+                int nRet = ConvertWebError(ex, out strError);
+                if (nRet == 0)
+                    return response;
+
+                goto REDO;
+            }
+        }
+
+
+        public GetIssuesResponse GetIssues(string strBiblioRecPath,
+            long lStart,
+            long lCount,
+            string strStyle,
+            string strLang)
+        {
+            string strError = "";
+            GetIssuesResponse response = null;
+
+        REDO:
+            try
+            {
+                CookieAwareWebClient client = this.GetClient();
+                GetIssuesRequest request = new GetIssuesRequest();
+                request.strBiblioRecPath = strBiblioRecPath;
+                request.lStart = lStart;
+                request.lCount = lCount;
+                request.strStyle = strStyle;
+                request.strLang = strLang;
+                byte[] baData = Encoding.UTF8.GetBytes(Serialize(request));
+
+                string strRequest = Encoding.UTF8.GetString(baData);
+                byte[] result = client.UploadData(this.GetRestfulApiUrl("GetIssues"),
+                                "POST",
+                                 baData);
+
+                string strResult = Encoding.UTF8.GetString(result);
+                response = Deserialize<GetIssuesResponse>(strResult);
+
+                // 未登录的情况
+                if (response.GetIssuesResult.Value == -1 && response.GetIssuesResult.ErrorCode == ErrorCode.NotLogin)
+                {
+                    if (DoNotLogin(ref strError) == 1)
+                        goto REDO;
+                }
+                return response;
+            }
+            catch (Exception ex)
+            {
+                int nRet = ConvertWebError(ex, out strError);
+                if (nRet == 0)
+                    return response;
+
+                goto REDO;
+            }
+        }
+
+
+        public GetCommentsResponse GetComments(string strBiblioRecPath,
+            long lStart,
+            long lCount,
+            string strStyle,
+            string strLang)
+        {
+            string strError = "";
+            GetCommentsResponse response = null;
+
+        REDO:
+            try
+            {
+                CookieAwareWebClient client = this.GetClient();
+                GetCommentsRequest request = new GetCommentsRequest();
+                request.strBiblioRecPath = strBiblioRecPath;
+                request.lStart = lStart;
+                request.lCount = lCount;
+                request.strStyle = strStyle;
+                request.strLang = strLang;
+                byte[] baData = Encoding.UTF8.GetBytes(Serialize(request));
+
+                string strRequest = Encoding.UTF8.GetString(baData);
+                byte[] result = client.UploadData(this.GetRestfulApiUrl("GetComments"),
+                                "POST",
+                                 baData);
+
+                string strResult = Encoding.UTF8.GetString(result);
+                response = Deserialize<GetCommentsResponse>(strResult);
+
+                // 未登录的情况
+                if (response.GetCommentsResult.Value == -1 && response.GetCommentsResult.ErrorCode == ErrorCode.NotLogin)
+                {
+                    if (DoNotLogin(ref strError) == 1)
+                        goto REDO;
+                }
                 return response;
             }
             catch (Exception ex)

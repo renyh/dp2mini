@@ -1111,7 +1111,80 @@ LibraryServerResult.ErrorInfo		出错信息
 
     #endregion
 
-    #region GetEntities
+    #region GetEntities/GetComments/GetIssues/GetOrders
+
+    [DataContract]
+    public class GetCommentsRequest
+    {
+        [DataMember]
+        public string strBiblioRecPath { get; set; }
+        [DataMember]
+        public long lStart { get; set; }
+        [DataMember]
+        public long lCount { get; set; }
+        [DataMember]
+        public string strStyle { get; set; }
+        [DataMember]
+        public string strLang { get; set; }
+    }
+
+    [DataContract]
+    public class GetCommentsResponse
+    {
+        [DataMember]
+        public LibraryServerResult GetCommentsResult { get; set; }
+        [DataMember]
+        public EntityInfo[] commentinfos { get; set; }
+    }
+
+
+    [DataContract]
+    public class GetIssuesRequest
+    {
+        [DataMember]
+        public string strBiblioRecPath { get; set; }
+        [DataMember]
+        public long lStart { get; set; }
+        [DataMember]
+        public long lCount { get; set; }
+        [DataMember]
+        public string strStyle { get; set; }
+        [DataMember]
+        public string strLang { get; set; }
+    }
+
+    [DataContract]
+    public class GetIssuesResponse
+    {
+        [DataMember]
+        public LibraryServerResult GetIssuesResult { get; set; }
+        [DataMember]
+        public EntityInfo[] issueinfos { get; set; }
+    }
+
+    [DataContract]
+    public class GetOrdersRequest
+    {
+        [DataMember]
+        public string strBiblioRecPath { get; set; }
+        [DataMember]
+        public long lStart { get; set; }
+        [DataMember]
+        public long lCount { get; set; }
+        [DataMember]
+        public string strStyle { get; set; }
+        [DataMember]
+        public string strLang { get; set; }
+    }
+
+    [DataContract]
+    public class GetOrdersResponse
+    {
+        [DataMember]
+        public LibraryServerResult GetOrdersResult { get; set; }
+        [DataMember]
+        public EntityInfo[] orderinfos { get; set; }
+    }
 
     [DataContract]
     public class GetEntitiesRequest
