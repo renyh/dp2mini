@@ -254,6 +254,54 @@ namespace DigitalPlatform.LibraryRestClient
                 return GetServerResultInfo(r.SearchResult);
 
             }
+            else if (o is GetItemInfoResponse)
+            {
+                GetItemInfoResponse r = (GetItemInfoResponse)o;
+
+                return GetServerResultInfo(r.GetItemInfoResult) + "\r\n"
+                    + "baTimestamp:" + ByteArray.GetHexTimeStampString(r.baTimestamp) + "\r\n"
+                    + "strItemRecPath:" + r.strItemRecPath + "\r\n"
+                    + "strResult:" + r.strResult + "\r\n"
+                    + "'\r\n"
+                    + "strBiblioRecPath:" + r.strBiblioRecPath + "\r\n"
+                    + "strBiblio:" + r.strBiblio + "\r\n";
+            }
+            else if (o is GetEntitiesResponse)
+            {
+                GetEntitiesResponse r = (GetEntitiesResponse)o;
+                string info = GetServerResultInfo(r.GetEntitiesResult) + "\r\n";
+                if (r.entityinfos != null)
+                {
+                    info += "\r\n";
+                    int nIndex = 0; 
+                    foreach (EntityInfo e in r.entityinfos)
+                    {
+                        info += nIndex.ToString()+"\r\n";
+
+
+                        info += "Action:" + e.Action + "\r\n"
+                            + "Style:" + e.Style + "\r\n"
+                            + "ErrorInfo:" + e.ErrorInfo + "\r\n"
+                            + "ErrorCode:" + e.ErrorCode + "\r\n"
+                            + "\r\n"
+                            + "RefID:" + e.RefID + "\r\n"
+                            + "OldRecPath:" + e.OldRecPath + "\r\n"
+                            + "OldRecord:" + e.OldRecord + "\r\n"
+                            + "OldTimestamp:" + ByteArray.GetHexTimeStampString(e.OldTimestamp) + "\r\n"
+                            + "\r\n"
+                            + "NewRecPath:" + e.NewRecPath + "\r\n"
+                            + "NewRecord:" + e.NewRecord + "\r\n"
+                            + "NewTimestamp:" + ByteArray.GetHexTimeStampString(e.NewTimestamp) + "\r\n"
+                            + "========\r\n";
+
+
+
+                        info += "\r\n";
+                        nIndex++;
+                    }
+                }
+                return info;
+            }
 
             return "未识别的对象" + o.ToString();
         }
@@ -1398,6 +1446,59 @@ namespace DigitalPlatform.LibraryRestClient
             }
         }
 
+        public GetItemInfoResponse GetItemInfo(string strItemDbType,
+             string strBarcode,
+             string strItemXml,
+             string strResultType,
+             string strBiblioType)
+        {
+            GetItemInfoResponse response = null;
+            string strError = "";
+
+        REDO:
+            try
+            {
+                CookieAwareWebClient client = this.GetClient();
+
+                GetItemInfoRequest request = new GetItemInfoRequest()
+                {
+                    strItemDbType = strItemDbType,
+                    strBarcode = strBarcode,
+                    strItemXml = strItemXml,
+                    strResultType = strResultType,
+                    strBiblioType = strBiblioType,
+                };
+                byte[] baData = Encoding.UTF8.GetBytes(Serialize(request));
+                byte[] result = client.UploadData(this.GetRestfulApiUrl("getiteminfo"),
+                    "POST",
+                    baData);
+
+                string strResult = Encoding.UTF8.GetString(result);
+
+                response = Deserialize<GetItemInfoResponse>(strResult);
+
+                if (response.GetItemInfoResult.Value == -1
+                    && response.GetItemInfoResult.ErrorCode == ErrorCode.NotLogin)
+                {
+                    if (DoNotLogin(ref strError) == 1)
+                        goto REDO;
+                }
+
+                return response;
+            }
+            catch (Exception ex)
+            {
+                // 检查是不是网络原因
+                int nRet = ConvertWebError(ex, out strError);
+                if (nRet == 0)
+                    return response;
+
+                // 网络原因的话，重试一下
+                goto REDO;
+            }
+
+        }
+
 
         /// <summary>
         /// 获得实体记录信息和其从属的书目记录信息
@@ -1406,9 +1507,9 @@ namespace DigitalPlatform.LibraryRestClient
         /// <param name="resultType">希望在strResult参数中返回何种格式的信息，xml/html/text之一</param>
         /// <param name="biblioType">希望返回的书目信息类型，xml/html/text之一</param>
         /// <returns></returns>
-        public int GetItemInfo(string itemBarcode,
-            string resultType,
-            string biblioType,
+        public int GetItemInfo(string strBarcode,
+             string strResultType,
+             string strBiblioType,
             out string itemXml,
             out string biblio,
             out string strError)
@@ -1417,19 +1518,45 @@ namespace DigitalPlatform.LibraryRestClient
             itemXml = "";
             biblio = "";
 
+
+            GetItemInfoResponse response = this.GetItemInfo("",
+                strBarcode,
+                "",
+                strResultType,
+                strBiblioType);
+            if (response.GetItemInfoResult.Value == -1)
+            {
+                strError = "获取册记录'" + strBarcode + "'出错:" + response.GetItemInfoResult.ErrorInfo;
+                return -1;
+            }
+            else if (response.GetItemInfoResult.Value == 0)
+            {
+                strError = "册'" + strBarcode + "'对应的册记录不存在。";
+                return -1;
+            }
+            else if (response.GetItemInfoResult.Value > 1)
+            {
+                strError = "册条码'" + strBarcode + "'对应的册记录存在多条，数据异常，请联系管理员";
+                return -1;
+            }
+
+            itemXml = response.strResult;
+            biblio = response.strBiblio;
+            return (int)response.GetItemInfoResult.Value;
+
+
+            /*
+
         REDO:
             try
             {
-                //CookieAwareWebClient client = new CookieAwareWebClient(this.Cookies);
-                //client.Headers["Content-type"] = "application/json; charset=utf-8";
-                //client.Headers["User-Agent"] = "dp2LibraryClient";
                 CookieAwareWebClient client = this.GetClient();
 
                 GetItemInfoRequest request = new GetItemInfoRequest()
                 {
-                    strBarcode = itemBarcode,
-                    strResultType = resultType,
-                    strBiblioType = biblioType,
+                    strBarcode = strBarcode,
+                    strResultType = strResultType,
+                    strBiblioType = strBiblioType,
                 };
                 byte[] baData = Encoding.UTF8.GetBytes(Serialize(request));
                 byte[] result = client.UploadData(this.GetRestfulApiUrl("getiteminfo"),
@@ -1450,25 +1577,7 @@ namespace DigitalPlatform.LibraryRestClient
                     return -1;
                 }
 
-                if (response.GetItemInfoResult.Value == -1)
-                {
-                    strError = "获取册记录'" + itemBarcode + "'出错:" + response.GetItemInfoResult.ErrorInfo;
-                    return -1;
-                }
-                else if (response.GetItemInfoResult.Value == 0)
-                {
-                    strError = "册'" + itemBarcode + "'对应的册记录不存在。";
-                    return -1;
-                }
-                else if (response.GetItemInfoResult.Value  > 1)
-                {
-                    strError = "册条码'"+ itemBarcode + "'对应的册记录存在多条，数据异常，请联系管理员";
-                    return -1;
-                }
-
-                itemXml = response.strResult;
-                biblio = response.strBiblio;
-                return (int)response.GetItemInfoResult.Value ;
+               
             }
             catch (Exception ex)
             {
@@ -1480,7 +1589,7 @@ namespace DigitalPlatform.LibraryRestClient
                 // 网络原因的话，重试一下
                  goto REDO; 
             }
-
+            */
         }
 
         /// <summary>
@@ -2335,23 +2444,19 @@ namespace DigitalPlatform.LibraryRestClient
         //      entityinfos 返回的实体信息数组
         //      Result.Value    -1出错 0没有找到 其他 总的实体记录的个数(本次返回的，可以通过entities.Count得到)
         // 权限：需要有getiteminfo或order权限(兼容getentities权限)
-        public long GetEntities(string strBiblioRecPath,
+        public GetEntitiesResponse GetEntities(string strBiblioRecPath,
             long lStart,
             long lCount,
             string strStyle,
-            string strLang,
-            out EntityInfo[] entities,
-            out string strError)
+            string strLang)
         {
-            strError = "";
-            entities = null;
+             string strError = "";
+            GetEntitiesResponse response = null;
+
+
         REDO:
             try
             {
-
-                //CookieAwareWebClient client = new CookieAwareWebClient(this.Cookies);
-                //client.Headers["Content-type"] = "application/json; charset=utf-8";
-                //client.Headers["User-Agent"] = "dp2LibraryClient";
                 CookieAwareWebClient client = this.GetClient();
 
 
@@ -2359,39 +2464,41 @@ namespace DigitalPlatform.LibraryRestClient
                 request.strBiblioRecPath = strBiblioRecPath;
                 request.lStart = lStart;
                 request.lCount = lCount;
-                request.strStyle = "";// "onlygetpath";//strStyle;
+                request.strStyle = strStyle; //"";// "onlygetpath";//strStyle;
                 request.strLang = strLang;
-
                 byte[] baData = Encoding.UTF8.GetBytes(Serialize(request));
 
                 string strRequest = Encoding.UTF8.GetString(baData);
-
                 byte[] result = client.UploadData(this.GetRestfulApiUrl("GetEntities"),
                                 "POST",
                                  baData);
 
                 string strResult = Encoding.UTF8.GetString(result);
-
-                GetEntitiesResponse response = Deserialize<GetEntitiesResponse>(strResult);
+                 response = Deserialize<GetEntitiesResponse>(strResult);
 
                 // 未登录的情况
                 if (response.GetEntitiesResult.Value == -1 && response.GetEntitiesResult.ErrorCode == ErrorCode.NotLogin)
                 {
                     if (DoNotLogin(ref strError) == 1)
                         goto REDO;
-                    return -1;
                 }
+
+                /*
                 entities = response.entityinfos;
                 strError = response.GetEntitiesResult.ErrorInfo;
                 //this.ErrorCode = response.GetEntitiesResult.ErrorCode;
                 this.ClearRedoCount();
                 return response.GetEntitiesResult.Value;
+                */
+
+                return response;
             }
             catch (Exception ex)
             {
                 int nRet = ConvertWebError(ex, out strError);
                 if (nRet == 0)
-                    return -1;
+                    return response;
+
                 goto REDO;
             }
         }
@@ -3041,11 +3148,7 @@ namespace DigitalPlatform.LibraryRestClient
             string strStyle)
         {
         REDO:
-            //CookieAwareWebClient client = new CookieAwareWebClient(this.Cookies);
-            //client.Headers["Content-type"] = "application/json; charset=utf-8";
-            //client.Headers["User-Agent"] = "dp2LibraryClient";
             CookieAwareWebClient client = this.GetClient();
-
 
             GetResRequest request = new GetResRequest()
             {

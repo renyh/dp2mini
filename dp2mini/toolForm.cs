@@ -668,7 +668,9 @@ namespace dp2mini
                        -1,
                        "recid",
                        "left",
+                       "",
                        "test",
+                       "",
                        "",
                        "");//strLocationFilter
                        //out output,

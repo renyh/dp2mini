@@ -201,6 +201,15 @@
             this.textBox_SearchReader_strQueryWord = new System.Windows.Forms.TextBox();
             this.label77 = new System.Windows.Forms.Label();
             this.label78 = new System.Windows.Forms.Label();
+            this.tabPage_Search = new System.Windows.Forms.TabPage();
+            this.button_help_Search = new System.Windows.Forms.Button();
+            this.textBox_Search_strQueryXml = new System.Windows.Forms.TextBox();
+            this.label79 = new System.Windows.Forms.Label();
+            this.textBox_Search_strResultSetName = new System.Windows.Forms.TextBox();
+            this.label69 = new System.Windows.Forms.Label();
+            this.button_Search = new System.Windows.Forms.Button();
+            this.textBox_Search_strOutputStyle = new System.Windows.Forms.TextBox();
+            this.label73 = new System.Windows.Forms.Label();
             this.tabPage_GetSearchResult = new System.Windows.Forms.TabPage();
             this.button_help_GetSearchResult = new System.Windows.Forms.Button();
             this.textBox_GetSearchResult_strLang = new System.Windows.Forms.TextBox();
@@ -249,15 +258,34 @@
             this.z3950ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.处理MARC字段ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.tabPage_Search = new System.Windows.Forms.TabPage();
-            this.textBox_Search_strResultSetName = new System.Windows.Forms.TextBox();
-            this.label69 = new System.Windows.Forms.Label();
-            this.button_Search = new System.Windows.Forms.Button();
-            this.textBox_Search_strOutputStyle = new System.Windows.Forms.TextBox();
-            this.label73 = new System.Windows.Forms.Label();
-            this.textBox_Search_strQueryXml = new System.Windows.Forms.TextBox();
-            this.label79 = new System.Windows.Forms.Label();
-            this.button_help_Search = new System.Windows.Forms.Button();
+            this.tabPage_GetItemInfo = new System.Windows.Forms.TabPage();
+            this.button_GetItemInfo = new System.Windows.Forms.Button();
+            this.textBox_GetItemInfo_strBarcode = new System.Windows.Forms.TextBox();
+            this.textBox_GetItemInfo_strItemDbType = new System.Windows.Forms.TextBox();
+            this.label80 = new System.Windows.Forms.Label();
+            this.label81 = new System.Windows.Forms.Label();
+            this.button_help_GetItemInfo = new System.Windows.Forms.Button();
+            this.textBox_GetItemInfo_strResultType = new System.Windows.Forms.TextBox();
+            this.textBox_GetItemInfo_strItemXml = new System.Windows.Forms.TextBox();
+            this.label82 = new System.Windows.Forms.Label();
+            this.label83 = new System.Windows.Forms.Label();
+            this.textBox_GetItemInfo_strBiblioType = new System.Windows.Forms.TextBox();
+            this.label84 = new System.Windows.Forms.Label();
+            this.tabPage_GetEntities = new System.Windows.Forms.TabPage();
+            this.textBox_GetEntities_strLang = new System.Windows.Forms.TextBox();
+            this.label85 = new System.Windows.Forms.Label();
+            this.textBox_GetEntities_strStyle = new System.Windows.Forms.TextBox();
+            this.label86 = new System.Windows.Forms.Label();
+            this.button_help_GetEntities = new System.Windows.Forms.Button();
+            this.button_GetEntities = new System.Windows.Forms.Button();
+            this.textBox_GetEntities_strBiblioRecPath = new System.Windows.Forms.TextBox();
+            this.label88 = new System.Windows.Forms.Label();
+            this.label89 = new System.Windows.Forms.Label();
+            this.comboBox__GetEntities_fun = new System.Windows.Forms.ComboBox();
+            this.textBox_GetEntities_lCount = new System.Windows.Forms.TextBox();
+            this.textBox_GetEntities_lStart = new System.Windows.Forms.TextBox();
+            this.label87 = new System.Windows.Forms.Label();
+            this.label90 = new System.Windows.Forms.Label();
             this.tabPage_SearchBiblio.SuspendLayout();
             this.tabPage_Server.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -272,6 +300,7 @@
             this.tabPage_GetBrowseRecords.SuspendLayout();
             this.tabPage_SearchItem.SuspendLayout();
             this.tabPage_SearchReader.SuspendLayout();
+            this.tabPage_Search.SuspendLayout();
             this.tabPage_GetSearchResult.SuspendLayout();
             this.tabPage_GetBiblioInfo.SuspendLayout();
             this.tabPage_Reservation.SuspendLayout();
@@ -281,7 +310,8 @@
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
-            this.tabPage_Search.SuspendLayout();
+            this.tabPage_GetItemInfo.SuspendLayout();
+            this.tabPage_GetEntities.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabPage_SearchBiblio
@@ -701,6 +731,8 @@
             this.tabControl1.Controls.Add(this.tabPage_GetBiblioInfos);
             this.tabControl1.Controls.Add(this.tabPage_SetReaderInfo);
             this.tabControl1.Controls.Add(this.tabPage_GetReaderInfo);
+            this.tabControl1.Controls.Add(this.tabPage_GetItemInfo);
+            this.tabControl1.Controls.Add(this.tabPage_GetEntities);
             this.tabControl1.Controls.Add(this.tabPage_GetBrowseRecords);
             this.tabControl1.Controls.Add(this.tabPage_SearchBiblio);
             this.tabControl1.Controls.Add(this.tabPage_SearchItem);
@@ -2217,6 +2249,100 @@
             this.label78.TabIndex = 66;
             this.label78.Text = "strQueryWord";
             // 
+            // tabPage_Search
+            // 
+            this.tabPage_Search.Controls.Add(this.button_help_Search);
+            this.tabPage_Search.Controls.Add(this.textBox_Search_strQueryXml);
+            this.tabPage_Search.Controls.Add(this.label79);
+            this.tabPage_Search.Controls.Add(this.textBox_Search_strResultSetName);
+            this.tabPage_Search.Controls.Add(this.label69);
+            this.tabPage_Search.Controls.Add(this.button_Search);
+            this.tabPage_Search.Controls.Add(this.textBox_Search_strOutputStyle);
+            this.tabPage_Search.Controls.Add(this.label73);
+            this.tabPage_Search.Location = new System.Drawing.Point(10, 46);
+            this.tabPage_Search.Name = "tabPage_Search";
+            this.tabPage_Search.Size = new System.Drawing.Size(1265, 735);
+            this.tabPage_Search.TabIndex = 18;
+            this.tabPage_Search.Text = "Search";
+            this.tabPage_Search.UseVisualStyleBackColor = true;
+            // 
+            // button_help_Search
+            // 
+            this.button_help_Search.Location = new System.Drawing.Point(0, 0);
+            this.button_help_Search.Name = "button_help_Search";
+            this.button_help_Search.Size = new System.Drawing.Size(55, 117);
+            this.button_help_Search.TabIndex = 89;
+            this.button_help_Search.Text = "帮助";
+            this.button_help_Search.UseVisualStyleBackColor = true;
+            this.button_help_Search.Click += new System.EventHandler(this.button_help_Search_Click);
+            // 
+            // textBox_Search_strQueryXml
+            // 
+            this.textBox_Search_strQueryXml.Location = new System.Drawing.Point(257, 18);
+            this.textBox_Search_strQueryXml.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.textBox_Search_strQueryXml.Multiline = true;
+            this.textBox_Search_strQueryXml.Name = "textBox_Search_strQueryXml";
+            this.textBox_Search_strQueryXml.Size = new System.Drawing.Size(958, 236);
+            this.textBox_Search_strQueryXml.TabIndex = 87;
+            // 
+            // label79
+            // 
+            this.label79.AutoSize = true;
+            this.label79.Location = new System.Drawing.Point(81, 30);
+            this.label79.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label79.Name = "label79";
+            this.label79.Size = new System.Drawing.Size(166, 27);
+            this.label79.TabIndex = 88;
+            this.label79.Text = "strQueryXml";
+            // 
+            // textBox_Search_strResultSetName
+            // 
+            this.textBox_Search_strResultSetName.Location = new System.Drawing.Point(257, 260);
+            this.textBox_Search_strResultSetName.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.textBox_Search_strResultSetName.Name = "textBox_Search_strResultSetName";
+            this.textBox_Search_strResultSetName.Size = new System.Drawing.Size(382, 38);
+            this.textBox_Search_strResultSetName.TabIndex = 85;
+            // 
+            // label69
+            // 
+            this.label69.AutoSize = true;
+            this.label69.Location = new System.Drawing.Point(18, 263);
+            this.label69.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label69.Name = "label69";
+            this.label69.Size = new System.Drawing.Size(236, 27);
+            this.label69.TabIndex = 86;
+            this.label69.Text = "strResultSetName";
+            // 
+            // button_Search
+            // 
+            this.button_Search.Location = new System.Drawing.Point(257, 383);
+            this.button_Search.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.button_Search.Name = "button_Search";
+            this.button_Search.Size = new System.Drawing.Size(215, 57);
+            this.button_Search.TabIndex = 84;
+            this.button_Search.Tag = "";
+            this.button_Search.Text = "Search";
+            this.button_Search.UseVisualStyleBackColor = true;
+            this.button_Search.Click += new System.EventHandler(this.button_Search_Click);
+            // 
+            // textBox_Search_strOutputStyle
+            // 
+            this.textBox_Search_strOutputStyle.Location = new System.Drawing.Point(257, 320);
+            this.textBox_Search_strOutputStyle.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.textBox_Search_strOutputStyle.Name = "textBox_Search_strOutputStyle";
+            this.textBox_Search_strOutputStyle.Size = new System.Drawing.Size(382, 38);
+            this.textBox_Search_strOutputStyle.TabIndex = 82;
+            // 
+            // label73
+            // 
+            this.label73.AutoSize = true;
+            this.label73.Location = new System.Drawing.Point(39, 323);
+            this.label73.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label73.Name = "label73";
+            this.label73.Size = new System.Drawing.Size(208, 27);
+            this.label73.TabIndex = 83;
+            this.label73.Text = "strOutputStyle";
+            // 
             // tabPage_GetSearchResult
             // 
             this.tabPage_GetSearchResult.Controls.Add(this.button_help_GetSearchResult);
@@ -2725,99 +2851,302 @@
             this.splitContainer1.SplitterDistance = 806;
             this.splitContainer1.TabIndex = 21;
             // 
-            // tabPage_Search
+            // tabPage_GetItemInfo
             // 
-            this.tabPage_Search.Controls.Add(this.button_help_Search);
-            this.tabPage_Search.Controls.Add(this.textBox_Search_strQueryXml);
-            this.tabPage_Search.Controls.Add(this.label79);
-            this.tabPage_Search.Controls.Add(this.textBox_Search_strResultSetName);
-            this.tabPage_Search.Controls.Add(this.label69);
-            this.tabPage_Search.Controls.Add(this.button_Search);
-            this.tabPage_Search.Controls.Add(this.textBox_Search_strOutputStyle);
-            this.tabPage_Search.Controls.Add(this.label73);
-            this.tabPage_Search.Location = new System.Drawing.Point(10, 46);
-            this.tabPage_Search.Name = "tabPage_Search";
-            this.tabPage_Search.Size = new System.Drawing.Size(1265, 735);
-            this.tabPage_Search.TabIndex = 18;
-            this.tabPage_Search.Text = "Search";
-            this.tabPage_Search.UseVisualStyleBackColor = true;
+            this.tabPage_GetItemInfo.Controls.Add(this.textBox_GetItemInfo_strBiblioType);
+            this.tabPage_GetItemInfo.Controls.Add(this.label84);
+            this.tabPage_GetItemInfo.Controls.Add(this.textBox_GetItemInfo_strResultType);
+            this.tabPage_GetItemInfo.Controls.Add(this.textBox_GetItemInfo_strItemXml);
+            this.tabPage_GetItemInfo.Controls.Add(this.label82);
+            this.tabPage_GetItemInfo.Controls.Add(this.label83);
+            this.tabPage_GetItemInfo.Controls.Add(this.button_help_GetItemInfo);
+            this.tabPage_GetItemInfo.Controls.Add(this.button_GetItemInfo);
+            this.tabPage_GetItemInfo.Controls.Add(this.textBox_GetItemInfo_strBarcode);
+            this.tabPage_GetItemInfo.Controls.Add(this.textBox_GetItemInfo_strItemDbType);
+            this.tabPage_GetItemInfo.Controls.Add(this.label80);
+            this.tabPage_GetItemInfo.Controls.Add(this.label81);
+            this.tabPage_GetItemInfo.Location = new System.Drawing.Point(10, 46);
+            this.tabPage_GetItemInfo.Name = "tabPage_GetItemInfo";
+            this.tabPage_GetItemInfo.Size = new System.Drawing.Size(1265, 735);
+            this.tabPage_GetItemInfo.TabIndex = 19;
+            this.tabPage_GetItemInfo.Text = "GetItemInfo";
+            this.tabPage_GetItemInfo.UseVisualStyleBackColor = true;
             // 
-            // textBox_Search_strResultSetName
+            // button_GetItemInfo
             // 
-            this.textBox_Search_strResultSetName.Location = new System.Drawing.Point(257, 260);
-            this.textBox_Search_strResultSetName.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
-            this.textBox_Search_strResultSetName.Name = "textBox_Search_strResultSetName";
-            this.textBox_Search_strResultSetName.Size = new System.Drawing.Size(382, 38);
-            this.textBox_Search_strResultSetName.TabIndex = 85;
+            this.button_GetItemInfo.Location = new System.Drawing.Point(301, 439);
+            this.button_GetItemInfo.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.button_GetItemInfo.Name = "button_GetItemInfo";
+            this.button_GetItemInfo.Size = new System.Drawing.Size(277, 62);
+            this.button_GetItemInfo.TabIndex = 56;
+            this.button_GetItemInfo.Tag = "";
+            this.button_GetItemInfo.Text = "GetItemInfo";
+            this.button_GetItemInfo.UseVisualStyleBackColor = true;
+            this.button_GetItemInfo.Click += new System.EventHandler(this.button_GetItemInfo_Click);
             // 
-            // label69
+            // textBox_GetItemInfo_strBarcode
             // 
-            this.label69.AutoSize = true;
-            this.label69.Location = new System.Drawing.Point(18, 263);
-            this.label69.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
-            this.label69.Name = "label69";
-            this.label69.Size = new System.Drawing.Size(236, 27);
-            this.label69.TabIndex = 86;
-            this.label69.Text = "strResultSetName";
+            this.textBox_GetItemInfo_strBarcode.Location = new System.Drawing.Point(301, 97);
+            this.textBox_GetItemInfo_strBarcode.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.textBox_GetItemInfo_strBarcode.Name = "textBox_GetItemInfo_strBarcode";
+            this.textBox_GetItemInfo_strBarcode.Size = new System.Drawing.Size(660, 38);
+            this.textBox_GetItemInfo_strBarcode.TabIndex = 54;
             // 
-            // button_Search
+            // textBox_GetItemInfo_strItemDbType
             // 
-            this.button_Search.Location = new System.Drawing.Point(257, 383);
-            this.button_Search.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
-            this.button_Search.Name = "button_Search";
-            this.button_Search.Size = new System.Drawing.Size(215, 57);
-            this.button_Search.TabIndex = 84;
-            this.button_Search.Tag = "";
-            this.button_Search.Text = "Search";
-            this.button_Search.UseVisualStyleBackColor = true;
-            this.button_Search.Click += new System.EventHandler(this.button_Search_Click);
+            this.textBox_GetItemInfo_strItemDbType.Location = new System.Drawing.Point(301, 33);
+            this.textBox_GetItemInfo_strItemDbType.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.textBox_GetItemInfo_strItemDbType.Name = "textBox_GetItemInfo_strItemDbType";
+            this.textBox_GetItemInfo_strItemDbType.Size = new System.Drawing.Size(660, 38);
+            this.textBox_GetItemInfo_strItemDbType.TabIndex = 52;
             // 
-            // textBox_Search_strOutputStyle
+            // label80
             // 
-            this.textBox_Search_strOutputStyle.Location = new System.Drawing.Point(257, 320);
-            this.textBox_Search_strOutputStyle.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
-            this.textBox_Search_strOutputStyle.Name = "textBox_Search_strOutputStyle";
-            this.textBox_Search_strOutputStyle.Size = new System.Drawing.Size(382, 38);
-            this.textBox_Search_strOutputStyle.TabIndex = 82;
+            this.label80.AutoSize = true;
+            this.label80.Location = new System.Drawing.Point(127, 97);
+            this.label80.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label80.Name = "label80";
+            this.label80.Size = new System.Drawing.Size(152, 27);
+            this.label80.TabIndex = 55;
+            this.label80.Text = "strBarcode";
             // 
-            // label73
+            // label81
             // 
-            this.label73.AutoSize = true;
-            this.label73.Location = new System.Drawing.Point(39, 323);
-            this.label73.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
-            this.label73.Name = "label73";
-            this.label73.Size = new System.Drawing.Size(208, 27);
-            this.label73.TabIndex = 83;
-            this.label73.Text = "strOutputStyle";
+            this.label81.AutoSize = true;
+            this.label81.Location = new System.Drawing.Point(85, 36);
+            this.label81.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label81.Name = "label81";
+            this.label81.Size = new System.Drawing.Size(194, 27);
+            this.label81.TabIndex = 53;
+            this.label81.Text = "strItemDbType";
             // 
-            // textBox_Search_strQueryXml
+            // button_help_GetItemInfo
             // 
-            this.textBox_Search_strQueryXml.Location = new System.Drawing.Point(257, 18);
-            this.textBox_Search_strQueryXml.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
-            this.textBox_Search_strQueryXml.Multiline = true;
-            this.textBox_Search_strQueryXml.Name = "textBox_Search_strQueryXml";
-            this.textBox_Search_strQueryXml.Size = new System.Drawing.Size(958, 236);
-            this.textBox_Search_strQueryXml.TabIndex = 87;
+            this.button_help_GetItemInfo.Location = new System.Drawing.Point(0, 0);
+            this.button_help_GetItemInfo.Name = "button_help_GetItemInfo";
+            this.button_help_GetItemInfo.Size = new System.Drawing.Size(55, 117);
+            this.button_help_GetItemInfo.TabIndex = 58;
+            this.button_help_GetItemInfo.Text = "帮助";
+            this.button_help_GetItemInfo.UseVisualStyleBackColor = true;
+            this.button_help_GetItemInfo.Click += new System.EventHandler(this.button_help_GetItemInfo_Click);
             // 
-            // label79
+            // textBox_GetItemInfo_strResultType
             // 
-            this.label79.AutoSize = true;
-            this.label79.Location = new System.Drawing.Point(81, 30);
-            this.label79.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
-            this.label79.Name = "label79";
-            this.label79.Size = new System.Drawing.Size(166, 27);
-            this.label79.TabIndex = 88;
-            this.label79.Text = "strQueryXml";
+            this.textBox_GetItemInfo_strResultType.Location = new System.Drawing.Point(301, 293);
+            this.textBox_GetItemInfo_strResultType.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.textBox_GetItemInfo_strResultType.Name = "textBox_GetItemInfo_strResultType";
+            this.textBox_GetItemInfo_strResultType.Size = new System.Drawing.Size(660, 38);
+            this.textBox_GetItemInfo_strResultType.TabIndex = 61;
             // 
-            // button_help_Search
+            // textBox_GetItemInfo_strItemXml
             // 
-            this.button_help_Search.Location = new System.Drawing.Point(0, 0);
-            this.button_help_Search.Name = "button_help_Search";
-            this.button_help_Search.Size = new System.Drawing.Size(55, 117);
-            this.button_help_Search.TabIndex = 89;
-            this.button_help_Search.Text = "帮助";
-            this.button_help_Search.UseVisualStyleBackColor = true;
-            this.button_help_Search.Click += new System.EventHandler(this.button_help_Search_Click);
+            this.textBox_GetItemInfo_strItemXml.Location = new System.Drawing.Point(301, 159);
+            this.textBox_GetItemInfo_strItemXml.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.textBox_GetItemInfo_strItemXml.Multiline = true;
+            this.textBox_GetItemInfo_strItemXml.Name = "textBox_GetItemInfo_strItemXml";
+            this.textBox_GetItemInfo_strItemXml.Size = new System.Drawing.Size(829, 116);
+            this.textBox_GetItemInfo_strItemXml.TabIndex = 59;
+            // 
+            // label82
+            // 
+            this.label82.AutoSize = true;
+            this.label82.Location = new System.Drawing.Point(85, 296);
+            this.label82.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label82.Name = "label82";
+            this.label82.Size = new System.Drawing.Size(194, 27);
+            this.label82.TabIndex = 62;
+            this.label82.Text = "strResultType";
+            // 
+            // label83
+            // 
+            this.label83.AutoSize = true;
+            this.label83.Location = new System.Drawing.Point(127, 162);
+            this.label83.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label83.Name = "label83";
+            this.label83.Size = new System.Drawing.Size(152, 27);
+            this.label83.TabIndex = 60;
+            this.label83.Text = "strItemXml";
+            // 
+            // textBox_GetItemInfo_strBiblioType
+            // 
+            this.textBox_GetItemInfo_strBiblioType.Location = new System.Drawing.Point(301, 355);
+            this.textBox_GetItemInfo_strBiblioType.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.textBox_GetItemInfo_strBiblioType.Name = "textBox_GetItemInfo_strBiblioType";
+            this.textBox_GetItemInfo_strBiblioType.Size = new System.Drawing.Size(660, 38);
+            this.textBox_GetItemInfo_strBiblioType.TabIndex = 63;
+            // 
+            // label84
+            // 
+            this.label84.AutoSize = true;
+            this.label84.Location = new System.Drawing.Point(85, 358);
+            this.label84.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label84.Name = "label84";
+            this.label84.Size = new System.Drawing.Size(194, 27);
+            this.label84.TabIndex = 64;
+            this.label84.Text = "strBiblioType";
+            // 
+            // tabPage_GetEntities
+            // 
+            this.tabPage_GetEntities.Controls.Add(this.textBox_GetEntities_lCount);
+            this.tabPage_GetEntities.Controls.Add(this.textBox_GetEntities_lStart);
+            this.tabPage_GetEntities.Controls.Add(this.label87);
+            this.tabPage_GetEntities.Controls.Add(this.label90);
+            this.tabPage_GetEntities.Controls.Add(this.comboBox__GetEntities_fun);
+            this.tabPage_GetEntities.Controls.Add(this.textBox_GetEntities_strLang);
+            this.tabPage_GetEntities.Controls.Add(this.label85);
+            this.tabPage_GetEntities.Controls.Add(this.textBox_GetEntities_strStyle);
+            this.tabPage_GetEntities.Controls.Add(this.label86);
+            this.tabPage_GetEntities.Controls.Add(this.button_help_GetEntities);
+            this.tabPage_GetEntities.Controls.Add(this.button_GetEntities);
+            this.tabPage_GetEntities.Controls.Add(this.textBox_GetEntities_strBiblioRecPath);
+            this.tabPage_GetEntities.Controls.Add(this.label88);
+            this.tabPage_GetEntities.Controls.Add(this.label89);
+            this.tabPage_GetEntities.Location = new System.Drawing.Point(10, 46);
+            this.tabPage_GetEntities.Name = "tabPage_GetEntities";
+            this.tabPage_GetEntities.Size = new System.Drawing.Size(1265, 735);
+            this.tabPage_GetEntities.TabIndex = 20;
+            this.tabPage_GetEntities.Text = "GetEntities等";
+            this.tabPage_GetEntities.UseVisualStyleBackColor = true;
+            // 
+            // textBox_GetEntities_strLang
+            // 
+            this.textBox_GetEntities_strLang.Location = new System.Drawing.Point(318, 329);
+            this.textBox_GetEntities_strLang.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.textBox_GetEntities_strLang.Name = "textBox_GetEntities_strLang";
+            this.textBox_GetEntities_strLang.Size = new System.Drawing.Size(660, 38);
+            this.textBox_GetEntities_strLang.TabIndex = 75;
+            // 
+            // label85
+            // 
+            this.label85.AutoSize = true;
+            this.label85.Location = new System.Drawing.Point(186, 329);
+            this.label85.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label85.Name = "label85";
+            this.label85.Size = new System.Drawing.Size(110, 27);
+            this.label85.TabIndex = 76;
+            this.label85.Text = "strLang";
+            // 
+            // textBox_GetEntities_strStyle
+            // 
+            this.textBox_GetEntities_strStyle.Location = new System.Drawing.Point(318, 264);
+            this.textBox_GetEntities_strStyle.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.textBox_GetEntities_strStyle.Name = "textBox_GetEntities_strStyle";
+            this.textBox_GetEntities_strStyle.Size = new System.Drawing.Size(660, 38);
+            this.textBox_GetEntities_strStyle.TabIndex = 73;
+            // 
+            // label86
+            // 
+            this.label86.AutoSize = true;
+            this.label86.Location = new System.Drawing.Point(172, 264);
+            this.label86.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label86.Name = "label86";
+            this.label86.Size = new System.Drawing.Size(124, 27);
+            this.label86.TabIndex = 74;
+            this.label86.Text = "strStyle";
+            // 
+            // button_help_GetEntities
+            // 
+            this.button_help_GetEntities.Location = new System.Drawing.Point(0, 0);
+            this.button_help_GetEntities.Name = "button_help_GetEntities";
+            this.button_help_GetEntities.Size = new System.Drawing.Size(55, 117);
+            this.button_help_GetEntities.TabIndex = 70;
+            this.button_help_GetEntities.Text = "帮助";
+            this.button_help_GetEntities.UseVisualStyleBackColor = true;
+            this.button_help_GetEntities.Click += new System.EventHandler(this.button_help_GetEntities_Click);
+            // 
+            // button_GetEntities
+            // 
+            this.button_GetEntities.Location = new System.Drawing.Point(318, 388);
+            this.button_GetEntities.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.button_GetEntities.Name = "button_GetEntities";
+            this.button_GetEntities.Size = new System.Drawing.Size(277, 62);
+            this.button_GetEntities.TabIndex = 69;
+            this.button_GetEntities.Tag = "";
+            this.button_GetEntities.Text = "GetEntities";
+            this.button_GetEntities.UseVisualStyleBackColor = true;
+            this.button_GetEntities.Click += new System.EventHandler(this.button_GetEntities_Click);
+            // 
+            // textBox_GetEntities_strBiblioRecPath
+            // 
+            this.textBox_GetEntities_strBiblioRecPath.Location = new System.Drawing.Point(318, 92);
+            this.textBox_GetEntities_strBiblioRecPath.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.textBox_GetEntities_strBiblioRecPath.Name = "textBox_GetEntities_strBiblioRecPath";
+            this.textBox_GetEntities_strBiblioRecPath.Size = new System.Drawing.Size(660, 38);
+            this.textBox_GetEntities_strBiblioRecPath.TabIndex = 67;
+            // 
+            // label88
+            // 
+            this.label88.AutoSize = true;
+            this.label88.Location = new System.Drawing.Point(60, 95);
+            this.label88.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label88.Name = "label88";
+            this.label88.Size = new System.Drawing.Size(236, 27);
+            this.label88.TabIndex = 68;
+            this.label88.Text = "strBiblioRecPath";
+            // 
+            // label89
+            // 
+            this.label89.AutoSize = true;
+            this.label89.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
+            this.label89.Location = new System.Drawing.Point(176, 33);
+            this.label89.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label89.Name = "label89";
+            this.label89.Size = new System.Drawing.Size(120, 27);
+            this.label89.TabIndex = 66;
+            this.label89.Text = "函数名称";
+            // 
+            // comboBox__GetEntities_fun
+            // 
+            this.comboBox__GetEntities_fun.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
+            this.comboBox__GetEntities_fun.FormattingEnabled = true;
+            this.comboBox__GetEntities_fun.Items.AddRange(new object[] {
+            "GetEntities",
+            "GetOrders",
+            "GetIssues",
+            "GetComments"});
+            this.comboBox__GetEntities_fun.Location = new System.Drawing.Point(318, 30);
+            this.comboBox__GetEntities_fun.Name = "comboBox__GetEntities_fun";
+            this.comboBox__GetEntities_fun.Size = new System.Drawing.Size(660, 35);
+            this.comboBox__GetEntities_fun.TabIndex = 77;
+            this.comboBox__GetEntities_fun.Text = "GetEntities";
+            // 
+            // textBox_GetEntities_lCount
+            // 
+            this.textBox_GetEntities_lCount.Location = new System.Drawing.Point(318, 203);
+            this.textBox_GetEntities_lCount.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
+            this.textBox_GetEntities_lCount.Name = "textBox_GetEntities_lCount";
+            this.textBox_GetEntities_lCount.Size = new System.Drawing.Size(660, 38);
+            this.textBox_GetEntities_lCount.TabIndex = 81;
+            this.textBox_GetEntities_lCount.Text = "-1";
+            // 
+            // textBox_GetEntities_lStart
+            // 
+            this.textBox_GetEntities_lStart.Location = new System.Drawing.Point(318, 153);
+            this.textBox_GetEntities_lStart.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
+            this.textBox_GetEntities_lStart.Name = "textBox_GetEntities_lStart";
+            this.textBox_GetEntities_lStart.Size = new System.Drawing.Size(660, 38);
+            this.textBox_GetEntities_lStart.TabIndex = 80;
+            this.textBox_GetEntities_lStart.Text = "0";
+            // 
+            // label87
+            // 
+            this.label87.AutoSize = true;
+            this.label87.Location = new System.Drawing.Point(200, 203);
+            this.label87.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label87.Name = "label87";
+            this.label87.Size = new System.Drawing.Size(96, 27);
+            this.label87.TabIndex = 79;
+            this.label87.Text = "lCount";
+            // 
+            // label90
+            // 
+            this.label90.AutoSize = true;
+            this.label90.Location = new System.Drawing.Point(200, 153);
+            this.label90.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label90.Name = "label90";
+            this.label90.Size = new System.Drawing.Size(96, 27);
+            this.label90.TabIndex = 78;
+            this.label90.Text = "lStart";
             // 
             // Form_main
             // 
@@ -2859,6 +3188,8 @@
             this.tabPage_SearchItem.PerformLayout();
             this.tabPage_SearchReader.ResumeLayout(false);
             this.tabPage_SearchReader.PerformLayout();
+            this.tabPage_Search.ResumeLayout(false);
+            this.tabPage_Search.PerformLayout();
             this.tabPage_GetSearchResult.ResumeLayout(false);
             this.tabPage_GetSearchResult.PerformLayout();
             this.tabPage_GetBiblioInfo.ResumeLayout(false);
@@ -2874,8 +3205,10 @@
             this.splitContainer1.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
-            this.tabPage_Search.ResumeLayout(false);
-            this.tabPage_Search.PerformLayout();
+            this.tabPage_GetItemInfo.ResumeLayout(false);
+            this.tabPage_GetItemInfo.PerformLayout();
+            this.tabPage_GetEntities.ResumeLayout(false);
+            this.tabPage_GetEntities.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -3112,6 +3445,34 @@
         private System.Windows.Forms.TextBox textBox_Search_strQueryXml;
         private System.Windows.Forms.Label label79;
         private System.Windows.Forms.Button button_help_Search;
+        private System.Windows.Forms.TabPage tabPage_GetItemInfo;
+        private System.Windows.Forms.Button button_help_GetItemInfo;
+        private System.Windows.Forms.Button button_GetItemInfo;
+        private System.Windows.Forms.TextBox textBox_GetItemInfo_strBarcode;
+        private System.Windows.Forms.TextBox textBox_GetItemInfo_strItemDbType;
+        private System.Windows.Forms.Label label80;
+        private System.Windows.Forms.Label label81;
+        private System.Windows.Forms.TextBox textBox_GetItemInfo_strBiblioType;
+        private System.Windows.Forms.Label label84;
+        private System.Windows.Forms.TextBox textBox_GetItemInfo_strResultType;
+        private System.Windows.Forms.TextBox textBox_GetItemInfo_strItemXml;
+        private System.Windows.Forms.Label label82;
+        private System.Windows.Forms.Label label83;
+        private System.Windows.Forms.TabPage tabPage_GetEntities;
+        private System.Windows.Forms.TextBox textBox_GetEntities_strLang;
+        private System.Windows.Forms.Label label85;
+        private System.Windows.Forms.TextBox textBox_GetEntities_strStyle;
+        private System.Windows.Forms.Label label86;
+        private System.Windows.Forms.Button button_help_GetEntities;
+        private System.Windows.Forms.Button button_GetEntities;
+        private System.Windows.Forms.TextBox textBox_GetEntities_strBiblioRecPath;
+        private System.Windows.Forms.Label label88;
+        private System.Windows.Forms.Label label89;
+        private System.Windows.Forms.ComboBox comboBox__GetEntities_fun;
+        private System.Windows.Forms.TextBox textBox_GetEntities_lCount;
+        private System.Windows.Forms.TextBox textBox_GetEntities_lStart;
+        private System.Windows.Forms.Label label87;
+        private System.Windows.Forms.Label label90;
     }
 }
 

@@ -2610,6 +2610,117 @@ out string strError);
         }
 
         #endregion
+
+        private void button_help_GetItemInfo_Click(object sender, EventArgs e)
+        {
+            Process.Start("https://jihulab.com/DigitalPlatform/dp2doc/-/issues/39#note_2027734");
+        }
+
+        private void button_GetItemInfo_Click(object sender, EventArgs e)
+        {
+            // 清空底部输出信息
+            this.ClearResultInfo();
+
+            string strItemDbType = this.textBox_GetItemInfo_strItemDbType.Text;
+            string strBarcode = this.textBox_GetItemInfo_strBarcode.Text;
+            string strItemXml = this.textBox_GetItemInfo_strItemXml.Text;
+            string strResultType = this.textBox_GetItemInfo_strResultType.Text;
+            string strBiblioType = this.textBox_GetItemInfo_strBiblioType.Text;
+
+            RestChannel channel = this.GetChannel();
+            try
+            {
+                GetItemInfoResponse response = channel.GetItemInfo(strItemDbType,
+                    strBarcode,
+                    strItemXml,
+                    strResultType,
+                    strBiblioType);
+
+                // 显示返回信息
+                this.SetResultInfo("GetItemInfo()\r\n" + RestChannel.GetResultInfo(response));
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, "GetItemInfo()异常：" + ex.Message);
+                return;
+            }
+            finally
+            {
+                this._channelPool.ReturnChannel(channel);
+            }
+        }
+
+        private void button_help_GetEntities_Click(object sender, EventArgs e)
+        {
+            Process.Start("https://jihulab.com/DigitalPlatform/dp2doc/-/issues/39#note_2028097");
+        }
+
+        private void button_GetEntities_Click(object sender, EventArgs e)
+        {
+            // 清空底部输出信息
+            this.ClearResultInfo();
+
+            string fun = this.comboBox__GetEntities_fun.Text.Trim();
+
+            string strItemDbType = this.textBox_GetEntities_strBiblioRecPath.Text;
+
+            string strlStart = this.textBox_GetEntities_lStart.Text;
+            long lStart = 0;
+            try
+            {
+                lStart = Convert.ToInt64(strlStart);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, "lStart格式不合法，须为数值型。" + ex.Message);
+                return;
+            }
+
+            string strlCount = this.textBox_GetEntities_lCount.Text;
+            long lCount = 0;
+            try
+            {
+                lCount = Convert.ToInt64(strlCount);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, "lCount格式不合法，须为数值型。" + ex.Message);
+                return;
+            }
+            string strStyle = this.textBox_GetEntities_strStyle.Text;
+            string strLang = this.textBox_GetEntities_strLang.Text;
+
+            RestChannel channel = this.GetChannel();
+            try
+            {
+                if (fun == "GetEntities")
+                {
+                    GetEntitiesResponse response = channel.GetEntities(strItemDbType,
+                        lStart,
+                        lCount,
+                        strStyle,
+                        strLang);
+
+                    // 显示返回信息
+                    this.SetResultInfo("GetEntities()\r\n" + RestChannel.GetResultInfo(response));
+                }
+                else
+                {
+                    MessageBox.Show(fun + "未完成");
+                }
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, "GetXXXs()异常：" + ex.Message);
+                return;
+            }
+            finally
+            {
+                this._channelPool.ReturnChannel(channel);
+            }
+        }
     }
 
 
