@@ -283,7 +283,7 @@ namespace practice
 
         private void button_help_SearchBiblio_Click(object sender, EventArgs e)
         {
-            Process.Start("https://jihulab.com/DigitalPlatform/dp2doc/-/issues/39#note_2011425");
+            Process.Start("https://jihulab.com/DigitalPlatform/dp2doc/-/issues/60");
 
         }
 
@@ -344,7 +344,7 @@ namespace practice
 
         private void button_help_SearchItem_Click(object sender, EventArgs e)
         {
-            Process.Start("https://jihulab.com/DigitalPlatform/dp2doc/-/issues/39#note_2011838");
+            Process.Start("https://jihulab.com/DigitalPlatform/dp2doc/-/issues/62");
         }
 
         private void button_searchItem_Click(object sender, EventArgs e)
@@ -401,7 +401,7 @@ public long SearchItem(string strItemDbName,
 
         private void button_help_GetSearchResult_Click(object sender, EventArgs e)
         {
-            Process.Start("https://jihulab.com/DigitalPlatform/dp2doc/-/issues/39#note_2001684");
+            Process.Start("https://jihulab.com/DigitalPlatform/dp2doc/-/issues/65");
         }
 
         private void button_GetSearchResult_Click(object sender, EventArgs e)
@@ -471,7 +471,7 @@ public long SearchItem(string strItemDbName,
         {
 
             // GetBiblioInfos API 帮助文档
-            Process.Start("https://jihulab.com/DigitalPlatform/dp2doc/-/issues/39#note_1998508");
+            Process.Start("https://jihulab.com/DigitalPlatform/dp2doc/-/issues/55");
 
         }
 
@@ -629,7 +629,7 @@ public long SearchItem(string strItemDbName,
         private void button_help_SetBiblioInfo_Click(object sender, EventArgs e)
         {
             // SetBiblioInfo API 帮助文档
-            Process.Start("https://jihulab.com/DigitalPlatform/dp2doc/-/issues/39#note_1975295");
+            Process.Start("https://jihulab.com/DigitalPlatform/dp2doc/-/issues/54");
 
         }
 
@@ -1501,7 +1501,7 @@ out string strError);
         private void button_WriteRes_help_Click(object sender, EventArgs e)
         {
             // WriteRes API 帮助文档
-            Process.Start("https://jihulab.com/DigitalPlatform/dp2doc/-/issues/39#note_1981539");
+            Process.Start("https://jihulab.com/DigitalPlatform/dp2doc/-/issues/51");
         }
 
 
@@ -2291,7 +2291,7 @@ out string strError);
         private void button_GetRes_help_Click(object sender, EventArgs e)
         {
             // GetRes API 帮助文档
-            Process.Start("https://jihulab.com/DigitalPlatform/dp2doc/-/issues/39#note_1982698");
+            Process.Start("https://jihulab.com/DigitalPlatform/dp2doc/-/issues/52");
 
         }
 
@@ -2337,7 +2337,7 @@ out string strError);
         private void button_GetRecord_help_Click(object sender, EventArgs e)
         {
             // WriteRes API 帮助文档
-            Process.Start("https://jihulab.com/DigitalPlatform/dp2doc/-/issues/39#note_1984009");
+            Process.Start("https://jihulab.com/DigitalPlatform/dp2doc/-/issues/53");
         }
 
 
@@ -2406,7 +2406,7 @@ out string strError);
         // SetReaderInfo 帮助
         private void button_help_SetReaderInfo_Click(object sender, EventArgs e)
         {
-            Process.Start("https://jihulab.com/DigitalPlatform/dp2doc/-/issues/39#note_1998595");
+            Process.Start("https://jihulab.com/DigitalPlatform/dp2doc/-/issues/56");
         }
 
 
@@ -2451,7 +2451,7 @@ out string strError);
 
         private void button_help_GetReaderInfo_Click(object sender, EventArgs e)
         {
-            Process.Start("https://jihulab.com/DigitalPlatform/dp2doc/-/issues/39#note_1998731");
+            Process.Start("https://jihulab.com/DigitalPlatform/dp2doc/-/issues/57");
         }
 
 
@@ -2465,7 +2465,7 @@ out string strError);
 
         private void button_help_GetBrowseRecords_Click(object sender, EventArgs e)
         {
-            Process.Start("https://jihulab.com/DigitalPlatform/dp2doc/-/issues/39#note_2011950");
+            Process.Start("https://jihulab.com/DigitalPlatform/dp2doc/-/issues/64");
         }
 
         private void button_GetBrowseRecords_Click(object sender, EventArgs e)
@@ -2514,7 +2514,7 @@ out string strError);
 
         private void button_help_SearchReader_Click(object sender, EventArgs e)
         {
-            Process.Start("https://jihulab.com/DigitalPlatform/dp2doc/-/issues/39#note_2012280");
+            Process.Start("https://jihulab.com/DigitalPlatform/dp2doc/-/issues/61");
 
         }
         private void button_SearchReader_Click(object sender, EventArgs e)
@@ -2606,14 +2606,14 @@ out string strError);
 
         private void button_help_Search_Click(object sender, EventArgs e)
         {
-            Process.Start("https://jihulab.com/DigitalPlatform/dp2doc/-/issues/39#note_2013326");
+            Process.Start("https://jihulab.com/DigitalPlatform/dp2doc/-/issues/63");
         }
 
         #endregion
 
         private void button_help_GetItemInfo_Click(object sender, EventArgs e)
         {
-            Process.Start("https://jihulab.com/DigitalPlatform/dp2doc/-/issues/39#note_2027734");
+            Process.Start("https://jihulab.com/DigitalPlatform/dp2doc/-/issues/58");
         }
 
         private void button_GetItemInfo_Click(object sender, EventArgs e)
@@ -2653,7 +2653,7 @@ out string strError);
 
         private void button_help_GetEntities_Click(object sender, EventArgs e)
         {
-            Process.Start("https://jihulab.com/DigitalPlatform/dp2doc/-/issues/39#note_2028097");
+            Process.Start("https://jihulab.com/DigitalPlatform/dp2doc/-/issues/59");
         }
 
         private void button_GetEntities_Click(object sender, EventArgs e)
