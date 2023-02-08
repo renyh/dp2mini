@@ -1633,8 +1633,11 @@ out string strError);
                 // 不是过大的文件，且没设范围（代表一次性的数据）
                 if (this.textBox_WriteRes_baContent.Text == "")
                 {
-                    chunk_contents = new byte[baTotal.Length];
-                    Array.Copy(baTotal, chunk_contents, baTotal.Length);
+                    if (baTotal != null)
+                    {
+                        chunk_contents = new byte[baTotal.Length];
+                        Array.Copy(baTotal, chunk_contents, baTotal.Length);
+                    }
                 }
             }
 

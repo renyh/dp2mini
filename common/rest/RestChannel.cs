@@ -358,9 +358,14 @@ namespace DigitalPlatform.LibraryRestClient
                 {
                     browse.AppendLine("\r\n=以下为返回的RecordBody=");
 
-                    browse.AppendLine("Result.Value:" + record.RecordBody.Result.Value);
-                    browse.AppendLine("Result.ErrorCode:" + record.RecordBody.Result.ErrorCode);
-                    browse.AppendLine("Result.ErrorString:" + record.RecordBody.Result.ErrorString);
+                    //browse.AppendLine("Result.Value:" + record.RecordBody.Result.Value);
+                    //browse.AppendLine("Result.ErrorCode:" + record.RecordBody.Result.ErrorCode);
+                    //browse.AppendLine("Result.ErrorString:" + record.RecordBody.Result.ErrorString);
+
+                    browse.AppendLine("Result.Value:" + record.RecordBody.Result?.Value);
+                    browse.AppendLine("Result.ErrorCode:" + record.RecordBody.Result?.ErrorCode);
+                    browse.AppendLine("Result.ErrorString:" + record.RecordBody.Result?.ErrorString);
+
 
                     browse.AppendLine("Timestamp:" + ByteArray.GetHexTimeStampString(record.RecordBody.Timestamp));
                     browse.AppendLine("Metadata:" + record.RecordBody.Metadata);
