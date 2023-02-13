@@ -303,11 +303,11 @@ namespace practice
                         0,
                         -1);
                     // 显示返回信息
-                    this.SetResultInfo("GetUser()\r\n" + RestChannel.GetResultInfo(response1));
+                    this.textBox_getUser_result.Text= RestChannel.GetResultInfo(response1);
                 }
                 else
                 {
-                    this.textBox_result.Text = "用'"+UserName+"'登录失败。";
+                    this.textBox_getUser_result.Text =  "用'"+UserName+"'登录失败。";
                 }
 
             }

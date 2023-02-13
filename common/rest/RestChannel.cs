@@ -301,13 +301,13 @@ namespace DigitalPlatform.LibraryRestClient
                     {
 
                         info += "UserName:" + u.UserName + "\r\n"
- + "Rights:" + u.Rights + "\r\n"
- + "Access:" + u.Access + "\r\n"
- + "====\r\n";
+                         + "Rights:" + u.Rights + "\r\n"
+                         + "Access:" + u.Access + "\r\n";
+                         //+ "====\r\n";
                     }
                 }
 
-                info += GetServerResultInfo(r.GetUserResult) + "\r\n";
+                //info += GetServerResultInfo(r.GetUserResult) + "\r\n";
 
                 return info;
             }

@@ -292,6 +292,7 @@
             this.textBox_GetUser_UserName = new System.Windows.Forms.TextBox();
             this.label91 = new System.Windows.Forms.Label();
             this.label92 = new System.Windows.Forms.Label();
+            this.textBox_getUser_result = new System.Windows.Forms.TextBox();
             this.tabPage_SearchBiblio.SuspendLayout();
             this.tabPage_Server.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -583,10 +584,13 @@
             // 
             // tabPage_Server
             // 
-            this.tabPage_Server.Controls.Add(this.groupBox2);
+            this.tabPage_Server.Controls.Add(this.textBox_getUser_result);
             this.tabPage_Server.Controls.Add(this.button_getVersion);
+            this.tabPage_Server.Controls.Add(this.groupBox2);
+            this.tabPage_Server.Controls.Add(this.button_logout);
             this.tabPage_Server.Controls.Add(this.groupBox1);
             this.tabPage_Server.Controls.Add(this.Server_textBox_url);
+            this.tabPage_Server.Controls.Add(this.button_login);
             this.tabPage_Server.Controls.Add(this.label4);
             this.tabPage_Server.Location = new System.Drawing.Point(10, 46);
             this.tabPage_Server.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
@@ -599,7 +603,7 @@
             // 
             // button_logout
             // 
-            this.button_logout.Location = new System.Drawing.Point(373, 247);
+            this.button_logout.Location = new System.Drawing.Point(238, 453);
             this.button_logout.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.button_logout.Name = "button_logout";
             this.button_logout.Size = new System.Drawing.Size(162, 57);
@@ -611,7 +615,7 @@
             // 
             // button_login
             // 
-            this.button_login.Location = new System.Drawing.Point(185, 247);
+            this.button_login.Location = new System.Drawing.Point(66, 453);
             this.button_login.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.button_login.Name = "button_login";
             this.button_login.Size = new System.Drawing.Size(162, 57);
@@ -623,10 +627,10 @@
             // 
             // button_getVersion
             // 
-            this.button_getVersion.Location = new System.Drawing.Point(956, 62);
+            this.button_getVersion.Location = new System.Drawing.Point(426, 453);
             this.button_getVersion.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.button_getVersion.Name = "button_getVersion";
-            this.button_getVersion.Size = new System.Drawing.Size(192, 45);
+            this.button_getVersion.Size = new System.Drawing.Size(192, 57);
             this.button_getVersion.TabIndex = 22;
             this.button_getVersion.Tag = "";
             this.button_getVersion.Text = "GetVersion";
@@ -636,18 +640,16 @@
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.Login_textBox_parameters);
-            this.groupBox1.Controls.Add(this.button_logout);
             this.groupBox1.Controls.Add(this.label11);
-            this.groupBox1.Controls.Add(this.button_login);
             this.groupBox1.Controls.Add(this.Login_textBox_password);
             this.groupBox1.Controls.Add(this.Login_textBox_userName);
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Location = new System.Drawing.Point(35, 109);
+            this.groupBox1.Location = new System.Drawing.Point(35, 131);
             this.groupBox1.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Padding = new System.Windows.Forms.Padding(5, 6, 5, 6);
-            this.groupBox1.Size = new System.Drawing.Size(901, 322);
+            this.groupBox1.Size = new System.Drawing.Size(774, 280);
             this.groupBox1.TabIndex = 18;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "登录帐号";
@@ -657,7 +659,7 @@
             this.Login_textBox_parameters.Location = new System.Drawing.Point(185, 188);
             this.Login_textBox_parameters.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.Login_textBox_parameters.Name = "Login_textBox_parameters";
-            this.Login_textBox_parameters.Size = new System.Drawing.Size(673, 38);
+            this.Login_textBox_parameters.Size = new System.Drawing.Size(526, 38);
             this.Login_textBox_parameters.TabIndex = 21;
             // 
             // label11
@@ -712,7 +714,7 @@
             this.Server_textBox_url.Location = new System.Drawing.Point(248, 62);
             this.Server_textBox_url.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.Server_textBox_url.Name = "Server_textBox_url";
-            this.Server_textBox_url.Size = new System.Drawing.Size(688, 38);
+            this.Server_textBox_url.Size = new System.Drawing.Size(568, 38);
             this.Server_textBox_url.TabIndex = 17;
             // 
             // label4
@@ -785,7 +787,7 @@
             this.tabPage_WriteRes.Location = new System.Drawing.Point(10, 46);
             this.tabPage_WriteRes.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.tabPage_WriteRes.Name = "tabPage_WriteRes";
-            this.tabPage_WriteRes.Size = new System.Drawing.Size(1265, 726);
+            this.tabPage_WriteRes.Size = new System.Drawing.Size(1265, 733);
             this.tabPage_WriteRes.TabIndex = 13;
             this.tabPage_WriteRes.Text = "WriteRes";
             this.tabPage_WriteRes.UseVisualStyleBackColor = true;
@@ -831,7 +833,7 @@
             // 
             this.textBox_WriteRes_fileName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox_WriteRes_fileName.Location = new System.Drawing.Point(309, 527);
+            this.textBox_WriteRes_fileName.Location = new System.Drawing.Point(309, 534);
             this.textBox_WriteRes_fileName.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.textBox_WriteRes_fileName.Name = "textBox_WriteRes_fileName";
             this.textBox_WriteRes_fileName.ReadOnly = true;
@@ -843,7 +845,7 @@
             this.checkBox_WriteRes_redoByNewTimestamp.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.checkBox_WriteRes_redoByNewTimestamp.AutoSize = true;
             this.checkBox_WriteRes_redoByNewTimestamp.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
-            this.checkBox_WriteRes_redoByNewTimestamp.Location = new System.Drawing.Point(309, 588);
+            this.checkBox_WriteRes_redoByNewTimestamp.Location = new System.Drawing.Point(309, 595);
             this.checkBox_WriteRes_redoByNewTimestamp.Name = "checkBox_WriteRes_redoByNewTimestamp";
             this.checkBox_WriteRes_redoByNewTimestamp.Size = new System.Drawing.Size(530, 31);
             this.checkBox_WriteRes_redoByNewTimestamp.TabIndex = 45;
@@ -868,7 +870,7 @@
             this.button_editContent.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.button_editContent.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
             this.button_editContent.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button_editContent.Location = new System.Drawing.Point(1023, 448);
+            this.button_editContent.Location = new System.Drawing.Point(1023, 455);
             this.button_editContent.Name = "button_editContent";
             this.button_editContent.Size = new System.Drawing.Size(199, 71);
             this.button_editContent.TabIndex = 51;
@@ -901,7 +903,7 @@
             this.button_writeObjectByChunk.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.button_writeObjectByChunk.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
             this.button_writeObjectByChunk.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button_writeObjectByChunk.Location = new System.Drawing.Point(571, 639);
+            this.button_writeObjectByChunk.Location = new System.Drawing.Point(571, 646);
             this.button_writeObjectByChunk.Name = "button_writeObjectByChunk";
             this.button_writeObjectByChunk.Size = new System.Drawing.Size(218, 70);
             this.button_writeObjectByChunk.TabIndex = 37;
@@ -933,7 +935,7 @@
             // 
             this.button_WriteRes.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.button_WriteRes.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button_WriteRes.Location = new System.Drawing.Point(309, 639);
+            this.button_WriteRes.Location = new System.Drawing.Point(309, 646);
             this.button_WriteRes.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.button_WriteRes.Name = "button_WriteRes";
             this.button_WriteRes.Size = new System.Drawing.Size(239, 70);
@@ -1034,7 +1036,7 @@
             this.textBox_WriteRes_baContent.Name = "textBox_WriteRes_baContent";
             this.textBox_WriteRes_baContent.ReadOnly = true;
             this.textBox_WriteRes_baContent.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBox_WriteRes_baContent.Size = new System.Drawing.Size(706, 143);
+            this.textBox_WriteRes_baContent.Size = new System.Drawing.Size(706, 150);
             this.textBox_WriteRes_baContent.TabIndex = 13;
             // 
             // label59
@@ -3182,9 +3184,9 @@
             this.groupBox2.Controls.Add(this.label91);
             this.groupBox2.Controls.Add(this.label92);
             this.groupBox2.Controls.Add(this.button_GetUser);
-            this.groupBox2.Location = new System.Drawing.Point(35, 457);
+            this.groupBox2.Location = new System.Drawing.Point(841, 46);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(901, 237);
+            this.groupBox2.Size = new System.Drawing.Size(396, 227);
             this.groupBox2.TabIndex = 26;
             this.groupBox2.TabStop = false;
             // 
@@ -3193,7 +3195,7 @@
             this.textBox_GetUserName_pass.Location = new System.Drawing.Point(185, 107);
             this.textBox_GetUserName_pass.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.textBox_GetUserName_pass.Name = "textBox_GetUserName_pass";
-            this.textBox_GetUserName_pass.Size = new System.Drawing.Size(382, 38);
+            this.textBox_GetUserName_pass.Size = new System.Drawing.Size(194, 38);
             this.textBox_GetUserName_pass.TabIndex = 28;
             this.textBox_GetUserName_pass.UseSystemPasswordChar = true;
             // 
@@ -3202,7 +3204,7 @@
             this.textBox_GetUser_UserName.Location = new System.Drawing.Point(185, 47);
             this.textBox_GetUser_UserName.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.textBox_GetUser_UserName.Name = "textBox_GetUser_UserName";
-            this.textBox_GetUser_UserName.Size = new System.Drawing.Size(382, 38);
+            this.textBox_GetUser_UserName.Size = new System.Drawing.Size(194, 38);
             this.textBox_GetUser_UserName.TabIndex = 26;
             this.textBox_GetUser_UserName.Text = "supervisor";
             // 
@@ -3225,6 +3227,15 @@
             this.label92.Size = new System.Drawing.Size(147, 27);
             this.label92.TabIndex = 27;
             this.label92.Text = "管理员帐户";
+            // 
+            // textBox_getUser_result
+            // 
+            this.textBox_getUser_result.Location = new System.Drawing.Point(841, 287);
+            this.textBox_getUser_result.Multiline = true;
+            this.textBox_getUser_result.Name = "textBox_getUser_result";
+            this.textBox_getUser_result.ReadOnly = true;
+            this.textBox_getUser_result.Size = new System.Drawing.Size(396, 246);
+            this.textBox_getUser_result.TabIndex = 30;
             // 
             // Form_main
             // 
@@ -3559,6 +3570,7 @@
         private System.Windows.Forms.TextBox textBox_GetUser_UserName;
         private System.Windows.Forms.Label label91;
         private System.Windows.Forms.Label label92;
+        private System.Windows.Forms.TextBox textBox_getUser_result;
     }
 }
 
