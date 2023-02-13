@@ -293,19 +293,21 @@ namespace DigitalPlatform.LibraryRestClient
             else if (o is GetUserResponse)
             {
                 GetUserResponse r = (GetUserResponse)o;
-                string info= GetServerResultInfo(r.GetUserResult) + "\r\n";
+                string info="";
 
                 if (r.contents != null)
                 {
                     foreach (UserInfo u in r.contents)
                     {
 
-                        info += "baTimestamp:" + u.UserName + "\r\n"
+                        info += "UserName:" + u.UserName + "\r\n"
  + "Rights:" + u.Rights + "\r\n"
  + "Access:" + u.Access + "\r\n"
  + "====\r\n";
                     }
                 }
+
+                info += GetServerResultInfo(r.GetUserResult) + "\r\n";
 
                 return info;
             }

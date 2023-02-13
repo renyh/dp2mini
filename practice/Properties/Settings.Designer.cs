@@ -370,5 +370,29 @@ namespace practice.Properties {
                 this["queryStyle"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string GetUser_userName {
+            get {
+                return ((string)(this["GetUser_userName"]));
+            }
+            set {
+                this["GetUser_userName"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string GetUser_password {
+            get {
+                return ((string)(this["GetUser_password"]));
+            }
+            set {
+                this["GetUser_password"] = value;
+            }
+        }
     }
 }

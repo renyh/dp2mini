@@ -89,5 +89,11 @@
     <Setting Name="queryStyle" Type="System.String" Scope="User">
       <Value Profile="(Default)">easy</Value>
     </Setting>
+    <Setting Name="GetUser_userName" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="GetUser_password" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
   </Settings>
 </SettingsFile>

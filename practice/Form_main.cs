@@ -44,6 +44,11 @@ namespace practice
             this.Login_textBox_password.Text = Properties.Settings.Default.login_password;
             this.Login_textBox_parameters.Text = Properties.Settings.Default.login_parameters;
 
+            this.textBox_GetUser_UserName.Text = Properties.Settings.Default.GetUser_userName;
+            this.textBox_GetUserName_pass.Text = Properties.Settings.Default.GetUser_password;
+
+
+
             this.textBox_SearchBiblio_strBiblioDbNames.Text = Properties.Settings.Default.searchBiblio_biblioDbNames;
             this.textBox_SearchBiblio_strQueryWord.Text = Properties.Settings.Default.searchBiblio_queryWord;
             this.textBox_SearchBiblio_nPerMax.Text = Properties.Settings.Default.searchBiblio_perMax;
@@ -68,6 +73,9 @@ namespace practice
             Properties.Settings.Default.login_userName = this.Login_textBox_userName.Text;
             Properties.Settings.Default.login_password = this.Login_textBox_password.Text;
             Properties.Settings.Default.login_parameters = this.Login_textBox_parameters.Text;
+
+            Properties.Settings.Default.GetUser_userName = this.textBox_GetUser_UserName.Text;
+            Properties.Settings.Default.GetUser_password=this.textBox_GetUserName_pass.Text;
 
 
             Properties.Settings.Default.searchBiblio_biblioDbNames = this.textBox_SearchBiblio_strBiblioDbNames.Text;
@@ -258,20 +266,46 @@ namespace practice
             RestChannel channel = this.GetChannel();
             try
             {
-                string userName = this.Login_textBox_userName.Text.Trim();
+                // 用管理员身份登录
+                string userName = this.textBox_GetUser_UserName.Text.Trim();
                 if (userName == "")
                 {
-                    MessageBox.Show(this, "用户名不能为空");
+                    MessageBox.Show(this, "管理员帐户不能为空");
                     return;
                 }
+                string password = this.textBox_GetUserName_pass.Text.Trim();
+                string parameters ="type=worker,client=resttest|0.01";
 
-                GetUserResponse response = channel.GetUser("",
-                    userName,
-                    0,
-                    -1);
+                // 登录接口
+                /// <para>-1:   出错</para>
+                /// <para>0:    登录未成功</para>
+                /// <para>1:    登录成功</para>
+                LoginResponse response = channel.Login(userName,
+                    password,
+                    parameters);
+                if (response.LoginResult.Value == 1)
+                {
+                    //this.textBox_result.Text = "登录成功\r\n";
 
-                // 显示返回信息
-                this.SetResultInfo("GetUser()\r\n" + RestChannel.GetResultInfo(response));
+                    // 获取本次帐户的权限。
+                    string thisUser = this.Login_textBox_userName.Text.Trim();
+                    if (thisUser == "")
+                    {
+                        MessageBox.Show(this, "userName不能为空");
+                        return;
+                    }
+                    GetUserResponse response1 = channel.GetUser("",
+                        thisUser,
+                        0,
+                        -1);
+                    // 显示返回信息
+                    this.SetResultInfo("GetUser()\r\n" + RestChannel.GetResultInfo(response1));
+                }
+                else
+                {
+                    this.textBox_result.Text = "用'"+UserName+"'登录失败。";
+                }
+
             }
             catch (Exception ex)
             {

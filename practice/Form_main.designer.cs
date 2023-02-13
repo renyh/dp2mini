@@ -287,6 +287,11 @@
             this.处理MARC字段ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.button_GetUser = new System.Windows.Forms.Button();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.textBox_GetUserName_pass = new System.Windows.Forms.TextBox();
+            this.textBox_GetUser_UserName = new System.Windows.Forms.TextBox();
+            this.label91 = new System.Windows.Forms.Label();
+            this.label92 = new System.Windows.Forms.Label();
             this.tabPage_SearchBiblio.SuspendLayout();
             this.tabPage_Server.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -313,6 +318,7 @@
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
+            this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabPage_SearchBiblio
@@ -577,9 +583,7 @@
             // 
             // tabPage_Server
             // 
-            this.tabPage_Server.Controls.Add(this.button_GetUser);
-            this.tabPage_Server.Controls.Add(this.button_logout);
-            this.tabPage_Server.Controls.Add(this.button_login);
+            this.tabPage_Server.Controls.Add(this.groupBox2);
             this.tabPage_Server.Controls.Add(this.button_getVersion);
             this.tabPage_Server.Controls.Add(this.groupBox1);
             this.tabPage_Server.Controls.Add(this.Server_textBox_url);
@@ -595,7 +599,7 @@
             // 
             // button_logout
             // 
-            this.button_logout.Location = new System.Drawing.Point(456, 492);
+            this.button_logout.Location = new System.Drawing.Point(373, 247);
             this.button_logout.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.button_logout.Name = "button_logout";
             this.button_logout.Size = new System.Drawing.Size(162, 57);
@@ -607,7 +611,7 @@
             // 
             // button_login
             // 
-            this.button_login.Location = new System.Drawing.Point(268, 492);
+            this.button_login.Location = new System.Drawing.Point(185, 247);
             this.button_login.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.button_login.Name = "button_login";
             this.button_login.Size = new System.Drawing.Size(162, 57);
@@ -619,10 +623,10 @@
             // 
             // button_getVersion
             // 
-            this.button_getVersion.Location = new System.Drawing.Point(38, 492);
+            this.button_getVersion.Location = new System.Drawing.Point(956, 62);
             this.button_getVersion.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.button_getVersion.Name = "button_getVersion";
-            this.button_getVersion.Size = new System.Drawing.Size(210, 57);
+            this.button_getVersion.Size = new System.Drawing.Size(192, 45);
             this.button_getVersion.TabIndex = 22;
             this.button_getVersion.Tag = "";
             this.button_getVersion.Text = "GetVersion";
@@ -632,23 +636,25 @@
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.Login_textBox_parameters);
+            this.groupBox1.Controls.Add(this.button_logout);
             this.groupBox1.Controls.Add(this.label11);
+            this.groupBox1.Controls.Add(this.button_login);
             this.groupBox1.Controls.Add(this.Login_textBox_password);
             this.groupBox1.Controls.Add(this.Login_textBox_userName);
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Location = new System.Drawing.Point(35, 154);
+            this.groupBox1.Location = new System.Drawing.Point(35, 109);
             this.groupBox1.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Padding = new System.Windows.Forms.Padding(5, 6, 5, 6);
-            this.groupBox1.Size = new System.Drawing.Size(997, 312);
+            this.groupBox1.Size = new System.Drawing.Size(901, 322);
             this.groupBox1.TabIndex = 18;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "登录帐号";
             // 
             // Login_textBox_parameters
             // 
-            this.Login_textBox_parameters.Location = new System.Drawing.Point(185, 226);
+            this.Login_textBox_parameters.Location = new System.Drawing.Point(185, 188);
             this.Login_textBox_parameters.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.Login_textBox_parameters.Name = "Login_textBox_parameters";
             this.Login_textBox_parameters.Size = new System.Drawing.Size(673, 38);
@@ -657,7 +663,7 @@
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(26, 232);
+            this.label11.Location = new System.Drawing.Point(26, 194);
             this.label11.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(152, 27);
@@ -666,7 +672,7 @@
             // 
             // Login_textBox_password
             // 
-            this.Login_textBox_password.Location = new System.Drawing.Point(185, 150);
+            this.Login_textBox_password.Location = new System.Drawing.Point(185, 130);
             this.Login_textBox_password.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.Login_textBox_password.Name = "Login_textBox_password";
             this.Login_textBox_password.Size = new System.Drawing.Size(382, 38);
@@ -680,12 +686,11 @@
             this.Login_textBox_userName.Name = "Login_textBox_userName";
             this.Login_textBox_userName.Size = new System.Drawing.Size(382, 38);
             this.Login_textBox_userName.TabIndex = 19;
-            this.Login_textBox_userName.Text = "supervisor1";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(26, 150);
+            this.label2.Location = new System.Drawing.Point(26, 130);
             this.label2.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(124, 27);
@@ -3160,7 +3165,7 @@
             // 
             // button_GetUser
             // 
-            this.button_GetUser.Location = new System.Drawing.Point(670, 492);
+            this.button_GetUser.Location = new System.Drawing.Point(185, 157);
             this.button_GetUser.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.button_GetUser.Name = "button_GetUser";
             this.button_GetUser.Size = new System.Drawing.Size(162, 57);
@@ -3169,6 +3174,57 @@
             this.button_GetUser.Text = "GetUser";
             this.button_GetUser.UseVisualStyleBackColor = true;
             this.button_GetUser.Click += new System.EventHandler(this.button_GetUser_Click);
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.textBox_GetUserName_pass);
+            this.groupBox2.Controls.Add(this.textBox_GetUser_UserName);
+            this.groupBox2.Controls.Add(this.label91);
+            this.groupBox2.Controls.Add(this.label92);
+            this.groupBox2.Controls.Add(this.button_GetUser);
+            this.groupBox2.Location = new System.Drawing.Point(35, 457);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(901, 237);
+            this.groupBox2.TabIndex = 26;
+            this.groupBox2.TabStop = false;
+            // 
+            // textBox_GetUserName_pass
+            // 
+            this.textBox_GetUserName_pass.Location = new System.Drawing.Point(185, 107);
+            this.textBox_GetUserName_pass.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.textBox_GetUserName_pass.Name = "textBox_GetUserName_pass";
+            this.textBox_GetUserName_pass.Size = new System.Drawing.Size(382, 38);
+            this.textBox_GetUserName_pass.TabIndex = 28;
+            this.textBox_GetUserName_pass.UseSystemPasswordChar = true;
+            // 
+            // textBox_GetUser_UserName
+            // 
+            this.textBox_GetUser_UserName.Location = new System.Drawing.Point(185, 47);
+            this.textBox_GetUser_UserName.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.textBox_GetUser_UserName.Name = "textBox_GetUser_UserName";
+            this.textBox_GetUser_UserName.Size = new System.Drawing.Size(382, 38);
+            this.textBox_GetUser_UserName.TabIndex = 26;
+            this.textBox_GetUser_UserName.Text = "supervisor";
+            // 
+            // label91
+            // 
+            this.label91.AutoSize = true;
+            this.label91.Location = new System.Drawing.Point(26, 107);
+            this.label91.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label91.Name = "label91";
+            this.label91.Size = new System.Drawing.Size(124, 27);
+            this.label91.TabIndex = 29;
+            this.label91.Text = "Password";
+            // 
+            // label92
+            // 
+            this.label92.AutoSize = true;
+            this.label92.Location = new System.Drawing.Point(26, 47);
+            this.label92.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label92.Name = "label92";
+            this.label92.Size = new System.Drawing.Size(147, 27);
+            this.label92.TabIndex = 27;
+            this.label92.Text = "管理员帐户";
             // 
             // Form_main
             // 
@@ -3231,6 +3287,8 @@
             this.splitContainer1.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -3496,6 +3554,11 @@
         private System.Windows.Forms.Label label87;
         private System.Windows.Forms.Label label90;
         private System.Windows.Forms.Button button_GetUser;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.TextBox textBox_GetUserName_pass;
+        private System.Windows.Forms.TextBox textBox_GetUser_UserName;
+        private System.Windows.Forms.Label label91;
+        private System.Windows.Forms.Label label92;
     }
 }
 
