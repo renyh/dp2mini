@@ -263,16 +263,20 @@ namespace practice
 
         private void button_GetUser_Click(object sender, EventArgs e)
         {
-            RestChannel channel = this.GetChannel();
+            //RestChannel channel = this.GetChannel();
+
+            // 用管理员身份登录
+            string supervisorName = this.textBox_GetUser_UserName.Text.Trim();
+            if (supervisorName == "")
+            {
+                MessageBox.Show(this, "管理员帐户不能为空");
+                return;
+            }
+
+            RestChannel channel = this._channelPool.GetChannel(this.ServerUrl, supervisorName);
             try
             {
-                // 用管理员身份登录
-                string userName = this.textBox_GetUser_UserName.Text.Trim();
-                if (userName == "")
-                {
-                    MessageBox.Show(this, "管理员帐户不能为空");
-                    return;
-                }
+
                 string password = this.textBox_GetUserName_pass.Text.Trim();
                 string parameters ="type=worker,client=resttest|0.01";
 
@@ -280,7 +284,7 @@ namespace practice
                 /// <para>-1:   出错</para>
                 /// <para>0:    登录未成功</para>
                 /// <para>1:    登录成功</para>
-                LoginResponse response = channel.Login(userName,
+                LoginResponse response = channel.Login(supervisorName,
                     password,
                     parameters);
                 if (response.LoginResult.Value == 1)
