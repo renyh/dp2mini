@@ -1714,8 +1714,11 @@ out string strError);
             this.textBox_WriteRes_strRanges.Text = dlg.Ranges;
 
             // 把总长度设置上
-            if (baTotal !=null )
-                 this.textBox_WriteRes_lTotalLength.Text = baTotal.Length.ToString();
+            if (baTotal != null)
+            {
+                this.textBox_WriteRes_lTotalLength.Text = baTotal.Length.ToString();
+                this.textBox_WriteRes_strRanges.Text = "0-" + (baTotal.Length - 1).ToString();
+            }
 
             // 如果没有info:xxx的信息，则设置上十六进制
             if (this.textBox_WriteRes_baContent.Text=="")
