@@ -603,7 +603,7 @@
             // 
             // button_logout
             // 
-            this.button_logout.Location = new System.Drawing.Point(238, 453);
+            this.button_logout.Location = new System.Drawing.Point(621, 433);
             this.button_logout.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.button_logout.Name = "button_logout";
             this.button_logout.Size = new System.Drawing.Size(162, 57);
@@ -615,7 +615,7 @@
             // 
             // button_login
             // 
-            this.button_login.Location = new System.Drawing.Point(66, 453);
+            this.button_login.Location = new System.Drawing.Point(248, 433);
             this.button_login.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.button_login.Name = "button_login";
             this.button_login.Size = new System.Drawing.Size(162, 57);
@@ -627,7 +627,7 @@
             // 
             // button_getVersion
             // 
-            this.button_getVersion.Location = new System.Drawing.Point(426, 453);
+            this.button_getVersion.Location = new System.Drawing.Point(35, 433);
             this.button_getVersion.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.button_getVersion.Name = "button_getVersion";
             this.button_getVersion.Size = new System.Drawing.Size(192, 57);
