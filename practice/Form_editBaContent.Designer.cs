@@ -50,7 +50,7 @@
             this.textBox_content.Multiline = true;
             this.textBox_content.Name = "textBox_content";
             this.textBox_content.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBox_content.Size = new System.Drawing.Size(766, 351);
+            this.textBox_content.Size = new System.Drawing.Size(826, 381);
             this.textBox_content.TabIndex = 15;
             // 
             // label1
@@ -66,7 +66,7 @@
             // 
             this.label60.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label60.AutoSize = true;
-            this.label60.Location = new System.Drawing.Point(8, 511);
+            this.label60.Location = new System.Drawing.Point(8, 541);
             this.label60.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.label60.Name = "label60";
             this.label60.Size = new System.Drawing.Size(93, 27);
@@ -75,9 +75,8 @@
             // 
             // textBox_fileName
             // 
-            this.textBox_fileName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox_fileName.Location = new System.Drawing.Point(109, 511);
+            this.textBox_fileName.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.textBox_fileName.Location = new System.Drawing.Point(109, 541);
             this.textBox_fileName.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.textBox_fileName.Name = "textBox_fileName";
             this.textBox_fileName.Size = new System.Drawing.Size(682, 38);
@@ -85,9 +84,9 @@
             // 
             // button_selectFile
             // 
-            this.button_selectFile.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.button_selectFile.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.button_selectFile.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button_selectFile.Location = new System.Drawing.Point(803, 503);
+            this.button_selectFile.Location = new System.Drawing.Point(803, 533);
             this.button_selectFile.Margin = new System.Windows.Forms.Padding(7, 6, 7, 6);
             this.button_selectFile.Name = "button_selectFile";
             this.button_selectFile.Size = new System.Drawing.Size(72, 48);
@@ -104,14 +103,14 @@
             this.label2.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label2.Location = new System.Drawing.Point(104, 39);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(767, 77);
+            this.label2.Size = new System.Drawing.Size(827, 77);
             this.label2.TabIndex = 40;
             this.label2.Text = "（请输入WriteRes要写入的文本，或者选择要上传的文件，二选一。）";
             // 
             // button_cancel
             // 
             this.button_cancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button_cancel.Location = new System.Drawing.Point(749, 681);
+            this.button_cancel.Location = new System.Drawing.Point(809, 711);
             this.button_cancel.Margin = new System.Windows.Forms.Padding(6, 4, 6, 4);
             this.button_cancel.Name = "button_cancel";
             this.button_cancel.Size = new System.Drawing.Size(157, 62);
@@ -123,7 +122,7 @@
             // button_ok
             // 
             this.button_ok.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button_ok.Location = new System.Drawing.Point(591, 681);
+            this.button_ok.Location = new System.Drawing.Point(651, 711);
             this.button_ok.Margin = new System.Windows.Forms.Padding(6, 4, 6, 4);
             this.button_ok.Name = "button_ok";
             this.button_ok.Size = new System.Drawing.Size(146, 62);
@@ -134,8 +133,9 @@
             // 
             // label54
             // 
+            this.label54.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label54.AutoSize = true;
-            this.label54.Location = new System.Drawing.Point(14, 577);
+            this.label54.Location = new System.Drawing.Point(14, 630);
             this.label54.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.label54.Name = "label54";
             this.label54.Size = new System.Drawing.Size(138, 27);
@@ -144,9 +144,8 @@
             // 
             // textBox_WriteRes_strRanges
             // 
-            this.textBox_WriteRes_strRanges.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox_WriteRes_strRanges.Location = new System.Drawing.Point(162, 571);
+            this.textBox_WriteRes_strRanges.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.textBox_WriteRes_strRanges.Location = new System.Drawing.Point(162, 624);
             this.textBox_WriteRes_strRanges.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.textBox_WriteRes_strRanges.Name = "textBox_WriteRes_strRanges";
             this.textBox_WriteRes_strRanges.Size = new System.Drawing.Size(629, 38);
@@ -156,7 +155,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(14F, 27F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(937, 763);
+            this.ClientSize = new System.Drawing.Size(997, 793);
             this.Controls.Add(this.label54);
             this.Controls.Add(this.textBox_WriteRes_strRanges);
             this.Controls.Add(this.button_cancel);

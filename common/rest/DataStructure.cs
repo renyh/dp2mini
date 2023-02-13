@@ -954,7 +954,64 @@ LibraryServerResult.ErrorInfo		出错信息
 
 
 
+    #region GetUser
 
+    [DataContract]
+    public class GetUserRequest
+    {
+        [DataMember]
+        public string strAction { get; set; }
+        [DataMember]
+        public string strName { get; set; }
+        [DataMember]
+        public int nStart { get; set; }
+
+        [DataMember]
+        public int nCount { get; set; }
+    }
+
+    [DataContract]
+    public class GetUserResponse
+    {
+        [DataMember]
+        public LibraryServerResult GetUserResult { get; set; }
+        [DataMember]
+        public UserInfo[] contents { get; set; }
+    }
+
+    [DataContract(Namespace = "http://dp2003.com/dp2library/")]
+    public class UserInfo
+    {
+        [DataMember]
+        public string UserName = "";    // 用户名
+
+        [DataMember]
+        public bool SetPassword = false;    // 是否设置密码
+        [DataMember]
+        public string Password = "";    // 密码
+
+        [DataMember]
+        public string Rights = "";  // 权限值
+        [DataMember]
+        public string Type = "";    // 账户类型
+
+        [DataMember]
+        public string LibraryCode = ""; // 图书馆代码 2007/12/15 
+
+        [DataMember]
+        public string Access = "";  // 关于存取权限的定义 2008/2/28 
+
+        [DataMember]
+        public string Comment = "";  // 注释 2012/10/8
+
+        [DataMember]
+        public string Binding = ""; // 绑定 2016/6/15
+
+        [DataMember]
+        public string Location = "";    // 默认位置 2022/2/21
+    }
+
+    #endregion
 
 
     #region SearchReader

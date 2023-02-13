@@ -262,7 +262,7 @@ namespace DigitalPlatform.LibraryRestClient
                     + "baTimestamp:" + ByteArray.GetHexTimeStampString(r.baTimestamp) + "\r\n"
                     + "strItemRecPath:" + r.strItemRecPath + "\r\n"
                     + "strResult:" + r.strResult + "\r\n"
-                    + "'\r\n"
+                    + "\r\n"
                     + "strBiblioRecPath:" + r.strBiblioRecPath + "\r\n"
                     + "strBiblio:" + r.strBiblio + "\r\n";
             }
@@ -289,6 +289,25 @@ namespace DigitalPlatform.LibraryRestClient
                 GetCommentsResponse r = (GetCommentsResponse)o;
                 return GetServerResultInfo(r.GetCommentsResult) + "\r\n"
                     + DisplayEntityInfos(r.commentinfos);
+            }
+            else if (o is GetUserResponse)
+            {
+                GetUserResponse r = (GetUserResponse)o;
+                string info= GetServerResultInfo(r.GetUserResult) + "\r\n";
+
+                if (r.contents != null)
+                {
+                    foreach (UserInfo u in r.contents)
+                    {
+
+                        info += "baTimestamp:" + u.UserName + "\r\n"
+ + "Rights:" + u.Rights + "\r\n"
+ + "Access:" + u.Access + "\r\n"
+ + "====\r\n";
+                    }
+                }
+
+                return info;
             }
             return "未识别的对象" + o.ToString();
         }
@@ -562,6 +581,58 @@ namespace DigitalPlatform.LibraryRestClient
         }
 
         #endregion
+
+        // 获得用户
+        // parameters:
+        //      strAction   暂未使用。保持空即可。
+        //      strName     用户名。如果为空，表示希望列出全部用户信息
+        // return:
+        //      result.Value    -1 错误; 其他 返回总结果数量
+        public GetUserResponse GetUser(
+            string strAction,
+            string strName,
+            int nStart,
+            int nCount)
+        {
+        REDO:
+            CookieAwareWebClient client = this.GetClient();
+
+            // 设置接口参数
+            GetUserRequest request = new GetUserRequest();
+            request.strAction = strAction;
+            request.strName = strName;
+            request.nStart = nStart;
+            request.nCount = nCount;
+
+            // 将参数序列号，转成二进制
+            byte[] baData = Encoding.UTF8.GetBytes(Serialize(request));
+
+            // 调接口
+            byte[] result = client.UploadData(this.GetRestfulApiUrl("GetUser"),
+                                                "POST",
+                                                baData);
+            string strResult = Encoding.UTF8.GetString(result);
+
+            // 返回值序列号为对象
+            GetUserResponse response = Deserialize<GetUserResponse>(strResult);
+
+            // 未登录时，按需登录
+            if (response.GetUserResult.Value == -1
+                && response.GetUserResult.ErrorCode == ErrorCode.NotLogin)
+            {
+                string strError = "";
+                if (DoNotLogin(ref strError) == 1)
+                    goto REDO;
+
+                // 把按需登录的错误信息包括进去
+                if (string.IsNullOrEmpty(strError) == false)
+                {
+                    response.GetUserResult.ErrorInfo += "\r\n" + strError;
+                }
+            }
+
+            return response;
+        }
 
         #region 预约相关
 

@@ -253,6 +253,37 @@ namespace practice
             }
         }
 
+        private void button_GetUser_Click(object sender, EventArgs e)
+        {
+            RestChannel channel = this.GetChannel();
+            try
+            {
+                string userName = this.Login_textBox_userName.Text.Trim();
+                if (userName == "")
+                {
+                    MessageBox.Show(this, "用户名不能为空");
+                    return;
+                }
+
+                GetUserResponse response = channel.GetUser("",
+                    userName,
+                    0,
+                    -1);
+
+                // 显示返回信息
+                this.SetResultInfo("GetUser()\r\n" + RestChannel.GetResultInfo(response));
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, "GetUser()异常：" + ex.Message);
+                return;
+            }
+            finally
+            {
+                this._channelPool.ReturnChannel(channel);
+            }
+        }
+
         #endregion
 
         #region 菜单功能
@@ -2757,6 +2788,8 @@ out string strError);
                 this._channelPool.ReturnChannel(channel);
             }
         }
+
+
     }
 
 
