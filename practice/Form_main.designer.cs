@@ -3230,6 +3230,8 @@
             // 
             // textBox_getUser_result
             // 
+            this.textBox_getUser_result.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.textBox_getUser_result.Location = new System.Drawing.Point(841, 287);
             this.textBox_getUser_result.Multiline = true;
             this.textBox_getUser_result.Name = "textBox_getUser_result";
