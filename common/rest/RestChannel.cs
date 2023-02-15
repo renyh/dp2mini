@@ -232,6 +232,12 @@ namespace DigitalPlatform.LibraryRestClient
 
                 return GetServerResultInfo(r.SearchItemResult);
             }
+            else if (o is SettlementResponse)
+            {
+                SettlementResponse r = (SettlementResponse)o;
+
+                return GetServerResultInfo(r.SettlementResult);
+            }
             else if (o is GetBrowseRecordsResponse)
             {
                 GetBrowseRecordsResponse r = (GetBrowseRecordsResponse)o;
@@ -2833,6 +2839,54 @@ namespace DigitalPlatform.LibraryRestClient
                 string strResult = Encoding.UTF8.GetString(result);
                 response = Deserialize<GetBrowseRecordsResponse>(strResult);
                 if (response.GetBrowseRecordsResult.Value == -1 && response.GetBrowseRecordsResult.ErrorCode == ErrorCode.NotLogin)
+                {
+                    if (DoNotLogin(ref strError) == 1)
+                        goto REDO;
+
+                    return response;
+                }
+
+
+                this.ClearRedoCount();  //???
+                return response;//.GetBrowseRecordsResult.Value;
+            }
+            catch (Exception ex)
+            {
+                int nRet = ConvertWebError(ex, out strError);
+                if (nRet == 0)
+                    return response;
+
+                goto REDO;
+            }
+        }
+
+        // 获得浏览列
+        public SettlementResponse Settlement(string strAction,
+            string[] ids)
+        {
+            string strError = "";
+
+            SettlementResponse response = null;
+
+        REDO:
+            try
+            {
+                CookieAwareWebClient client = this.GetClient();
+
+
+                SettlementRequest request = new SettlementRequest();
+                request.ids = ids;//new string[] { strRecPath };
+                request.strAction = strAction;
+
+                byte[] baData = Encoding.UTF8.GetBytes(Serialize(request));
+                string strRequest = Encoding.UTF8.GetString(baData);
+                byte[] result = client.UploadData(this.GetRestfulApiUrl("Settlement"),
+                                "POST",
+                                 baData);
+
+                string strResult = Encoding.UTF8.GetString(result);
+                response = Deserialize<SettlementResponse>(strResult);
+                if (response.SettlementResult.Value == -1 && response.SettlementResult.ErrorCode == ErrorCode.NotLogin)
                 {
                     if (DoNotLogin(ref strError) == 1)
                         goto REDO;

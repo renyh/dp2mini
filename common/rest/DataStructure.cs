@@ -1733,6 +1733,39 @@ LibraryServerResult.ErrorInfo		出错信息
 
     #endregion
 
+    #region
+
+    /*
+        // Settlement 结算
+        // parameters:
+        //      ids    ID的集合
+        // return:
+        //      result.Value    -1 错误 其他 本次的累计量
+        public LibraryServerResult Settlement(
+            string strAction,
+            string[] ids)
+     */
+    public class SettlementRequest
+    {
+        [DataMember]
+        public string strAction { get; set; }
+
+        [DataMember]
+        public string[] ids { get; set; }
+
+
+    }
+
+    [DataContract]
+    public class SettlementResponse
+    {
+        [DataMember]
+        public LibraryServerResult SettlementResult { get; set; }
+
+    }
+
+    #endregion
+
 
     #region GetBrowseRecords
     /*
