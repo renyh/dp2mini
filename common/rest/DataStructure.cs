@@ -1014,6 +1014,45 @@ LibraryServerResult.ErrorInfo		出错信息
     #endregion
 
 
+    #region SetUser
+
+    /*
+        // 修改用户
+        // parameters:
+        //      strAction   new delete change resetpassword
+        //              当 action 为 "change" 时，如果要在修改其他信息的同时修改密码，info.SetPassword必须为true；
+        //              而当action为"resetpassword"时，则info.ResetPassword状态不起作用，无论怎样都要修改密码。resetpassword并不修改其他信息，也就是说info中除了Password/UserName以外其他成员的值无效。
+        //              当 action 为 "changeandclose" 时，效果同 "change"，只是最后还要自动切断此用户的 session
+        // return:
+        //      result.Value    -1 错误
+        public LibraryServerResult SetUser(
+            string strAction,
+            UserInfo info) 
+     */
+
+    [DataContract]
+    public class SetUserRequest
+    {
+        [DataMember]
+        public string strAction { get; set; }
+
+        [DataMember]
+        public UserInfo info { get; set; }
+
+    }
+
+    [DataContract]
+    public class SetUserResponse
+    {
+        [DataMember]
+        public LibraryServerResult SetUserResult { get; set; }
+
+    }
+
+
+
+    #endregion
+
     #region SearchReader
 
     //searchReader

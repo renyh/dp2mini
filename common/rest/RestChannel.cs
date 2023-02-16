@@ -317,6 +317,12 @@ namespace DigitalPlatform.LibraryRestClient
 
                 return info;
             }
+            else if (o is SetUserResponse)
+            {
+                SetUserResponse r = (SetUserResponse)o;
+                return GetServerResultInfo(r.SetUserResult);
+
+            }
             return "未识别的对象" + o.ToString();
         }
 
@@ -590,6 +596,8 @@ namespace DigitalPlatform.LibraryRestClient
 
         #endregion
 
+        #region getuser , setuser
+
         // 获得用户
         // parameters:
         //      strAction   暂未使用。保持空即可。
@@ -641,6 +649,58 @@ namespace DigitalPlatform.LibraryRestClient
 
             return response;
         }
+
+        // 修改用户
+        // parameters:
+        //      strAction   new delete change resetpassword
+        //              当 action 为 "change" 时，如果要在修改其他信息的同时修改密码，info.SetPassword必须为true；
+        //              而当action为"resetpassword"时，则info.ResetPassword状态不起作用，无论怎样都要修改密码。resetpassword并不修改其他信息，也就是说info中除了Password/UserName以外其他成员的值无效。
+        //              当 action 为 "changeandclose" 时，效果同 "change"，只是最后还要自动切断此用户的 session
+        // return:
+        //      result.Value    -1 错误
+        public SetUserResponse SetUser(
+            string strAction,
+            UserInfo info)
+        {
+        REDO:
+            CookieAwareWebClient client = this.GetClient();
+
+            // 设置接口参数
+            SetUserRequest request = new SetUserRequest();
+            request.strAction = strAction;
+            request.info = info;
+
+            // 将参数序列号，转成二进制
+            byte[] baData = Encoding.UTF8.GetBytes(Serialize(request));
+
+            // 调接口
+            byte[] result = client.UploadData(this.GetRestfulApiUrl("SetUser"),
+                                                "POST",
+                                                baData);
+            string strResult = Encoding.UTF8.GetString(result);
+
+            // 返回值序列号为对象
+            SetUserResponse response = Deserialize<SetUserResponse>(strResult);
+
+            // 未登录时，按需登录
+            if (response.SetUserResult.Value == -1
+                && response.SetUserResult.ErrorCode == ErrorCode.NotLogin)
+            {
+                string strError = "";
+                if (DoNotLogin(ref strError) == 1)
+                    goto REDO;
+
+                // 把按需登录的错误信息包括进去
+                if (string.IsNullOrEmpty(strError) == false)
+                {
+                    response.SetUserResult.ErrorInfo += "\r\n" + strError;
+                }
+            }
+
+            return response;
+        }
+
+        #endregion
 
         #region 预约相关
 

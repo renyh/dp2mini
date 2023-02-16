@@ -258,13 +258,13 @@
             this.label68 = new System.Windows.Forms.Label();
             this.textBox_GetBrowseRecords_paths = new System.Windows.Forms.TextBox();
             this.label71 = new System.Windows.Forms.Label();
-            this.tabPage_GetBiblioInfo = new System.Windows.Forms.TabPage();
-            this.label32 = new System.Windows.Forms.Label();
-            this.button_GetBiblioInfo = new System.Windows.Forms.Button();
-            this.GetBiblioInfo_textBox_BiblioType = new System.Windows.Forms.TextBox();
-            this.GetBiblioInfo_textBox_BiblioRecPath = new System.Windows.Forms.TextBox();
-            this.label19 = new System.Windows.Forms.Label();
-            this.label20 = new System.Windows.Forms.Label();
+            this.tabPage_Settlement = new System.Windows.Forms.TabPage();
+            this.button_help_settlement = new System.Windows.Forms.Button();
+            this.button_Settlement = new System.Windows.Forms.Button();
+            this.textBox_Settlement_ids = new System.Windows.Forms.TextBox();
+            this.textBox_Settlement_strAction = new System.Windows.Forms.TextBox();
+            this.label93 = new System.Windows.Forms.Label();
+            this.label94 = new System.Windows.Forms.Label();
             this.tabPage_Reservation = new System.Windows.Forms.TabPage();
             this.comboBox_Reservation_strFunction = new System.Windows.Forms.ComboBox();
             this.textBox_Reservation_strItemBarcodeList = new System.Windows.Forms.TextBox();
@@ -273,6 +273,20 @@
             this.textBox__Reservation_readerBarcode = new System.Windows.Forms.TextBox();
             this.label_Reservation_strReaderBarcode = new System.Windows.Forms.Label();
             this.label_Reservation_action = new System.Windows.Forms.Label();
+            this.tabPage_SetUser = new System.Windows.Forms.TabPage();
+            this.button_SetUser = new System.Windows.Forms.Button();
+            this.textBox_SetUser_strAction = new System.Windows.Forms.TextBox();
+            this.label98 = new System.Windows.Forms.Label();
+            this.button_help_SetUser = new System.Windows.Forms.Button();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.textBox_SetUser_Access = new System.Windows.Forms.TextBox();
+            this.label99 = new System.Windows.Forms.Label();
+            this.textBox_SetUser_Rights = new System.Windows.Forms.TextBox();
+            this.label95 = new System.Windows.Forms.Label();
+            this.textBox_SetUser_Password = new System.Windows.Forms.TextBox();
+            this.textBox_SetUser_UserName = new System.Windows.Forms.TextBox();
+            this.label96 = new System.Windows.Forms.Label();
+            this.label97 = new System.Windows.Forms.Label();
             this.tabPage_SearchCharging = new System.Windows.Forms.TabPage();
             this.textBox_searchCharging_order = new System.Windows.Forms.TextBox();
             this.label45 = new System.Windows.Forms.Label();
@@ -287,19 +301,20 @@
             this.textBox_SearchCharging_patronBarcode = new System.Windows.Forms.TextBox();
             this.label43 = new System.Windows.Forms.Label();
             this.label44 = new System.Windows.Forms.Label();
+            this.tabPage_GetBiblioInfo = new System.Windows.Forms.TabPage();
+            this.label32 = new System.Windows.Forms.Label();
+            this.button_GetBiblioInfo = new System.Windows.Forms.Button();
+            this.GetBiblioInfo_textBox_BiblioType = new System.Windows.Forms.TextBox();
+            this.GetBiblioInfo_textBox_BiblioRecPath = new System.Windows.Forms.TextBox();
+            this.label19 = new System.Windows.Forms.Label();
+            this.label20 = new System.Windows.Forms.Label();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.文件ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.通用练习题ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.z3950ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.处理MARC字段ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.功能ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.tabPage_Settlement = new System.Windows.Forms.TabPage();
-            this.button_Settlement = new System.Windows.Forms.Button();
-            this.textBox_Settlement_ids = new System.Windows.Forms.TextBox();
-            this.textBox_Settlement_strAction = new System.Windows.Forms.TextBox();
-            this.label93 = new System.Windows.Forms.Label();
-            this.label94 = new System.Windows.Forms.Label();
-            this.button_help_settlement = new System.Windows.Forms.Button();
             this.tabPage_SearchBiblio.SuspendLayout();
             this.tabPage_Server.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -319,15 +334,17 @@
             this.tabPage_Search.SuspendLayout();
             this.tabPage_GetSearchResult.SuspendLayout();
             this.tabPage_GetBrowseRecords.SuspendLayout();
-            this.tabPage_GetBiblioInfo.SuspendLayout();
+            this.tabPage_Settlement.SuspendLayout();
             this.tabPage_Reservation.SuspendLayout();
+            this.tabPage_SetUser.SuspendLayout();
+            this.groupBox3.SuspendLayout();
             this.tabPage_SearchCharging.SuspendLayout();
+            this.tabPage_GetBiblioInfo.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
-            this.tabPage_Settlement.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabPage_SearchBiblio
@@ -832,6 +849,7 @@
             this.tabControl1.Controls.Add(this.tabPage_GetBrowseRecords);
             this.tabControl1.Controls.Add(this.tabPage_Settlement);
             this.tabControl1.Controls.Add(this.tabPage_Reservation);
+            this.tabControl1.Controls.Add(this.tabPage_SetUser);
             this.tabControl1.Controls.Add(this.tabPage_SearchCharging);
             this.tabControl1.Controls.Add(this.tabPage_GetBiblioInfo);
             this.tabControl1.Location = new System.Drawing.Point(12, 12);
@@ -2875,81 +2893,79 @@
             this.label71.Text = "paths\r\n(每条路径一行)";
             this.label71.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
-            // tabPage_GetBiblioInfo
+            // tabPage_Settlement
             // 
-            this.tabPage_GetBiblioInfo.Controls.Add(this.label32);
-            this.tabPage_GetBiblioInfo.Controls.Add(this.button_GetBiblioInfo);
-            this.tabPage_GetBiblioInfo.Controls.Add(this.GetBiblioInfo_textBox_BiblioType);
-            this.tabPage_GetBiblioInfo.Controls.Add(this.GetBiblioInfo_textBox_BiblioRecPath);
-            this.tabPage_GetBiblioInfo.Controls.Add(this.label19);
-            this.tabPage_GetBiblioInfo.Controls.Add(this.label20);
-            this.tabPage_GetBiblioInfo.Location = new System.Drawing.Point(10, 46);
-            this.tabPage_GetBiblioInfo.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
-            this.tabPage_GetBiblioInfo.Name = "tabPage_GetBiblioInfo";
-            this.tabPage_GetBiblioInfo.Size = new System.Drawing.Size(1265, 733);
-            this.tabPage_GetBiblioInfo.TabIndex = 5;
-            this.tabPage_GetBiblioInfo.Text = "GetBiblioInfo";
-            this.tabPage_GetBiblioInfo.UseVisualStyleBackColor = true;
+            this.tabPage_Settlement.Controls.Add(this.button_help_settlement);
+            this.tabPage_Settlement.Controls.Add(this.button_Settlement);
+            this.tabPage_Settlement.Controls.Add(this.textBox_Settlement_ids);
+            this.tabPage_Settlement.Controls.Add(this.textBox_Settlement_strAction);
+            this.tabPage_Settlement.Controls.Add(this.label93);
+            this.tabPage_Settlement.Controls.Add(this.label94);
+            this.tabPage_Settlement.Location = new System.Drawing.Point(10, 46);
+            this.tabPage_Settlement.Name = "tabPage_Settlement";
+            this.tabPage_Settlement.Size = new System.Drawing.Size(1265, 733);
+            this.tabPage_Settlement.TabIndex = 21;
+            this.tabPage_Settlement.Text = "Settlement";
+            this.tabPage_Settlement.UseVisualStyleBackColor = true;
             // 
-            // label32
+            // button_help_settlement
             // 
-            this.label32.AutoSize = true;
-            this.label32.BackColor = System.Drawing.Color.Wheat;
-            this.label32.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label32.Location = new System.Drawing.Point(33, 38);
-            this.label32.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
-            this.label32.Name = "label32";
-            this.label32.Size = new System.Drawing.Size(558, 27);
-            this.label32.TabIndex = 47;
-            this.label32.Text = "（此接口不常用，一般用GetBiblioInfos）";
+            this.button_help_settlement.Location = new System.Drawing.Point(0, 0);
+            this.button_help_settlement.Name = "button_help_settlement";
+            this.button_help_settlement.Size = new System.Drawing.Size(55, 117);
+            this.button_help_settlement.TabIndex = 57;
+            this.button_help_settlement.Text = "帮助";
+            this.button_help_settlement.UseVisualStyleBackColor = true;
+            this.button_help_settlement.Click += new System.EventHandler(this.button_help_settlement_Click);
             // 
-            // button_GetBiblioInfo
+            // button_Settlement
             // 
-            this.button_GetBiblioInfo.Location = new System.Drawing.Point(293, 251);
-            this.button_GetBiblioInfo.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
-            this.button_GetBiblioInfo.Name = "button_GetBiblioInfo";
-            this.button_GetBiblioInfo.Size = new System.Drawing.Size(277, 62);
-            this.button_GetBiblioInfo.TabIndex = 46;
-            this.button_GetBiblioInfo.Tag = "";
-            this.button_GetBiblioInfo.Text = "GetBiblioInfo";
-            this.button_GetBiblioInfo.UseVisualStyleBackColor = true;
-            this.button_GetBiblioInfo.Click += new System.EventHandler(this.button_GetBiblioInfo_Click);
+            this.button_Settlement.Location = new System.Drawing.Point(260, 239);
+            this.button_Settlement.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.button_Settlement.Name = "button_Settlement";
+            this.button_Settlement.Size = new System.Drawing.Size(277, 62);
+            this.button_Settlement.TabIndex = 51;
+            this.button_Settlement.Tag = "";
+            this.button_Settlement.Text = "GetBiblioInfo";
+            this.button_Settlement.UseVisualStyleBackColor = true;
+            this.button_Settlement.Click += new System.EventHandler(this.button_Settlement_Click);
             // 
-            // GetBiblioInfo_textBox_BiblioType
+            // textBox_Settlement_ids
             // 
-            this.GetBiblioInfo_textBox_BiblioType.Location = new System.Drawing.Point(293, 162);
-            this.GetBiblioInfo_textBox_BiblioType.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
-            this.GetBiblioInfo_textBox_BiblioType.Name = "GetBiblioInfo_textBox_BiblioType";
-            this.GetBiblioInfo_textBox_BiblioType.Size = new System.Drawing.Size(382, 38);
-            this.GetBiblioInfo_textBox_BiblioType.TabIndex = 40;
+            this.textBox_Settlement_ids.Location = new System.Drawing.Point(260, 116);
+            this.textBox_Settlement_ids.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.textBox_Settlement_ids.Multiline = true;
+            this.textBox_Settlement_ids.Name = "textBox_Settlement_ids";
+            this.textBox_Settlement_ids.Size = new System.Drawing.Size(582, 73);
+            this.textBox_Settlement_ids.TabIndex = 49;
             // 
-            // GetBiblioInfo_textBox_BiblioRecPath
+            // textBox_Settlement_strAction
             // 
-            this.GetBiblioInfo_textBox_BiblioRecPath.Location = new System.Drawing.Point(293, 110);
-            this.GetBiblioInfo_textBox_BiblioRecPath.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
-            this.GetBiblioInfo_textBox_BiblioRecPath.Name = "GetBiblioInfo_textBox_BiblioRecPath";
-            this.GetBiblioInfo_textBox_BiblioRecPath.Size = new System.Drawing.Size(382, 38);
-            this.GetBiblioInfo_textBox_BiblioRecPath.TabIndex = 38;
+            this.textBox_Settlement_strAction.Location = new System.Drawing.Point(260, 45);
+            this.textBox_Settlement_strAction.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.textBox_Settlement_strAction.Name = "textBox_Settlement_strAction";
+            this.textBox_Settlement_strAction.Size = new System.Drawing.Size(582, 38);
+            this.textBox_Settlement_strAction.TabIndex = 47;
             // 
-            // label19
+            // label93
             // 
-            this.label19.AutoSize = true;
-            this.label19.Location = new System.Drawing.Point(89, 162);
-            this.label19.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
-            this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(194, 27);
-            this.label19.TabIndex = 41;
-            this.label19.Text = "strBiblioType";
+            this.label93.AutoSize = true;
+            this.label93.Location = new System.Drawing.Point(154, 113);
+            this.label93.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label93.Name = "label93";
+            this.label93.Size = new System.Drawing.Size(54, 27);
+            this.label93.TabIndex = 50;
+            this.label93.Text = "ids";
             // 
-            // label20
+            // label94
             // 
-            this.label20.AutoSize = true;
-            this.label20.Location = new System.Drawing.Point(47, 113);
-            this.label20.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
-            this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(236, 27);
-            this.label20.TabIndex = 39;
-            this.label20.Text = "strBiblioRecPath";
+            this.label94.AutoSize = true;
+            this.label94.Location = new System.Drawing.Point(112, 45);
+            this.label94.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label94.Name = "label94";
+            this.label94.Size = new System.Drawing.Size(138, 27);
+            this.label94.TabIndex = 48;
+            this.label94.Text = "strAction";
             // 
             // tabPage_Reservation
             // 
@@ -3041,6 +3057,152 @@
             this.label_Reservation_action.Size = new System.Drawing.Size(166, 27);
             this.label_Reservation_action.TabIndex = 53;
             this.label_Reservation_action.Text = "strFunction";
+            // 
+            // tabPage_SetUser
+            // 
+            this.tabPage_SetUser.Controls.Add(this.button_SetUser);
+            this.tabPage_SetUser.Controls.Add(this.textBox_SetUser_strAction);
+            this.tabPage_SetUser.Controls.Add(this.label98);
+            this.tabPage_SetUser.Controls.Add(this.button_help_SetUser);
+            this.tabPage_SetUser.Controls.Add(this.groupBox3);
+            this.tabPage_SetUser.Location = new System.Drawing.Point(10, 46);
+            this.tabPage_SetUser.Name = "tabPage_SetUser";
+            this.tabPage_SetUser.Size = new System.Drawing.Size(1265, 733);
+            this.tabPage_SetUser.TabIndex = 22;
+            this.tabPage_SetUser.Text = "SetUser";
+            this.tabPage_SetUser.UseVisualStyleBackColor = true;
+            // 
+            // button_SetUser
+            // 
+            this.button_SetUser.Location = new System.Drawing.Point(104, 509);
+            this.button_SetUser.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.button_SetUser.Name = "button_SetUser";
+            this.button_SetUser.Size = new System.Drawing.Size(277, 62);
+            this.button_SetUser.TabIndex = 61;
+            this.button_SetUser.Tag = "";
+            this.button_SetUser.Text = "SetUser";
+            this.button_SetUser.UseVisualStyleBackColor = true;
+            this.button_SetUser.Click += new System.EventHandler(this.button_SetUser_Click);
+            // 
+            // textBox_SetUser_strAction
+            // 
+            this.textBox_SetUser_strAction.Location = new System.Drawing.Point(247, 45);
+            this.textBox_SetUser_strAction.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.textBox_SetUser_strAction.Name = "textBox_SetUser_strAction";
+            this.textBox_SetUser_strAction.Size = new System.Drawing.Size(582, 38);
+            this.textBox_SetUser_strAction.TabIndex = 59;
+            // 
+            // label98
+            // 
+            this.label98.AutoSize = true;
+            this.label98.Location = new System.Drawing.Point(99, 45);
+            this.label98.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label98.Name = "label98";
+            this.label98.Size = new System.Drawing.Size(138, 27);
+            this.label98.TabIndex = 60;
+            this.label98.Text = "strAction";
+            // 
+            // button_help_SetUser
+            // 
+            this.button_help_SetUser.Location = new System.Drawing.Point(0, 0);
+            this.button_help_SetUser.Name = "button_help_SetUser";
+            this.button_help_SetUser.Size = new System.Drawing.Size(55, 117);
+            this.button_help_SetUser.TabIndex = 58;
+            this.button_help_SetUser.Text = "帮助";
+            this.button_help_SetUser.UseVisualStyleBackColor = true;
+            this.button_help_SetUser.Click += new System.EventHandler(this.button_help_SetUser_Click);
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.textBox_SetUser_Access);
+            this.groupBox3.Controls.Add(this.label99);
+            this.groupBox3.Controls.Add(this.textBox_SetUser_Rights);
+            this.groupBox3.Controls.Add(this.label95);
+            this.groupBox3.Controls.Add(this.textBox_SetUser_Password);
+            this.groupBox3.Controls.Add(this.textBox_SetUser_UserName);
+            this.groupBox3.Controls.Add(this.label96);
+            this.groupBox3.Controls.Add(this.label97);
+            this.groupBox3.Location = new System.Drawing.Point(104, 125);
+            this.groupBox3.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Padding = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            this.groupBox3.Size = new System.Drawing.Size(774, 339);
+            this.groupBox3.TabIndex = 19;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "info";
+            // 
+            // textBox_SetUser_Access
+            // 
+            this.textBox_SetUser_Access.Location = new System.Drawing.Point(185, 259);
+            this.textBox_SetUser_Access.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.textBox_SetUser_Access.Name = "textBox_SetUser_Access";
+            this.textBox_SetUser_Access.Size = new System.Drawing.Size(526, 38);
+            this.textBox_SetUser_Access.TabIndex = 23;
+            // 
+            // label99
+            // 
+            this.label99.AutoSize = true;
+            this.label99.Location = new System.Drawing.Point(26, 265);
+            this.label99.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label99.Name = "label99";
+            this.label99.Size = new System.Drawing.Size(96, 27);
+            this.label99.TabIndex = 24;
+            this.label99.Text = "Access";
+            // 
+            // textBox_SetUser_Rights
+            // 
+            this.textBox_SetUser_Rights.Location = new System.Drawing.Point(185, 189);
+            this.textBox_SetUser_Rights.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.textBox_SetUser_Rights.Name = "textBox_SetUser_Rights";
+            this.textBox_SetUser_Rights.Size = new System.Drawing.Size(526, 38);
+            this.textBox_SetUser_Rights.TabIndex = 21;
+            // 
+            // label95
+            // 
+            this.label95.AutoSize = true;
+            this.label95.Location = new System.Drawing.Point(26, 195);
+            this.label95.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label95.Name = "label95";
+            this.label95.Size = new System.Drawing.Size(96, 27);
+            this.label95.TabIndex = 22;
+            this.label95.Text = "Rights";
+            // 
+            // textBox_SetUser_Password
+            // 
+            this.textBox_SetUser_Password.Location = new System.Drawing.Point(185, 131);
+            this.textBox_SetUser_Password.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.textBox_SetUser_Password.Name = "textBox_SetUser_Password";
+            this.textBox_SetUser_Password.Size = new System.Drawing.Size(382, 38);
+            this.textBox_SetUser_Password.TabIndex = 20;
+            this.textBox_SetUser_Password.UseSystemPasswordChar = true;
+            // 
+            // textBox_SetUser_UserName
+            // 
+            this.textBox_SetUser_UserName.Location = new System.Drawing.Point(185, 74);
+            this.textBox_SetUser_UserName.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.textBox_SetUser_UserName.Name = "textBox_SetUser_UserName";
+            this.textBox_SetUser_UserName.Size = new System.Drawing.Size(382, 38);
+            this.textBox_SetUser_UserName.TabIndex = 19;
+            // 
+            // label96
+            // 
+            this.label96.AutoSize = true;
+            this.label96.Location = new System.Drawing.Point(26, 131);
+            this.label96.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label96.Name = "label96";
+            this.label96.Size = new System.Drawing.Size(124, 27);
+            this.label96.TabIndex = 20;
+            this.label96.Text = "Password";
+            // 
+            // label97
+            // 
+            this.label97.AutoSize = true;
+            this.label97.Location = new System.Drawing.Point(26, 74);
+            this.label97.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label97.Name = "label97";
+            this.label97.Size = new System.Drawing.Size(124, 27);
+            this.label97.TabIndex = 19;
+            this.label97.Text = "UserName";
             // 
             // tabPage_SearchCharging
             // 
@@ -3184,12 +3346,89 @@
             this.label44.TabIndex = 39;
             this.label44.Text = "patronBarcode";
             // 
+            // tabPage_GetBiblioInfo
+            // 
+            this.tabPage_GetBiblioInfo.Controls.Add(this.label32);
+            this.tabPage_GetBiblioInfo.Controls.Add(this.button_GetBiblioInfo);
+            this.tabPage_GetBiblioInfo.Controls.Add(this.GetBiblioInfo_textBox_BiblioType);
+            this.tabPage_GetBiblioInfo.Controls.Add(this.GetBiblioInfo_textBox_BiblioRecPath);
+            this.tabPage_GetBiblioInfo.Controls.Add(this.label19);
+            this.tabPage_GetBiblioInfo.Controls.Add(this.label20);
+            this.tabPage_GetBiblioInfo.Location = new System.Drawing.Point(10, 46);
+            this.tabPage_GetBiblioInfo.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
+            this.tabPage_GetBiblioInfo.Name = "tabPage_GetBiblioInfo";
+            this.tabPage_GetBiblioInfo.Size = new System.Drawing.Size(1265, 733);
+            this.tabPage_GetBiblioInfo.TabIndex = 5;
+            this.tabPage_GetBiblioInfo.Text = "GetBiblioInfo";
+            this.tabPage_GetBiblioInfo.UseVisualStyleBackColor = true;
+            // 
+            // label32
+            // 
+            this.label32.AutoSize = true;
+            this.label32.BackColor = System.Drawing.Color.Wheat;
+            this.label32.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label32.Location = new System.Drawing.Point(33, 38);
+            this.label32.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label32.Name = "label32";
+            this.label32.Size = new System.Drawing.Size(558, 27);
+            this.label32.TabIndex = 47;
+            this.label32.Text = "（此接口不常用，一般用GetBiblioInfos）";
+            // 
+            // button_GetBiblioInfo
+            // 
+            this.button_GetBiblioInfo.Location = new System.Drawing.Point(293, 251);
+            this.button_GetBiblioInfo.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.button_GetBiblioInfo.Name = "button_GetBiblioInfo";
+            this.button_GetBiblioInfo.Size = new System.Drawing.Size(277, 62);
+            this.button_GetBiblioInfo.TabIndex = 46;
+            this.button_GetBiblioInfo.Tag = "";
+            this.button_GetBiblioInfo.Text = "GetBiblioInfo";
+            this.button_GetBiblioInfo.UseVisualStyleBackColor = true;
+            this.button_GetBiblioInfo.Click += new System.EventHandler(this.button_GetBiblioInfo_Click);
+            // 
+            // GetBiblioInfo_textBox_BiblioType
+            // 
+            this.GetBiblioInfo_textBox_BiblioType.Location = new System.Drawing.Point(293, 162);
+            this.GetBiblioInfo_textBox_BiblioType.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.GetBiblioInfo_textBox_BiblioType.Name = "GetBiblioInfo_textBox_BiblioType";
+            this.GetBiblioInfo_textBox_BiblioType.Size = new System.Drawing.Size(382, 38);
+            this.GetBiblioInfo_textBox_BiblioType.TabIndex = 40;
+            // 
+            // GetBiblioInfo_textBox_BiblioRecPath
+            // 
+            this.GetBiblioInfo_textBox_BiblioRecPath.Location = new System.Drawing.Point(293, 110);
+            this.GetBiblioInfo_textBox_BiblioRecPath.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.GetBiblioInfo_textBox_BiblioRecPath.Name = "GetBiblioInfo_textBox_BiblioRecPath";
+            this.GetBiblioInfo_textBox_BiblioRecPath.Size = new System.Drawing.Size(382, 38);
+            this.GetBiblioInfo_textBox_BiblioRecPath.TabIndex = 38;
+            // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.Location = new System.Drawing.Point(89, 162);
+            this.label19.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(194, 27);
+            this.label19.TabIndex = 41;
+            this.label19.Text = "strBiblioType";
+            // 
+            // label20
+            // 
+            this.label20.AutoSize = true;
+            this.label20.Location = new System.Drawing.Point(47, 113);
+            this.label20.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(236, 27);
+            this.label20.TabIndex = 39;
+            this.label20.Text = "strBiblioRecPath";
+            // 
             // menuStrip1
             // 
             this.menuStrip1.GripMargin = new System.Windows.Forms.Padding(2, 2, 0, 2);
             this.menuStrip1.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.文件ToolStripMenuItem});
+            this.文件ToolStripMenuItem,
+            this.功能ToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Padding = new System.Windows.Forms.Padding(9, 3, 0, 3);
@@ -3204,7 +3443,7 @@
             this.z3950ToolStripMenuItem,
             this.处理MARC字段ToolStripMenuItem});
             this.文件ToolStripMenuItem.Name = "文件ToolStripMenuItem";
-            this.文件ToolStripMenuItem.Size = new System.Drawing.Size(91, 39);
+            this.文件ToolStripMenuItem.Size = new System.Drawing.Size(91, 43);
             this.文件ToolStripMenuItem.Text = "文件";
             // 
             // 通用练习题ToolStripMenuItem
@@ -3228,6 +3467,13 @@
             this.处理MARC字段ToolStripMenuItem.Text = "处理MARC字段";
             this.处理MARC字段ToolStripMenuItem.Click += new System.EventHandler(this.处理MARC字段ToolStripMenuItem_Click);
             // 
+            // 功能ToolStripMenuItem
+            // 
+            this.功能ToolStripMenuItem.Name = "功能ToolStripMenuItem";
+            this.功能ToolStripMenuItem.Size = new System.Drawing.Size(145, 43);
+            this.功能ToolStripMenuItem.Text = "自动测试";
+            this.功能ToolStripMenuItem.Click += new System.EventHandler(this.功能ToolStripMenuItem_Click);
+            // 
             // splitContainer1
             // 
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -3247,80 +3493,6 @@
             this.splitContainer1.Size = new System.Drawing.Size(1311, 914);
             this.splitContainer1.SplitterDistance = 804;
             this.splitContainer1.TabIndex = 21;
-            // 
-            // tabPage_Settlement
-            // 
-            this.tabPage_Settlement.Controls.Add(this.button_help_settlement);
-            this.tabPage_Settlement.Controls.Add(this.button_Settlement);
-            this.tabPage_Settlement.Controls.Add(this.textBox_Settlement_ids);
-            this.tabPage_Settlement.Controls.Add(this.textBox_Settlement_strAction);
-            this.tabPage_Settlement.Controls.Add(this.label93);
-            this.tabPage_Settlement.Controls.Add(this.label94);
-            this.tabPage_Settlement.Location = new System.Drawing.Point(10, 46);
-            this.tabPage_Settlement.Name = "tabPage_Settlement";
-            this.tabPage_Settlement.Size = new System.Drawing.Size(1265, 733);
-            this.tabPage_Settlement.TabIndex = 21;
-            this.tabPage_Settlement.Text = "Settlement";
-            this.tabPage_Settlement.UseVisualStyleBackColor = true;
-            // 
-            // button_Settlement
-            // 
-            this.button_Settlement.Location = new System.Drawing.Point(260, 239);
-            this.button_Settlement.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
-            this.button_Settlement.Name = "button_Settlement";
-            this.button_Settlement.Size = new System.Drawing.Size(277, 62);
-            this.button_Settlement.TabIndex = 51;
-            this.button_Settlement.Tag = "";
-            this.button_Settlement.Text = "GetBiblioInfo";
-            this.button_Settlement.UseVisualStyleBackColor = true;
-            this.button_Settlement.Click += new System.EventHandler(this.button_Settlement_Click);
-            // 
-            // textBox_Settlement_ids
-            // 
-            this.textBox_Settlement_ids.Location = new System.Drawing.Point(260, 116);
-            this.textBox_Settlement_ids.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
-            this.textBox_Settlement_ids.Multiline = true;
-            this.textBox_Settlement_ids.Name = "textBox_Settlement_ids";
-            this.textBox_Settlement_ids.Size = new System.Drawing.Size(582, 73);
-            this.textBox_Settlement_ids.TabIndex = 49;
-            // 
-            // textBox_Settlement_strAction
-            // 
-            this.textBox_Settlement_strAction.Location = new System.Drawing.Point(260, 45);
-            this.textBox_Settlement_strAction.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
-            this.textBox_Settlement_strAction.Name = "textBox_Settlement_strAction";
-            this.textBox_Settlement_strAction.Size = new System.Drawing.Size(582, 38);
-            this.textBox_Settlement_strAction.TabIndex = 47;
-            // 
-            // label93
-            // 
-            this.label93.AutoSize = true;
-            this.label93.Location = new System.Drawing.Point(154, 113);
-            this.label93.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
-            this.label93.Name = "label93";
-            this.label93.Size = new System.Drawing.Size(54, 27);
-            this.label93.TabIndex = 50;
-            this.label93.Text = "ids";
-            // 
-            // label94
-            // 
-            this.label94.AutoSize = true;
-            this.label94.Location = new System.Drawing.Point(112, 45);
-            this.label94.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
-            this.label94.Name = "label94";
-            this.label94.Size = new System.Drawing.Size(138, 27);
-            this.label94.TabIndex = 48;
-            this.label94.Text = "strAction";
-            // 
-            // button_help_settlement
-            // 
-            this.button_help_settlement.Location = new System.Drawing.Point(0, 0);
-            this.button_help_settlement.Name = "button_help_settlement";
-            this.button_help_settlement.Size = new System.Drawing.Size(55, 117);
-            this.button_help_settlement.TabIndex = 57;
-            this.button_help_settlement.Text = "帮助";
-            this.button_help_settlement.UseVisualStyleBackColor = true;
-            this.button_help_settlement.Click += new System.EventHandler(this.button_help_settlement_Click);
             // 
             // Form_main
             // 
@@ -3372,12 +3544,18 @@
             this.tabPage_GetSearchResult.PerformLayout();
             this.tabPage_GetBrowseRecords.ResumeLayout(false);
             this.tabPage_GetBrowseRecords.PerformLayout();
-            this.tabPage_GetBiblioInfo.ResumeLayout(false);
-            this.tabPage_GetBiblioInfo.PerformLayout();
+            this.tabPage_Settlement.ResumeLayout(false);
+            this.tabPage_Settlement.PerformLayout();
             this.tabPage_Reservation.ResumeLayout(false);
             this.tabPage_Reservation.PerformLayout();
+            this.tabPage_SetUser.ResumeLayout(false);
+            this.tabPage_SetUser.PerformLayout();
+            this.groupBox3.ResumeLayout(false);
+            this.groupBox3.PerformLayout();
             this.tabPage_SearchCharging.ResumeLayout(false);
             this.tabPage_SearchCharging.PerformLayout();
+            this.tabPage_GetBiblioInfo.ResumeLayout(false);
+            this.tabPage_GetBiblioInfo.PerformLayout();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.splitContainer1.Panel1.ResumeLayout(false);
@@ -3385,8 +3563,6 @@
             this.splitContainer1.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
-            this.tabPage_Settlement.ResumeLayout(false);
-            this.tabPage_Settlement.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -3665,6 +3841,21 @@
         private System.Windows.Forms.TextBox textBox_Settlement_strAction;
         private System.Windows.Forms.Label label93;
         private System.Windows.Forms.Label label94;
+        private System.Windows.Forms.ToolStripMenuItem 功能ToolStripMenuItem;
+        private System.Windows.Forms.TabPage tabPage_SetUser;
+        private System.Windows.Forms.TextBox textBox_SetUser_strAction;
+        private System.Windows.Forms.Label label98;
+        private System.Windows.Forms.Button button_help_SetUser;
+        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.TextBox textBox_SetUser_Rights;
+        private System.Windows.Forms.Label label95;
+        private System.Windows.Forms.TextBox textBox_SetUser_Password;
+        private System.Windows.Forms.TextBox textBox_SetUser_UserName;
+        private System.Windows.Forms.Label label96;
+        private System.Windows.Forms.Label label97;
+        private System.Windows.Forms.Button button_SetUser;
+        private System.Windows.Forms.TextBox textBox_SetUser_Access;
+        private System.Windows.Forms.Label label99;
     }
 }
 

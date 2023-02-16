@@ -137,7 +137,7 @@ namespace practice
         #region 通道相关
 
         // 通道池
-        RestChannelPool _channelPool = new RestChannelPool();
+        public RestChannelPool _channelPool = new RestChannelPool();
 
         public RestChannel GetChannel()
         {
@@ -261,38 +261,62 @@ namespace practice
             }
         }
 
-        private void button_GetUser_Click(object sender, EventArgs e)
-        {
-            //RestChannel channel = this.GetChannel();
 
+        public RestChannel GetSuprevisorChannel()
+        {
+            string strError = "";
             // 用管理员身份登录
             string supervisorName = this.textBox_GetUser_UserName.Text.Trim();
             if (supervisorName == "")
             {
-                MessageBox.Show(this, "管理员帐户不能为空");
-                return;
-            }
+                throw new Exception("超级管理员帐户不能为空,请在主界面配置");
 
-            RestChannel channel = this._channelPool.GetChannel(this.ServerUrl, supervisorName);
+            }
+            string password = this.textBox_GetUserName_pass.Text.Trim();
+
+            return GetChannelAndLogin(supervisorName,
+               password);
+
+        }
+
+        public RestChannel GetChannelAndLogin(string userName,
+            string password)
+        {
+            string strError = "";
+
+            string parameters = "type=worker,client=resttest|0.01";
+
+            RestChannel channel = this._channelPool.GetChannel(this.ServerUrl, userName);
+
+            // 登录一下
+            /// <para>-1:   出错</para>
+            /// <para>0:    登录未成功</para>
+            /// <para>1:    登录成功</para>
+            LoginResponse response = channel.Login(userName,
+                password,
+                parameters);
+            if (response.LoginResult.Value == 1)
+            {
+                return channel;
+            }
+            else
+                strError = "用'" + UserName + "'登录失败。";
+
+
+            throw new Exception(strError);
+
+        }
+
+        private void button_GetUser_Click(object sender, EventArgs e)
+        {
+            RestChannel channel = null;
             try
             {
+                // 用超级管理员帐户登录
+                channel= this.GetSuprevisorChannel();// this._channelPool.GetChannel(this.ServerUrl, supervisorName);
 
-                string password = this.textBox_GetUserName_pass.Text.Trim();
-                string parameters ="type=worker,client=resttest|0.01";
-
-                // 登录接口
-                /// <para>-1:   出错</para>
-                /// <para>0:    登录未成功</para>
-                /// <para>1:    登录成功</para>
-                LoginResponse response = channel.Login(supervisorName,
-                    password,
-                    parameters);
-                if (response.LoginResult.Value == 1)
-                {
-                    //this.textBox_result.Text = "登录成功\r\n";
-
-                    // 获取本次帐户的权限。
-                    string thisUser = this.Login_textBox_userName.Text.Trim();
+                // 获取本次帐户的权限。
+                string thisUser = this.Login_textBox_userName.Text.Trim();
                     if (thisUser == "")
                     {
                         MessageBox.Show(this, "userName不能为空");
@@ -304,12 +328,6 @@ namespace practice
                         -1);
                     // 显示返回信息
                     this.textBox_getUser_result.Text= RestChannel.GetResultInfo(response1);
-                }
-                else
-                {
-                    this.textBox_getUser_result.Text =  "用'"+UserName+"'登录失败。";
-                }
-
             }
             catch (Exception ex)
             {
@@ -318,7 +336,8 @@ namespace practice
             }
             finally
             {
-                this._channelPool.ReturnChannel(channel);
+                if (channel != null)
+                    this._channelPool.ReturnChannel(channel);
             }
         }
 
@@ -2870,6 +2889,71 @@ out string strError);
             {
                 this._channelPool.ReturnChannel(channel);
             }
+        }
+
+        private void 测存取定义与对象ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //
+        }
+
+        #region setUser
+
+        private void button_help_SetUser_Click(object sender, EventArgs e)
+        {
+            Process.Start("https://jihulab.com/DigitalPlatform/dp2doc/-/issues/76");
+
+        }
+
+        private void button_SetUser_Click(object sender, EventArgs e)
+        {
+            // 清空底部输出信息
+            this.ClearResultInfo();
+
+            string strAction = this.textBox_SetUser_strAction.Text.Trim();
+            if (string.IsNullOrEmpty(strAction) == true)
+            {
+                MessageBox.Show(this, "strAction参数不能为空。");
+                return;
+            }
+
+            //info
+            UserInfo info = new UserInfo();
+
+            info.UserName= this.textBox_SetUser_UserName.Text.Trim();
+            info.Password=this.textBox_SetUser_Password.Text.Trim();
+            info.SetPassword = true;
+            info.Rights=this.textBox_SetUser_Rights.Text.Trim();
+            info.Access=this.textBox_SetUser_Access.Text.Trim();
+
+            RestChannel channel = this.GetChannel();
+            try
+            {
+                SetUserResponse response = channel.SetUser(strAction,
+                    info);
+
+                // 显示返回信息
+                this.SetResultInfo("SetUser()\r\n" + RestChannel.GetResultInfo(response));
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, "SetUser()异常：" + ex.Message);
+                return;
+            }
+            finally
+            {
+                this._channelPool.ReturnChannel(channel);
+            }
+        }
+
+
+        #endregion
+
+        private void 功能ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Form_auto dlg = new Form_auto(this);
+            dlg.StartPosition = FormStartPosition.CenterScreen;
+            dlg.ShowDialog();
         }
     }
 
