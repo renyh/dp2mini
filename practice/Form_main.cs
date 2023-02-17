@@ -262,21 +262,26 @@ namespace practice
         }
 
 
-        public RestChannel GetSuprevisorChannel()
+        // 获取超级管理员帐户
+        public UserInfo GetSupervisorAccount()
         {
-            string strError = "";
+            UserInfo u = new UserInfo();
+
             // 用管理员身份登录
-            string supervisorName = this.textBox_GetUser_UserName.Text.Trim();
-            if (supervisorName == "")
+            u.UserName = this.textBox_GetUser_UserName.Text.Trim();
+            if (u.UserName == "")
             {
-                throw new Exception("超级管理员帐户不能为空,请在主界面配置");
+                throw new Exception("超级管理员帐户不能为空,请在主界面配置。");
 
             }
-            string password = this.textBox_GetUserName_pass.Text.Trim();
+            u.Password = this.textBox_GetUserName_pass.Text.Trim();
 
-            return GetChannelAndLogin(supervisorName,
-               password);
+            return u;
+        }
 
+        public RestChannel GetChannelAndLogin(UserInfo u)
+        {
+            return this.GetChannelAndLogin(u.UserName, u.Password);
         }
 
         public RestChannel GetChannelAndLogin(string userName,
@@ -313,7 +318,7 @@ namespace practice
             try
             {
                 // 用超级管理员帐户登录
-                channel= this.GetSuprevisorChannel();// this._channelPool.GetChannel(this.ServerUrl, supervisorName);
+                channel= this.GetChannelAndLogin(this.GetSupervisorAccount());// this._channelPool.GetChannel(this.ServerUrl, supervisorName);
 
                 // 获取本次帐户的权限。
                 string thisUser = this.Login_textBox_userName.Text.Trim();
@@ -2187,10 +2192,10 @@ out string strError);
                         // 自动打开文件
                         Process.Start(fileName);
                     }
-                    else
-                    {
-                        this.textBox_result.Text+= DisplayByteArray(baContent);
-                    }
+                    //else
+                    //{
+                    //    this.textBox_result.Text+= DisplayByteArray(baContent);
+                    //}
                 }
 
                 return;
@@ -2953,7 +2958,9 @@ out string strError);
         {
             Form_auto dlg = new Form_auto(this);
             dlg.StartPosition = FormStartPosition.CenterScreen;
-            dlg.ShowDialog();
+            dlg.WindowState = FormWindowState.Maximized;// = true;
+            
+            dlg.Show();
         }
     }
 

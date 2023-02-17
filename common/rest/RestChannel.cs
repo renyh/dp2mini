@@ -130,6 +130,25 @@ namespace DigitalPlatform.LibraryRestClient
                 if (r.baContent != null)
                 {
                     info += "baContent:" + r.baContent.Length + "字节" + "\r\n";
+
+                    // 资源的话，转一下xml
+                    if (r.strOutputResPath.IndexOf("object") == -1)
+                    {
+                        string xml = Encoding.UTF8.GetString(r.baContent);
+                        xml = DomUtil.GetIndentXml(xml);
+
+                        info += xml + "\r\n";
+
+                        //info += HttpUtility.HtmlEncode(xml) + "\r\n";
+
+                        //HttpServerUtility a = new HttpServerUtility();
+                        //a.HtmlEncode(xml);
+                    }
+                    else
+                    {
+                        string hex = ByteArray.GetHexTimeStampString(r.baContent);
+                        info += hex + "\r\n";
+                    }
                 }
 
                 return info;
@@ -146,7 +165,6 @@ namespace DigitalPlatform.LibraryRestClient
                 return GetServerResultInfo(r.GetRecordResult) + "\r\n"
                     + "timestamp:" + ByteArray.GetHexTimeStampString(r.timestamp) + "\r\n"
                     + "strXml:" + xml + "\r\n";
-
 
             }
             else if (o is SetBiblioInfoResponse)
