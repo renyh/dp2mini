@@ -30,8 +30,6 @@
         {
             this.button_accessAndObject = new System.Windows.Forms.Button();
             this.webBrowser1 = new System.Windows.Forms.WebBrowser();
-            this.button_reader = new System.Windows.Forms.Button();
-            this.button_biblio = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.comboBox_TestRight_type = new System.Windows.Forms.ComboBox();
             this.button_testRight = new System.Windows.Forms.Button();
@@ -39,7 +37,7 @@
             // 
             // button_accessAndObject
             // 
-            this.button_accessAndObject.Location = new System.Drawing.Point(756, 84);
+            this.button_accessAndObject.Location = new System.Drawing.Point(1266, 35);
             this.button_accessAndObject.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.button_accessAndObject.Name = "button_accessAndObject";
             this.button_accessAndObject.Size = new System.Drawing.Size(325, 56);
@@ -59,30 +57,6 @@
             this.webBrowser1.Name = "webBrowser1";
             this.webBrowser1.Size = new System.Drawing.Size(1586, 549);
             this.webBrowser1.TabIndex = 62;
-            // 
-            // button_reader
-            // 
-            this.button_reader.Location = new System.Drawing.Point(1203, 63);
-            this.button_reader.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
-            this.button_reader.Name = "button_reader";
-            this.button_reader.Size = new System.Drawing.Size(294, 56);
-            this.button_reader.TabIndex = 63;
-            this.button_reader.Tag = "";
-            this.button_reader.Text = "读者及对象所需权限";
-            this.button_reader.UseVisualStyleBackColor = true;
-            this.button_reader.Click += new System.EventHandler(this.button_reader_Click);
-            // 
-            // button_biblio
-            // 
-            this.button_biblio.Location = new System.Drawing.Point(326, 111);
-            this.button_biblio.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
-            this.button_biblio.Name = "button_biblio";
-            this.button_biblio.Size = new System.Drawing.Size(294, 56);
-            this.button_biblio.TabIndex = 64;
-            this.button_biblio.Tag = "";
-            this.button_biblio.Text = "书目及对象所需权限";
-            this.button_biblio.UseVisualStyleBackColor = true;
-            this.button_biblio.Click += new System.EventHandler(this.button_biblio_Click);
             // 
             // label1
             // 
@@ -129,8 +103,6 @@
             this.Controls.Add(this.button_testRight);
             this.Controls.Add(this.comboBox_TestRight_type);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.button_biblio);
-            this.Controls.Add(this.button_reader);
             this.Controls.Add(this.webBrowser1);
             this.Controls.Add(this.button_accessAndObject);
             this.Name = "Form_auto";
@@ -143,8 +115,6 @@
         #endregion
         private System.Windows.Forms.Button button_accessAndObject;
         private System.Windows.Forms.WebBrowser webBrowser1;
-        private System.Windows.Forms.Button button_reader;
-        private System.Windows.Forms.Button button_biblio;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ComboBox comboBox_TestRight_type;
         private System.Windows.Forms.Button button_testRight;
