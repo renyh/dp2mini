@@ -37,7 +37,8 @@
             // 
             // button_accessAndObject
             // 
-            this.button_accessAndObject.Location = new System.Drawing.Point(1266, 35);
+            this.button_accessAndObject.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.button_accessAndObject.Location = new System.Drawing.Point(918, 10);
             this.button_accessAndObject.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.button_accessAndObject.Name = "button_accessAndObject";
             this.button_accessAndObject.Size = new System.Drawing.Size(325, 56);
@@ -52,16 +53,16 @@
             this.webBrowser1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.webBrowser1.Location = new System.Drawing.Point(14, 201);
+            this.webBrowser1.Location = new System.Drawing.Point(14, 100);
             this.webBrowser1.MinimumSize = new System.Drawing.Size(20, 20);
             this.webBrowser1.Name = "webBrowser1";
-            this.webBrowser1.Size = new System.Drawing.Size(1586, 549);
+            this.webBrowser1.Size = new System.Drawing.Size(1229, 644);
             this.webBrowser1.TabIndex = 62;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(27, 22);
+            this.label1.Location = new System.Drawing.Point(26, 28);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(120, 27);
             this.label1.TabIndex = 65;
@@ -71,15 +72,15 @@
             // 
             this.comboBox_TestRight_type.FormattingEnabled = true;
             this.comboBox_TestRight_type.Items.AddRange(new object[] {
-            "读书",
+            "读者",
             "书目",
             "册",
             "订购",
-            "期",
             "评注",
+            "期",
             "违约金",
             "预约到书"});
-            this.comboBox_TestRight_type.Location = new System.Drawing.Point(153, 14);
+            this.comboBox_TestRight_type.Location = new System.Drawing.Point(152, 24);
             this.comboBox_TestRight_type.Name = "comboBox_TestRight_type";
             this.comboBox_TestRight_type.Size = new System.Drawing.Size(235, 35);
             this.comboBox_TestRight_type.TabIndex = 66;
@@ -87,7 +88,7 @@
             // 
             // button_testRight
             // 
-            this.button_testRight.Location = new System.Drawing.Point(408, 10);
+            this.button_testRight.Location = new System.Drawing.Point(407, 16);
             this.button_testRight.Name = "button_testRight";
             this.button_testRight.Size = new System.Drawing.Size(150, 50);
             this.button_testRight.TabIndex = 67;
@@ -99,7 +100,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(14F, 27F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1668, 783);
+            this.ClientSize = new System.Drawing.Size(1311, 777);
             this.Controls.Add(this.button_testRight);
             this.Controls.Add(this.comboBox_TestRight_type);
             this.Controls.Add(this.label1);

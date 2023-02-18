@@ -305,7 +305,7 @@ namespace practice
                 return channel;
             }
             else
-                strError = "用'" + UserName + "'登录失败。";
+                strError = "用'" + userName + "'登录失败:"+response.LoginResult.ErrorInfo;
 
 
             throw new Exception(strError);

@@ -47,6 +47,34 @@ namespace practice
              this.SetUsers(list, strAction);
         }
 
+        public void DeleteAutoUsers()
+        {
+
+            List<UserInfo> users = new List<UserInfo>();
+            users.Add(new UserInfo { UserName = "u1" });
+            users.Add(new UserInfo { UserName = "u2" });
+            users.Add(new UserInfo { UserName = "u3" });
+            users.Add(new UserInfo { UserName = "u4" });
+            users.Add(new UserInfo { UserName = "u5" });
+            users.Add(new UserInfo { UserName = "u6" });
+            users.Add(new UserInfo { UserName = "u7" });
+            users.Add(new UserInfo { UserName = "u8" });
+            users.Add(new UserInfo { UserName = "u9" });
+
+            foreach (UserInfo u in users)
+            {
+                try
+                {
+                    DelUser(u);
+                }
+                catch (Exception ex)
+                {
+                    // 有可能帐户不存天，没关系的。
+                }
+            }
+
+        }
+
         // 创建或删除一批帐户
         public void SetUsers(List<UserInfo> users, string strAction)
         {
@@ -97,8 +125,8 @@ namespace practice
         public void EnableCtrls(bool bEnable)
         {
             this.button_accessAndObject.Enabled = bEnable;
-            this.button_reader.Enabled = bEnable;
-            this.button_biblio.Enabled = bEnable;
+            //this.button_reader.Enabled = bEnable;
+            //this.button_biblio.Enabled = bEnable;
 
             this.comboBox_TestRight_type.Enabled = bEnable;
             this.button_testRight.Enabled = bEnable;
@@ -284,6 +312,17 @@ namespace practice
                 return this.SetReaderInfo(u, "delete", strResPath, "").SetReaderInfoResult;
             else if (type == C_Type_biblio)
                 return this.SetBiblio(u, "delete", strResPath, "").SetBiblioInfoResult;
+            else if (type == C_Type_item
+                || type==C_Type_order
+                || type== C_Type_comment
+                || type == C_Type_issue
+                || type==C_Type_Amerce
+                || type==C_Type_Arrived)
+            {
+                // todo
+                this.displayLine("暂不支持删除"+type);
+                return new LibraryServerResult();
+            }
 
             throw new Exception("DelXml不支持的类型" + type);
         }
@@ -610,10 +649,18 @@ namespace practice
         #endregion
 
 
-        #region 读写读者xml和对象所需权限
+        #region 检查xml与对象权限
 
         public const string C_Type_reader= "读者";
         public const string C_Type_biblio = "书目";
+
+        public const string C_Type_item = "册";
+        public const string C_Type_order = "订购";
+        public const string C_Type_comment = "评注";
+        public const string C_Type_issue = "期";
+
+        public const string C_Type_Amerce = "违约金";
+        public const string C_Type_Arrived = "预约到书";
 
         public string GetAppendPath(string type)
         {
@@ -622,8 +669,357 @@ namespace practice
             else if (type == C_Type_biblio)
                 return "中文图书/?";
 
+            else if (type == C_Type_item)
+                return "中文图书实体/?";
+            else if (type == C_Type_order)
+                return "中文图书订购/?";
+            else if (type == C_Type_comment)
+                return "中文图书评注/?";
+
+            else if (type == C_Type_issue)
+                return "中文期刊期/?";
+
+            else if (type == C_Type_Amerce)
+                return "违约金/?";
+            else if (type == C_Type_Arrived)
+                return "预约到书/?";
+
+
             throw new Exception("不支持的类型"+type);
         }
+
+
+        // action:new/change/delete
+        public string ChangeDprmsFile(string xml, string action)
+        {
+            XmlDocument dom = new XmlDocument();
+            dom.LoadXml(xml);
+
+            XmlNode root = dom.DocumentElement;
+
+            if (action == "new")
+            {
+                // 加两项file
+                root.InnerXml = root.InnerXml
+                    + "<dprms:file id='1' xmlns:dprms='http://dp2003.com/dprms' />"
+                    + "<dprms:file id='2' xmlns:dprms='http://dp2003.com/dprms' />";
+
+            }
+            else if (action == "change")
+            {
+
+                XmlNamespaceManager nsmgr = new XmlNamespaceManager(new NameTable());
+                nsmgr.AddNamespace("dprms", DpNs.dprms);
+
+                XmlNodeList nodes = root.SelectNodes("//dprms:file", nsmgr);
+
+                // 修改第一项
+                if (nodes.Count > 0)
+                {
+                    XmlNode node = nodes[0];
+                    DomUtil.SetAttr(node, "a", Guid.NewGuid().ToString());   //给第一个dprms:file元素，加一个test属性，是guid
+                }
+                else
+                {
+                    throw new Exception("提供的xml缺dprms:file元素，无法修改");
+                }
+            }
+            else if (action == "delete")
+            {
+
+                XmlNamespaceManager nsmgr = new XmlNamespaceManager(new NameTable());
+                nsmgr.AddNamespace("dprms", DpNs.dprms);
+
+                XmlNodeList nodes = root.SelectNodes("//dprms:file", nsmgr);
+
+                // 删除第3个file
+                if (nodes.Count > 2)
+                {
+                    XmlNode node = nodes[2];
+                    root.RemoveChild(node);
+                }
+                else
+                {
+                    throw new Exception("提供的xml不足3个dprms:file无法，不能删除第3个dprms:file。");
+                }
+            }
+
+
+            return dom.OuterXml;
+
+        }
+
+        /*
+        public string GetXml(string type, bool hasFile)
+        {
+            if (type == C_Type_reader)
+                return this.GetReaderXml(hasFile);
+            else if (type == C_Type_biblio)
+                return this.GetBiblioXml(hasFile);
+            else if (type == C_Type_item
+                || type == C_Type_order
+                || type == C_Type_comment)
+            {
+                return this.GetItemXml(type, hasFile);
+            }
+
+            throw new Exception("GetXml不支持的类型" + type);
+        }
+        */
+
+        /*
+        public string GetReaderXml(bool hasFile)
+        {
+            Random rd = new Random();
+            int temp = rd.Next(1, 999999);
+            string barcode = temp.ToString().PadLeft(6, '0'); //Guid.NewGuid().ToString().ToUpper(); //
+
+            string dprmsfile = "";
+            if (hasFile == true)
+                dprmsfile = "<dprms:file id='0' xmlns:dprms='http://dp2003.com/dprms'   test='" + temp.ToString() + "'/>";
+
+
+            return "<root>"
+                + "<barcode>P" + barcode + "</barcode>"
+                + "<name>小张" + barcode + "</name>"
+                + "<readerType>本科生</readerType>"
+                + dprmsfile
+                + "</root>";
+        }
+
+        public string GetBiblioXml(bool hasFile)
+        {
+            Random rd = new Random();
+            int temp = rd.Next(1, 999);
+            //string barcode = temp.ToString().PadLeft(6, '0'); //Guid.NewGuid().ToString().ToUpper(); //
+
+            string dprmsfile = "";
+            if (hasFile == true)
+                dprmsfile = "<dprms:file id='0'    test='" + temp.ToString() + "'/>";
+
+
+            string xml = @"<unimarc:record xmlns:dprms='http://dp2003.com/dprms' xmlns:unimarc='http://dp2003.com/UNIMARC'>
+                                  <unimarc:leader>01887nam0 2200325   450 </unimarc:leader>
+                                  <unimarc:datafield tag='200' ind1=' ' ind2=' '>"
+                                   + "<unimarc:subfield code='a'>" + temp + "我爱我家</unimarc:subfield>"
+                                  + "</unimarc:datafield>"
+                                    + dprmsfile
+                                    + "</unimarc:record>";
+            return xml;
+        }
+        */
+
+        public string GetXml(string type, bool hasFile)
+        {
+            Random rd = new Random();
+            int temp = rd.Next(1, 999999);
+            string barcode = temp.ToString().PadLeft(6, '0'); //Guid.NewGuid().ToString().ToUpper(); //
+
+            string dprmsfile = "";
+            if (hasFile == true)
+                dprmsfile = "<dprms:file id='0' xmlns:dprms='http://dp2003.com/dprms'   test='" + temp.ToString() + "'/>";
+
+            // 得到parent
+            string parent = "";
+            if (type == C_Type_item
+                || type == C_Type_order
+                || type == C_Type_comment)
+            {
+                parent = this.GetBiblioParent();
+            }
+            else if (type == C_Type_issue)
+            {
+                parent = this.GetIssueParent();
+            }
+
+
+            // 根据不同类型，准备xml
+            if (type == C_Type_reader)
+            {
+                return "<root>"
+                    + "<barcode>P" + barcode + "</barcode>"
+                    + "<name>小张" + barcode + "</name>"
+                    + "<readerType>本科生</readerType>"
+                    + dprmsfile
+                    + "</root>";
+            }
+            else if (type == C_Type_biblio)
+            {
+                return @"<unimarc:record xmlns:dprms='http://dp2003.com/dprms' xmlns:unimarc='http://dp2003.com/UNIMARC'>
+                                  <unimarc:leader>01887nam0 2200325   450 </unimarc:leader>
+                                  <unimarc:datafield tag='200' ind1=' ' ind2=' '>"
+                                   + "<unimarc:subfield code='a'>" + temp + "我爱我家</unimarc:subfield>"
+                                  + "</unimarc:datafield>"
+                                    + dprmsfile
+                                    + "</unimarc:record>";
+            }
+            else if (type == C_Type_item)
+            {
+                return "<root>"
+                    + "<parent>" + parent + "</parent>"
+                    + "<barcode>B" + barcode + "</barcode>"
+                    + "<location>流通库</location>"
+                    + "<bookType>普通</bookType>"
+                    + dprmsfile
+                    + "</root>";
+            }
+            else if (type == C_Type_order)
+            {
+                return @"<root>
+                              <parent>" + parent + @"</parent>
+                              <index>1</index>
+                              <catalogNo>1</catalogNo>
+                              <seller>a</seller>
+                              <source>b</source>
+                              <range>20240101-20241231</range>
+                              <issueCount>1</issueCount>
+                              <copy>1</copy>
+                              <price>CNY10</price>
+                              <distribute>流通库:5</distribute>
+                              <class>d</class>
+                              <batchNo>2023-2-1</batchNo>"
+                              + dprmsfile
+                            + "</root>";
+
+            }
+            else if (type == C_Type_comment)
+            {
+                return @"<root>
+                              <parent>" + parent + @"</parent>
+                              <index>11</index>
+                              <content>一本好书</content>"
+                              + dprmsfile
+                            + "</root>";
+
+            }
+            else if (type == C_Type_issue)
+            {
+                return @"<root>
+                              <parent>" + parent + @"</parent>
+                              <publishTime>20230101</publishTime>
+                              <issue>1</issue>
+                              <orderInfo>
+                                <root>
+                                  <parent>" + parent + @"</parent>
+                                  <index>1</index>
+                                  <seller>邮局</seller>
+                                  <source>a</source>
+                                  <range>20230101-20231231</range>
+                                  <issueCount>12</issueCount>
+                                  <copy>1</copy>
+                                  <price>CNY20</price>
+                                  <distribute>阅览室:1</distribute>
+                                  <class>社科</class>
+                                  <batchNo>2023-1-26</batchNo>
+                                </root>
+                              </orderInfo>"
+                              + dprmsfile
+                            + "</root>";
+            }
+            else if (type == C_Type_Amerce)
+            {
+                return @"<root>
+                            <itemBarcode>B001</itemBarcode>
+                            <location>流通库</location>
+                            <readerBarcode>P001</readerBarcode>
+                            <libraryCode>
+                            </libraryCode>
+                            <state>amerced</state>
+                            <id>637986612496654587-1</id>
+                            <reason>超期。超 23天; 违约金因子: CNY1.0/day</reason>
+                            <overduePeriod>23day</overduePeriod>
+                            <price>CNY23</price>
+                            <comment>
+                            </comment>
+                            <borrowDate>Thu, 21 Jul 2022 15:14:48 +0800</borrowDate>
+                            <borrowPeriod>31day</borrowPeriod>
+                            <borrowOperator>supervisor</borrowOperator>
+                            <returnDate>Tue, 13 Sep 2022 10:20:49 +0800</returnDate>
+                            <returnOperator>supervisor</returnOperator>
+                            <operator>supervisor</operator>
+                            <operTime>Tue, 13 Sep 2022 10:21:07 +0800</operTime>"
+                              + dprmsfile
+                        + "</root>";
+            }
+            else if (type == C_Type_Arrived)
+            {
+                return @"<root>
+                            <state></state>
+                            <itemBarcode>B001</itemBarcode>
+                            <onShelf>true</onShelf>
+                            <readerBarcode>P001</readerBarcode>
+                            <notifyDate>Thu, 21 Jul 2022 15:31:16 +0800</notifyDate>
+                            <location>流通库</location>
+                            <accessNo>I206.2/W460</accessNo>"
+                              + dprmsfile
+                        +"</root>";
+            }
+
+            throw new Exception("GetXml不支持的数据类型" + type);
+        }
+
+        // 供册/订购/评注使用的父亲路径
+        public string _biblioPath = "";
+        public string GetBiblioPath()
+        {
+            if (string.IsNullOrEmpty(_biblioPath) == true)
+            {
+                // 用supervisor帐户创建一条书目
+                string strResPath = "中文图书/?";
+                this.displayLine("用supervisor帐户创建一条书目，为册/订购/评注 使用。");
+                WriteResResponse response = this.WriteXml(this.mainForm.GetSupervisorAccount(), strResPath,
+                     this.GetXml(C_Type_biblio, false));
+                if (response.WriteResResult.Value == -1)
+                    throw new Exception("用supervisor创建书目异常" + response.WriteResResult.ErrorInfo);
+
+
+                this._biblioPath = response.strOutputResPath;
+            }
+            return _biblioPath;
+        }
+
+        public string GetBiblioParent()
+        {
+            string biblioPath = GetBiblioPath();
+            int nIndex = biblioPath.LastIndexOf("/");
+            if (nIndex != -1)
+                return biblioPath.Substring(nIndex + 1);
+
+            throw new Exception("书目路径[" + biblioPath + "]异常，未找到id部分。");
+        }
+
+
+        // 供册/订购/评注使用的父亲路径
+        public string _issueBiblioPath = "";
+        public string GetIssueBiblioPath()
+        {
+            if (string.IsNullOrEmpty(_issueBiblioPath) == true)
+            {
+                // 用supervisor帐户创建一条书目
+                string strResPath = "中文期刊/?";
+                this.displayLine("用supervisor帐户创建一条期刊书目，作为期记录的父亲。");
+                WriteResResponse response = this.WriteXml(this.mainForm.GetSupervisorAccount(), strResPath,
+                     this.GetXml(C_Type_biblio, false));
+                if (response.WriteResResult.Value == -1)
+                    throw new Exception("用supervisor创建期刊书目异常" + response.WriteResResult.ErrorInfo);
+
+
+                this._issueBiblioPath = response.strOutputResPath;
+            }
+            return _issueBiblioPath;
+        }
+
+        public string GetIssueParent()
+        {
+            string biblioPath = GetIssueBiblioPath();
+            int nIndex = biblioPath.LastIndexOf("/");
+            if (nIndex != -1)
+                return biblioPath.Substring(nIndex + 1);
+
+            throw new Exception("书目路径[" + biblioPath + "]异常，未找到id部分。");
+        }
+
+
 
         public void checkRight(string type,
             List<string> rightsList)
@@ -639,6 +1035,9 @@ namespace practice
             {
                 // 清空输出
                 ClearResult();
+
+                // 删除一下自动创建的帐户，有时中途退出，有的帐户没删除干净。
+                DeleteAutoUsers();
 
                 this.displayLine("");
 
@@ -673,7 +1072,7 @@ namespace practice
                 if (response.WriteResResult.Value == -1)
                     this.displayLine("符合预期");
                 else
-                    this.displayLine(getRed("不符合预期，应拒绝，提示权限不够。"));
+                    this.displayLine(getRed("不符合预期，应拒绝，因为只定义了写权限未定义读权限，违反了权限规则。"));
 
                 //删除帐号
                 this.DelUser(u);
@@ -1202,182 +1601,138 @@ namespace practice
         }
 
 
-        // 读者及对象所需权限
-        private void button_reader_Click(object sender, EventArgs e)
-        {
-            List<string> rightsList = new List<string>();
-            
-
-            // 设检查权限函数
-            this.checkRight(C_Type_reader,
-                rightsList);
-        }
-
-        public string GetXml(string type, bool hasFile)
-        {
-            if (type == C_Type_reader)
-                return this.GetReaderXml1(hasFile);
-            else if (type == C_Type_biblio)
-                return this.GetBiblioXml1(hasFile);
-
-            throw new Exception("GetXml不支持的类型" + type);
-        }
-
-        public string GetReaderXml1(bool hasFile)
-        {
-            Random rd = new Random();
-            int temp = rd.Next(1, 999999);
-            string barcode = temp.ToString().PadLeft(6, '0'); //Guid.NewGuid().ToString().ToUpper(); //
-
-            string dprmsfile = "";
-            if (hasFile == true)
-                dprmsfile = "<dprms:file id='0' xmlns:dprms='http://dp2003.com/dprms'   test='"+temp.ToString()+"'/>";
-
-
-            return "<root>"
-                + "<barcode>P" + barcode+ "</barcode>"
-                + "<name>小张"+barcode+"</name>"
-                + "<readerType>本科生</readerType>"
-                + dprmsfile
-                + "</root>";
-        }
-
-        // action:new/change/delete
-        public string ChangeDprmsFile(string xml, string action)
-        {
-            XmlDocument dom = new XmlDocument();
-            dom.LoadXml(xml);
-
-            XmlNode root = dom.DocumentElement;
-
-            if (action == "new")
-            {
-                // 加两项file
-                root.InnerXml = root.InnerXml
-                    + "<dprms:file id='1' xmlns:dprms='http://dp2003.com/dprms' />"
-                    + "<dprms:file id='2' xmlns:dprms='http://dp2003.com/dprms' />";
-
-            }
-            else if (action == "change")
-            {
-
-                XmlNamespaceManager nsmgr = new XmlNamespaceManager(new NameTable());
-                nsmgr.AddNamespace("dprms", DpNs.dprms);
-
-                XmlNodeList nodes = root.SelectNodes("//dprms:file", nsmgr);
-
-                // 修改第一项
-                if (nodes.Count > 0)
-                {
-                    XmlNode node = nodes[0];
-                    DomUtil.SetAttr(node, "a", Guid.NewGuid().ToString());   //给第一个dprms:file元素，加一个test属性，是guid
-                }
-                else
-                {
-                    throw new Exception("提供的xml缺dprms:file元素，无法修改");
-                }
-            }
-            else if (action == "delete")
-            {
-
-                XmlNamespaceManager nsmgr = new XmlNamespaceManager(new NameTable());
-                nsmgr.AddNamespace("dprms", DpNs.dprms);
-
-                XmlNodeList nodes = root.SelectNodes("//dprms:file", nsmgr);
-
-                // 删除第3个file
-                if (nodes.Count > 2)
-                {
-                    XmlNode node = nodes[2];
-                    root.RemoveChild(node);
-                }
-                else
-                {
-                    throw new Exception("提供的xml不足3个dprms:file无法，不能删除第3个dprms:file。");
-                }
-            }
-
-
-            return dom.OuterXml;
-            
-        }
-
-        public string GetBiblioXml1(bool hasFile)
-        {
-            Random rd = new Random();
-            int temp = rd.Next(1, 999);
-            //string barcode = temp.ToString().PadLeft(6, '0'); //Guid.NewGuid().ToString().ToUpper(); //
-
-            string dprmsfile = "";
-            if (hasFile == true)
-                dprmsfile = "<dprms:file id='0'    test='" + temp.ToString() + "'/>";
-
-
-            string xml = @"<unimarc:record xmlns:dprms='http://dp2003.com/dprms' xmlns:unimarc='http://dp2003.com/UNIMARC'>
-                                  <unimarc:leader>01887nam0 2200325   450 </unimarc:leader>
-                                  <unimarc:datafield tag='200' ind1=' ' ind2=' '>"
-                                   +"<unimarc:subfield code='a'>"+temp+"我爱我家</unimarc:subfield>"
-                                  +"</unimarc:datafield>"
-                                    + dprmsfile
-                                    + "</unimarc:record>";
-            return xml;
-        }
 
         #endregion
 
 
 
-        private void button_biblio_Click(object sender, EventArgs e)
-        {
-            List<string> rightsList = new List<string>();
-
-
-
-
-
-
-        }
 
         private void button_testRight_Click(object sender, EventArgs e)
         {
             string type = this.comboBox_TestRight_type.Text.Trim();
 
-            if (type !=C_Type_reader && type != C_Type_biblio)
-            {
-                MessageBox.Show(this, "自动测试尚不支持此类型" + type);
-                return;
-            }
+            //if (type ==C_Type_Amerce 
+            //    || type == C_Type_Arrived)
+            //{
+            //    MessageBox.Show(this, "自动测试尚不支持此类型" + type);
+            //    return;
+            //}
 
             List<string> rightsList = new List<string>();
 
             if (type == C_Type_reader)
             {
                 rightsList.Add("setreaderinfo");
-                rightsList.Add("setreaderinfo,getreaderinfo");
+                rightsList.Add("setreaderinfo,getreaderinfo");//有用
                 rightsList.Add("setreaderinfo,getreaderinfo,writereaderobject");
-                rightsList.Add("setreaderinfo,getreaderinfo,writereaderobject,getreaderobject");
+                rightsList.Add("setreaderinfo,getreaderinfo,writereaderobject,getreaderobject");//有用
 
                 rightsList.Add("writereaderobject");
                 rightsList.Add("writereaderobject, getreaderobject");
 
-                rightsList.Add("getreaderinfo");
-                rightsList.Add("getreaderinfo,getreaderobject");
+                rightsList.Add("getreaderinfo");//有用
+                rightsList.Add("getreaderinfo,getreaderobject");//有用
                 rightsList.Add("getreaderobject");
             }
             else if (type == C_Type_biblio)
             {
                 rightsList.Add("setbiblioinfo");
-                rightsList.Add("setbiblioinfo,getbiblioinfo");
+                rightsList.Add("setbiblioinfo,getbiblioinfo");//有用
                 rightsList.Add("setbiblioinfo,getbiblioinfo,writebiblioobject");
-                rightsList.Add("setbiblioinfo,getbiblioinfo,writebiblioobject,getbiblioobject");
+                rightsList.Add("setbiblioinfo,getbiblioinfo,writebiblioobject,getbiblioobject");//有用
 
                 rightsList.Add("writebiblioobject");
                 rightsList.Add("writebiblioobject, getbiblioobject");
 
-                rightsList.Add("getbiblioinfo");
-                rightsList.Add("getbiblioinfo,getbiblioobject");
+                rightsList.Add("getbiblioinfo");//有用
+                rightsList.Add("getbiblioinfo,getbiblioobject");//有用
                 rightsList.Add("getbiblioobject");
             }
+            else if (type == C_Type_item)
+            {
+                rightsList.Add("setiteminfo");
+                rightsList.Add("setiteminfo,getiteminfo");//有用
+                rightsList.Add("setiteminfo,getiteminfo,writeitemobject");
+                rightsList.Add("setiteminfo,getiteminfo,writeitemobject,getitemobject");//有用
+
+                rightsList.Add("writeitemobject");
+                rightsList.Add("writeitemobject, getitemobject");
+
+                rightsList.Add("getiteminfo");//有用
+                rightsList.Add("getiteminfo,getitemobject");//有用
+                rightsList.Add("getitemobject");
+            }
+            else if (type == C_Type_order)
+            {
+                rightsList.Add("setorderinfo");
+                rightsList.Add("setorderinfo,getorderinfo");//有用
+                rightsList.Add("setorderinfo,getorderinfo,writeorderobject");
+                rightsList.Add("setorderinfo,getorderinfo,writeorderobject,getorderobject");//有用
+
+                rightsList.Add("writeorderobject");
+                rightsList.Add("writeorderobject, getorderobject");
+
+                rightsList.Add("getorderinfo");//有用
+                rightsList.Add("getorderinfo,getorderobject");//有用
+                rightsList.Add("getorderobject");
+            }
+            else if (type == C_Type_comment)
+            {
+                rightsList.Add("setcommentinfo");
+                rightsList.Add("setcommentinfo,getcommentinfo");//有用
+                rightsList.Add("setcommentinfo,getcommentinfo,writecommentobject");
+                rightsList.Add("setcommentinfo,getcommentinfo,writecommentobject,getcommentobject");//有用
+
+                rightsList.Add("writecommentobject");
+                rightsList.Add("writecommentobject, getcommentobject");
+
+                rightsList.Add("getcommentinfo");//有用
+                rightsList.Add("getcommentinfo,getcommentobject");//有用
+                rightsList.Add("getcommentobject");
+            }
+            else if (type == C_Type_issue)
+            {
+                rightsList.Add("setissueinfo");
+                rightsList.Add("setissueinfo,getissueinfo");//有用
+                rightsList.Add("setissueinfo,getissueinfo,writeissueobject");
+                rightsList.Add("setissueinfo,getissueinfo,writeissueobject,getissueobject");//有用
+
+                rightsList.Add("writeissueobject");
+                rightsList.Add("writeissueobject, getissueobject");
+
+                rightsList.Add("getissueinfo");//有用
+                rightsList.Add("getissueinfo,getissueobject");//有用
+                rightsList.Add("getissueobject");
+            }
+            else if (type == C_Type_Amerce)
+            {
+                rightsList.Add("setamerceinfo");
+                rightsList.Add("setamerceinfo,getamerceinfo");//有用
+                rightsList.Add("setamerceinfo,getamerceinfo,writeamerceobject");
+                rightsList.Add("setamerceinfo,getamerceinfo,writeamerceobject,getamerceobject");//有用
+
+                rightsList.Add("writeamerceobject");
+                rightsList.Add("writeamerceobject, getamerceobject");
+
+                rightsList.Add("getamerceinfo");//有用
+                rightsList.Add("getamerceinfo,getamerceobject");//有用
+                rightsList.Add("getamerceobject");
+            }
+            else if (type == C_Type_Arrived)
+            {
+                rightsList.Add("setarrivedinfo");
+                rightsList.Add("setarrivedinfo,getarrivedinfo");//有用
+                rightsList.Add("setarrivedinfo,getarrivedinfo,writearrivedobject");
+                rightsList.Add("setarrivedinfo,getarrivedinfo,writearrivedobject,getarrivedobject");//有用
+
+                rightsList.Add("writearrivedobject");
+                rightsList.Add("writearrivedobject, getarrivedobject");
+
+                rightsList.Add("getarrivedinfo");//有用
+                rightsList.Add("getarrivedinfo,getarrivedobject");//有用
+                rightsList.Add("getarrivedobject");
+            }
+
 
 
             // 调检查权限函数
