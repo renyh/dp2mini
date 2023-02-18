@@ -184,7 +184,7 @@ namespace DigitalPlatform.LibraryRestClient
                 SetBiblioInfoResponse r = (SetBiblioInfoResponse)o;
                 return GetServerResultInfo(r.SetBiblioInfoResult) + "\r\n"
                     + "strOutputBiblioRecPath:" + r.strOutputBiblioRecPath + "\r\n"
-                    + "baOutputTimestamp:" + ByteArray.GetHexTimeStampString(r.baOutputTimestamp) + "\r\n'";
+                    + "baOutputTimestamp:" + ByteArray.GetHexTimeStampString(r.baOutputTimestamp) + "\r\n";
             }
             else if (o is GetBiblioInfoResponse)
             {

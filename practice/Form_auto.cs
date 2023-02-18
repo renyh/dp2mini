@@ -14,6 +14,7 @@ using System.Windows.Forms;
 using System.Web;
 using DigitalPlatform.Xml;
 using System.Xml;
+using System.Threading;
 
 namespace practice
 {
@@ -98,6 +99,9 @@ namespace practice
             this.button_accessAndObject.Enabled = bEnable;
             this.button_reader.Enabled = bEnable;
             this.button_biblio.Enabled = bEnable;
+
+            this.comboBox_TestRight_type.Enabled = bEnable;
+            this.button_testRight.Enabled = bEnable;
         }
 
         // 写对象
@@ -265,10 +269,23 @@ namespace practice
             }
         }
 
-        public SetReaderInfoResponse DelReader(UserInfo u,
+        public SetReaderInfoResponse DelReader1(UserInfo u,
             string strResPath)
         {
             return this.SetReaderInfo(u, "delete", strResPath, "");
+        }
+
+
+        public LibraryServerResult DelXml(UserInfo u,
+            string type,
+            string strResPath)
+        {
+            if (type == C_Type_reader)
+                return this.SetReaderInfo(u, "delete", strResPath, "").SetReaderInfoResult;
+            else if (type == C_Type_biblio)
+                return this.SetBiblio(u, "delete", strResPath, "").SetBiblioInfoResult;
+
+            throw new Exception("DelXml不支持的类型" + type);
         }
 
         public SetReaderInfoResponse SetReaderInfo(UserInfo u,
@@ -299,6 +316,55 @@ namespace practice
                 {
                     // 设上时间戳
                     baTimestamp = response.baNewTimestamp;
+                    goto REDO;
+                }
+
+                this.displayLine(HttpUtility.HtmlEncode(RestChannel.GetResultInfo(response)));
+                return response;
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(u.UserName + "GetRes异常：" + ex.Message);
+            }
+            finally
+            {
+                if (channel != null)
+                    this.mainForm._channelPool.ReturnChannel(channel);
+            }
+        }
+
+
+        public SetBiblioInfoResponse SetBiblio(UserInfo u,
+    string strAction,
+    string strResPath,
+     string strNewXml)
+        {
+            SetBiblioInfoResponse response = null;
+
+            this.displayLine("strResPath=" + strResPath);
+
+            byte[] baTimestamp = null;
+
+            RestChannel channel = null;
+            try
+            {
+                // 用户登录
+                channel = mainForm.GetChannelAndLogin(u.UserName, u.Password);
+
+            REDO:
+                response = channel.SetBiblioInfo(strAction,
+                    strResPath,
+                    "xml",
+                    strNewXml,
+                    baTimestamp,
+                    "",
+                    "");
+                // 间戳不匹配，自动重试
+                if (response.SetBiblioInfoResult.ErrorCode == ErrorCode.TimestampMismatch)
+                {
+                    // 设上时间戳
+                    baTimestamp = response.baOutputTimestamp;
                     goto REDO;
                 }
 
@@ -513,8 +579,9 @@ namespace practice
 
         public void ClearResult()
         {
-            this.webBrowser1.DocumentText = "<html><body></body></html>";
+            this.webBrowser1.DocumentText = "<html><body>test</body></html>";
 
+            //Thread.Sleep(1000); 
             //this.textBox_result.Text = "";
         }
 
@@ -545,12 +612,27 @@ namespace practice
 
         #region 读写读者xml和对象所需权限
 
+        public const string C_Type_reader= "读者";
+        public const string C_Type_biblio = "书目";
 
-
-
-        // 读者及对象所需权限
-        private void button_reader_Click(object sender, EventArgs e)
+        public string GetAppendPath(string type)
         {
+            if (type == C_Type_reader)
+                return "读者/?";
+            else if (type == C_Type_biblio)
+                return "中文图书/?";
+
+            throw new Exception("不支持的类型"+type);
+        }
+
+        public void checkRight(string type,
+            List<string> rightsList)
+        {
+            if (rightsList == null || rightsList.Count != 9)
+            {
+                throw new Exception("必须输入规定的9组权限");
+            }
+            
 
             this.EnableCtrls(false);
             try
@@ -558,34 +640,36 @@ namespace practice
                 // 清空输出
                 ClearResult();
 
-                this.displayLine(getLarge("读者及下级对象所需权限的测试结果"));
+                this.displayLine("");
+
+                this.displayLine(getLarge(type+"及下级对象所需权限的测试结果"));
 
 
-                string strResPath = "读者/?";
+                string strResPath = GetAppendPath(type); //"读者/?";
                 WriteResResponse response = null;
 
-                // 有用的读者xml路径
+                // 第4组权限会写好xml路径和对象路径，供后面权限使用。
                 string path_xmlHasFile = "";
                 string path_object = "";
 
-                #region 第1组测试  仅有setreaderinfo
+                #region 第1组测试  仅有setXXXinfo
 
                 //===
+                // 第1组测试  仅有setXXXinfo
                 this.displayLine(getLarge("第1组测试"));
-                // 仅有setreaderinfo
                 UserInfo u = new UserInfo
                 {
-                    UserName = "r1",
+                    UserName = "u1",
                     Password = "1",
                     SetPassword = true,
-                    Rights = "setreaderinfo",
+                    Rights = rightsList[0], //"setreaderinfo",
                     Access = ""
                 };
                 //创建帐号
                 this.NewUser(u);
 
-                this.displayLine(GetBR() + getBold(u.UserName+"写简单xml，由于没有连带的读xml权限，应不成功。"));
-                response = this.WriteXml(u, strResPath, this.GetReaderXml(false));
+                this.displayLine(GetBR() + getBold(u.UserName + "写简单xml，由于没有连带的读xml权限，应不成功。"));
+                response = this.WriteXml(u, strResPath, this.GetXml(type,false));
                 if (response.WriteResResult.Value == -1)
                     this.displayLine("符合预期");
                 else
@@ -597,27 +681,27 @@ namespace practice
                 #endregion
 
 
-                #region 第2组测试 setreaderinfo, getreaderinfo
+                #region 第2组测试 setXXXinfo, getXXXinfo
 
                 //===
-                this.displayLine(getLarge("第2组测试"));
-                //setreaderinfo, getreaderinfo
+                // 第2组测试 setXXXinfo, getXXXinfo
                 //可写简单读者xml，包括add/new/delete
                 //不可操作xml中dprms:file，不能写对象
+                this.displayLine(getLarge("第2组测试"));
                 u = new UserInfo
                 {
-                    UserName = "r2",
+                    UserName = "u2",
                     Password = "1",
                     SetPassword = true,
-                    Rights = "setreaderinfo,getreaderinfo",
+                    Rights = rightsList[1], //"setreaderinfo,getreaderinfo",
                     Access = ""
                 };
                 //创建帐号
-                this.NewUser(u);  
+                this.NewUser(u);
 
                 // 新建简单xml
-                this.displayLine(GetBR() + getBold(u.UserName+"新建简单xml，有读写xml权限，应新建成功。"));
-                response = this.WriteXml(u, strResPath, this.GetReaderXml(false));
+                this.displayLine(GetBR() + getBold(u.UserName + "新建简单xml，有读写xml权限，应新建成功。"));
+                response = this.WriteXml(u, strResPath, this.GetXml(type,false));
                 if (response.WriteResResult.Value == 0)
                     this.displayLine("符合预期");
                 else
@@ -626,8 +710,8 @@ namespace practice
                 string tempPath = response.strOutputResPath;
 
                 // 修改简单xml
-                this.displayLine(GetBR() + getBold(u.UserName+"修改简单xml，应修改成功，且错误码应为NoError。"));
-                response = this.WriteXml(u, tempPath, this.GetReaderXml(false));
+                this.displayLine(GetBR() + getBold(u.UserName + "修改简单xml，应修改成功，且错误码应为NoError。"));
+                response = this.WriteXml(u, tempPath, this.GetXml(type,false));
                 if (response.WriteResResult.Value == 0)
                 {
                     if (response.WriteResResult.ErrorCode != ErrorCode.NoError)
@@ -643,9 +727,9 @@ namespace practice
                     this.displayLine(getRed("不符合预期"));
 
                 // 删除简单xml
-                this.displayLine(GetBR() + getBold(u.UserName+"删除简单xml，应删除成功。"));
-                SetReaderInfoResponse res = this.DelReader(u, tempPath);
-                if (res.SetReaderInfoResult.Value == 0)
+                this.displayLine(GetBR() + getBold(u.UserName + "删除简单xml，应删除成功。"));
+                LibraryServerResult res = this.DelXml(u,type, tempPath);
+                if (res.Value == 0)
                     this.displayLine("符合预期");
                 else
                     this.displayLine(getRed("不符合预期"));
@@ -653,8 +737,8 @@ namespace practice
 
 
                 // 不可操作xml中的dprms:file
-                this.displayLine(GetBR() + getBold(u.UserName+"新建带dprms:file的xml，由于没有对象权限，应写入失败 或者 部分写入且过滤了file(注意观察提示)。"));
-                response = this.WriteXml(u, strResPath, this.GetReaderXml(true));
+                this.displayLine(GetBR() + getBold(u.UserName + "新建带dprms:file的xml，由于没有对象权限，应写入失败 或者 部分写入且过滤了file(注意观察提示)。"));
+                response = this.WriteXml(u, strResPath, this.GetXml(type,true));
                 if (response.WriteResResult.Value == -1)
                     this.displayLine("符合预期");
                 else
@@ -673,7 +757,7 @@ namespace practice
                 path_object = path_xmlHasFile + "/object/0";
 
                 // 不能写对象
-                this.displayLine(GetBR() + getBold(u.UserName+"写对象数据，由于没有对象权限，应不能成功。"));
+                this.displayLine(GetBR() + getBold(u.UserName + "写对象数据，由于没有对象权限，应不能成功。"));
                 response = this.WriteObject(u, path_object);
                 if (response.WriteResResult.Value == -1)
                     this.displayLine("符合预期");
@@ -686,27 +770,26 @@ namespace practice
                 #endregion
 
 
-                #region 第3组测试  setreaderinfo,getreaderinfo,writereaderobject
+                #region 第3组测试  setXXXinfo,getXXXinfo,writeXXXobject
 
                 //===
+                // 第3组测试  setXXXinfo,getXXXinfo,writeXXXobject
+                // 应报权限违约规则，直接拒绝
                 this.displayLine(getLarge("第3组测试"));
-                // setreaderinfo,getreaderinfo,writereaderobject
-                // 效果同r1_2
                 u = new UserInfo
                 {
-                    UserName = "r3",
+                    UserName = "u3",
                     Password = "1",
                     SetPassword = true,
-                    //同r2效果，不能操作xml中的dprms:file，也不写对象，因为写对象首先需要getreaderobject。
-                    Rights = "setreaderinfo,getreaderinfo,writereaderobject",
+                    Rights = rightsList[2],//"setreaderinfo,getreaderinfo,writereaderobject",
                     Access = ""
                 };
                 //创建帐号
                 this.NewUser(u);
 
                 // 无法写简单xml，因为写权限大于读者权限。
-                this.displayLine(GetBR() + getBold(u.UserName+"新建简单xml，应报权限配置不合理，因为有写对象权限，缺读对象权限。"));
-                response = this.WriteXml(u, strResPath, this.GetReaderXml(false));
+                this.displayLine(GetBR() + getBold(u.UserName + "新建简单xml，应报权限配置不合理，因为有写对象权限，缺读对象权限。"));
+                response = this.WriteXml(u, strResPath, this.GetXml(type,false));
                 if (response.WriteResResult.Value == -1)
                     this.displayLine("符合预期");
                 else
@@ -745,20 +828,17 @@ namespace practice
                 #endregion
 
 
-                #region 第4组测试 setreaderinfo,getreaderinfo,writereaderobject,getreaderobject
+                #region 第4组测试 setXXXinfo,getXXXinfo,writeXXXobject,getXXXobject
                 //===
-                this.displayLine(getLarge("第4组测试"));
-                // setreaderinfo,getreaderinfo,writereaderobject,getreaderobject
+                // 第4组测试 setXXXinfo,getXXXinfo,writeXXXobject,getXXXobject
                 // 这是完整权限，即可读xml及操作里面的dprms:file，又可以写对象。
+                this.displayLine(getLarge("第4组测试"));
                 u = new UserInfo
                 {
-                    UserName = "r4",
+                    UserName = "u4",
                     Password = "1",
                     SetPassword = true,
-
-                    //可写读者xml，包括add/new/delete
-                    //可操作xml中dprms:file，不能写对象
-                    Rights = "setreaderinfo,getreaderinfo,writereaderobject,getreaderobject",
+                    Rights = rightsList[3],//"setreaderinfo,getreaderinfo,writereaderobject,getreaderobject",
                     Access = ""
                 };
                 //创建帐号
@@ -774,20 +854,21 @@ namespace practice
                 //    this.displayLine(getRed("不符合预期"));
 
                 #region 对带dprms:file的xml的新建/修改/删除
+
                 // 新建带file的xml
-                this.displayLine(GetBR() + getBold(u.UserName+"新建带dprms:file的xml，应新建成功。"));
-                response = this.WriteXml(u, strResPath, this.GetReaderXml(true));
+                this.displayLine(GetBR() + getBold(u.UserName + "新建带dprms:file的xml，应新建成功。"));
+                response = this.WriteXml(u, strResPath, this.GetXml(type,true));
                 if (response.WriteResResult.Value == 0)
                     this.displayLine("符合预期");
                 else
                     this.displayLine(getRed("不符合预期"));
 
                 // 下面针对上面新建的这条进行修改和删除
-                tempPath = response.strOutputResPath; 
+                tempPath = response.strOutputResPath;
 
                 // 修改带file的xml
                 this.displayLine(GetBR() + getBold(u.UserName + "修改带dprms:file的xml，应修改成功且NoError。"));
-                response = this.WriteXml(u, tempPath, this.GetReaderXml(true));
+                response = this.WriteXml(u, tempPath, this.GetXml(type,true));
                 if (response.WriteResResult.Value == 0)
                 {
                     if (response.WriteResResult.ErrorCode != ErrorCode.NoError)
@@ -800,8 +881,8 @@ namespace practice
 
                 // 删除带dprms:file的xml              
                 this.displayLine(GetBR() + getBold(u.UserName + "删除带dprms:file的xml，应删除成功。"));
-                res = this.DelReader(u, tempPath);
-                if (res.SetReaderInfoResult.Value == 0)
+                res = this.DelXml(u,type, tempPath);
+                if (res.Value == 0)
                     this.displayLine("符合预期");
                 else
                     this.displayLine(getRed("不符合预期"));
@@ -813,7 +894,7 @@ namespace practice
                 // 再新建一条带dprms:file的记录，以便对其下级的dprms:file进行增/删/改
                 this.displayLine(GetBR() + getBold(u.UserName + "再新建一条带dprms:file的记录，以便对其下级的dprms:file进行增/删/改。"));
 
-                string originXml = this.GetReaderXml(true);
+                string originXml = this.GetXml(type,true);
                 response = this.WriteXml(u, strResPath, originXml);
                 if (response.WriteResResult.Value == 0)
                     this.displayLine("符合预期");
@@ -839,7 +920,7 @@ namespace practice
                         this.displayLine(getRed("注意错误码不对，应为NoError。"));
 
                     // 获取出来看下
-                    GetResResponse tempResponse= this.GetRes(u,tempPath);
+                    GetResResponse tempResponse = this.GetRes(u, tempPath);
                     if (tempResponse.GetResResult.Value >= 0)
                     {
                         //tempResponse.
@@ -896,7 +977,7 @@ namespace practice
 
 
                 // 写对象
-                this.displayLine(GetBR() + getBold(u.UserName+"写对象数据，应成功。"));
+                this.displayLine(GetBR() + getBold(u.UserName + "写对象数据，应成功。"));
                 response = this.WriteObject(u, path_object);
                 if (response.WriteResResult.Value == 0)
                     this.displayLine("符合预期");
@@ -909,25 +990,25 @@ namespace practice
                 #endregion
 
 
-                #region 第5组测试 writereaderobject
+                #region 第5组测试 writeXXXobject
 
                 //===
-                this.displayLine(getLarge("第5组测试"));
-                // writereaderobject
+                // 第5组测试 writeXXXobject
                 // 不能操作xml中的dprms:file，也不能change对象数据，写对象需要先有读对象权限，且还需读写xml的权限
+                this.displayLine(getLarge("第5组测试"));
                 u = new UserInfo
                 {
-                    UserName = "r5",
+                    UserName = "u5",
                     Password = "1",
                     SetPassword = true,
-                    Rights = "writereaderobject",
+                    Rights = rightsList[4],//"writereaderobject",
                     Access = ""
                 };
                 //创建帐号
                 this.NewUser(u);
 
                 // 不可操作xml中的dprms:file
-                this.displayLine(GetBR() + getBold(u.UserName+"写对象数据，由于没有连带的读对象权限 和 读写xml的权，应写不成功。"));
+                this.displayLine(GetBR() + getBold(u.UserName + "写对象数据，由于没有连带的读对象权限 和 读写xml的权，应写不成功。"));
                 response = this.WriteObject(u, path_object);
                 if (response.WriteResResult.Value == -1)
                     this.displayLine("符合预期");
@@ -940,26 +1021,24 @@ namespace practice
                 #endregion
 
 
-                #region 第6组测试  writereaderobject, getreaderobject
+                #region 第6组测试  writeXXXobject, getXXXobject
 
                 //==
+                // 第6组测试  writeXXXobject, getXXXobject
+                // 不能修改对象数据，因为没有连带的读者xml权限
                 this.displayLine(getLarge("第6组测试"));
-                //writereaderobject, getreaderobject
-                //不能修改对象数据，因为没有连带的读者xml权限
-               u = new UserInfo
+                u = new UserInfo
                 {
-                    UserName = "r6",
+                    UserName = "u6",
                     Password = "1",
                     SetPassword = true,
-
-                    //能change对象数据，但不能操作xml中的dprms:file。
-                    Rights = "writereaderobject, getreaderobject",
+                    Rights = rightsList[5],//"writereaderobject, getreaderobject",
                     Access = ""
                 };
                 //创建帐号
                 this.NewUser(u);
 
-                this.displayLine(GetBR() + getBold(u.UserName+"修改对象数据，因为没有连带的读者xml权限，应不成功。"));
+                this.displayLine(GetBR() + getBold(u.UserName + "修改对象数据，因为没有连带的读者xml权限，应不成功。"));
                 response = this.WriteObject(u, path_object);
                 if (response.WriteResResult.Value == -1)
                     this.displayLine("符合预期");
@@ -967,8 +1046,8 @@ namespace practice
                     this.displayLine(getRed("不符合预期"));
 
                 // 修改xml及dprms:file,应不能成功。
-                this.displayLine(GetBR() + getBold(u.UserName+"修改xml及dprms:file，由于没有读写xml的权限，应不成功。"));
-                response = this.WriteXml(u, path_xmlHasFile, this.GetReaderXml(true));
+                this.displayLine(GetBR() + getBold(u.UserName + "修改xml及dprms:file，由于没有读写xml的权限，应不成功。"));
+                response = this.WriteXml(u, path_xmlHasFile, this.GetXml(type,true));
                 if (response.WriteResResult.Value == -1)
                     this.displayLine("符合预期");
                 else
@@ -982,25 +1061,25 @@ namespace practice
 
                 //=====以前为读权限=======
 
-                #region 第7组测试 getreaderinfo
+                #region 第7组测试 getXXXinfo
 
                 //==
-                this.displayLine(getLarge("第7组测试"));
-                //getreaderinfo
+                //第7组测试 getXXXinfo
                 //仅能获取xml普通节点，不能获取对象。
+                this.displayLine(getLarge("第7组测试"));
                 u = new UserInfo
                 {
-                    UserName = "r7",
+                    UserName = "u7",
                     Password = "1",
                     SetPassword = true,
-                    Rights = "getreaderinfo",
+                    Rights = rightsList[6],//"getreaderinfo",
                     Access = ""
                 };
                 //创建帐号
                 this.NewUser(u);
 
                 //可获取xml，须过滤了dprms:file
-                this.displayLine(GetBR() + getBold(u.UserName+"获取xml，应获取成功，且须过滤了dprms:file。"));
+                this.displayLine(GetBR() + getBold(u.UserName + "获取xml，应获取成功，且须过滤了dprms:file。"));
                 GetResResponse getResponse = this.GetRes(u, path_xmlHasFile);
 
                 if (getResponse.GetResResult.Value >= 0)
@@ -1017,26 +1096,26 @@ namespace practice
 
                 #endregion
 
-                #region 第8组测试 getreaderinfo,getreaderobject
+                #region 第8组测试 getXXXinfo,getXXXobject
 
                 //===
-                this.displayLine(getLarge("第8组测试"));
-                //getreaderinfo,getreaderobject
+                //第8组测试 getXXXinfo,getXXXobject
                 //可读取xml且包含dprms:file，可获取对象
+                this.displayLine(getLarge("第8组测试"));
                 u = new UserInfo
                 {
-                    UserName = "r8",
+                    UserName = "u8",
                     Password = "1",
                     SetPassword = true,
-                    Rights = "getreaderinfo,getreaderobject",
+                    Rights = rightsList[7],//"getreaderinfo,getreaderobject",
                     Access = ""
                 };
                 //创建帐号
                 this.NewUser(u);
 
                 //可获取xml，须过滤了dprms:file
-                this.displayLine(GetBR() + getBold(u.UserName+"获取xml，应获取成功，且包含dprms:file。"));
-                 getResponse = this.GetRes(u, path_xmlHasFile);
+                this.displayLine(GetBR() + getBold(u.UserName + "获取xml，应获取成功，且包含dprms:file。"));
+                getResponse = this.GetRes(u, path_xmlHasFile);
                 if (getResponse.GetResResult.Value >= 0)
                 {
                     this.displayLine(getWarn1("请核对返回结果中应包含dprms:file。"));
@@ -1047,7 +1126,7 @@ namespace practice
                 }
 
                 //可获取对象
-                this.displayLine(GetBR() + getBold(u.UserName+"获取对象，应获取成功。"));
+                this.displayLine(GetBR() + getBold(u.UserName + "获取对象，应获取成功。"));
                 getResponse = this.GetRes(u, path_object);
                 if (getResponse.GetResResult.Value >= 0)
                 {
@@ -1063,17 +1142,18 @@ namespace practice
 
                 #endregion
 
-                #region 第9组测试 getreaderobject
+                #region 第9组测试 getXXXobject
 
                 //===
+                //第9组测试 getXXXobject
+                //什么都不能做，由于对象权限不能独立存在
                 this.displayLine(getLarge("第9组测试"));
-                //getreaderobject，可获取对象，不可读xml
-                u= new UserInfo
+                u = new UserInfo
                 {
-                    UserName = "r9",
+                    UserName = "u9",
                     Password = "1",
                     SetPassword = true,
-                    Rights = "getreaderobject",
+                    Rights = rightsList[8],//"getreaderobject",
                     Access = ""
                 };
 
@@ -1081,7 +1161,7 @@ namespace practice
                 this.NewUser(u);
 
                 //不能获取对象
-                this.displayLine(GetBR() + getBold("r9获取对象，应不成功，由于对象权限不能独立存在。"));
+                this.displayLine(GetBR() + getBold(u.UserName+"获取对象，应不成功，由于对象权限不能独立存在。"));
                 getResponse = this.GetRes(u, path_object);
                 if (getResponse.GetResResult.Value == -1)
                 {
@@ -1093,9 +1173,9 @@ namespace practice
                 }
 
                 //不能获取xml
-                this.displayLine(GetBR() + getBold(u.UserName+"获取xml，由于没有读xml权限，应不成功。"));
+                this.displayLine(GetBR() + getBold(u.UserName + "获取xml，由于没有读xml权限，应不成功。"));
                 getResponse = this.GetRes(u, path_xmlHasFile);
-                if (getResponse.GetResResult.Value ==-1)
+                if (getResponse.GetResResult.Value == -1)
                 {
                     this.displayLine("符合预期");
                 }
@@ -1119,11 +1199,31 @@ namespace practice
             {
                 this.EnableCtrls(true);
             }
-
         }
 
 
-        public string GetReaderXml(bool hasFile)
+        // 读者及对象所需权限
+        private void button_reader_Click(object sender, EventArgs e)
+        {
+            List<string> rightsList = new List<string>();
+            
+
+            // 设检查权限函数
+            this.checkRight(C_Type_reader,
+                rightsList);
+        }
+
+        public string GetXml(string type, bool hasFile)
+        {
+            if (type == C_Type_reader)
+                return this.GetReaderXml1(hasFile);
+            else if (type == C_Type_biblio)
+                return this.GetBiblioXml1(hasFile);
+
+            throw new Exception("GetXml不支持的类型" + type);
+        }
+
+        public string GetReaderXml1(bool hasFile)
         {
             Random rd = new Random();
             int temp = rd.Next(1, 999999);
@@ -1202,7 +1302,7 @@ namespace practice
             
         }
 
-        public string GetBiblioXml(bool hasFile)
+        public string GetBiblioXml1(bool hasFile)
         {
             Random rd = new Random();
             int temp = rd.Next(1, 999);
@@ -1225,412 +1325,64 @@ namespace practice
 
         #endregion
 
+
+
         private void button_biblio_Click(object sender, EventArgs e)
         {
+            List<string> rightsList = new List<string>();
 
-            this.EnableCtrls(false);
-            try
+
+
+
+
+
+        }
+
+        private void button_testRight_Click(object sender, EventArgs e)
+        {
+            string type = this.comboBox_TestRight_type.Text.Trim();
+
+            if (type !=C_Type_reader && type != C_Type_biblio)
             {
-                // 清空输出
-                ClearResult();
-
-                string strResPath = "中文图书/?";
-                WriteResResponse response = null;
-
-                // 有用的读者xml路径
-                string path_xmlHasFile = "";
-                string path_object = "";
-
-                //===
-                this.displayLine(getLarge("第1组测试"));
-                // r1_1  仅有setbiblioinfo
-                UserInfo b1 = new UserInfo
-                {
-                    UserName = "b1",
-                    Password = "1",
-                    SetPassword = true,
-                    Rights = "setbiblioinfo",
-                    Access = ""
-                };
-                //创建帐号
-                this.NewUser(b1);
-
-                this.displayLine(GetBR() + getBold("b1写简单xml，由于没有连带的读xml权限，应成功失败。"));
-                response = this.WriteXml(b1, strResPath, this.GetBiblioXml(false));
-                if (response.WriteResResult.Value == -1)
-                    this.displayLine("符合预期");
-                else
-                    this.displayLine(getRed("不符合预期"));
-
-                //删除帐号
-                this.DelUser(b1);
-
-                //===
-                this.displayLine(getLarge("第2组测试"));
-                // r1_2  setbiblioinfo, getbiblioinfo
-                //可写简单读者xml，包括add/new/delete
-                //不可操作xml中dprms:file，不能写对象
-                //写的xml会忽略保护字段，单独测
-                UserInfo b2 = new UserInfo
-                {
-                    UserName = "b2",
-                    Password = "1",
-                    SetPassword = true,
-                    Rights = "setbiblioinfo,getbiblioinfo",
-                    Access = ""
-                };
-                //创建帐号
-                this.NewUser(b2);
-
-                // 可写简单xml
-                this.displayLine(GetBR() + getBold("b2新建简单xml，有读写xml权限，应写成功。"));
-                response = this.WriteXml(b2, strResPath, this.GetBiblioXml(false));
-                if (response.WriteResResult.Value == 0)
-                    this.displayLine("符合预期");
-                else
-                    this.displayLine(getRed("不符合预期"));
-
-                string tempPath = response.strOutputResPath;
-                // 修改简单xml
-                this.displayLine(GetBR() + getBold("b2修改简单xml，应修改成功，且错误码应为NoError。"));
-                response = this.WriteXml(b2, tempPath, this.GetBiblioXml(false));
-                if (response.WriteResResult.Value == 0
-                    && response.WriteResResult.ErrorCode == ErrorCode.NoError)
-                    this.displayLine("符合预期");
-                else
-                    this.displayLine(getRed("不符合预期"));
-
-                // 删除xml
-                this.displayLine(GetBR() + getBold("b2删除简单xml，应删除成功。"));
-                SetReaderInfoResponse res = this.DelReader(b2, tempPath);
-                if (res.SetReaderInfoResult.Value == 0)
-                    this.displayLine("符合预期");
-                else
-                    this.displayLine(getRed("不符合预期"));
-
-
-
-                // 不可操作xml中的dprms:file
-                this.displayLine(GetBR() + getBold("b2新建带dprms:file的xml，由于没有对象权限，应部分写入且过滤了dprms:file(注意观察提示)。或者直接拒绝。"));
-                response = this.WriteXml(b2, strResPath, this.GetBiblioXml(true));
-                if (response.WriteResResult.Value == -1)
-                    this.displayLine("符合预期");
-                else
-                {
-                    if (response.WriteResResult.Value == 0 && response.WriteResResult.ErrorCode != ErrorCode.NoError)
-                        this.displayLine("符合预期");
-                    else
-                        this.displayLine(getRed("不符合预期"));
-                }
-                path_xmlHasFile = response.strOutputResPath;
-                path_object = path_xmlHasFile + "/object/0";
-
-                // 不能写对象
-                this.displayLine(GetBR() + getBold("b2写对象数据，由于没有对象权限，应不能成功。"));
-                response = this.WriteObject(b2, path_object);
-                if (response.WriteResResult.Value == -1)
-                    this.displayLine("符合预期");
-                else
-                    this.displayLine(getRed("不符合预期"));
-
-                // 删除帐号
-                this.DelUser(b2);
-
-
-                //===
-                this.displayLine(getLarge("第3组测试"));
-                // b3  setbiblioinfo, getbiblioinfo ,writebiblioobject 效果同b2，应该仅是写对象必须要有读对象才行。
-                UserInfo b3 = new UserInfo
-                {
-                    UserName = "b3",
-                    Password = "1",
-                    SetPassword = true,
-                    //同r1_2效果，不能操作xml中的dprms:file，也不写对象，因为写对象首先需要getreaderobject。
-                    Rights = "setbiblioinfo, getbiblioinfo ,writebiblioobject",
-                    Access = ""
-                };
-                //创建帐号
-                this.NewUser(b3);
-
-                // 可写简单xml
-                this.displayLine(GetBR() + getBold("b3新建简单xml，应成功。"));
-                response = this.WriteXml(b3, strResPath, this.GetBiblioXml(false));
-                if (response.WriteResResult.Value == 0)
-                    this.displayLine("符合预期");
-                else
-                    this.displayLine(getRed("不符合预期"));
-
-                // 不可操作xml中的dprms:file
-                this.displayLine(GetBR() + getBold("b3新建带dprms:file的xml，由于没有连带的读对象权限，应部分写入且过滤了dprms:file，或直接拒绝。"));
-                response = this.WriteXml(b3, strResPath, this.GetBiblioXml(true));
-                if (response.WriteResResult.Value == -1)
-                    this.displayLine("符合预期");
-                else
-                {
-                    if (response.WriteResResult.Value == 0 && response.WriteResResult.ErrorCode != ErrorCode.NoError)
-                        this.displayLine("符合预期");
-                    else
-                        this.displayLine(getRed("不符合预期"));
-                }
-                path_xmlHasFile = response.strOutputResPath;
-                path_object = path_xmlHasFile + "/object/0";
-
-                // 不能写对象
-                this.displayLine(GetBR() + getBold("b3写对象，由于没有连带的读对象权限，应不能成功。"));
-                response = this.WriteObject(b3, path_object);
-                if (response.WriteResResult.Value == -1)
-                    this.displayLine("符合预期");
-                else
-                    this.displayLine(getRed("不符合预期"));
-
-                // 删除帐号
-                this.DelUser(b3);
-
-                //===
-                this.displayLine(getLarge("第4组测试"));
-                // b4 setbiblioinfo,getbiblioinfo,writebiblioobject,getbiblioobject
-                UserInfo b4 = new UserInfo
-                {
-                    UserName = "b4",
-                    Password = "1",
-                    SetPassword = true,
-
-                    //可写读者xml，包括add/new/delete
-                    //可操作xml中dprms:file，不能写对象
-                    Rights = "setbiblioinfo,getbiblioinfo,writebiblioobject,getbiblioobject",
-                    Access = ""
-                };
-                //创建帐号
-                this.NewUser(b4);
-
-                // 可写简单xml
-                this.displayLine(GetBR() + getBold("b4新建简单xml，应能成功。"));
-                response = this.WriteXml(b4, strResPath, this.GetBiblioXml(false));
-                if (response.WriteResResult.Value == 0)
-                    this.displayLine("符合预期");
-                else
-                    this.displayLine(getRed("不符合预期"));
-
-                // 操作xml中的dprms:file
-                this.displayLine(GetBR() + getBold("b4新建带dprms:file的xml，应能成功。"));
-                response = this.WriteXml(b4, strResPath, this.GetBiblioXml(true));
-                if (response.WriteResResult.Value == 0)
-                    this.displayLine("符合预期");
-                else
-                    this.displayLine(getRed("不符合预期"));
-
-                path_xmlHasFile = response.strOutputResPath;
-                path_object = path_xmlHasFile + "/object/0";
-
-                // todo change/delete
-                // change时，对dprms:file的new/change/delete
-
-
-                // 可写对象
-                this.displayLine(GetBR() + getBold("r1_4写对象数据，应成功。"));
-                response = this.WriteObject(b4, path_object);
-                if (response.WriteResResult.Value == 0)
-                    this.displayLine("符合预期");
-                else
-                    this.displayLine(getRed("不符合预期"));
-
-                // 删除帐号
-                this.DelUser(b4);
-
-
-                //===
-                this.displayLine(getLarge("第5组测试"));
-                // r1_5 writebiblioobject
-                UserInfo b5 = new UserInfo
-                {
-                    UserName = "b5",
-                    Password = "1",
-                    SetPassword = true,
-
-                    //不能操作xml中的dprms:file，也不能change对象数据，写对象需要先有getreaderobject。
-                    Rights = "writebiblioobject",
-                    Access = ""
-                };
-                //创建帐号
-                this.NewUser(b5);
-
-                // 不可操作xml中的dprms:file
-                this.displayLine(GetBR() + getBold("r1_5写对象数据，由于没有连带的读对象权限，应不能成功。"));
-                response = this.WriteObject(b5, path_object);
-                if (response.WriteResResult.Value == -1)
-                    this.displayLine("符合预期");
-                else
-                    this.displayLine(getRed("不符合预期"));
-
-                // 删除帐号
-                this.DelUser(b5);
-
-
-
-                //==
-                this.displayLine(getLarge("第6组测试"));
-                //r1_6 writebiblioobject, getbiblioobject
-                UserInfo b6 = new UserInfo
-                {
-                    UserName = "b6",
-                    Password = "1",
-                    SetPassword = true,
-                    Rights = "writebiblioobject, getbiblioobject",
-                    Access = ""
-                };
-                //创建帐号
-                this.NewUser(b6);
-
-                this.displayLine(GetBR() + getBold("r1_6写对象数据，由于没有xml权限，不能成功。"));
-                response = this.WriteObject(b6, path_object);
-                if (response.WriteResResult.Value == -1)
-                    this.displayLine("符合预期");
-                else
-                    this.displayLine(getRed("不符合预期"));
-
-                // 修改xml及dprms:file,应不能成功。
-                this.displayLine(GetBR() + getBold("r1_6修改xml及dprms:file，由于没有读写xml的权限，应不能成功。"));
-                response = this.WriteXml(b6, path_xmlHasFile, this.GetBiblioXml(true));
-                if (response.WriteResResult.Value == -1)
-                    this.displayLine("符合预期");
-                else
-                    this.displayLine(getRed("不符合预期"));
-
-                // 删除帐号
-                this.DelUser(b6);
-
-
-                //==
-                this.displayLine(getLarge("第7组测试"));
-                //r1_7 getbiblioinfo
-
-                //不能获取对象。
-                UserInfo b7 = new UserInfo
-                {
-                    UserName = "b7",
-                    Password = "1",
-                    SetPassword = true,
-                    Rights = "getbiblioinfo",
-                    Access = ""
-                };
-                //创建帐号
-                this.NewUser(b7);
-
-                //可获取xml，须过滤了dprms:file
-                this.displayLine(GetBR() + getBold("b7获取xml，应获取成功，且须过滤了dprms:file。"));
-                GetResResponse getResponse = this.GetRes(b7, path_xmlHasFile);
-
-                if (getResponse.GetResResult.Value >= 0)
-                {
-                    this.displayLine(getWarn1("注意检查是否过滤了dprms:file。"));
-
-                    //this.displayLine("符合预期");
-                }
-                else
-                {
-                    this.displayLine(getRed("不符合预期"));
-                }
-
-                //删除帐号
-                this.DelUser(b7);
-
-
-                //===
-                this.displayLine(getLarge("第8组测试"));
-                //b8 getbiblioinfo,gritebiblioobject 可读取xml且不会过滤dprms:file，可获取对象
-
-                UserInfo b8 = new UserInfo
-                {
-                    UserName = "b8",
-                    Password = "1",
-                    SetPassword = true,
-                    Rights = "getbiblioinfo,getbiblioobject",
-                    Access = ""
-                };
-                //创建帐号
-                this.NewUser(b8);
-
-                //可获取xml，须过滤了dprms:file
-                this.displayLine(GetBR() + getBold("b8获取xml，应获取成功，且不过滤dprms:file。"));
-                getResponse = this.GetRes(b8, path_xmlHasFile);
-                if (getResponse.GetResResult.Value >= 0)
-                {
-                    this.displayLine(getWarn1("注意检查结果中应有dprms:file。"));
-                }
-                else
-                {
-                    this.displayLine(getRed("不符合预期"));
-                }
-
-                //可获取对象
-                this.displayLine(GetBR() + getBold("b8获取对象，应获取成功。"));
-                getResponse = this.GetRes(b8, path_object);
-                if (getResponse.GetResResult.Value >= 0)
-                {
-                    this.displayLine("符合预期");
-                }
-                else
-                {
-                    this.displayLine(getRed("不符合预期"));
-                }
-
-                //删除帐号
-                this.DelUser(b8);
-
-
-                //===
-                this.displayLine(getLarge("第9组测试"));
-                //b9 getbiblioobject，可获取对象，不可读xml
-                UserInfo b9 = new UserInfo
-                {
-                    UserName = "b9",
-                    Password = "1",
-                    SetPassword = true,
-                    Rights = "getbiblioobject",
-                    Access = ""
-                };
-
-                //创建帐号
-                this.NewUser(b9);
-
-                //可获取xml，应不能获取
-                this.displayLine(GetBR() + getBold("b9获取xml，应不成功。"));
-                getResponse = this.GetRes(b9, path_xmlHasFile);
-                if (getResponse.GetResResult.Value == -1)
-                {
-                    this.displayLine("符合预期");
-                }
-                else
-                {
-                    this.displayLine(getRed("不符合预期"));
-                }
-
-                //应能获取对象
-                this.displayLine(GetBR() + getBold("b9获取对象，应不成功，由于对象权限不能独立存在。"));
-                getResponse = this.GetRes(b9, path_object);
-                if (getResponse.GetResResult.Value == -1)
-                {
-                    this.displayLine("符合预期");
-                }
-                else
-                {
-                    this.displayLine(getRed("不符合预期"));
-                }
-
-                //删除帐号
-                this.DelUser(b9);
-
-            }
-            catch (Exception ex)
-            {
-
-                MessageBox.Show(this, ex.Message);
-            }
-            finally
-            {
-                this.EnableCtrls(true);
+                MessageBox.Show(this, "自动测试尚不支持此类型" + type);
+                return;
             }
 
+            List<string> rightsList = new List<string>();
+
+            if (type == C_Type_reader)
+            {
+                rightsList.Add("setreaderinfo");
+                rightsList.Add("setreaderinfo,getreaderinfo");
+                rightsList.Add("setreaderinfo,getreaderinfo,writereaderobject");
+                rightsList.Add("setreaderinfo,getreaderinfo,writereaderobject,getreaderobject");
+
+                rightsList.Add("writereaderobject");
+                rightsList.Add("writereaderobject, getreaderobject");
+
+                rightsList.Add("getreaderinfo");
+                rightsList.Add("getreaderinfo,getreaderobject");
+                rightsList.Add("getreaderobject");
+            }
+            else if (type == C_Type_biblio)
+            {
+                rightsList.Add("setbiblioinfo");
+                rightsList.Add("setbiblioinfo,getbiblioinfo");
+                rightsList.Add("setbiblioinfo,getbiblioinfo,writebiblioobject");
+                rightsList.Add("setbiblioinfo,getbiblioinfo,writebiblioobject,getbiblioobject");
+
+                rightsList.Add("writebiblioobject");
+                rightsList.Add("writebiblioobject, getbiblioobject");
+
+                rightsList.Add("getbiblioinfo");
+                rightsList.Add("getbiblioinfo,getbiblioobject");
+                rightsList.Add("getbiblioobject");
+            }
+
+
+            // 调检查权限函数
+            this.checkRight(type,
+                rightsList);
         }
     }
 }
