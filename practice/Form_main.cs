@@ -2962,6 +2962,59 @@ out string strError);
             
             dlg.Show();
         }
+
+        #region SetItemInfo
+        private void button_help_SetItemInfo_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button_SetItemInfo_Click(object sender, EventArgs e)
+        {
+            // 清空底部输出信息
+            this.ClearResultInfo();
+
+            string strAction = this.textBox_SetItemInfo_strAction.Text;
+            string strRecPath = this.textBox_SetItemInfo_strRecPath.Text;
+            if (string.IsNullOrEmpty(strRecPath) == true)
+            {
+                MessageBox.Show(this, "strRecPath参数不能为空");
+                return;
+            }
+
+            string strXml = this.textBox_SetItemInfo_strXml.Text;
+            string strStyle = this.textBox_SetItemInfo_strStyle.Text;
+
+            string strTimestamp = this.textBox_SetItemInfo_baTimestamp.Text;
+            byte[] baTimestamp = ByteArray.GetTimeStampByteArray(strTimestamp);
+
+            RestChannel channel = this.GetChannel();
+            try
+            {
+                SetItemInfoResponse response = channel.SetItemInfo(
+                    strAction,
+                    strRecPath,
+                    strXml,
+                    baTimestamp,
+                    strStyle);
+
+                // 显示返回信息
+                this.SetResultInfo("SetItemInfo()\r\n" + RestChannel.GetResultInfo(response));
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, "SetItemInfo()异常：" + ex.Message);
+                return;
+            }
+            finally
+            {
+                this._channelPool.ReturnChannel(channel);
+            }
+        }
+        #endregion
+
+
     }
 
 

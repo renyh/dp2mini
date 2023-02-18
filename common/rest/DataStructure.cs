@@ -606,6 +606,38 @@ LibraryServerResult.ErrorInfo		出错信息
 
     #endregion
 
+    #region SetReaderInfo
+
+    // SetReaderInfo
+    [DataContract]
+    public class SetItemInfoRequest
+    {
+        [DataMember]
+        public string strAction { get; set; }
+        [DataMember]
+        public string strRecPath { get; set; }
+        [DataMember]
+        public string strXml { get; set; }
+        [DataMember]
+        public string strStyle { get; set; }
+        [DataMember]
+        public byte[] baTimestamp { get; set; }
+    }
+
+    [DataContract]
+    public class SetItemInfoResponse
+    {
+        [DataMember]
+        public LibraryServerResult SetItemInfoResult { get; set; }
+
+        [DataMember]
+        public string strOutputRecPath { get; set; }
+        [DataMember]
+        public byte[] baOutputTimestamp { get; set; }
+    }
+
+    #endregion
+
     #region SetBiblioInfo
 
     /*

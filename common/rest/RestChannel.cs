@@ -329,7 +329,7 @@ namespace DigitalPlatform.LibraryRestClient
             else if (o is GetUserResponse)
             {
                 GetUserResponse r = (GetUserResponse)o;
-                string info="";
+                string info = "";
 
                 if (r.contents != null)
                 {
@@ -339,7 +339,7 @@ namespace DigitalPlatform.LibraryRestClient
                         info += "UserName:" + u.UserName + "\r\n"
                          + "Rights:" + u.Rights + "\r\n"
                          + "Access:" + u.Access + "\r\n";
-                         //+ "====\r\n";
+                        //+ "====\r\n";
                     }
                 }
 
@@ -351,6 +351,15 @@ namespace DigitalPlatform.LibraryRestClient
             {
                 SetUserResponse r = (SetUserResponse)o;
                 return GetServerResultInfo(r.SetUserResult);
+
+            }
+            else if (o is SetItemInfoResponse)
+            {
+                SetItemInfoResponse r= (SetItemInfoResponse)o;
+
+                return GetServerResultInfo(r.SetItemInfoResult) + "\r\n"
+                    + "strOutputRecPath:" + r.strOutputRecPath + "\r\n"
+                    + "baOutputTimestamp:" + ByteArray.GetHexTimeStampString(r.baOutputTimestamp) + "\r\n";
 
             }
             return "未识别的对象" + o.ToString();
@@ -1871,6 +1880,62 @@ namespace DigitalPlatform.LibraryRestClient
                 {
                     if (response.SetReaderInfoResult.Value == -1
                         && response.SetReaderInfoResult.ErrorCode == ErrorCode.NotLogin)
+                    {
+                        if (DoNotLogin(ref strError) == 1)
+                            goto REDO;
+
+                        return response;
+                    }
+
+                }
+                this.ClearRedoCount();
+
+                return response;
+            }
+            catch (Exception ex)
+            {
+                int nRet = ConvertWebError(ex, out strError);
+                if (nRet == 0)
+                    throw ex;
+
+                goto REDO;
+            }
+
+        }
+
+        // 写册/订购/评注/期 记录
+        public SetItemInfoResponse SetItemInfo(
+    string strAction,
+    string strRecPath,
+    string strXml,
+    byte[] baTimestamp,
+    string strStyle)
+        {
+            string strError = "";
+        REDO:
+            try
+            {
+                CookieAwareWebClient client = this.GetClient();
+
+
+                SetItemInfoRequest request = new SetItemInfoRequest();
+                request.strAction = strAction;
+                request.strRecPath = strRecPath;
+                request.strXml = strXml;
+                request.baTimestamp = baTimestamp;
+                request.strStyle = strStyle;
+                byte[] baData = Encoding.UTF8.GetBytes(Serialize(request));
+                byte[] result = client.UploadData(this.GetRestfulApiUrl("SetItemInfo"),
+                    "POST",
+                    baData);
+
+                string strResult = Encoding.UTF8.GetString(result);
+
+                SetItemInfoResponse response = Deserialize<SetItemInfoResponse>(strResult);
+                if (response.SetItemInfoResult != null)
+                {
+                    if (response.SetItemInfoResult.Value == -1
+                        && response.SetItemInfoResult.ErrorCode == ErrorCode.NotLogin)
                     {
                         if (DoNotLogin(ref strError) == 1)
                             goto REDO;
