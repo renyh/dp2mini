@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Web;
 using DigitalPlatform.Xml;
+using System.Xml;
 
 namespace practice
 {
@@ -137,7 +138,8 @@ namespace practice
                     goto REDO;
                 }
 
-                this.displayLine(RestChannel.GetResultInfo(response));
+                this.displayLine("WriteRes()\r\n"
+                    +RestChannel.GetResultInfo(response));
 
                 //this.displayLine("<br/>帐户=" + u.UserName + "<br/>"
                 //    + "Rights=" + u.Rights + "<br/>"
@@ -204,7 +206,8 @@ namespace practice
                     goto REDO;
                 }
 
-                this.displayLine(RestChannel.GetResultInfo(response));
+                this.displayLine("WriteRes()\r\n"
+                    +RestChannel.GetResultInfo(response));
 
                 //this.displayLine("<br/>帐户=" + u.UserName + "<br/>"
                 //    + "Rights=" + u.Rights + "<br/>"
@@ -246,7 +249,8 @@ namespace practice
                     -1,
                     "data,metadata,outputpath,timestamp");
 
-                this.displayLine(HttpUtility.HtmlEncode( RestChannel.GetResultInfo(response)));
+                this.displayLine("GetRes()\r\n"
+                    +HttpUtility.HtmlEncode( RestChannel.GetResultInfo(response)));
                 return response;
 
             }
@@ -554,6 +558,9 @@ namespace practice
                 // 清空输出
                 ClearResult();
 
+                this.displayLine(getLarge("读者及下级对象所需权限的测试结果"));
+
+
                 string strResPath = "读者/?";
                 WriteResResponse response = null;
 
@@ -561,10 +568,12 @@ namespace practice
                 string path_xmlHasFile = "";
                 string path_object = "";
 
+                #region 第1组测试  仅有setreaderinfo
+
                 //===
                 this.displayLine(getLarge("第1组测试"));
-                // r1_1  仅有setreaderinfo
-                UserInfo r1 = new UserInfo
+                // 仅有setreaderinfo
+                UserInfo u = new UserInfo
                 {
                     UserName = "r1",
                     Password = "1",
@@ -573,25 +582,29 @@ namespace practice
                     Access = ""
                 };
                 //创建帐号
-                this.NewUser(r1); 
+                this.NewUser(u);
 
-                this.displayLine(GetBR() + getBold("r1写简单xml，由于没有连带的读xml权限，应不能写成功。"));
-                response = this.WriteXml(r1, strResPath, this.GetReaderXml(false));
+                this.displayLine(GetBR() + getBold(u.UserName+"写简单xml，由于没有连带的读xml权限，应不成功。"));
+                response = this.WriteXml(u, strResPath, this.GetReaderXml(false));
                 if (response.WriteResResult.Value == -1)
                     this.displayLine("符合预期");
                 else
-                    this.displayLine(getRed("不符合预期"));
+                    this.displayLine(getRed("不符合预期，应拒绝，提示权限不够。"));
 
                 //删除帐号
-                this.DelUser(r1);
+                this.DelUser(u);
+
+                #endregion
+
+
+                #region 第2组测试 setreaderinfo, getreaderinfo
 
                 //===
                 this.displayLine(getLarge("第2组测试"));
-                // r1_2  setreaderinfo, getreaderinfo
+                //setreaderinfo, getreaderinfo
                 //可写简单读者xml，包括add/new/delete
                 //不可操作xml中dprms:file，不能写对象
-                //写的xml会忽略保护字段，单独测
-                UserInfo r2 = new UserInfo
+                u = new UserInfo
                 {
                     UserName = "r2",
                     Password = "1",
@@ -600,29 +613,38 @@ namespace practice
                     Access = ""
                 };
                 //创建帐号
-                this.NewUser(r2);  
+                this.NewUser(u);  
 
-                // 可写简单xml
-                this.displayLine(GetBR() + getBold("r2新建简单xml，有读写xml权限，应能写成功。"));
-                response = this.WriteXml(r2, strResPath, this.GetReaderXml(false));
+                // 新建简单xml
+                this.displayLine(GetBR() + getBold(u.UserName+"新建简单xml，有读写xml权限，应新建成功。"));
+                response = this.WriteXml(u, strResPath, this.GetReaderXml(false));
                 if (response.WriteResResult.Value == 0)
                     this.displayLine("符合预期");
                 else
                     this.displayLine(getRed("不符合预期"));
 
                 string tempPath = response.strOutputResPath;
+
                 // 修改简单xml
-                this.displayLine(GetBR() + getBold("r2修改简单xml，应能修改成功，且错误码应为NoError。"));
-                response = this.WriteXml(r2, tempPath, this.GetReaderXml(false));
-                if (response.WriteResResult.Value == 0
-                    && response.WriteResResult.ErrorCode == ErrorCode.NoError)
-                    this.displayLine("符合预期");
+                this.displayLine(GetBR() + getBold(u.UserName+"修改简单xml，应修改成功，且错误码应为NoError。"));
+                response = this.WriteXml(u, tempPath, this.GetReaderXml(false));
+                if (response.WriteResResult.Value == 0)
+                {
+                    if (response.WriteResResult.ErrorCode != ErrorCode.NoError)
+                    {
+                        this.displayLine(getRed("不符合预期，错误码不对，应为NoError。"));
+                    }
+                    else
+                    {
+                        this.displayLine("符合预期");
+                    }
+                }
                 else
                     this.displayLine(getRed("不符合预期"));
 
-                // 删除xml
-                this.displayLine(GetBR() + getBold("r2删除简单xml，应能写成功。"));
-                SetReaderInfoResponse res = this.DelReader(r2, tempPath);
+                // 删除简单xml
+                this.displayLine(GetBR() + getBold(u.UserName+"删除简单xml，应删除成功。"));
+                SetReaderInfoResponse res = this.DelReader(u, tempPath);
                 if (res.SetReaderInfoResult.Value == 0)
                     this.displayLine("符合预期");
                 else
@@ -631,36 +653,46 @@ namespace practice
 
 
                 // 不可操作xml中的dprms:file
-                this.displayLine(GetBR() + getBold("r2新建带file的xml，由于没有对象权限，应部分写入且过滤了file(注意观察提示)。或者直接拒绝。"));
-                response = this.WriteXml(r2, strResPath, this.GetReaderXml(true));
+                this.displayLine(GetBR() + getBold(u.UserName+"新建带dprms:file的xml，由于没有对象权限，应写入失败 或者 部分写入且过滤了file(注意观察提示)。"));
+                response = this.WriteXml(u, strResPath, this.GetReaderXml(true));
                 if (response.WriteResResult.Value == -1)
                     this.displayLine("符合预期");
                 else
                 {
-                    if (response.WriteResResult.Value == 0 && response.WriteResResult.ErrorCode != ErrorCode.NoError)
-                        this.displayLine("符合预期");
+                    if (response.WriteResResult.ErrorCode == ErrorCode.NoError)
+                    {
+                        this.displayLine(getRed("不符合预期，错误码应为部分写入。"));
+                    }
                     else
-                        this.displayLine(getRed("不符合预期"));
+                    {
+                        this.displayLine("符合预期");
+                    }
+
                 }
                 path_xmlHasFile = response.strOutputResPath;
                 path_object = path_xmlHasFile + "/object/0";
 
                 // 不能写对象
-                this.displayLine(GetBR() + getBold("r2写对象数据，由于没有对象权限，应不能成功。"));
-                response = this.WriteObject(r2, path_object);
+                this.displayLine(GetBR() + getBold(u.UserName+"写对象数据，由于没有对象权限，应不能成功。"));
+                response = this.WriteObject(u, path_object);
                 if (response.WriteResResult.Value == -1)
                     this.displayLine("符合预期");
                 else
                     this.displayLine(getRed("不符合预期"));
 
                 // 删除帐号
-                this.DelUser(r2);
+                this.DelUser(u);
 
+                #endregion
+
+
+                #region 第3组测试  setreaderinfo,getreaderinfo,writereaderobject
 
                 //===
                 this.displayLine(getLarge("第3组测试"));
-                // r3  setreaderinfo, getreaderinfo, writereaderobject  效果同r1_2
-                UserInfo r3 = new UserInfo
+                // setreaderinfo,getreaderinfo,writereaderobject
+                // 效果同r1_2
+                u = new UserInfo
                 {
                     UserName = "r3",
                     Password = "1",
@@ -670,19 +702,21 @@ namespace practice
                     Access = ""
                 };
                 //创建帐号
-                this.NewUser(r3);
+                this.NewUser(u);
 
-                // 可写简单xml
-                this.displayLine(GetBR() + getBold("r3新建简单xml，应能写成功。"));
-                response = this.WriteXml(r3, strResPath, this.GetReaderXml(false));
-                if (response.WriteResResult.Value == 0)
+                // 无法写简单xml，因为写权限大于读者权限。
+                this.displayLine(GetBR() + getBold(u.UserName+"新建简单xml，应报权限配置不合理，因为有写对象权限，缺读对象权限。"));
+                response = this.WriteXml(u, strResPath, this.GetReaderXml(false));
+                if (response.WriteResResult.Value == -1)
                     this.displayLine("符合预期");
                 else
-                    this.displayLine(getRed("不符合预期"));
+                    this.displayLine(getRed("不符合预期，应报权限配置违反规则。"));
+
+                /*
 
                 // 不可操作xml中的dprms:file
-                this.displayLine(GetBR() + getBold("r3新建带file的xml，由于没有连带的读对象权限，应不能成功，或者部分写入且过滤了file。"));
-                response = this.WriteXml(r3, strResPath, this.GetReaderXml(true));
+                this.displayLine(GetBR() + getBold(u.UserName+"新建带dprms:file的xml，由于没有连带的读对象权限，应不能成功，或者部分写入且过滤了file。"));
+                response = this.WriteXml(u, strResPath, this.GetReaderXml(true));
                 if (response.WriteResResult.Value == -1)
                     this.displayLine("符合预期");
                 else
@@ -696,20 +730,27 @@ namespace practice
                 path_object = path_xmlHasFile + "/object/0";
 
                 // 不能写对象
-                this.displayLine(GetBR() + getBold("r3写对象，由于没有连带的读对象权限，应不能成功。"));
-                response = this.WriteObject(r3, path_object);
+                this.displayLine(GetBR() + getBold(u.UserName+"写对象，由于没有连带的读对象权限，应不能成功。"));
+                response = this.WriteObject(u, path_object);
                 if (response.WriteResResult.Value == -1)
                     this.displayLine("符合预期");
                 else
                     this.displayLine(getRed("不符合预期"));
+                */
+
 
                 // 删除帐号
-                this.DelUser(r3);
+                this.DelUser(u);
 
+                #endregion
+
+
+                #region 第4组测试 setreaderinfo,getreaderinfo,writereaderobject,getreaderobject
                 //===
                 this.displayLine(getLarge("第4组测试"));
-                // r4  setreaderinfo,getreaderinfo,writereaderobject,getreaderobject
-                UserInfo r4 = new UserInfo
+                // setreaderinfo,getreaderinfo,writereaderobject,getreaderobject
+                // 这是完整权限，即可读xml及操作里面的dprms:file，又可以写对象。
+                u = new UserInfo
                 {
                     UserName = "r4",
                     Password = "1",
@@ -721,76 +762,191 @@ namespace practice
                     Access = ""
                 };
                 //创建帐号
-                this.NewUser(r4);
+                this.NewUser(u);
 
-                // 可写简单xml
-                this.displayLine(GetBR() + getBold("r4新建简单xml，应能成功。"));
-                response = this.WriteXml(r4, strResPath, this.GetReaderXml(false));
+                // 此case无意义，因为前面当有setreaderinfo,getreaderinfo，已测过对简单xml的增删改
+                //// 写简单xml
+                //this.displayLine(GetBR() + getBold(u.UserName+"新建简单xml，应新建成功。"));
+                //response = this.WriteXml(u, strResPath, this.GetReaderXml(false));
+                //if (response.WriteResResult.Value == 0)
+                //    this.displayLine("符合预期");
+                //else
+                //    this.displayLine(getRed("不符合预期"));
+
+                #region 对带dprms:file的xml的新建/修改/删除
+                // 新建带file的xml
+                this.displayLine(GetBR() + getBold(u.UserName+"新建带dprms:file的xml，应新建成功。"));
+                response = this.WriteXml(u, strResPath, this.GetReaderXml(true));
                 if (response.WriteResResult.Value == 0)
                     this.displayLine("符合预期");
                 else
                     this.displayLine(getRed("不符合预期"));
 
-                // 可操作xml中的dprms:file
-                this.displayLine(GetBR() + getBold("r4新建带file的xml，应能成功。"));
-                response = this.WriteXml(r4, strResPath, this.GetReaderXml(true));
+                // 下面针对上面新建的这条进行修改和删除
+                tempPath = response.strOutputResPath; 
+
+                // 修改带file的xml
+                this.displayLine(GetBR() + getBold(u.UserName + "修改带dprms:file的xml，应修改成功且NoError。"));
+                response = this.WriteXml(u, tempPath, this.GetReaderXml(true));
+                if (response.WriteResResult.Value == 0)
+                {
+                    if (response.WriteResResult.ErrorCode != ErrorCode.NoError)
+                        this.displayLine(getRed("不符合预期，错误码不对，应为NoError。"));
+                    else
+                        this.displayLine("符合预期");
+                }
+                else
+                    this.displayLine(getRed("不符合预期"));
+
+                // 删除带dprms:file的xml              
+                this.displayLine(GetBR() + getBold(u.UserName + "删除带dprms:file的xml，应删除成功。"));
+                res = this.DelReader(u, tempPath);
+                if (res.SetReaderInfoResult.Value == 0)
+                    this.displayLine("符合预期");
+                else
+                    this.displayLine(getRed("不符合预期"));
+
+                #endregion
+
+                #region 修改xml中的dprms:file,包括对dprms:file的new/change/delete
+
+                // 再新建一条带dprms:file的记录，以便对其下级的dprms:file进行增/删/改
+                this.displayLine(GetBR() + getBold(u.UserName + "再新建一条带dprms:file的记录，以便对其下级的dprms:file进行增/删/改。"));
+
+                string originXml = this.GetReaderXml(true);
+                response = this.WriteXml(u, strResPath, originXml);
                 if (response.WriteResResult.Value == 0)
                     this.displayLine("符合预期");
                 else
                     this.displayLine(getRed("不符合预期"));
 
+                // 方便后面的帐户使用
                 path_xmlHasFile = response.strOutputResPath;
                 path_object = path_xmlHasFile + "/object/0";
 
-                // todo change/delete
-                // change时，对file的new/change/delete
+
+                // 本次对这个路径的记录中dprms:file进行增删改
+                tempPath = response.strOutputResPath;
+
+                // 新增两个dprms:file
+                this.displayLine(GetBR() + getBold(u.UserName + "对xml新增两个dprms:file，此时应有3个dprms:file"));
+                string newFileXml = this.ChangeDprmsFile(originXml, "new");
+
+                response = this.WriteXml(u, tempPath, newFileXml);
+                if (response.WriteResResult.Value == 0)
+                {
+                    if (response.WriteResResult.ErrorCode != ErrorCode.NoError)
+                        this.displayLine(getRed("注意错误码不对，应为NoError。"));
+
+                    // 获取出来看下
+                    GetResResponse tempResponse= this.GetRes(u,tempPath);
+                    if (tempResponse.GetResResult.Value >= 0)
+                    {
+                        //tempResponse.
+                        this.displayLine(this.getWarn1("请核对是否有3个dprms:file"));
+                    }
+                }
+                else
+                    this.displayLine(getRed("不符合预期"));
+
+                // 修改第1个dprms:file
+                this.displayLine(GetBR() + getBold(u.UserName + "对xml修改了第1个dprms:file，增加了a属性"));
+                string changeFileXml = this.ChangeDprmsFile(newFileXml, "change");
+
+                response = this.WriteXml(u, tempPath, changeFileXml);
+                if (response.WriteResResult.Value == 0)
+                {
+                    if (response.WriteResResult.ErrorCode != ErrorCode.NoError)
+                        this.displayLine(getRed("注意错误码不对，应为NoError。"));
+
+                    // 获取出来看下
+                    GetResResponse tempResponse = this.GetRes(u, tempPath);
+                    if (tempResponse.GetResResult.Value >= 0)
+                    {
+                        //tempResponse.
+                        this.displayLine(this.getWarn1("请核对第1个dprms:file是否增加了a属性"));
+                    }
+                }
+                else
+                    this.displayLine(getRed("不符合预期"));
+
+                // 删除第3个dprms:file
+                this.displayLine(GetBR() + getBold(u.UserName + "对xml删除第3个dprms:file，应成功"));
+                string delFileXml = this.ChangeDprmsFile(changeFileXml, "delete");
+
+                response = this.WriteXml(u, tempPath, delFileXml);
+                if (response.WriteResResult.Value == 0)
+                {
+                    if (response.WriteResResult.ErrorCode != ErrorCode.NoError)
+                        this.displayLine(getRed("注意错误码不对，应为NoError。"));
+
+                    // 获取出来看下
+                    GetResResponse tempResponse = this.GetRes(u, tempPath);
+                    if (tempResponse.GetResResult.Value >= 0)
+                    {
+                        //tempResponse.
+                        this.displayLine(this.getWarn1("请核对是否删除了第3个dprms:file"));
+                    }
+                }
+                else
+                    this.displayLine(getRed("不符合预期"));
 
 
-                // 可写对象
-                this.displayLine(GetBR() + getBold("r4写对象数据，应能成功。"));
-                response = this.WriteObject(r4, path_object);
+                #endregion
+
+
+                // 写对象
+                this.displayLine(GetBR() + getBold(u.UserName+"写对象数据，应成功。"));
+                response = this.WriteObject(u, path_object);
                 if (response.WriteResResult.Value == 0)
                     this.displayLine("符合预期");
                 else
                     this.displayLine(getRed("不符合预期"));
 
                 // 删除帐号
-                this.DelUser(r4);
+                this.DelUser(u);
 
+                #endregion
+
+
+                #region 第5组测试 writereaderobject
 
                 //===
                 this.displayLine(getLarge("第5组测试"));
-                // r5 writereaderobject
-                UserInfo r5 = new UserInfo
+                // writereaderobject
+                // 不能操作xml中的dprms:file，也不能change对象数据，写对象需要先有读对象权限，且还需读写xml的权限
+                u = new UserInfo
                 {
                     UserName = "r5",
                     Password = "1",
                     SetPassword = true,
-
-                    //不能操作xml中的dprms:file，也不能change对象数据，写对象需要先有getreaderobject。
                     Rights = "writereaderobject",
                     Access = ""
                 };
                 //创建帐号
-                this.NewUser(r5);
+                this.NewUser(u);
 
                 // 不可操作xml中的dprms:file
-                this.displayLine(GetBR() + getBold("r5写对象数据，由于没有连带的读对象权限，应不能成功。"));
-                response = this.WriteObject(r5, path_object);
+                this.displayLine(GetBR() + getBold(u.UserName+"写对象数据，由于没有连带的读对象权限 和 读写xml的权，应写不成功。"));
+                response = this.WriteObject(u, path_object);
                 if (response.WriteResResult.Value == -1)
                     this.displayLine("符合预期");
                 else
                     this.displayLine(getRed("不符合预期"));
 
                 // 删除帐号
-                this.DelUser(r5);
+                this.DelUser(u);
+
+                #endregion
 
 
+                #region 第6组测试  writereaderobject, getreaderobject
 
                 //==
                 this.displayLine(getLarge("第6组测试"));
-                //r6 writereaderobject, getreaderobject
-                UserInfo r6 = new UserInfo
+                //writereaderobject, getreaderobject
+                //不能修改对象数据，因为没有连带的读者xml权限
+               u = new UserInfo
                 {
                     UserName = "r6",
                     Password = "1",
@@ -801,33 +957,38 @@ namespace practice
                     Access = ""
                 };
                 //创建帐号
-                this.NewUser(r6);
+                this.NewUser(u);
 
-                this.displayLine(GetBR() + getBold("r6写对象数据，由于没有xml权限，不能成功。"));
-                response = this.WriteObject(r6, path_object);
+                this.displayLine(GetBR() + getBold(u.UserName+"修改对象数据，因为没有连带的读者xml权限，应不成功。"));
+                response = this.WriteObject(u, path_object);
                 if (response.WriteResResult.Value == -1)
                     this.displayLine("符合预期");
                 else
                     this.displayLine(getRed("不符合预期"));
 
                 // 修改xml及dprms:file,应不能成功。
-                this.displayLine(GetBR() + getBold("r6修改xml及file，由于没有读写xml的权限，应不能成功。"));
-                response = this.WriteXml(r6, path_xmlHasFile, this.GetReaderXml(true));
+                this.displayLine(GetBR() + getBold(u.UserName+"修改xml及dprms:file，由于没有读写xml的权限，应不成功。"));
+                response = this.WriteXml(u, path_xmlHasFile, this.GetReaderXml(true));
                 if (response.WriteResResult.Value == -1)
                     this.displayLine("符合预期");
                 else
                     this.displayLine(getRed("不符合预期"));
 
                 // 删除帐号
-                this.DelUser(r6);
+                this.DelUser(u);
 
+                #endregion
+
+
+                //=====以前为读权限=======
+
+                #region 第7组测试 getreaderinfo
 
                 //==
                 this.displayLine(getLarge("第7组测试"));
-                //r7 getreaderinfo
-               
-                //不能获取对象。
-                UserInfo r7 = new UserInfo
+                //getreaderinfo
+                //仅能获取xml普通节点，不能获取对象。
+                u = new UserInfo
                 {
                     UserName = "r7",
                     Password = "1",
@@ -836,17 +997,15 @@ namespace practice
                     Access = ""
                 };
                 //创建帐号
-                this.NewUser(r7);
+                this.NewUser(u);
 
                 //可获取xml，须过滤了dprms:file
-                this.displayLine(GetBR() + getBold("r7获取xml，应获取成功，且须过滤了dprms:file。"));
-                GetResResponse getResponse = this.GetRes(r7, path_xmlHasFile);
+                this.displayLine(GetBR() + getBold(u.UserName+"获取xml，应获取成功，且须过滤了dprms:file。"));
+                GetResResponse getResponse = this.GetRes(u, path_xmlHasFile);
 
                 if (getResponse.GetResResult.Value >= 0)
                 {
-                    this.displayLine(getWarn1("需与系统中的记录核对，检查是否过滤了dprms:file。"));
-
-                    //this.displayLine("符合预期");
+                    this.displayLine(getWarn1("请核对返回结果是否过滤了dprms:file。"));
                 }
                 else
                 {
@@ -854,14 +1013,17 @@ namespace practice
                 }
 
                 //删除帐号
-                this.DelUser(r7);
+                this.DelUser(u);
 
+                #endregion
+
+                #region 第8组测试 getreaderinfo,getreaderobject
 
                 //===
                 this.displayLine(getLarge("第8组测试"));
-                //r8 getreaderinfo,getreaderobject，可读取xml且不会过滤dprms:file，可获取对象
-
-                UserInfo r8 = new UserInfo
+                //getreaderinfo,getreaderobject
+                //可读取xml且包含dprms:file，可获取对象
+                u = new UserInfo
                 {
                     UserName = "r8",
                     Password = "1",
@@ -870,14 +1032,14 @@ namespace practice
                     Access = ""
                 };
                 //创建帐号
-                this.NewUser(r8);
+                this.NewUser(u);
 
                 //可获取xml，须过滤了dprms:file
-                this.displayLine(GetBR() + getBold("r8获取xml，应获取成功，且不过滤dprms:file。"));
-                 getResponse = this.GetRes(r8, path_xmlHasFile);
+                this.displayLine(GetBR() + getBold(u.UserName+"获取xml，应获取成功，且包含dprms:file。"));
+                 getResponse = this.GetRes(u, path_xmlHasFile);
                 if (getResponse.GetResResult.Value >= 0)
                 {
-                    this.displayLine(getWarn1("符合预期，获取结果中应有dprms:file。"));
+                    this.displayLine(getWarn1("请核对返回结果中应包含dprms:file。"));
                 }
                 else
                 {
@@ -885,8 +1047,8 @@ namespace practice
                 }
 
                 //可获取对象
-                this.displayLine(GetBR() + getBold("r8获取对象，应获取成功。"));
-                getResponse = this.GetRes(r8, path_object);
+                this.displayLine(GetBR() + getBold(u.UserName+"获取对象，应获取成功。"));
+                getResponse = this.GetRes(u, path_object);
                 if (getResponse.GetResResult.Value >= 0)
                 {
                     this.displayLine("符合预期");
@@ -897,13 +1059,16 @@ namespace practice
                 }
 
                 //删除帐号
-                this.DelUser(r8);
+                this.DelUser(u);
 
+                #endregion
+
+                #region 第9组测试 getreaderobject
 
                 //===
                 this.displayLine(getLarge("第9组测试"));
-                //r9 getreaderobject，可获取对象，不可读xml
-                UserInfo r9 = new UserInfo
+                //getreaderobject，可获取对象，不可读xml
+                u= new UserInfo
                 {
                     UserName = "r9",
                     Password = "1",
@@ -913,11 +1078,23 @@ namespace practice
                 };
 
                 //创建帐号
-                this.NewUser(r9);
+                this.NewUser(u);
 
-                //可获取xml，应不能获取
-                this.displayLine(GetBR() + getBold("r9获取xml，应不成功。"));
-                getResponse = this.GetRes(r9, path_xmlHasFile);
+                //不能获取对象
+                this.displayLine(GetBR() + getBold("r9获取对象，应不成功，由于对象权限不能独立存在。"));
+                getResponse = this.GetRes(u, path_object);
+                if (getResponse.GetResResult.Value == -1)
+                {
+                    this.displayLine("符合预期");
+                }
+                else
+                {
+                    this.displayLine(getRed("不符合预期"));
+                }
+
+                //不能获取xml
+                this.displayLine(GetBR() + getBold(u.UserName+"获取xml，由于没有读xml权限，应不成功。"));
+                getResponse = this.GetRes(u, path_xmlHasFile);
                 if (getResponse.GetResResult.Value ==-1)
                 {
                     this.displayLine("符合预期");
@@ -927,20 +1104,10 @@ namespace practice
                     this.displayLine(getRed("不符合预期"));
                 }
 
-                //应能获取对象
-                this.displayLine(GetBR() + getBold("r9获取对象，应不成功，由于对象权限不能独立存在。"));
-                getResponse = this.GetRes(r9, path_object);
-                if (getResponse.GetResResult.Value ==-1 )
-                {
-                    this.displayLine("符合预期");
-                }
-                else
-                {
-                    this.displayLine(getRed("不符合预期"));
-                }
-
                 //删除帐号
-                this.DelUser(r9);
+                this.DelUser(u);
+
+                #endregion
 
             }
             catch (Exception ex)
@@ -962,18 +1129,77 @@ namespace practice
             int temp = rd.Next(1, 999999);
             string barcode = temp.ToString().PadLeft(6, '0'); //Guid.NewGuid().ToString().ToUpper(); //
 
-            string file = "";
+            string dprmsfile = "";
             if (hasFile == true)
-                file = "<dprms:file id='0' xmlns:dprms='http://dp2003.com/dprms'   test='"+temp.ToString()+"'/>";
+                dprmsfile = "<dprms:file id='0' xmlns:dprms='http://dp2003.com/dprms'   test='"+temp.ToString()+"'/>";
 
 
             return "<root>"
                 + "<barcode>P" + barcode+ "</barcode>"
                 + "<name>小张"+barcode+"</name>"
                 + "<readerType>本科生</readerType>"
-                + file
+                + dprmsfile
                 + "</root>";
+        }
 
+        // action:new/change/delete
+        public string ChangeDprmsFile(string xml, string action)
+        {
+            XmlDocument dom = new XmlDocument();
+            dom.LoadXml(xml);
+
+            XmlNode root = dom.DocumentElement;
+
+            if (action == "new")
+            {
+                // 加两项file
+                root.InnerXml = root.InnerXml
+                    + "<dprms:file id='1' xmlns:dprms='http://dp2003.com/dprms' />"
+                    + "<dprms:file id='2' xmlns:dprms='http://dp2003.com/dprms' />";
+
+            }
+            else if (action == "change")
+            {
+
+                XmlNamespaceManager nsmgr = new XmlNamespaceManager(new NameTable());
+                nsmgr.AddNamespace("dprms", DpNs.dprms);
+
+                XmlNodeList nodes = root.SelectNodes("//dprms:file", nsmgr);
+
+                // 修改第一项
+                if (nodes.Count > 0)
+                {
+                    XmlNode node = nodes[0];
+                    DomUtil.SetAttr(node, "a", Guid.NewGuid().ToString());   //给第一个dprms:file元素，加一个test属性，是guid
+                }
+                else
+                {
+                    throw new Exception("提供的xml缺dprms:file元素，无法修改");
+                }
+            }
+            else if (action == "delete")
+            {
+
+                XmlNamespaceManager nsmgr = new XmlNamespaceManager(new NameTable());
+                nsmgr.AddNamespace("dprms", DpNs.dprms);
+
+                XmlNodeList nodes = root.SelectNodes("//dprms:file", nsmgr);
+
+                // 删除第3个file
+                if (nodes.Count > 2)
+                {
+                    XmlNode node = nodes[2];
+                    root.RemoveChild(node);
+                }
+                else
+                {
+                    throw new Exception("提供的xml不足3个dprms:file无法，不能删除第3个dprms:file。");
+                }
+            }
+
+
+            return dom.OuterXml;
+            
         }
 
         public string GetBiblioXml(bool hasFile)
@@ -982,9 +1208,9 @@ namespace practice
             int temp = rd.Next(1, 999);
             //string barcode = temp.ToString().PadLeft(6, '0'); //Guid.NewGuid().ToString().ToUpper(); //
 
-            string file = "";
+            string dprmsfile = "";
             if (hasFile == true)
-                file = "<dprms:file id='0'    test='" + temp.ToString() + "'/>";
+                dprmsfile = "<dprms:file id='0'    test='" + temp.ToString() + "'/>";
 
 
             string xml = @"<unimarc:record xmlns:dprms='http://dp2003.com/dprms' xmlns:unimarc='http://dp2003.com/UNIMARC'>
@@ -992,8 +1218,8 @@ namespace practice
                                   <unimarc:datafield tag='200' ind1=' ' ind2=' '>"
                                    +"<unimarc:subfield code='a'>"+temp+"我爱我家</unimarc:subfield>"
                                   +"</unimarc:datafield>"
-                                    +file
-                                    +"</unimarc:record>";
+                                    + dprmsfile
+                                    + "</unimarc:record>";
             return xml;
         }
 
@@ -1085,7 +1311,7 @@ namespace practice
 
 
                 // 不可操作xml中的dprms:file
-                this.displayLine(GetBR() + getBold("b2新建带file的xml，由于没有对象权限，应部分写入且过滤了file(注意观察提示)。或者直接拒绝。"));
+                this.displayLine(GetBR() + getBold("b2新建带dprms:file的xml，由于没有对象权限，应部分写入且过滤了dprms:file(注意观察提示)。或者直接拒绝。"));
                 response = this.WriteXml(b2, strResPath, this.GetBiblioXml(true));
                 if (response.WriteResResult.Value == -1)
                     this.displayLine("符合预期");
@@ -1135,7 +1361,7 @@ namespace practice
                     this.displayLine(getRed("不符合预期"));
 
                 // 不可操作xml中的dprms:file
-                this.displayLine(GetBR() + getBold("b3新建带file的xml，由于没有连带的读对象权限，应部分写入且过滤了file，或直接拒绝。"));
+                this.displayLine(GetBR() + getBold("b3新建带dprms:file的xml，由于没有连带的读对象权限，应部分写入且过滤了dprms:file，或直接拒绝。"));
                 response = this.WriteXml(b3, strResPath, this.GetBiblioXml(true));
                 if (response.WriteResResult.Value == -1)
                     this.displayLine("符合预期");
@@ -1186,7 +1412,7 @@ namespace practice
                     this.displayLine(getRed("不符合预期"));
 
                 // 操作xml中的dprms:file
-                this.displayLine(GetBR() + getBold("b4新建带file的xml，应能成功。"));
+                this.displayLine(GetBR() + getBold("b4新建带dprms:file的xml，应能成功。"));
                 response = this.WriteXml(b4, strResPath, this.GetBiblioXml(true));
                 if (response.WriteResResult.Value == 0)
                     this.displayLine("符合预期");
@@ -1197,7 +1423,7 @@ namespace practice
                 path_object = path_xmlHasFile + "/object/0";
 
                 // todo change/delete
-                // change时，对file的new/change/delete
+                // change时，对dprms:file的new/change/delete
 
 
                 // 可写对象
@@ -1263,7 +1489,7 @@ namespace practice
                     this.displayLine(getRed("不符合预期"));
 
                 // 修改xml及dprms:file,应不能成功。
-                this.displayLine(GetBR() + getBold("r1_6修改xml及file，由于没有读写xml的权限，应不能成功。"));
+                this.displayLine(GetBR() + getBold("r1_6修改xml及dprms:file，由于没有读写xml的权限，应不能成功。"));
                 response = this.WriteXml(b6, path_xmlHasFile, this.GetBiblioXml(true));
                 if (response.WriteResResult.Value == -1)
                     this.displayLine("符合预期");

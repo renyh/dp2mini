@@ -146,7 +146,19 @@ namespace DigitalPlatform.LibraryRestClient
                     }
                     else
                     {
-                        string hex = ByteArray.GetHexTimeStampString(r.baContent);
+                        byte[] temp = null;
+                        if (r.baContent.Length > 400)
+                        {
+                            temp = new byte[20];
+                            //r.baContent.(temp, 0);
+                            Array.Copy(r.baContent, temp, temp.Length);
+                            info += "(截短)";
+                        }
+                        else
+                        {
+                            temp = r.baContent;
+                        }
+                        string hex = ByteArray.GetHexTimeStampString(temp);
                         info += hex + "\r\n";
                     }
                 }
