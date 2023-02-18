@@ -749,66 +749,6 @@ namespace practice
 
         }
 
-        /*
-        public string GetXml(string type, bool hasFile)
-        {
-            if (type == C_Type_reader)
-                return this.GetReaderXml(hasFile);
-            else if (type == C_Type_biblio)
-                return this.GetBiblioXml(hasFile);
-            else if (type == C_Type_item
-                || type == C_Type_order
-                || type == C_Type_comment)
-            {
-                return this.GetItemXml(type, hasFile);
-            }
-
-            throw new Exception("GetXml不支持的类型" + type);
-        }
-        */
-
-        /*
-        public string GetReaderXml(bool hasFile)
-        {
-            Random rd = new Random();
-            int temp = rd.Next(1, 999999);
-            string barcode = temp.ToString().PadLeft(6, '0'); //Guid.NewGuid().ToString().ToUpper(); //
-
-            string dprmsfile = "";
-            if (hasFile == true)
-                dprmsfile = "<dprms:file id='0' xmlns:dprms='http://dp2003.com/dprms'   test='" + temp.ToString() + "'/>";
-
-
-            return "<root>"
-                + "<barcode>P" + barcode + "</barcode>"
-                + "<name>小张" + barcode + "</name>"
-                + "<readerType>本科生</readerType>"
-                + dprmsfile
-                + "</root>";
-        }
-
-        public string GetBiblioXml(bool hasFile)
-        {
-            Random rd = new Random();
-            int temp = rd.Next(1, 999);
-            //string barcode = temp.ToString().PadLeft(6, '0'); //Guid.NewGuid().ToString().ToUpper(); //
-
-            string dprmsfile = "";
-            if (hasFile == true)
-                dprmsfile = "<dprms:file id='0'    test='" + temp.ToString() + "'/>";
-
-
-            string xml = @"<unimarc:record xmlns:dprms='http://dp2003.com/dprms' xmlns:unimarc='http://dp2003.com/UNIMARC'>
-                                  <unimarc:leader>01887nam0 2200325   450 </unimarc:leader>
-                                  <unimarc:datafield tag='200' ind1=' ' ind2=' '>"
-                                   + "<unimarc:subfield code='a'>" + temp + "我爱我家</unimarc:subfield>"
-                                  + "</unimarc:datafield>"
-                                    + dprmsfile
-                                    + "</unimarc:record>";
-            return xml;
-        }
-        */
-
         public string GetXml(string type, bool hasFile)
         {
             Random rd = new Random();
