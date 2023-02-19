@@ -33,6 +33,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.comboBox_TestRight_type = new System.Windows.Forms.ComboBox();
             this.button_testRight = new System.Windows.Forms.Button();
+            this.button_readerLogin = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // button_accessAndObject
@@ -96,11 +97,25 @@
             this.button_testRight.UseVisualStyleBackColor = true;
             this.button_testRight.Click += new System.EventHandler(this.button_testRight_Click);
             // 
+            // button_readerLogin
+            // 
+            this.button_readerLogin.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.button_readerLogin.Location = new System.Drawing.Point(722, 16);
+            this.button_readerLogin.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.button_readerLogin.Name = "button_readerLogin";
+            this.button_readerLogin.Size = new System.Drawing.Size(186, 52);
+            this.button_readerLogin.TabIndex = 68;
+            this.button_readerLogin.Tag = "";
+            this.button_readerLogin.Text = "读者身份";
+            this.button_readerLogin.UseVisualStyleBackColor = true;
+            this.button_readerLogin.Click += new System.EventHandler(this.button_readerLogin_Click);
+            // 
             // Form_auto
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(14F, 27F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1311, 777);
+            this.Controls.Add(this.button_readerLogin);
             this.Controls.Add(this.button_testRight);
             this.Controls.Add(this.comboBox_TestRight_type);
             this.Controls.Add(this.label1);
@@ -119,5 +134,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ComboBox comboBox_TestRight_type;
         private System.Windows.Forms.Button button_testRight;
+        private System.Windows.Forms.Button button_readerLogin;
     }
 }

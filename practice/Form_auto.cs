@@ -196,10 +196,11 @@ namespace practice
         }
 
 
-        // 写xml
+        // 用WriteRes写xml
         public WriteResResponse WriteXml(UserInfo u,
           string strResPath,
-          string strXml)
+          string strXml,
+          bool isReader=false)
         {
             WriteResResponse response = null;
 
@@ -215,12 +216,11 @@ namespace practice
 
             byte[] baTimestamp = null;
 
-            // 用u_a3帐户，写xml
             RestChannel channel = null;
             try
             {
                 // 用户登录
-                channel = mainForm.GetChannelAndLogin(u.UserName, u.Password);
+                channel = mainForm.GetChannelAndLogin(u.UserName, u.Password,isReader);
 
             REDO:
                 response = channel.WriteRes(strResPath,
@@ -241,11 +241,6 @@ namespace practice
                 this.displayLine("WriteRes()\r\n"
                     +RestChannel.GetResultInfo(response));
 
-                //this.displayLine("<br/>帐户=" + u.UserName + "<br/>"
-                //    + "Rights=" + u.Rights + "<br/>"
-                //    + "Access=" + u.Access + "<br/><br/>"
-                //    + RestChannel.GetResultInfo(response));
-
                 // 时间戳
                 baTimestamp = response.baOutputTimestamp;
 
@@ -264,6 +259,97 @@ namespace practice
         }
 
 
+        // 用SetBiblioInfo
+        public SetBiblioInfoResponse SetBiblioInfo(UserInfo u,
+            string strAction,
+          string strResPath,
+          string strXml,
+          bool isReader = false)
+        {
+            SetBiblioInfoResponse response = null;
+
+            this.displayLine("strResPath=" + strResPath);
+            this.displayLine("提交的xml<br/>"
+                + HttpUtility.HtmlEncode(DomUtil.GetIndentXml(strXml))
+                + "<br/>");
+
+
+            //byte[] baContent = Encoding.UTF8.GetBytes(strXml);  //文本到二进制
+            //long lTotalLength = baContent.Length;
+            //string strRanges = "0-" + (baContent.Length - 1).ToString();
+
+            byte[] baTimestamp = null;
+
+            RestChannel channel = null;
+            try
+            {
+                // 用户登录
+                channel = mainForm.GetChannelAndLogin(u.UserName, u.Password, isReader);
+
+            REDO:
+                response = channel.SetBiblioInfo(strAction,
+                    strResPath,
+                    "xml",
+                    strXml,
+                   baTimestamp,
+                   "",
+                   "");
+                // 间戳不匹配，自动重试
+                if (response.SetBiblioInfoResult.ErrorCode == ErrorCode.TimestampMismatch)
+                {
+                    // 设上时间戳
+                    baTimestamp = response.baOutputTimestamp;
+                    goto REDO;
+                }
+
+                this.displayLine("SetBiblioInfo()\r\n"
+                    + RestChannel.GetResultInfo(response));
+
+                // 时间戳
+                baTimestamp = response.baOutputTimestamp;
+
+                return response;
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(u.UserName + "SetBiblioInfo()异常：" + ex.Message);
+            }
+            finally
+            {
+                if (channel != null)
+                    this.mainForm._channelPool.ReturnChannel(channel);
+            }
+        }
+
+        public void ChangeReaderPasswordBySupervisor(string readerBarcode)
+        {
+            ChangeReaderPasswordResponse response = null;
+
+            RestChannel channel = null;
+            try
+            {
+                // 用户登录
+                channel = mainForm.GetChannelAndLogin(this.mainForm.GetSupervisorAccount());
+
+                response = channel.ChangeReaderPassword(readerBarcode,
+                    null,
+                    "1");
+                if (response.ChangeReaderPasswordResult.Value != 1)
+                    throw new Exception("superviosr修改读者密码出错:"+response.ChangeReaderPasswordResult.ErrorInfo);
+
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("superviosr修改读者密码异常：" + ex.Message);
+            }
+            finally
+            {
+                if (channel != null)
+                    this.mainForm._channelPool.ReturnChannel(channel);
+            }
+        }
 
         public GetResResponse GetRes(UserInfo u,
             string strResPath)
@@ -433,36 +519,77 @@ namespace practice
             try
             {
 
-                #region 创建帐户
+                //===
+                //先用管理员身从那写一条书目记录， 带dprms:file
+                string strBiblioPath = this.CreateBiblioBySupervisor(false, true);
 
-                // 创建5个临时帐户
-                List<UserInfo> users = new List<UserInfo>();
+                //===
+                this.displayLine("以下是用不同帐户测试修改对象数据。");
+                string objectPath = strBiblioPath + "/object/0";
 
-                UserInfo a1 = new UserInfo
+
+                #region 第1组测试  存取定义重点为：setbiblioinfo=change
+
+                //===
+                // 第1组测试  存取定义重点为：setbiblioinfo=change
+                this.displayLine(getLarge("第1组测试"));
+                UserInfo u = new UserInfo
                 {
-                    UserName = "a1",
+                    UserName = "u1",
                     Password = "1",
                     SetPassword = true,
                     Rights = "writebiblioobject,getbiblioobject",
                     Access = "中文图书:setbiblioinfo=change|getbiblioinfo=*"
                 };
-                users.Add(a1);
+                //创建帐号
+                this.NewUser(u);
 
-                //===
-                UserInfo a1_1 = new UserInfo
+                this.displayLine(GetBR() + getBold(u.UserName + "写对象，应成功。"));
+                WriteResResponse response = this.WriteObject(u, objectPath);
+                if (response.WriteResResult.Value == 0)
+                    this.displayLine("符合预期");
+                else
+                    this.displayLine(getRed("不符合预期"));
+
+                //删除帐号
+                this.DelUser(u);
+
+                #endregion
+
+                #region 第2组测试  存取定义重点为：setbiblioinfo=change(606)
+
+                this.displayLine(getLarge("第2组测试"));
+                // 用u_a1_1帐户
+                u = new UserInfo
                 {
-                    UserName = "a1_1",
+                    UserName = "u2",
                     Password = "1",
                     SetPassword = true,
                     Rights = "writebiblioobject,getbiblioobject",
                     Access = "中文图书:setbiblioinfo=change(606)|getbiblioinfo=*"
                 };
-                users.Add(a1_1);
+                //创建帐号
+                this.NewUser(u);
 
-                //===
-                UserInfo a2 = new UserInfo
+                this.displayLine(GetBR() + getBold(u.UserName + "写对象，应成功。"));
+                response = this.WriteObject(u, objectPath);
+                if (response.WriteResResult.Value == 0)
+                    this.displayLine("符合预期");
+                else
+                    this.displayLine(getRed("不符合预期"));
+
+                //删除帐号
+                this.DelUser(u);
+
+                #endregion
+
+                #region 第3组测试  存取定义重点为：setbiblioinfo=new
+
+                this.displayLine(getLarge("第3组测试"));
+                // 用u_a1_1帐户
+                u = new UserInfo
                 {
-                    UserName = "a2",
+                    UserName = "u3",
                     Password = "1",
                     SetPassword = true,
 
@@ -470,12 +597,27 @@ namespace practice
                     Rights = "writebiblioobject,getbiblioobject",
                     Access = "中文图书:setbiblioinfo=new|getbiblioinfo=*"
                 };
-                users.Add(a2);
+                //创建帐号
+                this.NewUser(u);
 
-                //===
-                UserInfo a3 = new UserInfo
+                this.displayLine(GetBR() + getBold(u.UserName + "写对象，应不成功。"));
+                response = this.WriteObject(u, objectPath);
+                if (response.WriteResResult.Value == -1)
+                    this.displayLine("符合预期");
+                else
+                    this.displayLine(getRed("不符合预期"));
+
+                //删除帐号
+                this.DelUser(u);
+
+                #endregion
+
+                #region 第4组测试  存取定义重点为：setbiblioinfo=delete
+
+                this.displayLine(getLarge("第4组测试"));
+                u = new UserInfo
                 {
-                    UserName = "a3",
+                    UserName = "u4",
                     Password = "1",
                     SetPassword = true,
 
@@ -483,12 +625,27 @@ namespace practice
                     Rights = "writebiblioobject,getbiblioobject",
                     Access = "中文图书:setbiblioinfo=delete|getbiblioinfo=*"
                 };
-                users.Add(a3);
+                //创建帐号
+                this.NewUser(u);
 
-                //===
-                UserInfo a4 = new UserInfo
+                this.displayLine(GetBR() + getBold(u.UserName + "写对象，应不成功。"));
+                response = this.WriteObject(u, objectPath);
+                if (response.WriteResResult.Value == -1)
+                    this.displayLine("符合预期");
+                else
+                    this.displayLine(getRed("不符合预期"));
+
+                //删除帐号
+                this.DelUser(u);
+
+                #endregion
+
+                #region 第5组测试  存取定义重点为：setbiblioinfo=*
+
+                this.displayLine(getLarge("第5组测试"));
+                u = new UserInfo
                 {
-                    UserName = "a4",
+                    UserName = "u5",
                     Password = "1",
                     SetPassword = true,
 
@@ -496,77 +653,20 @@ namespace practice
                     Rights = "writebiblioobject,getbiblioobject",
                     Access = "中文图书:setbiblioinfo=*|getbiblioinfo=*"
                 };
-                users.Add(a4);
+                //创建帐号
+                this.NewUser(u);
 
-                //===
-                // 创建这批帐户
-                this.SetUsers(users, "new");
+                this.displayLine(GetBR() + getBold(u.UserName + "写对象，应成功。"));
+                response = this.WriteObject(u, objectPath);
+                if (response.WriteResResult.Value == 0)
+                    this.displayLine("符合预期");
+                else
+                    this.displayLine(getRed("不符合预期"));
+
+                //删除帐号
+                this.DelUser(u);
 
                 #endregion
-
-                //===
-                //先用管理员身从那写一条书目记录， 带dprms:file
-                string strBiblioPath = "中文图书/?";
-                string xml = @"<unimarc:record xmlns:dprms='http://dp2003.com/dprms' xmlns:unimarc='http://dp2003.com/UNIMARC'>
-                                  <unimarc:leader>01887nam0 2200325   450 </unimarc:leader>
-                                  <unimarc:datafield tag='200' ind1=' ' ind2=' '>
-                                    <unimarc:subfield code='a'>我爱我家</unimarc:subfield>
-                                  </unimarc:datafield>
-                                  <dprms:file id='0'/>
-                                </unimarc:record>";
-
-
-                WriteResResponse response = this.WriteXml(this.mainForm.GetSupervisorAccount(),
-                    strBiblioPath,
-                    xml);
-                strBiblioPath = response.strOutputResPath;
-                this.displayLine("<br/>用管理员身份创建了一条书目记录。" + strBiblioPath);
-
-                //===
-                this.displayLine("以下是用不同帐户测试修改对象数据。");
-                string objectPath = strBiblioPath + "/object/0";
-
-                // 用u_a1帐户
-                response = this.WriteObject(a1, objectPath);
-                if (response.WriteResResult.Value == 0)
-                    this.displayLine("符合预期");
-                else
-                    this.displayLine(getRed("不符合预期"));
-
-
-                // 用u_a1_1帐户
-                response = this.WriteObject(a1_1, objectPath);
-                if (response.WriteResResult.Value == 0)
-                    this.displayLine("符合预期");
-                else
-                    this.displayLine(getRed("不符合预期"));
-
-                // 用u_a2帐户
-                response = this.WriteObject(a2, objectPath);
-                if (response.WriteResResult.Value == -1)
-                    this.displayLine("符合预期");
-                else
-                    this.displayLine(getRed("不符合预期"));
-
-                // 用u_a3帐户
-                response = this.WriteObject(a3, objectPath);
-                if (response.WriteResResult.Value == -1)
-                    this.displayLine("符合预期");
-                else
-                    this.displayLine(getRed("不符合预期"));
-
-                // 用u_a4帐户
-                response = this.WriteObject(a4, objectPath);
-                if (response.WriteResResult.Value == 0)
-                    this.displayLine("符合预期");
-                else
-                    this.displayLine(getRed("不符合预期"));
-
-
-                //====
-                // 删除这批帐户
-                this.SetUsers(users, "delete");
-
 
             }
             catch (Exception e1)
@@ -751,9 +851,16 @@ namespace practice
 
         public string GetXml(string type, bool hasFile)
         {
+            string xml =this.GetXml(type, hasFile,out string barcode);
+            return xml;
+        }
+
+            // barcode，当读者 和 册时有意义
+         public string GetXml(string type, bool hasFile,out string barcode)
+        {
             Random rd = new Random();
             int temp = rd.Next(1, 999999);
-            string barcode = temp.ToString().PadLeft(6, '0'); //Guid.NewGuid().ToString().ToUpper(); //
+            barcode = temp.ToString().PadLeft(6, '0'); //Guid.NewGuid().ToString().ToUpper(); //
 
             string dprmsfile = "";
             if (hasFile == true)
@@ -776,8 +883,9 @@ namespace practice
             // 根据不同类型，准备xml
             if (type == C_Type_reader)
             {
+                barcode = "P" + barcode;
                 return "<root>"
-                    + "<barcode>P" + barcode + "</barcode>"
+                    + "<barcode>" + barcode + "</barcode>"
                     + "<name>小张" + barcode + "</name>"
                     + "<readerType>本科生</readerType>"
                     + dprmsfile
@@ -795,9 +903,10 @@ namespace practice
             }
             else if (type == C_Type_item)
             {
+                barcode = "B" + barcode;
                 return "<root>"
                     + "<parent>" + parent + "</parent>"
-                    + "<barcode>B" + barcode + "</barcode>"
+                    + "<barcode>" + barcode + "</barcode>"
                     + "<location>流通库</location>"
                     + "<bookType>普通</bookType>"
                     + dprmsfile
@@ -904,18 +1013,33 @@ namespace practice
         {
             if (string.IsNullOrEmpty(_biblioPath) == true)
             {
-                // 用supervisor帐户创建一条书目
-                string strResPath = "中文图书/?";
-                this.displayLine("用supervisor帐户创建一条书目，为册/订购/评注 使用。");
-                WriteResResponse response = this.WriteXml(this.mainForm.GetSupervisorAccount(), strResPath,
-                     this.GetXml(C_Type_biblio, false));
-                if (response.WriteResResult.Value == -1)
-                    throw new Exception("用supervisor创建书目异常" + response.WriteResResult.ErrorInfo);
-
-
-                this._biblioPath = response.strOutputResPath;
+                this._biblioPath = this.CreateBiblioBySupervisor(false, false);//response.strOutputResPath;
             }
             return _biblioPath;
+        }
+
+        public string CreateBiblioBySupervisor(bool bIssue,bool hasFile)
+        {
+            string info = "";
+            // 用supervisor帐户创建一条书目
+            string strResPath = "中文图书/?";
+            if (bIssue == true)
+            {
+                strResPath = "中文期刊/?";
+                info = "期刊";
+            }
+
+            this.displayLine("用supervisor创建一条"+info+"书目，为相关测试提供支持。");
+
+            WriteResResponse response = this.WriteXml(this.mainForm.GetSupervisorAccount(),
+                strResPath,
+                 this.GetXml(C_Type_biblio, hasFile));
+
+            if (response.WriteResResult.Value == -1)
+                throw new Exception("用supervisor创建书目异常:" + response.WriteResResult.ErrorInfo);
+
+
+            return response.strOutputResPath;
         }
 
         public string GetBiblioParent()
@@ -935,16 +1059,7 @@ namespace practice
         {
             if (string.IsNullOrEmpty(_issueBiblioPath) == true)
             {
-                // 用supervisor帐户创建一条书目
-                string strResPath = "中文期刊/?";
-                this.displayLine("用supervisor帐户创建一条期刊书目，作为期记录的父亲。");
-                WriteResResponse response = this.WriteXml(this.mainForm.GetSupervisorAccount(), strResPath,
-                     this.GetXml(C_Type_biblio, false));
-                if (response.WriteResResult.Value == -1)
-                    throw new Exception("用supervisor创建期刊书目异常" + response.WriteResResult.ErrorInfo);
-
-
-                this._issueBiblioPath = response.strOutputResPath;
+                this._issueBiblioPath = this.CreateBiblioBySupervisor(true, false);//response.strOutputResPath;
             }
             return _issueBiblioPath;
         }
@@ -1678,6 +1793,80 @@ namespace practice
             // 调检查权限函数
             this.checkRight(type,
                 rightsList);
+        }
+
+        private void button_readerLogin_Click(object sender, EventArgs e)
+        {
+            // 管理员先创建两条读者
+            // 用supervisor帐户创建一条书目
+            string strReaderPath = "读者/?";
+
+            string readerBarcode = "";
+            string readerxml=this.GetXml(C_Type_reader,false,out readerBarcode);
+            // 修改一下权限
+            XmlDocument dom = new XmlDocument ();
+            dom.LoadXml(readerxml);
+            XmlNode root = dom.DocumentElement;
+            root.InnerXml += "<rights>setreaderinfo,getreaderinfo,setbiblioinfo,getbiblioinfo</rights>";
+            readerxml = dom.OuterXml;
+
+            this.displayLine("用supervisor创建读者"+readerBarcode+"，后面将用此读者帐户进行操作。");
+
+            WriteResResponse response = this.WriteXml(this.mainForm.GetSupervisorAccount(),
+                strReaderPath,
+                 readerxml);
+
+            if (response.WriteResResult.Value == -1)
+                throw new Exception("用supervisor创建读者异常:" + response.WriteResResult.ErrorInfo);
+
+            // 修改读者的密码
+            this.ChangeReaderPasswordBySupervisor(readerBarcode);
+
+            
+            UserInfo u = new UserInfo
+            {
+                UserName = readerBarcode,
+                Password = "1",
+            };
+
+            //====
+            // 读者身份，应能写书目和获取书目。
+
+            string strBiblioPath = this.GetAppendPath(C_Type_biblio);
+            // 用WriteRes获取书目
+            this.displayLine(GetBR() + getBold(u.UserName + "用WriteRes()新建书目xml，应成功。"));
+            response = this.WriteXml(u, strBiblioPath, this.GetXml(C_Type_biblio, false),true);
+            if (response.WriteResResult.Value == 0)
+                this.displayLine("符合预期");
+            else
+                this.displayLine(getRed("不符合预期"));
+
+            // 用SetBiblioInfo新建书目
+            this.displayLine(GetBR() + getBold(u.UserName + "用SetBiblioInfo()新建书目xml，应成功。"));
+            SetBiblioInfoResponse res = this.SetBiblioInfo(u, "new", strBiblioPath, this.GetXml(C_Type_biblio, false), true);
+            if (res.SetBiblioInfoResult.Value ==0)
+                this.displayLine("符合预期");
+            else
+                this.displayLine(getRed("不符合预期"));
+
+            string tempBiblioPath = res.strOutputBiblioRecPath;
+
+            // 用SetBiblioInfo修改书目
+            this.displayLine(GetBR() + getBold(u.UserName + "用SetBiblioInfo()修改书目xml，应成功。"));
+             res = this.SetBiblioInfo(u, "change", tempBiblioPath, this.GetXml(C_Type_biblio, false), true);
+            if (res.SetBiblioInfoResult.Value == 0)
+                this.displayLine("符合预期");
+            else
+                this.displayLine(getRed("不符合预期"));
+
+            // 用SetBiblioInfo删除书目
+            this.displayLine(GetBR() + getBold(u.UserName + "用SetBiblioInfo()删除书目xml，应成功。"));
+            res = this.SetBiblioInfo(u, "delete", tempBiblioPath,"", true);
+            if (res.SetBiblioInfoResult.Value == 0)
+                this.displayLine("符合预期");
+            else
+                this.displayLine(getRed("不符合预期"));
+
         }
     }
 }

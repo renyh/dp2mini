@@ -281,15 +281,19 @@ namespace practice
 
         public RestChannel GetChannelAndLogin(UserInfo u)
         {
-            return this.GetChannelAndLogin(u.UserName, u.Password);
+            return this.GetChannelAndLogin(u.UserName, u.Password,false);
         }
 
         public RestChannel GetChannelAndLogin(string userName,
-            string password)
+            string password,
+            bool isReader=false)
         {
             string strError = "";
 
-            string parameters = "type=worker,client=resttest|0.01";
+
+            string parameters = "type=worker,client=practice|0.01";
+            if (isReader==true)
+                parameters = "type=reader,client=practice|0.01";
 
             RestChannel channel = this._channelPool.GetChannel(this.ServerUrl, userName);
 
@@ -2966,7 +2970,7 @@ out string strError);
         #region SetItemInfo
         private void button_help_SetItemInfo_Click(object sender, EventArgs e)
         {
-
+            Process.Start("");
         }
 
         private void button_SetItemInfo_Click(object sender, EventArgs e)
@@ -3012,9 +3016,59 @@ out string strError);
                 this._channelPool.ReturnChannel(channel);
             }
         }
+
         #endregion
 
+        private void button_ChangeReaderPassword_Click(object sender, EventArgs e)
+        {
+            // 清空底部输出信息
+            this.ClearResultInfo();
 
+            string strReaderBarcode = this.textBox_ChangeReaderPassword_strReaderBarcode.Text;
+            string strReaderOldPassword = this.textBox_ChangeReaderPassword_strReaderOldPassword.Text;
+
+            if (this.checkBox_ChangeReaderPassword.Checked == true)
+                strReaderOldPassword = null;
+
+            string strReaderNewPassword = this.textBox_ChangeReaderPassword_strReaderNewPassword.Text;
+            RestChannel channel = this.GetChannel();
+            try
+            {
+                ChangeReaderPasswordResponse response = channel.ChangeReaderPassword(strReaderBarcode,
+                    strReaderOldPassword,
+                    strReaderNewPassword);
+
+                // 显示返回信息
+                this.SetResultInfo("ChangeReaderPassword()\r\n" + RestChannel.GetResultInfo(response));
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, "ChangeReaderPassword()异常：" + ex.Message);
+                return;
+            }
+            finally
+            {
+                this._channelPool.ReturnChannel(channel);
+            }
+        }
+
+        private void button_help_ChangeReaderPassword_Click(object sender, EventArgs e)
+        {
+            Process.Start("https://jihulab.com/DigitalPlatform/dp2doc/-/issues/80");
+        }
+
+        private void checkBox_reader_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBox_reader.Checked == true)
+            {
+                this.Login_textBox_parameters.Text = "type=reader,client=practice|0.01";
+            }
+            else
+            {
+              this.Login_textBox_parameters.Text= "type=worker,client=practice|0.01";
+            }
+        }
     }
 
 

@@ -235,6 +235,12 @@ namespace DigitalPlatform.LibraryRestClient
 
                 return info;
             }
+            else if (o is ChangeReaderPasswordResponse)
+            {
+                ChangeReaderPasswordResponse r = (ChangeReaderPasswordResponse)o;
+                return GetServerResultInfo(r.ChangeReaderPasswordResult);
+
+            }
             else if (o is SearchBiblioResponse)
             {
                 SearchBiblioResponse r = (SearchBiblioResponse)o;
@@ -355,7 +361,7 @@ namespace DigitalPlatform.LibraryRestClient
             }
             else if (o is SetItemInfoResponse)
             {
-                SetItemInfoResponse r= (SetItemInfoResponse)o;
+                SetItemInfoResponse r = (SetItemInfoResponse)o;
 
                 return GetServerResultInfo(r.SetItemInfoResult) + "\r\n"
                     + "strOutputRecPath:" + r.strOutputRecPath + "\r\n"
@@ -1585,12 +1591,11 @@ namespace DigitalPlatform.LibraryRestClient
         public GetReaderInfoResponse GetReaderInfo(string strBarcode,
             string strResultTypeList)
         {
-
+            string strError = "";
         REDO:
             try
             {
                 CookieAwareWebClient client = this.GetClient();
-
 
                 GetReaderInfoRequest request = new GetReaderInfoRequest();
                 request.strBarcode = strBarcode;
@@ -1602,42 +1607,76 @@ namespace DigitalPlatform.LibraryRestClient
 
                 string strResult = Encoding.UTF8.GetString(result);
                 GetReaderInfoResponse response = Deserialize<GetReaderInfoResponse>(strResult);
+                if (response.GetReaderInfoResult.Value == -1
+                    && response.GetReaderInfoResult.ErrorCode == ErrorCode.NotLogin)
+                {
+                    if (DoNotLogin(ref strError) == 1)
+                        goto REDO;
+                }
                 return response;
-
-
-                //strRecPath = response.strRecPath;
-
-                //if (response.GetReaderInfoResult.Value == -1
-                //    && response.GetReaderInfoResult.ErrorCode == ErrorCode.NotLogin)
-                //{
-                //    if (DoNotLogin(ref strError) == 1)
-                //        goto REDO;
-                //}
-                //if (response.GetReaderInfoResult.Value == -1)
-                //{
-                //    strError = "ErrorCode:" + response.GetReaderInfoResult.ErrorCode + "--ErrorInfo:" + response.GetReaderInfoResult.ErrorInfo;
-                //    return -1;
-                //}
-                //else if (response.GetReaderInfoResult.Value == 0)
-                //{
-                //    strError = "获取读者记录'" + strBarcode + "'未命中。";// + readerRet.GetReaderInfoResult.ErrorInfo;
-                //    return -1;
-                //}
-                //else if (response.GetReaderInfoResult.Value > 1)
-                //{
-                //    strError = "获取读者记录'" + strBarcode + "'出现多条，数据异常，请联系系统管理员。";// + readerRet.GetReaderInfoResult.ErrorInfo;
-                //    return -1;
-                //}
-
-                //// 返回的数据数组
-                //results = response.results;
-
-
-                //return 0;
             }
             catch (Exception ex)
             {
-                int nRet = ConvertWebError(ex, out string strError);
+                int nRet = ConvertWebError(ex, out  strError);
+                if (nRet == 0)
+                    throw ex;
+
+                // 网络问题重做
+                goto REDO; ;
+            }
+        }
+
+
+        // 修改读者密码
+        //		工作人员或者读者，必须有changereaderpassword权限
+        //		如果为读者, 附加限制还只能修改属于自己的密码
+        //      2021/7/5
+        //      工作人员身份调用本 API 修改读者密码，应先用工作人员身份登录。而读者调用本 API 修改自己的密码不需要先登录
+        //      如果调用本 API 前已经用读者身份登录过了，并且打算调用本 API 修改一个不是登录者自己的读者的密码，那需要先 Logout() 再调用本 API 才行
+        // parameters:
+        //      strReaderOldPassword    旧密码。如果想达到不验证旧密码的效果，可以用 null 调用，但仅限工作人员身份调用的情况。读者身份是必须验证旧密码的
+        // Result.Value
+        //      -1  出错
+        //      0   旧密码不正确
+        //      1   旧密码正确,已修改为新密码
+        // 权限: 
+        //		工作人员或者读者，必须有changereaderpassword权限
+        //		如果为读者, 附加限制还只能修改属于自己的密码
+        // 日志:
+        //      要产生日志
+        public ChangeReaderPasswordResponse ChangeReaderPassword(string strReaderBarcode,
+            string strReaderOldPassword,
+            string strReaderNewPassword)
+        {
+            string strError = "";
+        REDO:
+            try
+            {
+                CookieAwareWebClient client = this.GetClient();
+
+                ChangeReaderPasswordRequest request = new ChangeReaderPasswordRequest();
+                request.strReaderBarcode = strReaderBarcode;
+                request.strReaderOldPassword = strReaderOldPassword;
+                request.strReaderNewPassword = strReaderNewPassword;
+
+                byte[] baData = Encoding.UTF8.GetBytes(Serialize(request));
+                byte[] result = client.UploadData(this.GetRestfulApiUrl("ChangeReaderPassword"),
+                    "POST",
+                    baData);
+
+                string strResult = Encoding.UTF8.GetString(result);
+                ChangeReaderPasswordResponse response = Deserialize<ChangeReaderPasswordResponse>(strResult);
+                if (response.ChangeReaderPasswordResult.Value == -1
+                     && response.ChangeReaderPasswordResult.ErrorCode == ErrorCode.NotLogin)
+                {
+                    if (DoNotLogin(ref strError) == 1)
+                        goto REDO;
+                }
+                return response;
+            }
+            catch (Exception ex)
+            {
+                int nRet = ConvertWebError(ex, out strError);
                 if (nRet == 0)
                     throw ex;
 
