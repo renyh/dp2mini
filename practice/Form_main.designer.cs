@@ -339,7 +339,7 @@
             this.处理MARC字段ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.功能ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.自动测试2ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.自动测试1ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.自动测试2ToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.tabPage_SearchBiblio.SuspendLayout();
             this.tabPage_Server.SuspendLayout();
@@ -3766,12 +3766,11 @@
             // 功能ToolStripMenuItem
             // 
             this.功能ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.自动测试2ToolStripMenuItem,
+            this.自动测试1ToolStripMenuItem,
             this.自动测试2ToolStripMenuItem1});
             this.功能ToolStripMenuItem.Name = "功能ToolStripMenuItem";
             this.功能ToolStripMenuItem.Size = new System.Drawing.Size(145, 43);
             this.功能ToolStripMenuItem.Text = "自动测试";
-            this.功能ToolStripMenuItem.Click += new System.EventHandler(this.功能ToolStripMenuItem_Click);
             // 
             // splitContainer1
             // 
@@ -3784,6 +3783,7 @@
             // 
             this.splitContainer1.Panel1.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
             this.splitContainer1.Panel1.Controls.Add(this.tabControl1);
+            this.splitContainer1.Panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.splitContainer1_Panel1_Paint);
             // 
             // splitContainer1.Panel2
             // 
@@ -3793,11 +3793,12 @@
             this.splitContainer1.SplitterDistance = 798;
             this.splitContainer1.TabIndex = 21;
             // 
-            // 自动测试2ToolStripMenuItem
+            // 自动测试1ToolStripMenuItem
             // 
-            this.自动测试2ToolStripMenuItem.Name = "自动测试2ToolStripMenuItem";
-            this.自动测试2ToolStripMenuItem.Size = new System.Drawing.Size(403, 48);
-            this.自动测试2ToolStripMenuItem.Text = "自动测试1";
+            this.自动测试1ToolStripMenuItem.Name = "自动测试1ToolStripMenuItem";
+            this.自动测试1ToolStripMenuItem.Size = new System.Drawing.Size(403, 48);
+            this.自动测试1ToolStripMenuItem.Text = "自动测试1";
+            this.自动测试1ToolStripMenuItem.Click += new System.EventHandler(this.自动测试1ToolStripMenuItem_Click);
             // 
             // 自动测试2ToolStripMenuItem1
             // 
@@ -4196,7 +4197,7 @@
         private System.Windows.Forms.Label label106;
         private System.Windows.Forms.CheckBox checkBox_ChangeReaderPassword;
         private System.Windows.Forms.CheckBox checkBox_reader;
-        private System.Windows.Forms.ToolStripMenuItem 自动测试2ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 自动测试1ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 自动测试2ToolStripMenuItem1;
     }
 }

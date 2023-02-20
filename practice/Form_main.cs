@@ -2958,15 +2958,6 @@ out string strError);
 
         #endregion
 
-        private void 功能ToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Form_auto dlg = new Form_auto(this);
-            dlg.StartPosition = FormStartPosition.CenterScreen;
-            dlg.WindowState = FormWindowState.Maximized;// = true;
-            
-            dlg.Show();
-        }
-
         #region SetItemInfo
         private void button_help_SetItemInfo_Click(object sender, EventArgs e)
         {
@@ -3075,6 +3066,20 @@ out string strError);
         private void 自动测试2ToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             Form_2 dlg = new Form_2(this);
+            dlg.StartPosition = FormStartPosition.CenterScreen;
+            dlg.WindowState = FormWindowState.Maximized;// = true;
+
+            dlg.Show();
+        }
+
+        private void splitContainer1_Panel1_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void 自动测试1ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Form_auto dlg = new Form_auto(this);
             dlg.StartPosition = FormStartPosition.CenterScreen;
             dlg.WindowState = FormWindowState.Maximized;// = true;
 
