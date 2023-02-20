@@ -47,6 +47,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Form_2.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form_2.Designer.cs">
+      <DependentUpon>Form_2.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form_auto.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -122,6 +128,9 @@
       <DependentUpon>Form_cancel4.cs</DependentUpon>
     </Compile>
     <Compile Include="worker.cs" />
+    <EmbeddedResource Include="Form_2.resx">
+      <DependentUpon>Form_2.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form_auto.resx">
       <DependentUpon>Form_auto.cs</DependentUpon>
     </EmbeddedResource>

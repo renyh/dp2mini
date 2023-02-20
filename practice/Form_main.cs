@@ -3069,6 +3069,17 @@ out string strError);
               this.Login_textBox_parameters.Text= "type=worker,client=practice|0.01";
             }
         }
+
+
+        // 武阳
+        private void 自动测试2ToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            Form_2 dlg = new Form_2(this);
+            dlg.StartPosition = FormStartPosition.CenterScreen;
+            dlg.WindowState = FormWindowState.Maximized;// = true;
+
+            dlg.Show();
+        }
     }
 
 

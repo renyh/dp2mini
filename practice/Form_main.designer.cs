@@ -63,6 +63,7 @@
             this.button_GetUser = new System.Windows.Forms.Button();
             this.button_logout = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.checkBox_reader = new System.Windows.Forms.CheckBox();
             this.Login_textBox_parameters = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
             this.Login_textBox_password = new System.Windows.Forms.TextBox();
@@ -321,6 +322,16 @@
             this.GetBiblioInfo_textBox_BiblioRecPath = new System.Windows.Forms.TextBox();
             this.label19 = new System.Windows.Forms.Label();
             this.label20 = new System.Windows.Forms.Label();
+            this.tabPage_ChangeReaderPassword = new System.Windows.Forms.TabPage();
+            this.checkBox_ChangeReaderPassword = new System.Windows.Forms.CheckBox();
+            this.textBox_ChangeReaderPassword_strReaderNewPassword = new System.Windows.Forms.TextBox();
+            this.label107 = new System.Windows.Forms.Label();
+            this.textBox_ChangeReaderPassword_strReaderOldPassword = new System.Windows.Forms.TextBox();
+            this.button_help_ChangeReaderPassword = new System.Windows.Forms.Button();
+            this.button_ChangeReaderPassword = new System.Windows.Forms.Button();
+            this.textBox_ChangeReaderPassword_strReaderBarcode = new System.Windows.Forms.TextBox();
+            this.label105 = new System.Windows.Forms.Label();
+            this.label106 = new System.Windows.Forms.Label();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.文件ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.通用练习题ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -328,17 +339,8 @@
             this.处理MARC字段ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.功能ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.tabPage_ChangeReaderPassword = new System.Windows.Forms.TabPage();
-            this.button_help_ChangeReaderPassword = new System.Windows.Forms.Button();
-            this.button_ChangeReaderPassword = new System.Windows.Forms.Button();
-            this.textBox_ChangeReaderPassword_strReaderBarcode = new System.Windows.Forms.TextBox();
-            this.label105 = new System.Windows.Forms.Label();
-            this.label106 = new System.Windows.Forms.Label();
-            this.textBox_ChangeReaderPassword_strReaderOldPassword = new System.Windows.Forms.TextBox();
-            this.textBox_ChangeReaderPassword_strReaderNewPassword = new System.Windows.Forms.TextBox();
-            this.label107 = new System.Windows.Forms.Label();
-            this.checkBox_ChangeReaderPassword = new System.Windows.Forms.CheckBox();
-            this.checkBox_reader = new System.Windows.Forms.CheckBox();
+            this.自动测试2ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.自动测试2ToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.tabPage_SearchBiblio.SuspendLayout();
             this.tabPage_Server.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -365,12 +367,12 @@
             this.groupBox3.SuspendLayout();
             this.tabPage_SearchCharging.SuspendLayout();
             this.tabPage_GetBiblioInfo.SuspendLayout();
+            this.tabPage_ChangeReaderPassword.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
-            this.tabPage_ChangeReaderPassword.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabPage_SearchBiblio
@@ -768,6 +770,18 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "登录帐号";
             // 
+            // checkBox_reader
+            // 
+            this.checkBox_reader.AutoSize = true;
+            this.checkBox_reader.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
+            this.checkBox_reader.Location = new System.Drawing.Point(185, 254);
+            this.checkBox_reader.Name = "checkBox_reader";
+            this.checkBox_reader.Size = new System.Drawing.Size(152, 31);
+            this.checkBox_reader.TabIndex = 57;
+            this.checkBox_reader.Text = "读者身份";
+            this.checkBox_reader.UseVisualStyleBackColor = false;
+            this.checkBox_reader.CheckedChanged += new System.EventHandler(this.checkBox_reader_CheckedChanged);
+            // 
             // Login_textBox_parameters
             // 
             this.Login_textBox_parameters.Location = new System.Drawing.Point(185, 188);
@@ -885,7 +899,7 @@
             this.tabControl1.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(1285, 787);
+            this.tabControl1.Size = new System.Drawing.Size(1285, 783);
             this.tabControl1.TabIndex = 6;
             // 
             // tabPage_WriteRes
@@ -1845,7 +1859,7 @@
             this.tabPage_GetReaderInfo.Controls.Add(this.label61);
             this.tabPage_GetReaderInfo.Location = new System.Drawing.Point(10, 46);
             this.tabPage_GetReaderInfo.Name = "tabPage_GetReaderInfo";
-            this.tabPage_GetReaderInfo.Size = new System.Drawing.Size(1265, 731);
+            this.tabPage_GetReaderInfo.Size = new System.Drawing.Size(1265, 727);
             this.tabPage_GetReaderInfo.TabIndex = 14;
             this.tabPage_GetReaderInfo.Text = "GetReaderInfo";
             this.tabPage_GetReaderInfo.UseVisualStyleBackColor = true;
@@ -3597,78 +3611,6 @@
             this.label20.TabIndex = 39;
             this.label20.Text = "strBiblioRecPath";
             // 
-            // menuStrip1
-            // 
-            this.menuStrip1.GripMargin = new System.Windows.Forms.Padding(2, 2, 0, 2);
-            this.menuStrip1.ImageScalingSize = new System.Drawing.Size(24, 24);
-            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.文件ToolStripMenuItem,
-            this.功能ToolStripMenuItem});
-            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
-            this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Padding = new System.Windows.Forms.Padding(9, 3, 0, 3);
-            this.menuStrip1.Size = new System.Drawing.Size(1311, 45);
-            this.menuStrip1.TabIndex = 8;
-            this.menuStrip1.Text = "menuStrip1";
-            // 
-            // 文件ToolStripMenuItem
-            // 
-            this.文件ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.通用练习题ToolStripMenuItem,
-            this.z3950ToolStripMenuItem,
-            this.处理MARC字段ToolStripMenuItem});
-            this.文件ToolStripMenuItem.Name = "文件ToolStripMenuItem";
-            this.文件ToolStripMenuItem.Size = new System.Drawing.Size(91, 39);
-            this.文件ToolStripMenuItem.Text = "文件";
-            // 
-            // 通用练习题ToolStripMenuItem
-            // 
-            this.通用练习题ToolStripMenuItem.Name = "通用练习题ToolStripMenuItem";
-            this.通用练习题ToolStripMenuItem.Size = new System.Drawing.Size(352, 48);
-            this.通用练习题ToolStripMenuItem.Text = "通用练习题";
-            this.通用练习题ToolStripMenuItem.Click += new System.EventHandler(this.通用练习题ToolStripMenuItem_Click);
-            // 
-            // z3950ToolStripMenuItem
-            // 
-            this.z3950ToolStripMenuItem.Name = "z3950ToolStripMenuItem";
-            this.z3950ToolStripMenuItem.Size = new System.Drawing.Size(352, 48);
-            this.z3950ToolStripMenuItem.Text = "Z39.50";
-            this.z3950ToolStripMenuItem.Click += new System.EventHandler(this.z3950ToolStripMenuItem_Click);
-            // 
-            // 处理MARC字段ToolStripMenuItem
-            // 
-            this.处理MARC字段ToolStripMenuItem.Name = "处理MARC字段ToolStripMenuItem";
-            this.处理MARC字段ToolStripMenuItem.Size = new System.Drawing.Size(352, 48);
-            this.处理MARC字段ToolStripMenuItem.Text = "处理MARC字段";
-            this.处理MARC字段ToolStripMenuItem.Click += new System.EventHandler(this.处理MARC字段ToolStripMenuItem_Click);
-            // 
-            // 功能ToolStripMenuItem
-            // 
-            this.功能ToolStripMenuItem.Name = "功能ToolStripMenuItem";
-            this.功能ToolStripMenuItem.Size = new System.Drawing.Size(145, 39);
-            this.功能ToolStripMenuItem.Text = "自动测试";
-            this.功能ToolStripMenuItem.Click += new System.EventHandler(this.功能ToolStripMenuItem_Click);
-            // 
-            // splitContainer1
-            // 
-            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer1.Location = new System.Drawing.Point(0, 45);
-            this.splitContainer1.Name = "splitContainer1";
-            this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
-            // 
-            // splitContainer1.Panel1
-            // 
-            this.splitContainer1.Panel1.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
-            this.splitContainer1.Panel1.Controls.Add(this.tabControl1);
-            // 
-            // splitContainer1.Panel2
-            // 
-            this.splitContainer1.Panel2.BackColor = System.Drawing.SystemColors.Info;
-            this.splitContainer1.Panel2.Controls.Add(this.textBox_result);
-            this.splitContainer1.Size = new System.Drawing.Size(1311, 914);
-            this.splitContainer1.SplitterDistance = 802;
-            this.splitContainer1.TabIndex = 21;
-            // 
             // tabPage_ChangeReaderPassword
             // 
             this.tabPage_ChangeReaderPassword.Controls.Add(this.checkBox_ChangeReaderPassword);
@@ -3686,6 +3628,45 @@
             this.tabPage_ChangeReaderPassword.TabIndex = 24;
             this.tabPage_ChangeReaderPassword.Text = "ChangeReaderPassword";
             this.tabPage_ChangeReaderPassword.UseVisualStyleBackColor = true;
+            // 
+            // checkBox_ChangeReaderPassword
+            // 
+            this.checkBox_ChangeReaderPassword.AutoSize = true;
+            this.checkBox_ChangeReaderPassword.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
+            this.checkBox_ChangeReaderPassword.Checked = true;
+            this.checkBox_ChangeReaderPassword.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBox_ChangeReaderPassword.Location = new System.Drawing.Point(970, 112);
+            this.checkBox_ChangeReaderPassword.Name = "checkBox_ChangeReaderPassword";
+            this.checkBox_ChangeReaderPassword.Size = new System.Drawing.Size(100, 31);
+            this.checkBox_ChangeReaderPassword.TabIndex = 67;
+            this.checkBox_ChangeReaderPassword.Text = "null";
+            this.checkBox_ChangeReaderPassword.UseVisualStyleBackColor = false;
+            // 
+            // textBox_ChangeReaderPassword_strReaderNewPassword
+            // 
+            this.textBox_ChangeReaderPassword_strReaderNewPassword.Location = new System.Drawing.Point(380, 175);
+            this.textBox_ChangeReaderPassword_strReaderNewPassword.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.textBox_ChangeReaderPassword_strReaderNewPassword.Name = "textBox_ChangeReaderPassword_strReaderNewPassword";
+            this.textBox_ChangeReaderPassword_strReaderNewPassword.Size = new System.Drawing.Size(582, 38);
+            this.textBox_ChangeReaderPassword_strReaderNewPassword.TabIndex = 66;
+            // 
+            // label107
+            // 
+            this.label107.AutoSize = true;
+            this.label107.Location = new System.Drawing.Point(78, 181);
+            this.label107.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label107.Name = "label107";
+            this.label107.Size = new System.Drawing.Size(292, 27);
+            this.label107.TabIndex = 65;
+            this.label107.Text = "strReaderNewPassword";
+            // 
+            // textBox_ChangeReaderPassword_strReaderOldPassword
+            // 
+            this.textBox_ChangeReaderPassword_strReaderOldPassword.Location = new System.Drawing.Point(380, 110);
+            this.textBox_ChangeReaderPassword_strReaderOldPassword.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.textBox_ChangeReaderPassword_strReaderOldPassword.Name = "textBox_ChangeReaderPassword_strReaderOldPassword";
+            this.textBox_ChangeReaderPassword_strReaderOldPassword.Size = new System.Drawing.Size(582, 38);
+            this.textBox_ChangeReaderPassword_strReaderOldPassword.TabIndex = 64;
             // 
             // button_help_ChangeReaderPassword
             // 
@@ -3737,56 +3718,93 @@
             this.label106.TabIndex = 59;
             this.label106.Text = "strReaderBarcode";
             // 
-            // textBox_ChangeReaderPassword_strReaderOldPassword
+            // menuStrip1
             // 
-            this.textBox_ChangeReaderPassword_strReaderOldPassword.Location = new System.Drawing.Point(380, 110);
-            this.textBox_ChangeReaderPassword_strReaderOldPassword.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
-            this.textBox_ChangeReaderPassword_strReaderOldPassword.Name = "textBox_ChangeReaderPassword_strReaderOldPassword";
-            this.textBox_ChangeReaderPassword_strReaderOldPassword.Size = new System.Drawing.Size(582, 38);
-            this.textBox_ChangeReaderPassword_strReaderOldPassword.TabIndex = 64;
+            this.menuStrip1.GripMargin = new System.Windows.Forms.Padding(2, 2, 0, 2);
+            this.menuStrip1.ImageScalingSize = new System.Drawing.Size(24, 24);
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.文件ToolStripMenuItem,
+            this.功能ToolStripMenuItem});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Padding = new System.Windows.Forms.Padding(9, 3, 0, 3);
+            this.menuStrip1.Size = new System.Drawing.Size(1311, 49);
+            this.menuStrip1.TabIndex = 8;
+            this.menuStrip1.Text = "menuStrip1";
             // 
-            // textBox_ChangeReaderPassword_strReaderNewPassword
+            // 文件ToolStripMenuItem
             // 
-            this.textBox_ChangeReaderPassword_strReaderNewPassword.Location = new System.Drawing.Point(380, 175);
-            this.textBox_ChangeReaderPassword_strReaderNewPassword.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
-            this.textBox_ChangeReaderPassword_strReaderNewPassword.Name = "textBox_ChangeReaderPassword_strReaderNewPassword";
-            this.textBox_ChangeReaderPassword_strReaderNewPassword.Size = new System.Drawing.Size(582, 38);
-            this.textBox_ChangeReaderPassword_strReaderNewPassword.TabIndex = 66;
+            this.文件ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.通用练习题ToolStripMenuItem,
+            this.z3950ToolStripMenuItem,
+            this.处理MARC字段ToolStripMenuItem});
+            this.文件ToolStripMenuItem.Name = "文件ToolStripMenuItem";
+            this.文件ToolStripMenuItem.Size = new System.Drawing.Size(91, 43);
+            this.文件ToolStripMenuItem.Text = "文件";
             // 
-            // label107
+            // 通用练习题ToolStripMenuItem
             // 
-            this.label107.AutoSize = true;
-            this.label107.Location = new System.Drawing.Point(78, 181);
-            this.label107.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
-            this.label107.Name = "label107";
-            this.label107.Size = new System.Drawing.Size(292, 27);
-            this.label107.TabIndex = 65;
-            this.label107.Text = "strReaderNewPassword";
+            this.通用练习题ToolStripMenuItem.Name = "通用练习题ToolStripMenuItem";
+            this.通用练习题ToolStripMenuItem.Size = new System.Drawing.Size(352, 48);
+            this.通用练习题ToolStripMenuItem.Text = "通用练习题";
+            this.通用练习题ToolStripMenuItem.Click += new System.EventHandler(this.通用练习题ToolStripMenuItem_Click);
             // 
-            // checkBox_ChangeReaderPassword
+            // z3950ToolStripMenuItem
             // 
-            this.checkBox_ChangeReaderPassword.AutoSize = true;
-            this.checkBox_ChangeReaderPassword.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
-            this.checkBox_ChangeReaderPassword.Checked = true;
-            this.checkBox_ChangeReaderPassword.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox_ChangeReaderPassword.Location = new System.Drawing.Point(970, 112);
-            this.checkBox_ChangeReaderPassword.Name = "checkBox_ChangeReaderPassword";
-            this.checkBox_ChangeReaderPassword.Size = new System.Drawing.Size(100, 31);
-            this.checkBox_ChangeReaderPassword.TabIndex = 67;
-            this.checkBox_ChangeReaderPassword.Text = "null";
-            this.checkBox_ChangeReaderPassword.UseVisualStyleBackColor = false;
+            this.z3950ToolStripMenuItem.Name = "z3950ToolStripMenuItem";
+            this.z3950ToolStripMenuItem.Size = new System.Drawing.Size(352, 48);
+            this.z3950ToolStripMenuItem.Text = "Z39.50";
+            this.z3950ToolStripMenuItem.Click += new System.EventHandler(this.z3950ToolStripMenuItem_Click);
             // 
-            // checkBox_reader
+            // 处理MARC字段ToolStripMenuItem
             // 
-            this.checkBox_reader.AutoSize = true;
-            this.checkBox_reader.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
-            this.checkBox_reader.Location = new System.Drawing.Point(185, 254);
-            this.checkBox_reader.Name = "checkBox_reader";
-            this.checkBox_reader.Size = new System.Drawing.Size(152, 31);
-            this.checkBox_reader.TabIndex = 57;
-            this.checkBox_reader.Text = "读者身份";
-            this.checkBox_reader.UseVisualStyleBackColor = false;
-            this.checkBox_reader.CheckedChanged += new System.EventHandler(this.checkBox_reader_CheckedChanged);
+            this.处理MARC字段ToolStripMenuItem.Name = "处理MARC字段ToolStripMenuItem";
+            this.处理MARC字段ToolStripMenuItem.Size = new System.Drawing.Size(352, 48);
+            this.处理MARC字段ToolStripMenuItem.Text = "处理MARC字段";
+            this.处理MARC字段ToolStripMenuItem.Click += new System.EventHandler(this.处理MARC字段ToolStripMenuItem_Click);
+            // 
+            // 功能ToolStripMenuItem
+            // 
+            this.功能ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.自动测试2ToolStripMenuItem,
+            this.自动测试2ToolStripMenuItem1});
+            this.功能ToolStripMenuItem.Name = "功能ToolStripMenuItem";
+            this.功能ToolStripMenuItem.Size = new System.Drawing.Size(145, 43);
+            this.功能ToolStripMenuItem.Text = "自动测试";
+            this.功能ToolStripMenuItem.Click += new System.EventHandler(this.功能ToolStripMenuItem_Click);
+            // 
+            // splitContainer1
+            // 
+            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer1.Location = new System.Drawing.Point(0, 49);
+            this.splitContainer1.Name = "splitContainer1";
+            this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitContainer1.Panel1
+            // 
+            this.splitContainer1.Panel1.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
+            this.splitContainer1.Panel1.Controls.Add(this.tabControl1);
+            // 
+            // splitContainer1.Panel2
+            // 
+            this.splitContainer1.Panel2.BackColor = System.Drawing.SystemColors.Info;
+            this.splitContainer1.Panel2.Controls.Add(this.textBox_result);
+            this.splitContainer1.Size = new System.Drawing.Size(1311, 910);
+            this.splitContainer1.SplitterDistance = 798;
+            this.splitContainer1.TabIndex = 21;
+            // 
+            // 自动测试2ToolStripMenuItem
+            // 
+            this.自动测试2ToolStripMenuItem.Name = "自动测试2ToolStripMenuItem";
+            this.自动测试2ToolStripMenuItem.Size = new System.Drawing.Size(403, 48);
+            this.自动测试2ToolStripMenuItem.Text = "自动测试1";
+            // 
+            // 自动测试2ToolStripMenuItem1
+            // 
+            this.自动测试2ToolStripMenuItem1.Name = "自动测试2ToolStripMenuItem1";
+            this.自动测试2ToolStripMenuItem1.Size = new System.Drawing.Size(403, 48);
+            this.自动测试2ToolStripMenuItem1.Text = "自动测试2";
+            this.自动测试2ToolStripMenuItem1.Click += new System.EventHandler(this.自动测试2ToolStripMenuItem1_Click);
             // 
             // Form_main
             // 
@@ -3852,6 +3870,8 @@
             this.tabPage_SearchCharging.PerformLayout();
             this.tabPage_GetBiblioInfo.ResumeLayout(false);
             this.tabPage_GetBiblioInfo.PerformLayout();
+            this.tabPage_ChangeReaderPassword.ResumeLayout(false);
+            this.tabPage_ChangeReaderPassword.PerformLayout();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.splitContainer1.Panel1.ResumeLayout(false);
@@ -3859,8 +3879,6 @@
             this.splitContainer1.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
-            this.tabPage_ChangeReaderPassword.ResumeLayout(false);
-            this.tabPage_ChangeReaderPassword.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -4178,6 +4196,8 @@
         private System.Windows.Forms.Label label106;
         private System.Windows.Forms.CheckBox checkBox_ChangeReaderPassword;
         private System.Windows.Forms.CheckBox checkBox_reader;
+        private System.Windows.Forms.ToolStripMenuItem 自动测试2ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 自动测试2ToolStripMenuItem1;
     }
 }
 
