@@ -326,12 +326,13 @@ namespace practice
 
         public LibraryServerResult DelXml(UserInfo u,
             string type,
-            string strResPath)
+            string strResPath,
+            bool isReader)
         {
             if (type == C_Type_reader)
-                return this.SetReaderInfo(u, "delete", strResPath, "",false).SetReaderInfoResult;
+                return this.SetReaderInfo(u, "delete", strResPath, "",isReader).SetReaderInfoResult;
             else if (type == C_Type_biblio)
-                return this.SetBiblioInfo(u, "delete", strResPath, "",false).SetBiblioInfoResult;
+                return this.SetBiblioInfo(u, "delete", strResPath, "",isReader).SetBiblioInfoResult;
             else if (type == C_Type_item
                 || type==C_Type_order
                 || type== C_Type_comment
@@ -487,6 +488,42 @@ namespace practice
             catch (Exception ex)
             {
                 throw new Exception(u.UserName + "SetBiblioInfo()异常：" + ex.Message);
+            }
+            finally
+            {
+                if (channel != null)
+                    this.mainForm._channelPool.ReturnChannel(channel);
+            }
+        }
+
+        public GetBiblioInfosResponse GetBiblioInfos(UserInfo u,
+            string strResPath,
+            bool isReader = false)
+        {
+            GetBiblioInfosResponse response = null;
+
+            this.displayLine("strResPath=" + strResPath);
+
+            RestChannel channel = null;
+            try
+            {
+                // 用户登录
+                channel = mainForm.GetChannelAndLogin(u.UserName, u.Password, isReader);
+
+                string strformats = "xml";
+                string[] formats = strformats.Split(new char[] { ',' });
+                response = channel.GetBiblioInfos(strResPath,formats);
+
+                this.displayLine("GetBiblioInfos()\r\n"
+                    + HttpUtility.HtmlEncode(RestChannel.GetResultInfo(response)));
+
+
+                return response;
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(u.UserName + "GetBiblioInfos()异常：" + ex.Message);
             }
             finally
             {
@@ -718,6 +755,8 @@ namespace practice
 
             //Thread.Sleep(1000); 
             //this.textBox_result.Text = "";
+
+            this.displayLine("");
         }
 
         /*public*/
@@ -1182,7 +1221,7 @@ namespace practice
 
                 // 删除简单xml
                 this.displayLine(GetBR() + getBold(u.UserName + "删除简单xml，应删除成功。"));
-                LibraryServerResult res = this.DelXml(u,type, tempPath);
+                LibraryServerResult res = this.DelXml(u,type, tempPath,false);
                 if (res.Value == 0)
                     this.displayLine("符合预期");
                 else
@@ -1335,7 +1374,7 @@ namespace practice
 
                 // 删除带dprms:file的xml              
                 this.displayLine(GetBR() + getBold(u.UserName + "删除带dprms:file的xml，应删除成功。"));
-                res = this.DelXml(u,type, tempPath);
+                res = this.DelXml(u,type, tempPath,false);
                 if (res.Value == 0)
                     this.displayLine("符合预期");
                 else
@@ -2176,12 +2215,14 @@ namespace practice
         // 读者身份 操作书目
         private void button_readerLogin_biblio_Click(object sender, EventArgs e)
         {
+            // 清空输出
+            ClearResult();
 
             WriteResResponse writeRes = null;
 
             // 用supervisor帐户创建一个读者
             string readerBarcode = "";
-            writeRes = this.CreateReaderBySuperviosr("setreaderinfo,getreaderinfo",
+            writeRes = this.CreateReaderBySuperviosr("setbiblioinfo,getbiblioinfo,writebiblioobject,getbiblioobject",
                 out readerBarcode);
             string readerOwnerPath = writeRes.strOutputResPath;
 
@@ -2194,11 +2235,16 @@ namespace practice
                 Password = "1",
             };
 
-            #region 写书目
+            // 书目路径
+            string tempBiblioPath = "";
+
+            #region 第一组测试：新建书目WriteRes/SetBiblioInfo
+
+            this.displayLine(this.getLarge("第一组测试：新建书目-WriteRes/SetBiblioInfo"));
 
             string strBiblioPath = this.GetAppendPath(C_Type_biblio);
             // 用WriteRes新建书目
-            this.displayLine(GetBR() + getBold(u.UserName + "用WriteRes()新建书目xml，应成功。"));
+            this.displayLine(GetBR() + getBold(u.UserName + "用 WriteRes 新建书目xml，应成功。"));
             writeRes = this.WriteXml(u, strBiblioPath, this.GetXml(C_Type_biblio, false), true);
             if (writeRes.WriteResResult.Value == 0)
                 this.displayLine("符合预期");
@@ -2206,14 +2252,20 @@ namespace practice
                 this.displayLine(getRed("不符合预期"));
 
             // 用SetBiblioInfo新建书目
-            this.displayLine(GetBR() + getBold(u.UserName + "用SetBiblioInfo()新建书目xml，应成功。"));
+            this.displayLine(GetBR() + getBold(u.UserName + "用 SetBiblioInfo() 新建书目xml，应成功。"));
             SetBiblioInfoResponse res = this.SetBiblioInfo(u, "new", strBiblioPath, this.GetXml(C_Type_biblio, false), true);
             if (res.SetBiblioInfoResult.Value == 0)
                 this.displayLine("符合预期");
             else
                 this.displayLine(getRed("不符合预期"));
 
-            string tempBiblioPath = res.strOutputBiblioRecPath;
+             tempBiblioPath = res.strOutputBiblioRecPath;
+
+            #endregion
+
+            #region 第二组测试：修改书目-SetBiblioInfo
+
+            this.displayLine(this.getLarge("第二组测试：修改书目-SetBiblioInfo"));
 
             // 用SetBiblioInfo修改书目
             this.displayLine(GetBR() + getBold(u.UserName + "用SetBiblioInfo()修改书目xml，应成功。"));
@@ -2223,6 +2275,12 @@ namespace practice
             else
                 this.displayLine(getRed("不符合预期"));
 
+            #endregion
+
+            #region 第三组测试：删除书目-SetBiblioInfo
+
+            this.displayLine(this.getLarge("第三组测试：删除书目-SetBiblioInfo"));
+
             // 用SetBiblioInfo删除书目
             this.displayLine(GetBR() + getBold(u.UserName + "用SetBiblioInfo()删除书目xml，应成功。"));
             res = this.SetBiblioInfo(u, "delete", tempBiblioPath, "", true);
@@ -2231,9 +2289,29 @@ namespace practice
             else
                 this.displayLine(getRed("不符合预期"));
 
+            #endregion
+
+            #region 第四组测试：获取书目-GetRes/GetReaderInfo
 
 
 
+            this.displayLine(this.getLarge("第四组测试：获取书目-GetRes/GetBiblioInfos"));
+
+            // 用GetRes获取书目
+            this.displayLine(GetBR() + getBold(u.UserName + "用 GetRes()获取书目xml，应成功。"));
+            GetResResponse getResponse = this.GetRes(u, tempBiblioPath,  true);
+            if (getResponse.GetResResult.Value >= 0)
+                this.displayLine("符合预期");
+            else
+                this.displayLine(getRed("不符合预期"));
+
+            // 用GetBiblioInfos()获取书目
+            this.displayLine(GetBR() + getBold(u.UserName + "用 GetBiblioInfos()获取书目xml，应成功。"));
+            GetBiblioInfosResponse getBiblioResponse = this.GetBiblioInfos(u, tempBiblioPath, true);
+            if (getBiblioResponse.GetBiblioInfosResult.Value >= 0)
+                this.displayLine("符合预期");
+            else
+                this.displayLine(getRed("不符合预期"));
 
             #endregion
 
