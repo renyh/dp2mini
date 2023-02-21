@@ -291,7 +291,8 @@ namespace practice
         }
 
         public GetResResponse GetRes(UserInfo u,
-            string strResPath)
+            string strResPath,
+            bool isReader=false)
         {
             GetResResponse response = null;
 
@@ -299,7 +300,7 @@ namespace practice
             try
             {
                 // 用户登录
-                channel = mainForm.GetChannelAndLogin(u.UserName, u.Password);
+                channel = mainForm.GetChannelAndLogin(u.UserName, u.Password,isReader);
 
                 response = channel.GetRes(strResPath,
                     0,
@@ -645,6 +646,11 @@ namespace practice
             return "<span style='background-color:yellow; font-weight:bold'>" + text + "</span>";
         }
 
+        public string getGreenBackgroud(string text)
+        {
+            return "<span style='background-color:green;'>" + text + "</span>";
+        }
+
         public string getBold(string text)
         {
             return "<span style='font-weight:bold'>" + text + "</span>";
@@ -657,6 +663,10 @@ namespace practice
 
         public void displayLine(string line)
         {
+
+            if (line == "符合预期")
+                line = this.getGreenBackgroud(line);
+
             line = line.Replace("\r\n", "<br/>");
 
             AppendHtml(this.webBrowser1, line + "<br/>");
@@ -836,6 +846,8 @@ namespace practice
                     + "<barcode>" + barcode + "</barcode>"
                     + "<name>小张" + barcode + "</name>"
                     + "<readerType>本科生</readerType>"
+                    + "<displayName>显示名"+barcode + "</displayName>"
+                    + "<preference>个性化参数" + barcode + "</preference>"
                     + dprmsfile
                     + "</root>";
             }
@@ -1747,7 +1759,7 @@ namespace practice
 
         public WriteResResponse CreateReaderBySuperviosr(string rights,out string readerBarcode)
         {
-            string readerxml = this.GetXml(C_Type_reader, false, out readerBarcode);
+            string readerxml = this.GetXml(C_Type_reader, true, out readerBarcode);
 
             if (string.IsNullOrEmpty(rights) == false)
             {
@@ -1776,25 +1788,30 @@ namespace practice
         private void button_readerLogin_Click(object sender, EventArgs e)
         {
             WriteResResponse writeRes = null;
-
+            GetResResponse getRes = null;
 
             // 用supervisor帐户创建一个读者
             string readerBarcode = "";
-            writeRes = this.CreateReaderBySuperviosr("setreaderinfo,getreaderinfo,setbiblioinfo,getbiblioinfo", 
+            writeRes = this.CreateReaderBySuperviosr("setreaderinfo,getreaderinfo,writereaderobject,getreaderobject",
                 out readerBarcode);
+            // 读者自己的路径
             string readerOwnerPath = writeRes.strOutputResPath;
 
             // 修改读者的密码
-            this.displayLine(this.getBold("修改读者"+readerBarcode+"的密码，后面用此读者身份登录。"));
-            this.ChangeReaderPasswordBySupervisor(readerBarcode);         
+            this.displayLine(this.getBold("修改读者" + readerBarcode + "的密码，后面用此读者身份登录。"));
+            this.ChangeReaderPasswordBySupervisor(readerBarcode);
             UserInfo u = new UserInfo
             {
                 UserName = readerBarcode,
                 Password = "1",
             };
 
+            // 用superviosr帐户创建另一条读者，用于作为他人记录。
+            writeRes = this.CreateReaderBySuperviosr("", out string tempBarcode);
+            string otherReaderPath = writeRes.strOutputResPath;
 
-            #region 读者身份操作读者记录：创建，修改自己/修改他人，删除自己/删除他人
+
+            #region 不能新建读者记录
 
             //====
             // 读者身份 创建读者记录
@@ -1802,7 +1819,7 @@ namespace practice
             // 用WriteRes创建读者记录，应不成功
             this.displayLine(GetBR() + getBold(u.UserName + "用WriteRes()新建读者xml，应不成功。注意观察提示。"));
             writeRes = this.WriteXml(u,
-                this.GetAppendPath(C_Type_reader), 
+                this.GetAppendPath(C_Type_reader),
                 this.GetXml(C_Type_reader, false), true);
 
             if (writeRes.WriteResResult.Value == -1)
@@ -1813,18 +1830,16 @@ namespace practice
             // 用SetReaderInfo新建读者,应不成功
             this.displayLine(GetBR() + getBold(u.UserName + "用SetReaderInfo新建读者xml，应不成功，注意观察提示。"));
             SetReaderInfoResponse readerRes = this.SetReaderInfo(u, "new",
-                this.GetAppendPath(C_Type_reader), 
+                this.GetAppendPath(C_Type_reader),
                 this.GetXml(C_Type_reader, false), true);
             if (readerRes.SetReaderInfoResult.Value == -1)
                 this.displayLine("符合预期");
             else
                 this.displayLine(getRed("不符合预期"));
 
-            //===
-            // 读者身份 修改 和删除他人
-            // 用superviosr帐户创建另一条读者，为修改和删除读者。
-            writeRes = this.CreateReaderBySuperviosr("", out string tempBarcode);
-            string otherReaderPath = writeRes.strOutputResPath;
+            #endregion
+
+            #region 不能修改/删除他人记录
 
             // 用WriteRes修改其它读者记录，应不成功
             this.displayLine(GetBR() + getBold(u.UserName + "用WriteRes修改其它读者xml，应不成功。注意观察提示。"));
@@ -1852,30 +1867,72 @@ namespace practice
             else
                 this.displayLine(getRed("不符合预期"));
 
+            #endregion
+
+
+            #region 可以修改自己的部分字段
+            //读者帐户登录，只能修改自己记录的 displayName 和 preference 这两个字段。
 
             //===
             // 读者身份，处理和删除自己
             // 用WriteRes修改其它读者记录，应不成功
-            this.displayLine(GetBR() + getBold(u.UserName + "用WriteRes修改读者自己，应不成功。注意观察提示。"));
+            this.displayLine(GetBR() + getBold(u.UserName + "用WriteRes修改读者自己的，应部分成功。注意观察提示。"));
+            // 提交的xml
+            string submitXml = this.GetXml(C_Type_reader, false);
+
             writeRes = this.WriteXml(u,
                readerOwnerPath,
-                this.GetXml(C_Type_reader, false), true);
-            //if (writeRes.WriteResResult.Value == -1)
-            //    this.displayLine("符合预期");
-            //else
-            //    this.displayLine(getRed("不符合预期"));
-            this.displayLine(this.getWarn1("请人工判断。"));
+                this.GetXml(C_Type_reader, true), true);
+            if (writeRes.WriteResResult.Value == 0)
+            {
+                //this.displayLine("符合预期");
+
+                // 需要把读者记录获取出来，比如
+                 getRes = this.GetRes(u, readerOwnerPath, true);
+                if (getRes.GetResResult.Value >= 0)
+                {
+
+                    string resultXml = Encoding.UTF8.GetString(getRes.baContent);
+
+                    // 比较提交的xml与返回的xml
+                    bool bResult = this.CompareReader(submitXml, resultXml,
+                        new List<string> { "displayName", "preference" },  // 希望相等的字段
+                        new List<string> { "name" }, // 希望不等的字段
+                        out string info);
+
+                    this.displayLine(info);
+                    if (bResult == false)
+                    {
+                        this.displayLine(getRed("不符合预期"));
+                    }
+                    else
+                    {
+                        this.displayLine("符合预期");
+                    }
+                }
+                else
+                {
+                    this.displayLine(this.getRed("读者获取自己的记录返回-1，不符合预期。"));
+                }
+            }
+            else
+                this.displayLine(getRed("不符合预期"));
 
 
 
-            // 用SetReaderInfo修改读者
-            this.displayLine(GetBR() + getBold(u.UserName + "用SetReaderInfo修改读者自己，应成功。"));
-            readerRes = this.SetReaderInfo(u, "change", readerOwnerPath, this.GetXml(C_Type_reader, false), true);
-            //if (readerRes.SetReaderInfoResult.Value == 0)
-            //    this.displayLine("符合预期");
-            //else
-            //    this.displayLine(getRed("不符合预期"));
-            this.displayLine(this.getWarn1("请人工判断。"));
+            // 用writeres来测即可以，不用再测一遍了
+            //// 用SetReaderInfo修改读者
+            //this.displayLine(GetBR() + getBold(u.UserName + "用SetReaderInfo修改读者自己，应成功。"));
+            //readerRes = this.SetReaderInfo(u, "change", readerOwnerPath, this.GetXml(C_Type_reader, false), true);
+            ////if (readerRes.SetReaderInfoResult.Value == 0)
+            ////    this.displayLine("符合预期");
+            ////else
+            ////    this.displayLine(getRed("不符合预期"));
+            //this.displayLine(this.getWarn1("请人工判断。"));
+
+            #endregion
+
+            #region 不能删除自己记录
 
             // 用SetReaderInfo删除书目
             this.displayLine(GetBR() + getBold(u.UserName + "用SetReaderInfo删除读者自己，应不成功。"));
@@ -1888,16 +1945,117 @@ namespace practice
 
             #endregion
 
+            #region 读者可以获取自己的信息
 
-            #region 读者身份，应能写书目和获取书目。
+            this.displayLine(GetBR() + getBold(u.UserName + "用GetRes获取读者自己，应成功。"));
 
-            //====
-            // 读者身份，应能写书目和获取书目。
+            getRes = this.GetRes(u, readerOwnerPath, true);
+            if (getRes.GetResResult.Value >= 0)
+                this.displayLine("符合预期");
+            else
+                this.displayLine(getRed("不符合预期"));
+
+            #endregion
+
+
+            #region 读者可以获取别人的信息
+
+            this.displayLine(GetBR() + getBold(u.UserName + "用GetRes获取其它读者，应不成功。"));
+
+            getRes = this.GetRes(u, otherReaderPath, true);
+            if (getRes.GetResResult.Value == -1)
+                this.displayLine("符合预期");
+            else
+                this.displayLine(getRed("不符合预期"));
+            #endregion
+
+            // 用superviosr删除这次删除相关的记录
+            // todo
+
+        }
+
+        // equalFields 希望相等的字段
+        // unequalFiles 希望不等的字段
+        public bool CompareReader(string submitXml, string resultXml, 
+            List<string> equalFields,
+            List<string> unequalFiles,
+            out string info)
+        {
+             info = "";
+
+            XmlDocument submitDom = new XmlDocument();
+            submitDom.LoadXml(submitXml);
+            XmlNode submitRoot = submitDom.DocumentElement;
+
+            XmlDocument resultDom = new XmlDocument();
+            resultDom.LoadXml(resultXml);
+            XmlNode resultRoot = resultDom.DocumentElement;
+
+            bool bResult = true;
+
+            // 检查希望相等的字段
+            foreach (string f in equalFields)
+            {
+                string text1 = DomUtil.GetElementText(submitRoot, f);
+                string text2=DomUtil.GetElementText(resultRoot, f);
+
+                if (text1 == text2)
+                    info += f + "相同，符合预期。\r\n";
+                else
+                {
+                    info += f + "不同，不符合预期。\r\n";
+                    bResult = false;
+                }
+            }
+
+            // 检查不希望相等的字段
+            foreach (string f in unequalFiles)
+            {
+                string text1 = DomUtil.GetElementText(submitRoot, f);
+                string text2 = DomUtil.GetElementText(resultRoot, f);
+
+                if (text1 != text2)
+                    info += f + "不同，符合预期。\r\n";
+                else
+                {
+                    info += f + "相同，不符合预期。\r\n";
+                    bResult = false;
+                }
+            }
+
+
+
+            return bResult;
+        }
+
+
+        // 读者身份 操作书目
+        private void button_readerLogin_biblio_Click(object sender, EventArgs e)
+        {
+
+            WriteResResponse writeRes = null;
+
+            // 用supervisor帐户创建一个读者
+            string readerBarcode = "";
+            writeRes = this.CreateReaderBySuperviosr("setreaderinfo,getreaderinfo",
+                out readerBarcode);
+            string readerOwnerPath = writeRes.strOutputResPath;
+
+            // 修改读者的密码
+            this.displayLine(this.getBold("修改读者" + readerBarcode + "的密码，后面用此读者身份登录。"));
+            this.ChangeReaderPasswordBySupervisor(readerBarcode);
+            UserInfo u = new UserInfo
+            {
+                UserName = readerBarcode,
+                Password = "1",
+            };
+
+            #region 写书目
 
             string strBiblioPath = this.GetAppendPath(C_Type_biblio);
-            // 用WriteRes获取书目
+            // 用WriteRes新建书目
             this.displayLine(GetBR() + getBold(u.UserName + "用WriteRes()新建书目xml，应成功。"));
-            writeRes = this.WriteXml(u, strBiblioPath, this.GetXml(C_Type_biblio, false),true);
+            writeRes = this.WriteXml(u, strBiblioPath, this.GetXml(C_Type_biblio, false), true);
             if (writeRes.WriteResResult.Value == 0)
                 this.displayLine("符合预期");
             else
@@ -1906,7 +2064,7 @@ namespace practice
             // 用SetBiblioInfo新建书目
             this.displayLine(GetBR() + getBold(u.UserName + "用SetBiblioInfo()新建书目xml，应成功。"));
             SetBiblioInfoResponse res = this.SetBiblioInfo(u, "new", strBiblioPath, this.GetXml(C_Type_biblio, false), true);
-            if (res.SetBiblioInfoResult.Value ==0)
+            if (res.SetBiblioInfoResult.Value == 0)
                 this.displayLine("符合预期");
             else
                 this.displayLine(getRed("不符合预期"));
@@ -1915,7 +2073,7 @@ namespace practice
 
             // 用SetBiblioInfo修改书目
             this.displayLine(GetBR() + getBold(u.UserName + "用SetBiblioInfo()修改书目xml，应成功。"));
-             res = this.SetBiblioInfo(u, "change", tempBiblioPath, this.GetXml(C_Type_biblio, false), true);
+            res = this.SetBiblioInfo(u, "change", tempBiblioPath, this.GetXml(C_Type_biblio, false), true);
             if (res.SetBiblioInfoResult.Value == 0)
                 this.displayLine("符合预期");
             else
@@ -1923,13 +2081,20 @@ namespace practice
 
             // 用SetBiblioInfo删除书目
             this.displayLine(GetBR() + getBold(u.UserName + "用SetBiblioInfo()删除书目xml，应成功。"));
-            res = this.SetBiblioInfo(u, "delete", tempBiblioPath,"", true);
+            res = this.SetBiblioInfo(u, "delete", tempBiblioPath, "", true);
             if (res.SetBiblioInfoResult.Value == 0)
                 this.displayLine("符合预期");
             else
                 this.displayLine(getRed("不符合预期"));
 
 
+
+
+
+            #endregion
+
+
+            #region 获取书目
 
             #endregion
         }
