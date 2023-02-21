@@ -297,6 +297,8 @@ namespace practice
         {
             GetResResponse response = null;
 
+            this.displayLine("strResPath=" + strResPath);
+
             RestChannel channel = null;
             try
             {
@@ -1875,8 +1877,8 @@ namespace practice
             writeRes = this.CreateReaderBySuperviosr("setreaderinfo,getreaderinfo,writereaderobject,getreaderobject",
                 out readerBarcode);
             // 读者自己的路径
-            string readerOwnerPath = writeRes.strOutputResPath;
-            string ownerObject = readerOwnerPath + "/object/0";
+            string ownerReaderPath = writeRes.strOutputResPath;
+            string ownerObject = ownerReaderPath + "/object/0";
 
 
             // 修改读者的密码
@@ -1988,21 +1990,20 @@ namespace practice
             this.displayLine(this.getLarge("第五组测试：修改自己的xml-SetReaderInfo"));
 
             //===
-            // 读者身份，处理和删除自己
-            // 用WriteRes修改其它读者记录，应不成功
+            // 用WriteRes修改自己记录，应部分成功
             this.displayLine(GetBR() + getBold(u.UserName + "用WriteRes修改读者自己的，应部分成功。注意观察提示。"));
             // 提交的xml
             string submitXml = this.GetXml(C_Type_reader, true);
 
             writeRes = this.WriteXml(u,
-               readerOwnerPath,
+               ownerReaderPath,
                 this.GetXml(C_Type_reader, true), true);
             if (writeRes.WriteResResult.Value == 0)
             {
                 //this.displayLine("符合预期");
 
                 // 需要把读者记录获取出来，比如
-                 getRes = this.GetRes(u, readerOwnerPath, true);
+                 getRes = this.GetRes(u, ownerReaderPath, true);
                 if (getRes.GetResResult.Value >= 0)
                 {
 
@@ -2070,7 +2071,7 @@ namespace practice
 
             // 用SetReaderInfo删除书目
             this.displayLine(GetBR() + getBold(u.UserName + "用SetReaderInfo删除读者自己，应不成功。"));
-            readerRes = this.SetReaderInfo(u, "delete", readerOwnerPath, "", true);
+            readerRes = this.SetReaderInfo(u, "delete", ownerReaderPath, "", true);
             if (readerRes.SetReaderInfoResult.Value == -1)
                 this.displayLine("符合预期");
             else
@@ -2086,7 +2087,7 @@ namespace practice
             // 获取xml
             this.displayLine(GetBR() + getBold(u.UserName + "用GetRes获取读者自己的xml，应成功。"));
 
-            getRes = this.GetRes(u, readerOwnerPath, true);
+            getRes = this.GetRes(u, ownerReaderPath, true);
             if (getRes.GetResResult.Value >= 0)
                 this.displayLine("符合预期");
             else
@@ -2122,7 +2123,7 @@ namespace practice
 
             // 用GetReaderInfo获取他人xml
             this.displayLine(GetBR() + getBold(u.UserName + "用GetReaderInfo获取他人的xml，应不成功。"));
-            GetReaderInfoResponse response1= this.GetReaderInfo(u, readerOwnerPath, true);
+            GetReaderInfoResponse response1= this.GetReaderInfo(u, otherReaderPath, true);
             if (response1.GetReaderInfoResult.Value == -1)
                 this.displayLine("符合预期");
             else
