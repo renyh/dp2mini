@@ -3067,7 +3067,7 @@ out string strError);
         {
             Form_2 dlg = new Form_2(this);
             dlg.StartPosition = FormStartPosition.CenterScreen;
-            dlg.WindowState = FormWindowState.Maximized;// = true;
+           // dlg.WindowState = FormWindowState.Maximized;// = true;
 
             dlg.Show();
         }
@@ -3084,6 +3084,81 @@ out string strError);
             dlg.WindowState = FormWindowState.Maximized;// = true;
 
             dlg.Show();
+        }
+
+        private void button_help_CopyBiblioInfo_Click(object sender, EventArgs e)
+        {
+            // CopyBiblioInfo API 帮助文档
+            Process.Start("https://jihulab.com/DigitalPlatform/dp2doc/-/issues/81");
+        }
+
+        private void button_Click(object sender, EventArgs e)
+        {
+            // SetBiblioInfo API 帮助文档
+            Process.Start("https://jihulab.com/DigitalPlatform/dp2doc/-/issues/81");
+
+        }
+
+        private void button_CopyBiblioinfo_Click(object sender, EventArgs e)
+        {
+            // 清空底部输出信息
+            this.ClearResultInfo();
+
+            string strAction = this.textBox_CopyBiblioInfo_strAction.Text;
+            string strBiblioRecPath = this.textBox_CopyBiblioInfo_strBiblioResPath.Text;
+            if (string.IsNullOrEmpty(strBiblioRecPath) == true)
+            {
+                MessageBox.Show(this, "strBiblioRecPath参数不能为空");
+                return;
+            }
+
+            string strBiblioType = this.textBox_CopyBiblioInfo_strBiblioType.Text;
+            string strBiblio = this.textBox_CopyBiblioInfo_strBiblio.Text;
+
+            string strTimestamp = this.textBox_CopyBiblioInfo_baTimestamp.Text;
+            byte[] baTimestamp = ByteArray.GetTimeStampByteArray(strTimestamp);
+
+            string strNewBiblioType = this.textBox_CopyBiblioInfo_strNewBiblioResPath.Text;
+            string strNewBiblio = this.textBox_CopyBiblioInfo_strNewBiblio.Text;
+            string strNewBiblioRecPath = this.textBox_CopyBiblioInfo_strNewBiblioResPath.Text;
+            //string strComment = this.textBox_CopyBiblioInfo_strComment.Text;
+            // string strStyle = this.textBox_SetBiblioInfo_strStyle.Text;
+
+            RestChannel channel = this.GetChannel();
+            try
+            {
+                CopyBiblioInfoResponse response = channel.CopyBiblioInfo(
+                strAction,
+                strBiblioRecPath,
+                strBiblioType,
+                strBiblio,
+                baTimestamp,
+                strNewBiblioRecPath,
+                strNewBiblio);
+                //strNewBiblioRecPath,
+                //strNewBiblio)
+                //SetBiblioInfoResponse response = channel.CopyBiblioInfo(
+                //    strAction,
+                //    strBiblioRecPath,
+                //    strBiblioType,
+                //    strBiblio,
+                //    baTimestamp,
+                //    strComment,
+                //    strStyle);
+
+                // 显示返回信息
+                this.SetResultInfo("SetBiblioInfo()\r\n" + RestChannel.GetResultInfo(response));
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, "SetBiblioInfo()异常:" + ex.Message);
+                return;
+            }
+            finally
+            {
+                this._channelPool.ReturnChannel(channel);
+            }
         }
     }
 

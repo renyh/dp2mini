@@ -368,6 +368,13 @@ namespace DigitalPlatform.LibraryRestClient
                     + "baOutputTimestamp:" + ByteArray.GetHexTimeStampString(r.baOutputTimestamp) + "\r\n";
 
             }
+            else if (o is CopyBiblioInfoResponse)
+            {
+                CopyBiblioInfoResponse r = (CopyBiblioInfoResponse)o;
+                return GetServerResultInfo(r.strOutputBiblioRecPath) + "\r\n"
+                    + "strOutputBiblioRecPath:" + r.strOutputBiblioRecPath + "\r\n"
+                    + "baOutputTimestamp:" + r.baOutputTimestamp;
+            }
             return "未识别的对象" + o.ToString();
         }
 
@@ -2056,6 +2063,64 @@ namespace DigitalPlatform.LibraryRestClient
 
         }
 
+        public CopyBiblioInfoResponse CopyBiblioInfo(
+         string strAction,
+         string strBiblioRecPath,
+         string strBiblioType,
+         string strBiblio,
+         byte[] baTimestamp,
+         string strNewBiblioRecPath,
+         string strNewBiblio)
+
+        {
+            string strError = "";
+        REDO:
+            try
+            {
+                CookieAwareWebClient client = this.GetClient();
+                CopyBiblioInfoRequest request = new CopyBiblioInfoRequest();
+                request.strAction = strAction;
+                request.strBiblioRecPath = strBiblioRecPath;
+                request.strBiblioType = strBiblioType;
+                request.strBiblio = strBiblio;
+                request.baTimestamp = baTimestamp;// ByteArray.GetTimeStampByteArray(strOldTimestamp);
+                request.strNewBiblioRecPath = strNewBiblioRecPath;
+                request.strNewBiblio = strNewBiblio;
+                byte[] baData = Encoding.UTF8.GetBytes(Serialize(request));
+
+                byte[] result = client.UploadData(this.GetRestfulApiUrl("SetBiblioInfo"),
+                    "POST",
+                    baData);
+
+                string strResult = Encoding.UTF8.GetString(result);
+
+                CopyBiblioInfoResponse response = Deserialize<CopyBiblioInfoResponse>(strResult);
+                if (response.CopyBiblioInfoResult != null)
+                {
+                    if (response.CopyBiblioInfoResult.Value == -1
+                        && response.CopyBiblioInfoResult.ErrorCode == ErrorCode.NotLogin)
+                    {
+                        if (DoNotLogin(ref strError) == 1)
+                            goto REDO;
+
+                        return response;
+                    }
+
+                }
+
+                this.ClearRedoCount();
+                return response;
+            }
+            catch (Exception ex)
+            {
+                int nRet = ConvertWebError(ex, out strError);
+                if (nRet == 0)
+                    throw ex;
+
+                goto REDO;
+            }
+
+        }
 
         /// <summary>
         /// 借/续借

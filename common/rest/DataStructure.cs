@@ -692,6 +692,58 @@ LibraryServerResult.ErrorInfo		出错信息
 
     #endregion
 
+    #region CopyBiblioInfo
+
+    /*
+        LibraryServerResult CopyBiblioInfo(
+            string strAction,
+            string strBiblioRecPath,
+            string strBiblioType,
+            string strBiblio,
+            byte[] baTimestamp,
+            string strNewBiblioRecPath,
+            string strNewBiblio,
+            out string strOutputBiblioRecPath,
+            out byte[] baOutputTimestamp);
+ 
+     */
+
+    // SetReaderInfo
+    [DataContract]
+    public class CopyBiblioInfoRequest
+    {
+        [DataMember]
+        public string strAction { get; set; }
+        [DataMember]
+        public string strBiblioRecPath { get; set; }
+        [DataMember]
+        public string strBiblioType { get; set; }
+        [DataMember]
+        public string strBiblio { get; set; }
+        [DataMember]
+        public byte[] baTimestamp { get; set; }
+        [DataMember]
+        public string strNewBiblioRecPath { get; set; }
+        [DataMember]
+        public string strNewBiblio { get; set; }
+    }
+
+    [DataContract]
+    public class CopyBiblioInfoResponse
+
+    {
+        [DataMember]
+        public LibraryServerResult CopyBiblioInfoResult { get; set; }
+
+        [DataMember]
+        public LibraryServerResult strOutputBiblioRecPath { get; set; }
+
+        [DataMember]
+        public byte[] baOutputTimestamp { get; set; }
+    }
+
+    #endregion
+
     #region VerifyReader
 
     // VerifyReaderPassword
