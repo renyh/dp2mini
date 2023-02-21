@@ -1476,7 +1476,7 @@
             this.tabPage_SetBiblioInfo.Controls.Add(this.button_setBiblioInfo);
             this.tabPage_SetBiblioInfo.Location = new System.Drawing.Point(10, 46);
             this.tabPage_SetBiblioInfo.Name = "tabPage_SetBiblioInfo";
-            this.tabPage_SetBiblioInfo.Size = new System.Drawing.Size(1084, 702);
+            this.tabPage_SetBiblioInfo.Size = new System.Drawing.Size(1252, 680);
             this.tabPage_SetBiblioInfo.TabIndex = 8;
             this.tabPage_SetBiblioInfo.Text = "SetBiblioInfo";
             this.tabPage_SetBiblioInfo.UseVisualStyleBackColor = true;
@@ -1508,7 +1508,7 @@
             this.textBox_SetBiblioInfo_strComment.Location = new System.Drawing.Point(319, 272);
             this.textBox_SetBiblioInfo_strComment.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.textBox_SetBiblioInfo_strComment.Name = "textBox_SetBiblioInfo_strComment";
-            this.textBox_SetBiblioInfo_strComment.Size = new System.Drawing.Size(710, 38);
+            this.textBox_SetBiblioInfo_strComment.Size = new System.Drawing.Size(878, 38);
             this.textBox_SetBiblioInfo_strComment.TabIndex = 54;
             // 
             // label30
@@ -1528,7 +1528,7 @@
             this.textBox_SetBiblioInfo_strStyle.Location = new System.Drawing.Point(317, 345);
             this.textBox_SetBiblioInfo_strStyle.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.textBox_SetBiblioInfo_strStyle.Name = "textBox_SetBiblioInfo_strStyle";
-            this.textBox_SetBiblioInfo_strStyle.Size = new System.Drawing.Size(710, 38);
+            this.textBox_SetBiblioInfo_strStyle.Size = new System.Drawing.Size(878, 38);
             this.textBox_SetBiblioInfo_strStyle.TabIndex = 52;
             // 
             // label31
@@ -1548,7 +1548,7 @@
             this.textBox_SetBiblioInfo_baTimestamp.Location = new System.Drawing.Point(317, 212);
             this.textBox_SetBiblioInfo_baTimestamp.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.textBox_SetBiblioInfo_baTimestamp.Name = "textBox_SetBiblioInfo_baTimestamp";
-            this.textBox_SetBiblioInfo_baTimestamp.Size = new System.Drawing.Size(710, 38);
+            this.textBox_SetBiblioInfo_baTimestamp.Size = new System.Drawing.Size(878, 38);
             this.textBox_SetBiblioInfo_baTimestamp.TabIndex = 50;
             // 
             // label29
@@ -1571,7 +1571,7 @@
             this.textBox_SetBiblioInfo_strBiblio.Multiline = true;
             this.textBox_SetBiblioInfo_strBiblio.Name = "textBox_SetBiblioInfo_strBiblio";
             this.textBox_SetBiblioInfo_strBiblio.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.textBox_SetBiblioInfo_strBiblio.Size = new System.Drawing.Size(712, 160);
+            this.textBox_SetBiblioInfo_strBiblio.Size = new System.Drawing.Size(880, 138);
             this.textBox_SetBiblioInfo_strBiblio.TabIndex = 48;
             // 
             // label26
@@ -1591,7 +1591,7 @@
             this.textBox_SetBiblioInfo_strBiblioType.Location = new System.Drawing.Point(317, 162);
             this.textBox_SetBiblioInfo_strBiblioType.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.textBox_SetBiblioInfo_strBiblioType.Name = "textBox_SetBiblioInfo_strBiblioType";
-            this.textBox_SetBiblioInfo_strBiblioType.Size = new System.Drawing.Size(710, 38);
+            this.textBox_SetBiblioInfo_strBiblioType.Size = new System.Drawing.Size(878, 38);
             this.textBox_SetBiblioInfo_strBiblioType.TabIndex = 46;
             // 
             // label27
@@ -1611,7 +1611,7 @@
             this.textBox_SetBiblioInfo_strAction.Location = new System.Drawing.Point(317, 42);
             this.textBox_SetBiblioInfo_strAction.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.textBox_SetBiblioInfo_strAction.Name = "textBox_SetBiblioInfo_strAction";
-            this.textBox_SetBiblioInfo_strAction.Size = new System.Drawing.Size(710, 38);
+            this.textBox_SetBiblioInfo_strAction.Size = new System.Drawing.Size(878, 38);
             this.textBox_SetBiblioInfo_strAction.TabIndex = 44;
             // 
             // label28
@@ -1631,13 +1631,13 @@
             this.textBox_SetBiblioInfo_strBiblioRecPath.Location = new System.Drawing.Point(317, 110);
             this.textBox_SetBiblioInfo_strBiblioRecPath.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.textBox_SetBiblioInfo_strBiblioRecPath.Name = "textBox_SetBiblioInfo_strBiblioRecPath";
-            this.textBox_SetBiblioInfo_strBiblioRecPath.Size = new System.Drawing.Size(710, 38);
+            this.textBox_SetBiblioInfo_strBiblioRecPath.Size = new System.Drawing.Size(878, 38);
             this.textBox_SetBiblioInfo_strBiblioRecPath.TabIndex = 42;
             // 
             // button_setBiblioInfo
             // 
             this.button_setBiblioInfo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.button_setBiblioInfo.Location = new System.Drawing.Point(317, 585);
+            this.button_setBiblioInfo.Location = new System.Drawing.Point(317, 563);
             this.button_setBiblioInfo.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.button_setBiblioInfo.Name = "button_setBiblioInfo";
             this.button_setBiblioInfo.Size = new System.Drawing.Size(222, 56);
