@@ -1028,10 +1028,10 @@ namespace practice
             else if (action == "change")
             {
 
-                XmlNamespaceManager nsmgr = new XmlNamespaceManager(new NameTable());
-                nsmgr.AddNamespace("dprms", DpNs.dprms);
+                //XmlNamespaceManager nsmgr = new XmlNamespaceManager(new NameTable());
+                //nsmgr.AddNamespace("dprms", DpNs.dprms);
 
-                XmlNodeList nodes = root.SelectNodes("//dprms:file", nsmgr);
+                XmlNodeList nodes = this.GetFileNodes(root);// root.SelectNodes("//dprms:file", nsmgr);
 
                 // 修改第一项
                 if (nodes.Count > 0)
@@ -1047,15 +1047,27 @@ namespace practice
             else if (action == "delete")
             {
 
-                XmlNamespaceManager nsmgr = new XmlNamespaceManager(new NameTable());
-                nsmgr.AddNamespace("dprms", DpNs.dprms);
+                //XmlNamespaceManager nsmgr = new XmlNamespaceManager(new NameTable());
+                //nsmgr.AddNamespace("dprms", DpNs.dprms);
 
-                XmlNodeList nodes = root.SelectNodes("//dprms:file", nsmgr);
+                XmlNodeList nodes = this.GetFileNodes(root);// root.SelectNodes("//dprms:file", nsmgr);
 
                 // 删除第3个file
                 if (nodes.Count > 2)
                 {
+                    // 找到id=2的node，进行删除
                     XmlNode node = nodes[2];
+                    if (DomUtil.GetAttr(node, "id") != "2")
+                    {
+                        node = nodes[1];
+                        if (DomUtil.GetAttr(node, "id") != "2")
+                            node = nodes[0];
+
+                        if (DomUtil.GetAttr(node, "id") != "2")
+                            throw new Exception("xml中3个dprms:file的元素，id属性都不为2。异常的数据。");
+                    }
+
+
                     root.RemoveChild(node);
                 }
                 else
@@ -1601,8 +1613,17 @@ namespace practice
                     GetResResponse tempResponse = this.GetRes(u, tempPath);
                     if (tempResponse.GetResResult.Value >= 0)
                     {
-                        //tempResponse.
-                        this.displayLine(this.getWarn1("请核对是否有3个dprms:file。"));
+                        string tempXml = Encoding.UTF8.GetString(tempResponse.baContent);
+                        XmlNodeList fileNodes = this.GetFileNodes(tempXml);
+                        if (fileNodes.Count == 3)
+                        {
+                            this.displayLine(this.getGreenBackgroud("xml中有3个dprms:file元素，符合预期"));
+                        }
+                        else
+                        {
+                            this.displayLine(this.getRed("xml中有"+fileNodes.Count+"个dprms:file元素，不符合预期，应有3个。"));
+                        }
+
                     }
                 }
                 else
@@ -1622,8 +1643,27 @@ namespace practice
                     GetResResponse tempResponse = this.GetRes(u, tempPath);
                     if (tempResponse.GetResResult.Value >= 0)
                     {
-                        //tempResponse.
-                        this.displayLine(this.getWarn1("请核对第1个dprms:file是否增加了a属性。"));
+
+                        string tempXml = Encoding.UTF8.GetString(tempResponse.baContent);
+                        XmlNodeList fileNodes = this.GetFileNodes(tempXml);
+                        if (fileNodes.Count >= 1)
+                        {
+                            XmlNode node = fileNodes[0];
+                           string a= DomUtil.GetAttr(node, "a");
+                            if (string.IsNullOrEmpty(a) == false)
+                            {
+                                this.displayLine(this.getGreenBackgroud("第1个dprms:file是否增加了a属性，符合预期"));
+                            }
+                            else
+                            {
+                                this.displayLine(this.getRed("第1个dprms:file没有增加a属性，修改没有兑现，不符合预期"));
+                            }
+                        }
+                        else
+                        {
+                            this.displayLine(this.getRed("xml中dprms:file元素小于1，不符合预期。"));
+
+                        }
                     }
                 }
                 else
@@ -1643,8 +1683,27 @@ namespace practice
                     GetResResponse tempResponse = this.GetRes(u, tempPath);
                     if (tempResponse.GetResResult.Value >= 0)
                     {
-                        //tempResponse.
-                        this.displayLine(this.getWarn1("请核对是否删除了第3个dprms:file。"));
+                        string tempXml = Encoding.UTF8.GetString(tempResponse.baContent);
+                        XmlNodeList fileNodes = this.GetFileNodes(tempXml);
+                        if (fileNodes.Count == 2)
+                        {
+                            string id0=DomUtil.GetAttr(fileNodes[0], "id");
+                            string id1=DomUtil.GetAttr(fileNodes[1], "id");
+                            if (id0 == "0" && id1 == "1")
+                            {
+                                this.displayLine(this.getGreenBackgroud("确实将xml中的第3个dprms:file元素(@id='2')删除了，符合预期"));
+                            }
+                            else
+                            {
+                                this.displayLine(this.getRed("未将xml中的第3个dprms:file元素(@id='2')删除，不符合预期"));
+                            }
+
+                        }
+                        else
+                        {
+                            this.displayLine(this.getRed("xml中有" + fileNodes.Count + "个dprms:file元素，不符合预期，删除一个后应剩2个。"));
+                        }
+                        //this.displayLine(this.getWarn1("请核对是否删除了第3个dprms:file。"));
                     }
                 }
                 else
@@ -1762,7 +1821,17 @@ namespace practice
 
                 if (getResponse.GetResResult.Value >= 0)
                 {
-                    this.displayLine(getWarn1("请核对返回结果是否过滤了dprms:file。"));
+                    string tempXml = Encoding.UTF8.GetString(getResponse.baContent);
+                    XmlNodeList fileNodes = this.GetFileNodes(tempXml);
+                    if (fileNodes == null || fileNodes.Count == 0)
+                    {
+                        this.displayLine(this.getGreenBackgroud("确实过滤了xml中的dprms:file元素，符合预期"));
+                    }
+                    else
+                    {
+                        this.displayLine(getRed("发现xml中存在dprms:file元素，不符合预期。无对象权限时，应过滤掉dprms:file。"));
+                    }
+                    //this.displayLine(getWarn1("请核对返回结果是否过滤了dprms:file。"));
                 }
                 else
                 {
@@ -1796,7 +1865,17 @@ namespace practice
                 getResponse = this.GetRes(u, path_xmlHasFile);
                 if (getResponse.GetResResult.Value >= 0)
                 {
-                    this.displayLine(getWarn1("请核对返回结果中应包含dprms:file。"));
+                    string tempXml = Encoding.UTF8.GetString(getResponse.baContent);
+                    XmlNodeList fileNodes = this.GetFileNodes(tempXml);
+                    if (fileNodes.Count > 0)
+                    {
+                        this.displayLine(this.getGreenBackgroud("xml中包含dprms:file元素，符合预期"));
+                    }
+                    else
+                    {
+                        this.displayLine(getRed("发现xml中没有dprms:file元素，不符合预期。有对象权限时，应能返回dprms:file。"));
+                    }
+                    //this.displayLine(getWarn1("请核对返回结果中应包含dprms:file。"));
                 }
                 else
                 {
@@ -1879,14 +1958,30 @@ namespace practice
             }
         }
 
+        public XmlNodeList GetFileNodes(XmlNode node)
+        {
+            XmlNamespaceManager nsmgr = new XmlNamespaceManager(new NameTable());
+            nsmgr.AddNamespace("dprms", DpNs.dprms);
+
+            XmlNodeList nodes = node.SelectNodes("//dprms:file", nsmgr);
+            return nodes;
+        }
+
+        public XmlNodeList GetFileNodes(string xml)
+        {
+            XmlDocument dom = new XmlDocument();
+            dom.LoadXml(xml);
+            return this.GetFileNodes(dom.DocumentElement);
+        }
 
 
-        #endregion
+
+            #endregion
 
 
 
 
-        private void button_testRight_Click(object sender, EventArgs e)
+            private void button_testRight_Click(object sender, EventArgs e)
         {
             string type = this.comboBox_TestRight_type.Text.Trim();
 
@@ -2208,8 +2303,8 @@ namespace practice
 
                         // 比较提交的xml与返回的xml
                         bool bResult = this.CompareReader(submitXml, resultXml,
-                            new List<string> { "displayName", "preference" },  // 希望相等的字段
-                            new List<string> { "name", "dprms:file" }, // 希望不等的字段
+                            new List<string> { "displayName", "preference", "dprms:file" },  // 希望相等的字段
+                            new List<string> { "name"}, // 希望不等的字段
                             out string info);
 
                         this.displayLine(info);
@@ -2250,11 +2345,11 @@ namespace practice
                 this.displayLine(this.getLarge("第六组测试：修改自己的对象-WriteRes"));
 
                 // 用WriteRes修改自己的对象，应不成功
-                this.displayLine(GetBR() + getBold(u.UserName + "用WriteRes修改自己的对象，应不成功。注意观察提示。"));
+                this.displayLine(GetBR() + getBold(u.UserName + "用WriteRes修改自己的对象，应成功。"));
                 writeRes = this.WriteObject(u,
                    ownerObject,
                    true);
-                if (writeRes.WriteResResult.Value == -1)
+                if (writeRes.WriteResResult.Value == 0)
                     this.displayLine("符合预期");
                 else
                     this.displayLine(getRed("不符合预期"));
