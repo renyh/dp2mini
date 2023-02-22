@@ -371,7 +371,7 @@ namespace DigitalPlatform.LibraryRestClient
             else if (o is CopyBiblioInfoResponse)
             {
                 CopyBiblioInfoResponse r = (CopyBiblioInfoResponse)o;
-                return GetServerResultInfo(r.strOutputBiblioRecPath) + "\r\n"
+                return GetServerResultInfo(r.CopyBiblioInfoResult) + "\r\n"
                     + "strOutputBiblioRecPath:" + r.strOutputBiblioRecPath + "\r\n"
                     + "baOutputTimestamp:" + r.baOutputTimestamp;
             }
@@ -2088,7 +2088,7 @@ namespace DigitalPlatform.LibraryRestClient
                 request.strNewBiblio = strNewBiblio;
                 byte[] baData = Encoding.UTF8.GetBytes(Serialize(request));
 
-                byte[] result = client.UploadData(this.GetRestfulApiUrl("SetBiblioInfo"),
+                byte[] result = client.UploadData(this.GetRestfulApiUrl("CopyBiblioInfo"),
                     "POST",
                     baData);
 
