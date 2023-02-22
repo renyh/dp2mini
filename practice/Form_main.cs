@@ -3154,12 +3154,12 @@ out string strError);
                 //    strStyle);
 
                 // 显示返回信息
-                this.SetResultInfo("SetBiblioInfo()\r\n" + RestChannel.GetResultInfo(response));
+                this.SetResultInfo("CopyBiblioInfo()\r\n" + RestChannel.GetResultInfo(response));
 
             }
             catch (Exception ex)
             {
-                MessageBox.Show(this, "SetBiblioInfo()异常:" + ex.Message);
+                MessageBox.Show(this, "CopyBiblioInfo()异常:" + ex.Message);
                 return;
             }
             finally
