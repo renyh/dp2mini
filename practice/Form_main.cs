@@ -2961,7 +2961,8 @@ out string strError);
         #region SetItemInfo
         private void button_help_SetItemInfo_Click(object sender, EventArgs e)
         {
-            Process.Start("");
+            MessageBox.Show("这是一个前端包装函数，对应服务器的SetEntites/SetOrders/SetIssues/SetComments。");
+            //Process.Start("");
         }
 
         private void button_SetItemInfo_Click(object sender, EventArgs e)
@@ -2969,11 +2970,12 @@ out string strError);
             // 清空底部输出信息
             this.ClearResultInfo();
 
+            string strDbType=this.textBox_SetItemInfo_strDbType.Text.Trim();
             string strAction = this.textBox_SetItemInfo_strAction.Text;
-            string strRecPath = this.textBox_SetItemInfo_strRecPath.Text;
-            if (string.IsNullOrEmpty(strRecPath) == true)
+            string strResPath = this.textBox_SetItemInfo_strResPath.Text;
+            if (string.IsNullOrEmpty(strResPath) == true)
             {
-                MessageBox.Show(this, "strRecPath参数不能为空");
+                MessageBox.Show(this, "strResPath参数不能为空");
                 return;
             }
 
@@ -2986,15 +2988,20 @@ out string strError);
             RestChannel channel = this.GetChannel();
             try
             {
-                SetItemInfoResponse response = channel.SetItemInfo(
+                LibraryServerResult response = channel.SetItemInfo(strDbType,
                     strAction,
-                    strRecPath,
+                    strResPath,
                     strXml,
                     baTimestamp,
-                    strStyle);
+                    strStyle,
+                    out string strOutputRecPath,
+                    out byte[] baOutputTimestamp);
 
                 // 显示返回信息
-                this.SetResultInfo("SetItemInfo()\r\n" + RestChannel.GetResultInfo(response));
+                this.SetResultInfo("SetItemInfo()\r\n"
+                    + RestChannel.GetResultInfo(response) + "\r\n"
+                    + "strOutputRecPath:" + strOutputRecPath + "\r\n"
+                    + "baOutputTimestamp:" + ByteArray.GetHexTimeStampString(baOutputTimestamp) + "\r\n");
 
             }
             catch (Exception ex)

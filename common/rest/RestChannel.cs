@@ -110,8 +110,12 @@ namespace DigitalPlatform.LibraryRestClient
             {
                 return "GetResultInfo()传入的参数不能为null。";
             }
-
-            if (o is WriteResResponse)
+            if (o is LibraryServerResult)
+            {
+                LibraryServerResult r = (LibraryServerResult)o;
+                return GetServerResultInfo(r);
+            }
+            else if (o is WriteResResponse)
             {
                 WriteResResponse r = (WriteResResponse)o;
 
@@ -1949,6 +1953,7 @@ namespace DigitalPlatform.LibraryRestClient
 
         }
 
+        /*
         // 写册/订购/评注/期 记录
         public SetItemInfoResponse SetItemInfo(
     string strAction,
@@ -2004,7 +2009,7 @@ namespace DigitalPlatform.LibraryRestClient
             }
 
         }
-
+        */
         public SetBiblioInfoResponse SetBiblioInfo(
             string strAction,
             string strBiblioRecPath,
@@ -2761,6 +2766,333 @@ namespace DigitalPlatform.LibraryRestClient
 
         }
 
+        public LibraryServerResult SetItemInfo(
+                 string strDbType,
+                string strAction,
+                string strResPath,
+                string strXml,
+                byte[] baTimestamp,
+                string strStyle,
+                out string strOutputRecPath,
+                out byte[] baOutputTimestamp)
+        {
+            strOutputRecPath = "";
+            baOutputTimestamp = null;
+
+            LibraryServerResult result = new LibraryServerResult();
+            string strError = "";
+
+
+            var entity = new EntityInfo();
+            entity.Action = strAction;
+            if (strAction == "delete")
+            {
+                entity.OldRecPath = strResPath;
+            }
+            else
+            {
+                entity.NewRecPath = strResPath;
+            }
+
+            // xml记录体
+            entity.NewRecord = strXml;
+
+            // 时间戳
+            if (strAction == "change" || strAction == "delete")
+                entity.OldTimestamp = baTimestamp;
+            else
+                entity.NewTimestamp = baTimestamp;
+
+            /*
+            if (strAction == "change")
+                entity.OldRecPath = strRecPath;
+            */
+
+            EntityInfo[] errorinfos = null;
+
+            if (strDbType == "item" || strDbType == "entity")
+            {
+               SetEntitiesResponse ret = SetEntities(
+                    "", // strBiblioRecPath,
+                    new EntityInfo[] { entity });
+
+                errorinfos = ret.errorinfos;
+                result = ret.SetEntitiesResult;
+            }
+            else if (strDbType == "order")
+            {
+                SetOrdersResponse ret = this.SetOrders(
+                     "", // strBiblioRecPath,
+                     new EntityInfo[] { entity });
+
+                errorinfos = ret.errorinfos;
+                result = ret.SetOrdersResult;
+            }
+            else if (strDbType == "issue")
+            {
+                SetIssuesResponse ret = this.SetIssues(
+                     "", // strBiblioRecPath,
+                     new EntityInfo[] { entity });
+
+                errorinfos = ret.errorinfos;
+                result = ret.SetIssuesResult;
+            }
+            else if (strDbType == "comment")
+            {
+                SetCommentsResponse ret = this.SetComments(
+                     "", // strBiblioRecPath,
+                     new EntityInfo[] { entity });
+
+                errorinfos = ret.errorinfos;
+                result = ret.SetCommentsResult;
+            }
+            else
+            {
+                result.Value = -1;
+                result.ErrorInfo = $"无法识别的数据库类型 '{strDbType}'";
+                result.ErrorCode = ErrorCode.SystemError;
+                return result;
+            }
+
+            if (result.Value == -1)
+                return result;
+
+
+            //
+            foreach (var error in errorinfos)
+            {
+                if (error.ErrorCode != ErrorCodeValue.NoError)
+                {
+                    // TODO: error code
+                    // string name = error.ErrorCode.ToString();
+                    // result.ErrorCode = (ErrorCode)Enum.Parse(typeof(ErrorCode), name);
+                    
+                    // 不明白？？？
+                    //result.ErrorCode = LibraryServerResult.FromErrorValue(error.ErrorCode);
+
+
+                    // “部分兑现保存”，不被当作报错
+                    if (error.ErrorCode == ErrorCodeValue.PartialDenied)
+                        result.Value = 0;
+                    else
+                        result.Value = -1;
+                    result.ErrorInfo = error.ErrorInfo;
+                    if (error.ErrorCode == ErrorCodeValue.TimestampMismatch)
+                    {
+                        if (strAction == "delete")
+                            baOutputTimestamp = error.NewTimestamp;
+                        else
+                            baOutputTimestamp = error.OldTimestamp;
+                    }
+                    else
+                        baOutputTimestamp = error.NewTimestamp;
+                    strOutputRecPath = error.NewRecPath;
+                    return result;
+                }
+                else
+                {
+                    baOutputTimestamp = error.NewTimestamp;
+                    strOutputRecPath = error.NewRecPath;
+                }
+            }
+
+            return result;
+        }
+
+        // 设置/保存册信息
+        // parameters:
+        //      strBiblioRecPath    书目记录路径，仅包含库名和id部分
+        //      entityinfos 要提交的的实体信息数组
+        // 权限：需要有setiteminfo 权限(兼容setentities权限) 或 writerecord 权限
+        // 日志：
+        //      要产生日志
+        public SetEntitiesResponse SetEntities(
+            string strBiblioRecPath,
+            EntityInfo[] entityinfos)
+        {
+            SetEntitiesResponse response = null;
+
+            string strError = "";
+
+        REDO:
+            try
+            {
+                CookieAwareWebClient client = this.GetClient();
+                SetEntitiesRequest request = new SetEntitiesRequest();
+                request.strBiblioRecPath = strBiblioRecPath;
+                request.entityinfos=entityinfos;
+                byte[] baData = Encoding.UTF8.GetBytes(Serialize(request));
+
+
+                string strRequest = Encoding.UTF8.GetString(baData);
+                byte[] result = client.UploadData(this.GetRestfulApiUrl("SetEntities"),
+                                "POST",
+                                 baData);
+
+                string strResult = Encoding.UTF8.GetString(result);
+                response = Deserialize<SetEntitiesResponse>(strResult);
+
+                // 未登录的情况
+                if (response.SetEntitiesResult.Value == -1
+                    && response.SetEntitiesResult.ErrorCode == ErrorCode.NotLogin)
+                {
+                    if (DoNotLogin(ref strError) == 1)
+                        goto REDO;
+                }
+
+                return response;
+            }
+            catch (Exception ex)
+            {
+                int nRet = ConvertWebError(ex, out strError);
+                if (nRet == 0)
+                    return response;
+
+                goto REDO;
+            }
+
+        }
+
+
+        public SetOrdersResponse SetOrders(
+            string strBiblioRecPath,
+            EntityInfo[] orderinfos)
+        {
+            SetOrdersResponse response = null;
+
+            string strError = "";
+
+        REDO:
+            try
+            {
+                CookieAwareWebClient client = this.GetClient();
+                SetOrdersRequest request = new SetOrdersRequest();
+                request.strBiblioRecPath = strBiblioRecPath;
+                request.orderinfos = orderinfos;
+                byte[] baData = Encoding.UTF8.GetBytes(Serialize(request));
+
+
+                string strRequest = Encoding.UTF8.GetString(baData);
+                byte[] result = client.UploadData(this.GetRestfulApiUrl("SetOrders"),
+                                "POST",
+                                 baData);
+
+                string strResult = Encoding.UTF8.GetString(result);
+                response = Deserialize<SetOrdersResponse>(strResult);
+
+                // 未登录的情况
+                if (response.SetOrdersResult.Value == -1
+                    && response.SetOrdersResult.ErrorCode == ErrorCode.NotLogin)
+                {
+                    if (DoNotLogin(ref strError) == 1)
+                        goto REDO;
+                }
+
+                return response;
+            }
+            catch (Exception ex)
+            {
+                int nRet = ConvertWebError(ex, out strError);
+                if (nRet == 0)
+                    return response;
+
+                goto REDO;
+            }
+
+        }
+
+        public SetCommentsResponse SetComments(
+            string strBiblioRecPath,
+            EntityInfo[] commentinfos)
+        {
+            SetCommentsResponse response = null;
+
+            string strError = "";
+
+        REDO:
+            try
+            {
+                CookieAwareWebClient client = this.GetClient();
+                SetCommentsRequest request = new SetCommentsRequest();
+                request.strBiblioRecPath = strBiblioRecPath;
+                request.commentinfos = commentinfos;
+                byte[] baData = Encoding.UTF8.GetBytes(Serialize(request));
+
+
+                string strRequest = Encoding.UTF8.GetString(baData);
+                byte[] result = client.UploadData(this.GetRestfulApiUrl("SetComments"),
+                                "POST",
+                                 baData);
+
+                string strResult = Encoding.UTF8.GetString(result);
+                response = Deserialize<SetCommentsResponse>(strResult);
+
+                // 未登录的情况
+                if (response.SetCommentsResult.Value == -1
+                    && response.SetCommentsResult.ErrorCode == ErrorCode.NotLogin)
+                {
+                    if (DoNotLogin(ref strError) == 1)
+                        goto REDO;
+                }
+
+                return response;
+            }
+            catch (Exception ex)
+            {
+                int nRet = ConvertWebError(ex, out strError);
+                if (nRet == 0)
+                    return response;
+
+                goto REDO;
+            }
+        }
+
+        public SetIssuesResponse SetIssues(
+                string strBiblioRecPath,
+                EntityInfo[] issueinfos)
+        {
+            SetIssuesResponse response = null;
+
+            string strError = "";
+
+        REDO:
+            try
+            {
+                CookieAwareWebClient client = this.GetClient();
+                SetIssuesRequest request = new SetIssuesRequest();
+                request.strBiblioRecPath = strBiblioRecPath;
+                request.issueinfos = issueinfos;
+                byte[] baData = Encoding.UTF8.GetBytes(Serialize(request));
+
+
+                string strRequest = Encoding.UTF8.GetString(baData);
+                byte[] result = client.UploadData(this.GetRestfulApiUrl("SetIssues"),
+                                "POST",
+                                 baData);
+
+                string strResult = Encoding.UTF8.GetString(result);
+                response = Deserialize<SetIssuesResponse>(strResult);
+
+                // 未登录的情况
+                if (response.SetIssuesResult.Value == -1
+                    && response.SetIssuesResult.ErrorCode == ErrorCode.NotLogin)
+                {
+                    if (DoNotLogin(ref strError) == 1)
+                        goto REDO;
+                }
+
+                return response;
+            }
+            catch (Exception ex)
+            {
+                int nRet = ConvertWebError(ex, out strError);
+                if (nRet == 0)
+                    return response;
+
+                goto REDO;
+            }
+        }
+
         // 获得册信息
         // parameters:
         //      strBiblioRecPath    书目记录路径，仅包含库名和id部分
@@ -2779,7 +3111,7 @@ namespace DigitalPlatform.LibraryRestClient
             string strStyle,
             string strLang)
         {
-             string strError = "";
+            string strError = "";
             GetEntitiesResponse response = null;
 
         REDO:
@@ -2800,10 +3132,11 @@ namespace DigitalPlatform.LibraryRestClient
                                  baData);
 
                 string strResult = Encoding.UTF8.GetString(result);
-                 response = Deserialize<GetEntitiesResponse>(strResult);
+                response = Deserialize<GetEntitiesResponse>(strResult);
 
                 // 未登录的情况
-                if (response.GetEntitiesResult.Value == -1 && response.GetEntitiesResult.ErrorCode == ErrorCode.NotLogin)
+                if (response.GetEntitiesResult.Value == -1
+                    && response.GetEntitiesResult.ErrorCode == ErrorCode.NotLogin)
                 {
                     if (DoNotLogin(ref strError) == 1)
                         goto REDO;

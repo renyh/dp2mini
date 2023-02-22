@@ -1295,6 +1295,85 @@ LibraryServerResult.ErrorInfo		出错信息
 
     #endregion
 
+    #region SetEnties
+
+    [DataContract]
+    public class SetEntitiesRequest
+    {
+        [DataMember]
+        public string strBiblioRecPath { get; set; }
+        [DataMember]
+        public EntityInfo[] entityinfos { get; set; }
+    }
+
+    [DataContract]
+    public class SetEntitiesResponse
+    {
+        [DataMember]
+        public LibraryServerResult SetEntitiesResult { get; set; }
+        [DataMember]
+        public EntityInfo[] errorinfos { get; set; }
+    }
+
+    [DataContract]
+    public class SetOrdersRequest
+    {
+        [DataMember]
+        public string strBiblioRecPath { get; set; }
+        [DataMember]
+        public EntityInfo[] orderinfos { get; set; }
+    }
+
+    [DataContract]
+    public class SetOrdersResponse
+    {
+        [DataMember]
+        public LibraryServerResult SetOrdersResult { get; set; }
+        [DataMember]
+        public EntityInfo[] errorinfos { get; set; }
+    }
+
+
+    [DataContract]
+    public class SetCommentsRequest
+    {
+        [DataMember]
+        public string strBiblioRecPath { get; set; }
+        [DataMember]
+        public EntityInfo[] commentinfos { get; set; }
+    }
+
+    [DataContract]
+    public class SetCommentsResponse
+    {
+        [DataMember]
+        public LibraryServerResult SetCommentsResult { get; set; }
+        [DataMember]
+        public EntityInfo[] errorinfos { get; set; }
+    }
+
+
+    [DataContract]
+    public class SetIssuesRequest
+    {
+        [DataMember]
+        public string strBiblioRecPath { get; set; }
+        [DataMember]
+        public EntityInfo[] issueinfos { get; set; }
+    }
+
+    [DataContract]
+    public class SetIssuesResponse
+    {
+        [DataMember]
+        public LibraryServerResult SetIssuesResult { get; set; }
+        [DataMember]
+        public EntityInfo[] errorinfos { get; set; }
+    }
+
+
+    #endregion
+
     #region GetEntities/GetComments/GetIssues/GetOrders
 
     [DataContract]
