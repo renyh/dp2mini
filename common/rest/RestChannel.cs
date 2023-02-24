@@ -2886,7 +2886,11 @@ namespace DigitalPlatform.LibraryRestClient
                     }
                     else
                         baOutputTimestamp = error.NewTimestamp;
+
                     strOutputRecPath = error.NewRecPath;
+
+                    // 2023/2/24 错误码
+                    result.ErrorCode = FromErrorValue(error.ErrorCode);
                     return result;
                 }
                 else
@@ -2896,6 +2900,21 @@ namespace DigitalPlatform.LibraryRestClient
                 }
             }
 
+            return result;
+        }
+
+        // 把内核错误码转换为 dp2library 错误码
+        public static ErrorCode FromErrorValue(ErrorCodeValue error_code,
+            bool throw_exception = false)
+        {
+            string text = error_code.ToString();
+            if (Enum.TryParse<ErrorCode>(text, out ErrorCode result) == false)
+            {
+                if (throw_exception == true)
+                    throw new Exception("无法将字符串 '" + text + "' 转换为 LibraryServer.ErrorCode 类型");
+                else
+                    return ErrorCode.SystemError;
+            }
             return result;
         }
 

@@ -260,6 +260,64 @@ namespace practice
             }
         }
 
+        public WriteResResponse WriteResForDel(UserInfo u,
+          string strResPath,
+          bool isReader = false)
+        {
+            WriteResResponse response = null;
+
+            this.displayLine("strResPath=" + strResPath);
+
+
+
+            //byte[] baContent = Encoding.UTF8.GetBytes(strXml);  //文本到二进制
+            //long lTotalLength = baContent.Length;
+            //string strRanges = "0-" + (baContent.Length - 1).ToString();
+
+            byte[] baTimestamp = null;
+
+            RestChannel channel = null;
+            try
+            {
+                // 用户登录
+                channel = mainForm.GetChannelAndLogin(u.UserName, u.Password, isReader);
+
+            REDO:
+                response = channel.WriteRes(strResPath,
+                   "",//strRanges,
+                   0,//lTotalLength,
+                   null,//baContent,
+                   "",
+                   "delete",//strStyle
+                   baTimestamp);
+                // 间戳不匹配，自动重试
+                if (response.WriteResResult.ErrorCode == ErrorCode.TimestampMismatch)
+                {
+                    // 设上时间戳
+                    baTimestamp = response.baOutputTimestamp;
+                    goto REDO;
+                }
+
+                this.displayLine("WriteRes()\r\n"
+                    + HttpUtility.HtmlEncode(RestChannel.GetResultInfo(response)));
+
+                // 时间戳
+                baTimestamp = response.baOutputTimestamp;
+
+                return response;
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(u.UserName + "异常：" + ex.Message);
+            }
+            finally
+            {
+                if (channel != null)
+                    this.mainForm._channelPool.ReturnChannel(channel);
+            }
+        }
+
         // 用WriteRes写xml
         public void Borrow(UserInfo u,
           string readerBarcode,
@@ -390,14 +448,15 @@ namespace practice
                 else if (type == C_Type_issue)
                     strDbType = "issue";
             
-                return this.SetItemInfo(u, strDbType, "delete", strResPath, "", isReader);
+                return this.SetItemInfo(u, strDbType, "delete", strResPath, "", isReader,out string temp);
             
             }
             else if (type == C_Type_Amerce
             || type == C_Type_Arrived)
             {
+                this.WriteResForDel(u,strResPath,isReader);
                 // todo
-                this.displayLine(this.getWarn1("暂不支持删除" + type));
+                //this.displayLine(this.getWarn1("暂不支持删除" + type));
                 return new LibraryServerResult();
             }
 
@@ -593,9 +652,10 @@ namespace practice
     string strAction,
   string strResPath,
   string strXml,
-  bool isReader = false)
+  bool isReader,
+  out string strOutputRecPath)
         {
-
+            strOutputRecPath = "";
             this.displayLine("strResPath=" + strResPath);
             this.displayLine("提交的xml<br/>"
                 + HttpUtility.HtmlEncode(DomUtil.GetIndentXml(strXml))
@@ -616,7 +676,7 @@ namespace practice
                     strXml,
                     baTimestamp,
                     "",//strStyle,
-                    out string strOutputRecPath,
+                    out  strOutputRecPath,
                     out byte[] baOutputTimestamp) ;
                 // 间戳不匹配，自动重试
                 if (response.ErrorCode == ErrorCode.TimestampMismatch)
@@ -627,7 +687,10 @@ namespace practice
                 }
 
                 this.displayLine("SetItemInfo()\r\n"
-                    + HttpUtility.HtmlEncode(RestChannel.GetResultInfo(response)));
+                    + HttpUtility.HtmlEncode(RestChannel.GetResultInfo(response)+"\r\n"
+                    + "strOutputRecPath:" + strOutputRecPath+"\r\n"
+                    + "baOutputTimestamp:" + ByteArray.GetHexTimeStampString(baOutputTimestamp) + "\r\n"
+                    ));
 
 
                 return response;
@@ -1169,10 +1232,18 @@ namespace practice
             {
                 return @"<root>
                               <parent>" + parent + @"</parent>
-                              <index>11</index>
-                              <content>一本好书</content>"
+                              <title>评注标题"+temp+@"</title>
+                              <content>一本好书"+temp+@"</content>"
                               + dprmsfile
                             + "</root>";
+
+                /*
+<root>
+  
+  <content>asdasfdfd</content>
+  <parent>4</parent>
+</root>
+                 */
 
             }
             else if (type == C_Type_issue)
@@ -1226,21 +1297,49 @@ namespace practice
             }
             else if (type == C_Type_Arrived)
             {
-                return @"<root>
-                            <state></state>
-                            <itemBarcode>B001</itemBarcode>
-                            <onShelf>true</onShelf>
-                            <readerBarcode>P001</readerBarcode>
-                            <notifyDate>Thu, 21 Jul 2022 15:31:16 +0800</notifyDate>
-                            <location>流通库</location>
-                            <accessNo>I206.2/W460</accessNo>"
-                              + dprmsfile
-                        +"</root>";
+                return this.GetArrivedXml("P001", "B001",hasFile);  //这个读者和册也可能是不存在的，没有关系。
+
+                /*
+<root>
+    <state>arrived</state>
+    <itemBarcode>B001</itemBarcode>
+    <box>#reservation</box>
+    <readerBarcode>P001</readerBarcode>
+    <notifyDate>Thu, 23 Feb 2023 14:36:41 +0800</notifyDate>
+    <refID>4c267d45-dd1e-474f-8709-e9d5c084002d</refID>
+    <location>流通库</location>
+    <accessNo>I242.43/S495</accessNo>
+</root>
+                 */
+
+
             }
 
             throw new Exception("GetXml不支持的数据类型" + type);
         }
 
+        public string GetArrivedXml(string readerBarcode, string itemBarcode,bool hasFile)
+        {
+            Random rd = new Random();
+            int temp = rd.Next(1, 999999);
+
+            string dprmsfile = "";
+            if (hasFile == true)
+                dprmsfile = "<dprms:file id='0' xmlns:dprms='http://dp2003.com/dprms'   test='" + temp.ToString() + "'/>";
+
+            return @"<root>
+                        <state>arrived</state>
+                        <itemBarcode>" +itemBarcode+@"</itemBarcode>
+                        <box>#reservation</box>
+                        <readerBarcode>"+readerBarcode+@"</readerBarcode>
+                        <notifyDate>Thu, 23 Feb 2023 14:36:41 +0800</notifyDate>
+                        <refID>4c267d45-dd1e-474f-8709-e9d5c084002d</refID>
+                        <location>流通库</location>
+                        <accessNo>I242.43/S495</accessNo>"
+                        +dprmsfile
+                    +"</root>";
+        }
+            
         // 供册/订购/评注使用的父亲路径
         public string _biblioPath = "";
         public string GetBiblioPath()
@@ -3186,6 +3285,871 @@ namespace practice
             catch (Exception e1)
             {
                 MessageBox.Show(this, "读者身份获取册-异常:" + e1.Message);
+            }
+            finally
+            {
+                this.EnableCtrls(true);
+            }
+        }
+
+        private void button_readerLogin_comment_Click(object sender, EventArgs e)
+        {
+            /*
+准备环境:
+管理员创建一个读者
+管理员写一条评注，作为别人的评注，看读者是否能操作。
+
+读者新建评注，用WriteRes/SetItemInfo来测
+
+
+
+读者修改评注：可修改自己的，不能修改别人。OPAC上没有修改的地方。
+
+            读者删除评注：可删除自己的？不能删除别人
+ */
+
+            this.EnableCtrls(false);
+            try
+            {
+                // 清空输出
+                ClearResult();
+
+                WriteResResponse writeRes = null;
+                LibraryServerResult ret = null;
+                string newPath = this.GetAppendPath(C_Type_comment);
+                string otherPath = "";  //他人的评注路径
+                string otherObject = "";
+
+                string ownerPathForChange = "";  //自己创建的，用于修改
+                string ownerObjectForChange = "";
+
+                string ownerPathForDelete = "";   // 自己创建的，用于删除
+
+                #region 创建环境
+
+                this.displayLine(this.getLarge("创建环境"));
+
+                // 用supervisor帐户创建一个读者，有册的读权限，后面用此读者帐户操作
+               this.displayLine(this.getLarge("用supervisor帐户创建一个读者，有评论的完整权限，后面用此读者帐户操作"));
+                string readerBarcode = "";
+                writeRes = this.CreateReaderBySuperviosr("setcommentinfo,getcommentinfo,writecommentobject,getcommentobject",
+                    "",  //个人书斋
+                    out readerBarcode);
+                if (writeRes.WriteResResult.Value == -1)
+                    throw new Exception("管理员创建读者异常：" + writeRes.WriteResResult.ErrorInfo);
+                string readerOwnerPath = writeRes.strOutputResPath;
+
+                // 修改读者的密码
+                this.displayLine(this.getBold("修改读者" + readerBarcode + "的密码，后面用此读者身份登录。"));
+                this.ChangeReaderPasswordBySupervisor(readerBarcode);
+                UserInfo u = new UserInfo
+                {
+                    UserName = readerBarcode,
+                    Password = "1",
+                };
+
+
+                // 用supervisor创建一条评注
+                this.displayLine(this.getLarge("用supervisor创建一条评注，作为别人的评注，看读者是否能操作"));
+
+                writeRes = this.WriteXml(this.mainForm.GetSupervisorAccount(),
+                     newPath,
+                     GetXml(C_Type_comment, true));
+                if (writeRes.WriteResResult.Value == -1)
+                    throw new Exception("管理员创建评注异常：" + writeRes.WriteResResult.ErrorInfo);
+
+                // 他人评注路径
+                otherPath = writeRes.strOutputResPath;
+                otherObject=otherPath +"/object/0";
+
+                #endregion
+
+
+
+
+                #region 第1组测试：读者应可以新建评注
+
+                this.displayLine(this.getLarge("第1组测试：读者应可以新建评注"));
+
+
+                // 用WriteRes新建评注
+                this.displayLine(GetBR() + getBold(u.UserName + "用WriteRes新建评注。"));
+                writeRes= this.WriteXml(u, newPath,
+                    this.GetXml(C_Type_comment, true), true);
+                if (writeRes.WriteResResult.Value >= 0)
+                    this.displayLine("符合预期");
+                else
+                    this.displayLine(getRed("不符合预期"));
+
+                // 这条记录后面用来修改
+                ownerPathForChange = writeRes.strOutputResPath;
+                ownerObjectForChange = ownerPathForChange + "/object/0";
+
+
+                ///用 SetItemInfo 新建评注
+                this.displayLine(GetBR() + getBold(u.UserName + "用 SetItemInfo 新建评注。"));
+                ret=  this.SetItemInfo(u,
+                    "comment",
+                    "new",
+                    newPath,
+                    this.GetXml(C_Type_comment, true), true,out ownerPathForDelete);
+                if (ret.Value >= 0)
+                    this.displayLine("符合预期");
+                else
+                    this.displayLine(getRed("不符合预期"));
+
+               // ownerPathForDelete= writeRes.strOutputResPath;
+
+                #endregion
+
+
+                #region 第2组测试：读者修改评注
+
+                this.displayLine(this.getLarge("第2组测试：读者修改评注，应可修改自己的，不能修改他人。"));
+
+
+                // 修改自己的评注
+                this.displayLine(GetBR() + getBold(u.UserName + "修改自己的评注xml，应成功。"));
+                writeRes = this.WriteXml(u, ownerPathForChange,
+                    this.GetXml(C_Type_comment, true), true);
+                if (writeRes.WriteResResult.Value >= 0)
+                    this.displayLine("符合预期");
+                else
+                    this.displayLine(getRed("不符合预期"));
+
+                // 修改自己评注下的对象
+                this.displayLine(GetBR() + getBold(u.UserName + "修改自己的评注的对象，应成功。"));
+                writeRes = this.WriteObject(u,ownerObjectForChange, true);
+                if (writeRes.WriteResResult.Value >= 0)
+                    this.displayLine("符合预期");
+                else
+                    this.displayLine(getRed("不符合预期"));
+
+                //修改他的人评注
+                this.displayLine(GetBR() + getBold(u.UserName + "修改他人的评注xml，应失败。"));
+                 ret = this.SetItemInfo(u,
+                     "comment",
+                     "new",
+                     otherPath,
+                     this.GetXml(C_Type_comment, false), true,out string temp);
+                if (ret.Value ==-1)
+                    this.displayLine(getWarn1("符合预期，注意检查报错信息"));
+                else
+                    this.displayLine(getRed("不符合预期"));
+
+
+                // 修改自己评注下的对象
+                this.displayLine(GetBR() + getBold(u.UserName + "修改他人的评注的对象，应成功。"));
+                writeRes = this.WriteObject(u,otherObject, true);
+                if (writeRes.WriteResResult.Value ==-1)
+                    this.displayLine("符合预期");
+                else
+                    this.displayLine(getRed("不符合预期"));
+
+                #endregion
+
+
+                #region 第3组测试：读者获取书评和对象，应成功
+
+                this.displayLine(this.getLarge("第2组测试：读者获取自己和他人的书评和对象。"));
+
+
+                // 用GetItemInfo()获取他人书评
+                this.displayLine(GetBR() + getBold(u.UserName + "获取他人的书评xml，应成功。"));
+                GetItemInfoResponse getItemResponse = this.GetItemInfo(u, C_Type_comment, otherPath, true);
+                if (getItemResponse.GetItemInfoResult.Value >= 0)
+                    this.displayLine("符合预期");
+                else
+                    this.displayLine(getRed("不符合预期"));
+
+                // 用GetItemInfo()获取他人书评对象
+                this.displayLine(GetBR() + getBold(u.UserName + "获取他人的书评下对象，应成功。"));
+                GetResResponse getRes = this.GetRes(u, otherObject, true);
+                if (getRes.GetResResult.Value >= 0)
+                    this.displayLine("符合预期");
+                else
+                    this.displayLine(getRed("不符合预期"));
+
+
+
+                // 用GetItemInfo()获取自己书评
+                this.displayLine(GetBR() + getBold(u.UserName + "获取自己的书评xml，应成功。"));
+                getItemResponse = this.GetItemInfo(u, C_Type_comment, ownerPathForChange, true);
+                if (getItemResponse.GetItemInfoResult.Value >= 0)
+                    this.displayLine("符合预期");
+                else
+                    this.displayLine(getRed("不符合预期"));
+
+                // 用GetItemInfo()获取自己书评对象
+                this.displayLine(GetBR() + getBold(u.UserName + "获取自己的书评下对象，应成功。"));
+                getRes = this.GetRes(u, ownerObjectForChange, true);
+                if (getRes.GetResResult.Value >= 0)
+                    this.displayLine("符合预期");
+                else
+                    this.displayLine(getRed("不符合预期"));
+
+                #endregion
+
+                #region 第4组测试：读者删除评注,可删除自己的？不能删除别人
+
+                this.displayLine(this.getLarge("第4测试：读者删除评注"));
+
+
+                // 删除自己的评注
+                this.displayLine(GetBR() + getBold(u.UserName + "删除自己的评注，应成功。"));
+                ret= this.DelXml(u, C_Type_comment, ownerPathForDelete, true);
+                if (ret.Value >= 0)
+                    this.displayLine("符合预期");
+                else
+                    this.displayLine(getRed("不符合预期，读者应可以删除自己的评注。"));
+
+                // 删除他人的
+                this.displayLine(GetBR() + getBold(u.UserName + "删除他人的评注，应失败。"));
+                ret = this.DelXml(u, C_Type_comment, otherPath, true);
+                if (ret.Value ==-1)
+                    this.displayLine("符合预期");
+                else
+                    this.displayLine(getRed("不符合预期，读者不能删除他人的评注。"));
+
+                #endregion
+
+
+
+            }
+            catch (Exception e1)
+            {
+                MessageBox.Show(this, "读者身份获取评注-异常:" + e1.Message);
+            }
+            finally
+            {
+                this.EnableCtrls(true);
+            }
+        }
+
+        private void button_readerLogin_arrived_Click(object sender, EventArgs e)
+        {
+            /*
+准备环境：
+管理员创建两个读者
+创建两个册记录
+为读者1预约1，直接用WriteRes来写，主要是使用这条记录。
+为读者2预约2，
+
+用读者身份，应可以获取自己的预约到书，不能获取别人的预约到书。
+不能 创建/修改/删除 自己和他人的预约记录。
+
+             */
+
+            this.EnableCtrls(false);
+            try
+            {
+                // 清空输出
+                ClearResult();
+
+                WriteResResponse writeRes = null;
+                LibraryServerResult ret = null;
+
+                #region 环境准备
+
+                // 用supervisor帐户创建一个读者，有预约到书库的读写权限，后面用此读者帐户操作
+                this.displayLine(this.getLarge("用supervisor帐户创建一个读者，有预约到书库的读写权限，后面用此读者帐户操作"));
+                string readerBarcode = "";
+                writeRes = this.CreateReaderBySuperviosr("setarrivedinfo,getarrivedinfo,writearrivedobject,getarrivedobject",
+                    "",  //个人书斋
+                    out readerBarcode);
+                if (writeRes.WriteResResult.Value == -1)
+                    throw new Exception("管理员创建读者异常：" + writeRes.WriteResResult.ErrorInfo);
+                string readerOwnerPath = writeRes.strOutputResPath;
+
+                // 修改读者的密码
+                this.displayLine(this.getBold("修改读者" + readerBarcode + "的密码，后面用此读者身份登录。"));
+                this.ChangeReaderPasswordBySupervisor(readerBarcode);
+                UserInfo u = new UserInfo
+                {
+                    UserName = readerBarcode,
+                    Password = "1",
+                };
+
+                // 用supervisor创建第2个读者
+                this.displayLine(this.getLarge("用supervisor帐户创建第2个读者，下面会为这两个读者预约册。"));
+                string reader2 = "";
+                writeRes = this.CreateReaderBySuperviosr("",//setiteminfo, getiteminfo, writeitemobject, getitemobject",
+                    "",  //个人书斋
+                    out reader2);
+                if (writeRes.WriteResResult.Value == -1)
+                    throw new Exception("管理员创建读者异常：" + writeRes.WriteResResult.ErrorInfo);
+
+                // 用supervisor创建两个册记录
+                this.displayLine(this.getLarge("用supervisor帐号创建2条册记录。"));
+
+                string newPath = this.GetAppendPath(C_Type_item);
+                string itemBarcode1 = "";
+                string itemPath1 = "";
+                writeRes = this.WriteXml(this.mainForm.GetSupervisorAccount(),
+                     newPath,
+                     GetXml(C_Type_item, true, out itemBarcode1));
+                if (writeRes.WriteResResult.Value == -1)
+                    throw new Exception("管理员创建第1册异常：" + writeRes.WriteResResult.ErrorInfo);
+                itemPath1 = writeRes.strOutputResPath;
+
+                string itemBarcode2 = "";
+                string itemPath2 = "";
+                writeRes = this.WriteXml(this.mainForm.GetSupervisorAccount(),
+                     newPath,
+                     GetXml(C_Type_item, true, out itemBarcode2));
+                if (writeRes.WriteResResult.Value == -1)
+                    throw new Exception("管理员创建第2册异常：" + writeRes.WriteResResult.ErrorInfo);
+                itemPath2 = writeRes.strOutputResPath;
+
+                // 预约路径
+                string ownerArrivedPath = "";  //自己预约的书
+                string ownerObjectPath = "";
+                string otherArrivedPath = "";   // 他人预约的书
+                string otherObjectPath = "";
+                string arrivedNewPath = this.GetAppendPath(C_Type_Arrived);
+
+
+                // 管理员为读者1预约册1
+                this.displayLine(this.getLarge("管理员为读者"+readerBarcode+"预约册"+itemBarcode1));
+                writeRes = this.WriteXml(this.mainForm.GetSupervisorAccount(),
+                                                     arrivedNewPath,
+                                                     GetArrivedXml(readerBarcode, itemBarcode1,true),
+                                                     false);
+                if (writeRes.WriteResResult.Value == -1)
+                    throw new Exception("管理员写预约记录异常：" + writeRes.WriteResResult.ErrorInfo);
+                ownerArrivedPath = writeRes.strOutputResPath;
+                ownerObjectPath = ownerArrivedPath + "/object/0";
+
+                // 管理员为读者2预约册2
+                this.displayLine(this.getLarge("管理员为读者"+reader2+"预约册"+itemBarcode2));
+                writeRes = this.WriteXml(this.mainForm.GetSupervisorAccount(),
+                                                     arrivedNewPath,
+                                                     GetArrivedXml(reader2, itemBarcode2,true),
+                                                     false);
+                if (writeRes.WriteResResult.Value == -1)
+                    throw new Exception("管理员写预约记录异常：" + writeRes.WriteResResult.ErrorInfo);
+                otherArrivedPath = writeRes.strOutputResPath;
+                otherObjectPath = otherArrivedPath + "/object/0";
+
+                #endregion
+
+
+
+                #region 第1组测试：读者新建预约到书，应不可能。
+
+                this.displayLine(this.getLarge("第1组测试：读者新建预约到书，应不可以。"));
+
+
+                // 用WriteRes新建评注
+                this.displayLine(GetBR() + getBold(u.UserName + "用WriteRes新建评注。"));
+                writeRes = this.WriteXml(u, arrivedNewPath,
+                    this.GetXml(C_Type_Arrived, true), true);
+                if (writeRes.WriteResResult.Value ==-1)
+                    this.displayLine("符合预期");
+                else
+                    this.displayLine(getRed("不符合预期，读者应不能创建预约到书记录。"));
+               
+
+                #endregion
+
+
+                #region 第2组测试：读者修改预约到书
+
+                this.displayLine(this.getLarge("第2组测试：读者修改预约到书，应不可以。"));
+
+
+                // 修改自己的评注
+                this.displayLine(GetBR() + getBold(u.UserName + "修改预约者是自己的预约到书xml，应失败。"));
+                writeRes = this.WriteXml(u, ownerArrivedPath,
+                    this.GetArrivedXml(readerBarcode,"B003",true), true);
+                if (writeRes.WriteResResult.Value ==-1)
+                    this.displayLine("符合预期");
+                else
+                    this.displayLine(getRed("不符合预期，读者应不能修改预约者是自己的预约到书记录。"));
+
+                // 修改自己评注下的对象
+                this.displayLine(GetBR() + getBold(u.UserName + "修改预约者是自己的预约到书的对象，应失败。"));
+                writeRes = this.WriteObject(u, ownerObjectPath, true);
+                if (writeRes.WriteResResult.Value ==-1)
+                    this.displayLine("符合预期");
+                else
+                    this.displayLine(getRed("不符合预期，读者应不能修改预约者是他人的预约到书记录。"));
+
+                //修改他的人评注
+                this.displayLine(GetBR() + getBold(u.UserName + "修改预约者是他人的预约到书xml，应失败。"));
+                writeRes = this.WriteXml(u, otherArrivedPath,
+                    this.GetArrivedXml(reader2, "B004",true), true);
+                if (writeRes.WriteResResult.Value == -1)
+                    this.displayLine("符合预期");
+                else
+                    this.displayLine(getRed("不符合预期"));
+
+
+                // 修改自己评注下的对象
+                this.displayLine(GetBR() + getBold(u.UserName + "修改预约者是他人的预约到书的对象，应失败。"));
+                writeRes = this.WriteObject(u, otherObjectPath, true);
+                if (writeRes.WriteResResult.Value == -1)
+                    this.displayLine("符合预期");
+                else
+                    this.displayLine(getRed("不符合预期"));
+
+                #endregion
+
+
+                #region 第3组测试：获取预约到书
+
+                this.displayLine(this.getLarge("第3组测试：获取预约到书"));
+
+
+                // 用GetRes()获取
+                this.displayLine(GetBR() + getBold(u.UserName + "获取预约者是自己的预约到书xml，应成功。"));
+                GetResResponse getRes = this.GetRes(u, ownerArrivedPath, true);
+                if (getRes.GetResResult.Value >= 0)
+                    this.displayLine("符合预期");
+                else
+                    this.displayLine(getRed("不符合预期"));
+
+                // 用GetRes()获取自己下的对象
+                this.displayLine(GetBR() + getBold(u.UserName + "获取预约者是自己的预约到书的对象，应成功。"));
+                getRes = this.GetRes(u, ownerObjectPath, true);
+                if (getRes.GetResResult.Value >= 0)
+                    this.displayLine("符合预期");
+                else
+                    this.displayLine(getRed("不符合预期"));
+
+
+                // 用GetRes()获取
+                this.displayLine(GetBR() + getBold(u.UserName + "获取预约者是他人的预约到书xml，应失败。"));
+                getRes = this.GetRes(u, otherArrivedPath, true);
+                if (getRes.GetResResult.Value == -1)
+                    this.displayLine("符合预期");
+                else
+                    this.displayLine(getRed("不符合预期"));
+
+                // 用GetRes()获取他人下的对象
+                this.displayLine(GetBR() + getBold(u.UserName + "获取预约者是他人的预约到书的对象，应失败。"));
+                getRes = this.GetRes(u, otherObjectPath, true);
+                if (getRes.GetResResult.Value == -1)
+                    this.displayLine("符合预期");
+                else
+                    this.displayLine(getRed("不符合预期"));
+
+                #endregion
+
+                #region 第4组测试：读者删除预约到书，应不可以
+
+                this.displayLine(this.getLarge("第4组测试：读者删除预约到书"));
+
+
+                // 删除预约者是自己的预约到书
+                this.displayLine(GetBR() + getBold(u.UserName + "删除预约者是自己的预约到书xml，应失败。"));
+                ret = this.DelXml(u, C_Type_Arrived,ownerArrivedPath, true);
+                if (ret.Value ==-1)
+                    this.displayLine("符合预期");
+                else
+                    this.displayLine(getRed("不符合预期，读者不可能删除预约者是自己的预约到书xml。"));
+
+                // 删除预约者是他人的预约到书
+                this.displayLine(GetBR() + getBold(u.UserName + "删除预约者是他人的预约到书xml，应失败。"));
+                ret = this.DelXml(u, C_Type_Arrived, otherArrivedPath, true);
+                if (ret.Value == -1)
+                    this.displayLine("符合预期");
+                else
+                    this.displayLine(getRed("不符合预期，读者不可能删除预约者是他人的预约到书xml。"));
+
+                #endregion
+
+
+
+
+            }
+            catch (Exception e1)
+            {
+                MessageBox.Show(this, "读者身份获取预约到书-异常:" + e1.Message);
+            }
+            finally
+            {
+                this.EnableCtrls(true);
+            }
+        }
+
+
+        // 测试GetItemInfo接口获取册信息，以及测试有无书目权限时，返回书目是否正常。
+        public void CheckGetItemInfo(string type)
+        {
+            /*
+做成一个通用函数，每种资源类型调一次此函数。册/评注/订购/期
+
+用管理员身份创建记录xml
+用管理员创建一个用户，有 册/评注/订购/期 权限，但没有书权限。
+1）验证获取册，仅xml
+2）验证获取多种内容 xml,html,uii。_format要对应，没有_errorCode属性。
+3）验证多种格式中，请求参数包括异常格式的情况。异常的格式应有_errorCode。
+<results><result _format="test" _errorCode="SystemError" _errorInfo="未知的书目格式 'test'"></result>...
+4）通证多种格式中，请求参数包括重复的格式，应按顺序正常返回。_format要对应，数量要对应
+5）验证获取书目，应不成功
+
+用管理员创建一个用户，有 册/评注/订购/期 权限，也有书权限，重要观察书目信息。
+6）验证获取书目，仅xml。
+7）获取书目，多种格式，xml,html,table。
+8）获取书目，请求中有异常格式，异常的格式应有_errorCode。
+9）获取书目，有重复格式，应依次返回。
+             */
+
+            this.displayLine(this.getLarge("针对'"+type+"'测试GetItemInfo()"));
+
+            string strItemDbType = "";
+            string rights = "";
+            string fullrights = "";
+            if (type == C_Type_item)
+            {
+                strItemDbType = "item";
+                rights = "getiteminfo,getitemobject";
+                fullrights = "getiteminfo,getitemobject,getbiblioinfo,getbiblioobject";
+            }
+            else if (type == C_Type_issue)
+            {
+                strItemDbType = "issue";
+                rights = "getissueinfo,getissueobject";
+                fullrights = "getissueinfo,getissueobject,getbiblioinfo,getbiblioobject";
+            }
+            else if (type == C_Type_comment)
+            {
+                strItemDbType = "comment";
+                rights = "getcommentinfo,getcommentobject";
+                fullrights = "getcommentinfo,getcommentobject,getbiblioinfo,getbiblioobject";
+            }
+            else if (type == C_Type_order)
+            {
+                strItemDbType = "order";
+                rights = "getorderinfo,getorderobject";
+                fullrights = "getorderinfo,getorderobject,getbiblioinfo,getbiblioobject";
+            }
+            else
+                throw new Exception("不支持的type[" + type + "]");
+
+            WriteResResponse writeRes = null;
+            GetItemInfoResponse getItemResponse = null;
+            string strError = "";
+            bool bRet = false;
+
+            // 用supervisor创建记录xml
+            string newPath = this.GetAppendPath(type);
+            string resPath = "";
+            writeRes = this.WriteXml(this.mainForm.GetSupervisorAccount(),
+                 newPath,
+                 GetXml(type, true));
+            if (writeRes.WriteResResult.Value == -1)
+                throw new Exception("管理员创建记录xml异常：" + writeRes.WriteResResult.ErrorInfo);
+            resPath = writeRes.strOutputResPath;
+
+            // 创建用户，有下级资源权限，但没有书目权限
+            this.displayLine(getLarge("创建用户，有下级资源权限，但没有书目权限"));
+            UserInfo u = new UserInfo
+            {
+                UserName = "u1",
+                Password = "1",
+                SetPassword = true,
+                Rights =rights,
+                Access = ""
+            };
+            //创建帐号
+            this.NewUser(u);
+
+
+            string barcode = "@path:" + resPath;
+
+            //1）验证获取册，仅xml
+            this.displayLine(getLarge("1）验证获取册，仅xml"));
+            string resultType = "xml";
+            this.displayLine("strResultType=" + resultType);
+            List<bool> shoudSuccList = new List<bool>() { true};
+            getItemResponse= this.GetItemInfoInternel(u, strItemDbType, barcode, resultType, "", false);
+            if (getItemResponse.GetItemInfoResult.Value >= 0)
+            {
+
+                //检查xml，_format 
+                bRet=CheckFormat(getItemResponse.strResult, resultType, shoudSuccList ,out strError);
+                if (bRet == true)
+                    this.displayLine("符合预期");
+                else
+                    this.displayLine(getRed("不符合预期。"+strError));
+            }
+            else
+                this.displayLine(getRed("不符合预期"));
+
+
+            //2）验证获取多种内容 xml,html,uii。_format要对应，没有_errorCode属性。
+            this.displayLine(getLarge("2）验证获取多种内容 xml,html,uii。_format要对应，没有_errorCode属性。"));
+            resultType = "xml,html,uii";
+            this.displayLine("strResultType=" + resultType);
+            shoudSuccList = new List<bool>() { true,true,true };
+            getItemResponse = this.GetItemInfoInternel(u, strItemDbType, barcode,resultType , "", false);
+            if (getItemResponse.GetItemInfoResult.Value >= 0)
+            {
+                //检查xml，_format 
+                bRet = CheckFormat(getItemResponse.strResult,resultType, shoudSuccList, out strError);
+                if (bRet == true)
+                    this.displayLine("符合预期");
+                else
+                    this.displayLine(getRed("不符合预期。"+ strError));
+            }
+            else
+                this.displayLine(getRed("不符合预期"));
+
+
+            //3）验证多种格式中，请求参数包括异常格式的情况。异常的格式应有_errorCode。
+            //<results><result _format="test" _errorCode="SystemError" _errorInfo="未知的书目格式 'test'"></result>...
+            this.displayLine(getLarge("3）验证多种格式中，请求参数包括异常格式的情况。异常的格式应有_errorCode。"));
+            resultType = "a,xml,b,uii,test";
+            this.displayLine("strResultType=" + resultType);
+            shoudSuccList = new List<bool>() { false,true,false, true, false };
+            getItemResponse = this.GetItemInfoInternel(u, strItemDbType, barcode, resultType, "", false);
+            if (getItemResponse.GetItemInfoResult.Value >= 0)
+            {
+                //检查xml，_format 
+                bRet = CheckFormat(getItemResponse.strResult, resultType, shoudSuccList, out strError);
+                if (bRet == true)
+                    this.displayLine("符合预期");
+                else
+                    this.displayLine(getRed("不符合预期。" + strError));
+            }
+            else
+                this.displayLine(getRed("不符合预期"));
+
+            //4）验证多种格式中，请求参数包括重复的格式，应按顺序正常返回。_format要对应，数量要对应
+            this.displayLine(getLarge("4）验证多种格式中，请求参数包括重复的格式，应按顺序正常返回。_format要对应，数量要对应。"));
+            resultType = "xml,uii,uii,xml";
+            this.displayLine("strResultType=" + resultType);
+            shoudSuccList = new List<bool>() { true,true,true,true};
+            getItemResponse = this.GetItemInfoInternel(u, strItemDbType, barcode, resultType, "", false);
+            if (getItemResponse.GetItemInfoResult.Value >= 0)
+            {
+                //检查xml，_format 
+                bRet = CheckFormat(getItemResponse.strResult, resultType, shoudSuccList, out strError);
+                if (bRet == true)
+                    this.displayLine("符合预期");
+                else
+                    this.displayLine(getRed("不符合预期。"+ strError));
+            }
+            else
+                this.displayLine(getRed("不符合预期"));
+
+
+            //5）验证获取书目，无书目权限，应不成功。
+            this.displayLine(getLarge("5）验证获取书目，无书目权限，应不成功。"));
+            string biblioType = "xml";
+            this.displayLine("strBiblioType=" + biblioType);
+            shoudSuccList = new List<bool>() { false};
+            getItemResponse = this.GetItemInfoInternel(u, strItemDbType, barcode, "", biblioType, false);
+            if (getItemResponse.GetItemInfoResult.Value >= 0)
+            {
+                //检查xml，_format 
+                bRet = CheckFormat(getItemResponse.strBiblio, biblioType, shoudSuccList, out strError);
+                if (bRet == true)
+                    this.displayLine("符合预期");
+                else
+                    this.displayLine(getRed("不符合预期。" + strError));
+            }
+            else
+                this.displayLine(getRed("不符合预期"));
+
+            // 删除用户
+            this.DelUser(u);
+
+            //===
+
+            // 创建用户，有下级资源权限，也有书目权限，主要测试GetItemInfo获取书目。
+            this.displayLine(getLarge("创建用户，有下级资源权限，也有书目权限，主要测试GetItemInfo获取书目。"));
+            u = new UserInfo
+            {
+                UserName = "u1",
+                Password = "1",
+                SetPassword = true,
+                Rights = fullrights,
+                Access = ""
+            };
+            //创建帐号
+            this.NewUser(u);
+
+            /*
+用管理员创建一个用户，有 册/评注/订购/期 权限，也有书权限，重要观点书目信息。
+6）验证获取书目，仅xml。
+7）获取书目，多种格式，xml,html,table。
+8）获取书目，请求中有异常格式，异常的格式应有_errorCode。
+9）获取书目，有重复格式，应依次返回。
+             */
+
+
+            //6）验证获取书目，仅xml。
+            this.displayLine(getLarge("6）验证获取书目，仅xml。"));
+            biblioType = "xml";
+            this.displayLine("strBiblioType=" + biblioType);
+            shoudSuccList = new List<bool>() { true };
+            getItemResponse = this.GetItemInfoInternel(u, strItemDbType, barcode, "", biblioType, false);
+            if (getItemResponse.GetItemInfoResult.Value >= 0)
+            {
+                //检查xml，_format 
+                bRet = CheckFormat(getItemResponse.strBiblio, biblioType, shoudSuccList, out strError);
+                if (bRet == true)
+                    this.displayLine("符合预期");
+                else
+                    this.displayLine(getRed("不符合预期。" + strError));
+            }
+            else
+                this.displayLine(getRed("不符合预期"));
+
+
+            // 7）获取书目，多种格式：xml,html,table
+            this.displayLine(getLarge("7）获取书目，多种格式：xml,html,table"));
+            biblioType = "xml,html,table";
+            this.displayLine("strBiblioType=" + biblioType);
+            shoudSuccList = new List<bool>() { true,true,true };
+            getItemResponse = this.GetItemInfoInternel(u, strItemDbType, barcode, "", biblioType, false);
+            if (getItemResponse.GetItemInfoResult.Value >= 0)
+            {
+                //检查xml，_format 
+                bRet = CheckFormat(getItemResponse.strBiblio, biblioType, shoudSuccList, out strError);
+                if (bRet == true)
+                    this.displayLine("符合预期");
+                else
+                    this.displayLine(getRed("不符合预期。" + strError));
+            }
+            else
+                this.displayLine(getRed("不符合预期"));
+
+            // 8）获取书目，请求中有异常格式，异常的格式应有_errorCode。
+            this.displayLine(getLarge("8）获取书目，请求中有异常格式，异常的格式应有_errorCode。"));
+            biblioType = "a,xml,table,test";
+            this.displayLine("strBiblioType=" + biblioType);
+            shoudSuccList = new List<bool>() { false,true, true, false };
+            getItemResponse = this.GetItemInfoInternel(u, strItemDbType, barcode, "", biblioType, false);
+            if (getItemResponse.GetItemInfoResult.Value >= 0)
+            {
+                //检查xml，_format 
+                bRet = CheckFormat(getItemResponse.strBiblio, biblioType, shoudSuccList, out strError);
+                if (bRet == true)
+                    this.displayLine("符合预期");
+                else
+                    this.displayLine(getRed("不符合预期。" + strError));
+            }
+            else
+                this.displayLine(getRed("不符合预期"));
+
+            // 9）获取书目，有重复格式，应依次返回。
+            this.displayLine(getLarge("9）获取书目，有重复格式，应依次返回。"));
+            biblioType = "xml,xml,table,html,table";
+            this.displayLine("strBiblioType="+biblioType);
+            shoudSuccList = new List<bool>() { true, true, true, true,true };
+            getItemResponse = this.GetItemInfoInternel(u, strItemDbType, barcode, "", biblioType, false);
+            if (getItemResponse.GetItemInfoResult.Value >= 0)
+            {
+                //检查xml，_format 
+                bRet = CheckFormat(getItemResponse.strBiblio, biblioType, shoudSuccList, out strError);
+                if (bRet == true)
+                    this.displayLine("符合预期");
+                else
+                    this.displayLine(getRed("不符合预期。" + strError));
+            }
+            else
+                this.displayLine(getRed("不符合预期"));
+
+
+            // 删除用户
+            this.DelUser(u);
+        }
+
+        private bool CheckFormat(string xml, string formats,List<bool> shoudSuccList,out string strError)
+        {
+            strError = "";
+
+            XmlDocument dom = new XmlDocument();
+            dom.LoadXml(xml);
+
+
+            XmlNodeList list = null;
+            string[] formatList = formats.Split(new char[] {','});
+            if (formatList.Length != shoudSuccList.Count)
+            {
+                strError = "参数错误：formats数量与shoudSuccList数量不对应。";
+                return false;
+            }
+
+
+            if (formatList.Length == 1)
+                list = dom.ChildNodes;
+            else
+                list = dom.DocumentElement.ChildNodes;
+
+            if (list.Count != formatList.Length)
+            {
+                strError = "返回的数据的数量 与 请求格式数量不匹配。";
+                return false;
+            }
+
+            
+
+            for (int i = 0; i < list.Count; i++)
+            {
+                string requestF = formatList[i];
+                XmlNode node = list[i];
+                bool shoudSucc= shoudSuccList[i];
+
+                string f = DomUtil.GetAttr(node, "_format");
+                if (f != requestF)
+                {
+                    strError = "第"+i+"个formate不对应";
+                    return false;
+                }
+
+                string errorCode = DomUtil.GetAttr(node, "_errorCode");
+                if (shoudSucc == true)
+                {
+                    if (string.IsNullOrEmpty(errorCode) == false)
+                    {
+                        strError = "预期应成功返回" + f + ",但实际出错，_errorCode=" + errorCode;
+                        return false;
+                    }
+                }
+                else
+                {
+                    if (string.IsNullOrEmpty(errorCode) == true)
+                    {
+                        strError = "预期应失败，实际出错，_errorCode为空";
+                        return false;
+                    }
+                }
+            }
+
+
+            return true;
+        }
+
+        private void button_GetItemInfo_Click(object sender, EventArgs e)
+        {
+            this.EnableCtrls(false);
+            try
+            {
+                // 清空输出
+                ClearResult();
+
+                //每种资源类型调一次。
+
+                // 册
+                CheckGetItemInfo(C_Type_item);
+
+                // 订购
+                CheckGetItemInfo(C_Type_order);
+
+                // 评注
+                CheckGetItemInfo(C_Type_comment);
+
+                // 期
+                CheckGetItemInfo(C_Type_issue);
+            }
+            catch (Exception e1)
+            {
+                MessageBox.Show(this, "测试GetItemInfo-异常:" + e1.Message);
             }
             finally
             {
