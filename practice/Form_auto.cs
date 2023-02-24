@@ -454,10 +454,8 @@ namespace practice
             else if (type == C_Type_Amerce
             || type == C_Type_Arrived)
             {
-                this.WriteResForDel(u,strResPath,isReader);
-                // todo
-                //this.displayLine(this.getWarn1("暂不支持删除" + type));
-                return new LibraryServerResult();
+                return  this.WriteResForDel(u,strResPath,isReader).WriteResResult;
+
             }
 
             throw new Exception("DelXml不支持的类型" + type);
@@ -3409,13 +3407,49 @@ namespace practice
 
 
                 // 修改自己的评注
-                this.displayLine(GetBR() + getBold(u.UserName + "修改自己的评注xml，应成功。"));
-                writeRes = this.WriteXml(u, ownerPathForChange,
-                    this.GetXml(C_Type_comment, true), true);
-                if (writeRes.WriteResResult.Value >= 0)
-                    this.displayLine("符合预期");
+
+                this.displayLine(GetBR() + getBold(u.UserName + "先获取自己的书评xml，再在此基础上修改，应成功。"));
+                GetItemInfoResponse getItemResponse = this.GetItemInfo(u, C_Type_comment, ownerPathForChange, true);
+                if (getItemResponse.GetItemInfoResult.Value >= 0)
+                {
+                    //this.displayLine("符合预期");
+
+                    string tempXml = getItemResponse.strResult;
+                    // 修改一下title
+                    XmlDocument dom = new XmlDocument();
+                    dom.LoadXml(tempXml);
+                    DomUtil.SetElementText(dom.DocumentElement, "title", "标题修改1");
+                    DomUtil.SetElementText(dom.DocumentElement, "content", "内容修改1");
+
+                    this.displayLine(GetBR() + getBold(u.UserName + "修改自己的评注xml的title，应成功。"));
+                    writeRes = this.WriteXml(u, ownerPathForChange,
+                        dom.OuterXml, true);
+                    if (writeRes.WriteResResult.Value >= 0)
+                        this.displayLine("符合预期");
+                    else
+                        this.displayLine(getRed("不符合预期"));
+
+
+
+                    // 修改自己的creator
+                    DomUtil.SetElementText(dom.DocumentElement, "title", "标题修改2");
+                    DomUtil.SetElementText(dom.DocumentElement, "content", "内容修改2");
+                    DomUtil.SetElementText(dom.DocumentElement, "creator", "创建者修改2");
+
+                    this.displayLine(GetBR() + getBold(u.UserName + "修改自己的评注xml的creator，应失败。"));
+                    writeRes = this.WriteXml(u, ownerPathForChange,
+                        dom.OuterXml, true);
+                    if (writeRes.WriteResResult.Value ==-1)
+                        this.displayLine("符合预期");
+                    else
+                        this.displayLine(getRed("不符合预期"));
+
+
+                }
                 else
                     this.displayLine(getRed("不符合预期"));
+
+
 
                 // 修改自己评注下的对象
                 this.displayLine(GetBR() + getBold(u.UserName + "修改自己的评注的对象，应成功。"));
@@ -3429,7 +3463,7 @@ namespace practice
                 this.displayLine(GetBR() + getBold(u.UserName + "修改他人的评注xml，应失败。"));
                  ret = this.SetItemInfo(u,
                      "comment",
-                     "new",
+                     "change",
                      otherPath,
                      this.GetXml(C_Type_comment, false), true,out string temp);
                 if (ret.Value ==-1)
@@ -3456,7 +3490,7 @@ namespace practice
 
                 // 用GetItemInfo()获取他人书评
                 this.displayLine(GetBR() + getBold(u.UserName + "获取他人的书评xml，应成功。"));
-                GetItemInfoResponse getItemResponse = this.GetItemInfo(u, C_Type_comment, otherPath, true);
+                 getItemResponse = this.GetItemInfo(u, C_Type_comment, otherPath, true);
                 if (getItemResponse.GetItemInfoResult.Value >= 0)
                     this.displayLine("符合预期");
                 else
@@ -3659,18 +3693,18 @@ namespace practice
 
 
                 // 修改自己的评注
-                this.displayLine(GetBR() + getBold(u.UserName + "修改预约者是自己的预约到书xml，应失败。"));
+                this.displayLine(GetBR() + getBold(u.UserName + "修改预约者是自己的预约到书xml，应成功。"));
                 writeRes = this.WriteXml(u, ownerArrivedPath,
                     this.GetArrivedXml(readerBarcode,"B003",true), true);
-                if (writeRes.WriteResResult.Value ==-1)
+                if (writeRes.WriteResResult.Value ==0)
                     this.displayLine("符合预期");
                 else
                     this.displayLine(getRed("不符合预期，读者应不能修改预约者是自己的预约到书记录。"));
 
                 // 修改自己评注下的对象
-                this.displayLine(GetBR() + getBold(u.UserName + "修改预约者是自己的预约到书的对象，应失败。"));
+                this.displayLine(GetBR() + getBold(u.UserName + "修改预约者是自己的预约到书的对象，应成功。"));
                 writeRes = this.WriteObject(u, ownerObjectPath, true);
-                if (writeRes.WriteResResult.Value ==-1)
+                if (writeRes.WriteResResult.Value ==0)
                     this.displayLine("符合预期");
                 else
                     this.displayLine(getRed("不符合预期，读者应不能修改预约者是他人的预约到书记录。"));
@@ -3742,9 +3776,9 @@ namespace practice
 
 
                 // 删除预约者是自己的预约到书
-                this.displayLine(GetBR() + getBold(u.UserName + "删除预约者是自己的预约到书xml，应失败。"));
+                this.displayLine(GetBR() + getBold(u.UserName + "删除预约者是自己的预约到书xml，应成功。"));
                 ret = this.DelXml(u, C_Type_Arrived,ownerArrivedPath, true);
-                if (ret.Value ==-1)
+                if (ret.Value ==0)
                     this.displayLine("符合预期");
                 else
                     this.displayLine(getRed("不符合预期，读者不可能删除预约者是自己的预约到书xml。"));
@@ -3755,7 +3789,7 @@ namespace practice
                 if (ret.Value == -1)
                     this.displayLine("符合预期");
                 else
-                    this.displayLine(getRed("不符合预期，读者不可能删除预约者是他人的预约到书xml。"));
+                    this.displayLine(getRed("不符合预期，读者不能删除预约者是他人的预约到书xml。"));
 
                 #endregion
 

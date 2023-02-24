@@ -2866,11 +2866,7 @@ namespace DigitalPlatform.LibraryRestClient
                     // TODO: error code
                     // string name = error.ErrorCode.ToString();
                     // result.ErrorCode = (ErrorCode)Enum.Parse(typeof(ErrorCode), name);
-                    
-                    // 不明白？？？
-                    //result.ErrorCode = LibraryServerResult.FromErrorValue(error.ErrorCode);
-
-
+                    result.ErrorCode = FromErrorValue(error.ErrorCode);
                     // “部分兑现保存”，不被当作报错
                     if (error.ErrorCode == ErrorCodeValue.PartialDenied)
                         result.Value = 0;
@@ -2879,17 +2875,16 @@ namespace DigitalPlatform.LibraryRestClient
                     result.ErrorInfo = error.ErrorInfo;
                     if (error.ErrorCode == ErrorCodeValue.TimestampMismatch)
                     {
+                        /*
                         if (strAction == "delete")
                             baOutputTimestamp = error.NewTimestamp;
-                        else
-                            baOutputTimestamp = error.OldTimestamp;
+                        else */
+                        baOutputTimestamp = error.OldTimestamp;
                     }
                     else
                         baOutputTimestamp = error.NewTimestamp;
-
                     strOutputRecPath = error.NewRecPath;
-
-                    // 2023/2/24 错误码
+                    // 2023/2/24
                     result.ErrorCode = FromErrorValue(error.ErrorCode);
                     return result;
                 }
