@@ -111,7 +111,7 @@
             // 
             // button_readerLogin_reader
             // 
-            this.button_readerLogin_reader.Location = new System.Drawing.Point(8, 55);
+            this.button_readerLogin_reader.Location = new System.Drawing.Point(23, 37);
             this.button_readerLogin_reader.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.button_readerLogin_reader.Name = "button_readerLogin_reader";
             this.button_readerLogin_reader.Size = new System.Drawing.Size(114, 52);
@@ -142,107 +142,119 @@
             // 
             // button_readerLogin_item3
             // 
-            this.button_readerLogin_item3.Location = new System.Drawing.Point(781, 55);
+            this.button_readerLogin_item3.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
+            this.button_readerLogin_item3.Location = new System.Drawing.Point(879, 37);
             this.button_readerLogin_item3.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.button_readerLogin_item3.Name = "button_readerLogin_item3";
             this.button_readerLogin_item3.Size = new System.Drawing.Size(241, 52);
             this.button_readerLogin_item3.TabIndex = 77;
             this.button_readerLogin_item3.Tag = "";
             this.button_readerLogin_item3.Text = "册(有借阅信息)";
-            this.button_readerLogin_item3.UseVisualStyleBackColor = true;
+            this.button_readerLogin_item3.UseVisualStyleBackColor = false;
             this.button_readerLogin_item3.Click += new System.EventHandler(this.button_readerLogin_item3_Click);
             // 
             // button_readerLogin_item2
             // 
-            this.button_readerLogin_item2.Location = new System.Drawing.Point(516, 55);
+            this.button_readerLogin_item2.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
+            this.button_readerLogin_item2.Location = new System.Drawing.Point(628, 37);
             this.button_readerLogin_item2.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.button_readerLogin_item2.Name = "button_readerLogin_item2";
             this.button_readerLogin_item2.Size = new System.Drawing.Size(241, 52);
             this.button_readerLogin_item2.TabIndex = 76;
             this.button_readerLogin_item2.Tag = "";
             this.button_readerLogin_item2.Text = "册(读者有书斋)";
-            this.button_readerLogin_item2.UseVisualStyleBackColor = true;
+            this.button_readerLogin_item2.UseVisualStyleBackColor = false;
             this.button_readerLogin_item2.Click += new System.EventHandler(this.button_readerLogin_item2_Click);
             // 
             // button_readerLogin_arrived
             // 
-            this.button_readerLogin_arrived.Location = new System.Drawing.Point(156, 115);
+            this.button_readerLogin_arrived.BackColor = System.Drawing.SystemColors.Highlight;
+            this.button_readerLogin_arrived.Location = new System.Drawing.Point(199, 115);
             this.button_readerLogin_arrived.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.button_readerLogin_arrived.Name = "button_readerLogin_arrived";
             this.button_readerLogin_arrived.Size = new System.Drawing.Size(157, 52);
             this.button_readerLogin_arrived.TabIndex = 75;
             this.button_readerLogin_arrived.Tag = "";
             this.button_readerLogin_arrived.Text = "预约到书";
-            this.button_readerLogin_arrived.UseVisualStyleBackColor = true;
+            this.button_readerLogin_arrived.UseVisualStyleBackColor = false;
             this.button_readerLogin_arrived.Click += new System.EventHandler(this.button_readerLogin_arrived_Click);
             // 
             // button_readerLogin_amerce
             // 
-            this.button_readerLogin_amerce.Location = new System.Drawing.Point(344, 113);
+            this.button_readerLogin_amerce.BackColor = System.Drawing.SystemColors.Highlight;
+            this.button_readerLogin_amerce.Location = new System.Drawing.Point(366, 115);
             this.button_readerLogin_amerce.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.button_readerLogin_amerce.Name = "button_readerLogin_amerce";
             this.button_readerLogin_amerce.Size = new System.Drawing.Size(137, 52);
             this.button_readerLogin_amerce.TabIndex = 74;
             this.button_readerLogin_amerce.Tag = "";
             this.button_readerLogin_amerce.Text = "违约金";
-            this.button_readerLogin_amerce.UseVisualStyleBackColor = true;
+            this.button_readerLogin_amerce.UseVisualStyleBackColor = false;
+            this.button_readerLogin_amerce.Click += new System.EventHandler(this.button_readerLogin_amerce_Click);
             // 
             // button_readerLogin_issue
             // 
-            this.button_readerLogin_issue.Location = new System.Drawing.Point(674, 113);
+            this.button_readerLogin_issue.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
+            this.button_readerLogin_issue.Location = new System.Drawing.Point(719, 115);
             this.button_readerLogin_issue.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.button_readerLogin_issue.Name = "button_readerLogin_issue";
             this.button_readerLogin_issue.Size = new System.Drawing.Size(120, 52);
             this.button_readerLogin_issue.TabIndex = 73;
             this.button_readerLogin_issue.Tag = "";
             this.button_readerLogin_issue.Text = "期";
-            this.button_readerLogin_issue.UseVisualStyleBackColor = true;
+            this.button_readerLogin_issue.UseVisualStyleBackColor = false;
+            this.button_readerLogin_issue.Click += new System.EventHandler(this.button_readerLogin_issue_Click);
             // 
             // button_readerLogin_comment
             // 
-            this.button_readerLogin_comment.Location = new System.Drawing.Point(0, 115);
+            this.button_readerLogin_comment.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
+            this.button_readerLogin_comment.Location = new System.Drawing.Point(23, 115);
             this.button_readerLogin_comment.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.button_readerLogin_comment.Name = "button_readerLogin_comment";
-            this.button_readerLogin_comment.Size = new System.Drawing.Size(137, 52);
+            this.button_readerLogin_comment.Size = new System.Drawing.Size(114, 52);
             this.button_readerLogin_comment.TabIndex = 72;
             this.button_readerLogin_comment.Tag = "";
             this.button_readerLogin_comment.Text = "评注";
-            this.button_readerLogin_comment.UseVisualStyleBackColor = true;
+            this.button_readerLogin_comment.UseVisualStyleBackColor = false;
             this.button_readerLogin_comment.Click += new System.EventHandler(this.button_readerLogin_comment_Click);
             // 
             // button_readerLogin_order
             // 
-            this.button_readerLogin_order.Location = new System.Drawing.Point(516, 115);
+            this.button_readerLogin_order.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
+            this.button_readerLogin_order.Location = new System.Drawing.Point(572, 115);
             this.button_readerLogin_order.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.button_readerLogin_order.Name = "button_readerLogin_order";
             this.button_readerLogin_order.Size = new System.Drawing.Size(137, 52);
             this.button_readerLogin_order.TabIndex = 71;
             this.button_readerLogin_order.Tag = "";
             this.button_readerLogin_order.Text = "订购";
-            this.button_readerLogin_order.UseVisualStyleBackColor = true;
+            this.button_readerLogin_order.UseVisualStyleBackColor = false;
+            this.button_readerLogin_order.Click += new System.EventHandler(this.button_readerLogin_order_Click);
             // 
             // button_readerLogin_item
             // 
-            this.button_readerLogin_item.Location = new System.Drawing.Point(264, 55);
+            this.button_readerLogin_item.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
+            this.button_readerLogin_item.Location = new System.Drawing.Point(376, 37);
             this.button_readerLogin_item.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.button_readerLogin_item.Name = "button_readerLogin_item";
             this.button_readerLogin_item.Size = new System.Drawing.Size(242, 52);
             this.button_readerLogin_item.TabIndex = 70;
             this.button_readerLogin_item.Tag = "";
             this.button_readerLogin_item.Text = "册(读者无书斋)";
-            this.button_readerLogin_item.UseVisualStyleBackColor = true;
+            this.button_readerLogin_item.UseVisualStyleBackColor = false;
             this.button_readerLogin_item.Click += new System.EventHandler(this.button_readerLogin_item_Click);
             // 
             // button_readerLogin_biblio
             // 
-            this.button_readerLogin_biblio.Location = new System.Drawing.Point(132, 55);
+            this.button_readerLogin_biblio.BackColor = System.Drawing.SystemColors.Info;
+            this.button_readerLogin_biblio.Location = new System.Drawing.Point(199, 37);
             this.button_readerLogin_biblio.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.button_readerLogin_biblio.Name = "button_readerLogin_biblio";
             this.button_readerLogin_biblio.Size = new System.Drawing.Size(103, 52);
             this.button_readerLogin_biblio.TabIndex = 69;
             this.button_readerLogin_biblio.Tag = "";
             this.button_readerLogin_biblio.Text = "书目";
-            this.button_readerLogin_biblio.UseVisualStyleBackColor = true;
+            this.button_readerLogin_biblio.UseVisualStyleBackColor = false;
             this.button_readerLogin_biblio.Click += new System.EventHandler(this.button_readerLogin_biblio_Click);
             // 
             // button_GetItemInfo

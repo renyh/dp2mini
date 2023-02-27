@@ -1,4 +1,480 @@
-﻿            this.EnableCtrls(false);
+﻿===
+2023/2/27 预约到书，老代码
+        private void button_readerLogin_arrived_Click(object sender, EventArgs e)
+        {
+            /*
+准备环境：
+管理员创建两个读者
+创建两个册记录
+为读者1预约1，直接用WriteRes来写，主要是使用这条记录。
+为读者2预约2，
+
+用读者身份，应可以获取自己的预约到书，不能获取别人的预约到书。
+不能 创建/修改/删除 自己和他人的预约记录。
+            目前读者可以 修改 和 删除预约者是自己的记录？？？
+            
+
+             */
+
+            this.EnableCtrls(false);
+            try
+            {
+                // 清空输出
+                ClearResult();
+
+                WriteResResponse writeRes = null;
+                LibraryServerResult ret = null;
+
+                #region 环境准备
+
+                // 用supervisor帐户创建一个读者，有预约到书库的读写权限，后面用此读者帐户操作
+                this.displayLine(this.getLarge("用管理员身份创建一个读者，有预约到书库的读写权限，后面用此读者帐户操作"));
+                string readerBarcode = "";
+                writeRes = this.CreateReaderBySuperviosr("setarrivedinfo,getarrivedinfo,writearrivedobject,getarrivedobject",
+                    "",  //个人书斋
+                    out readerBarcode);
+                if (writeRes.WriteResResult.Value == -1)
+                    throw new Exception("管理员创建读者异常：" + writeRes.WriteResResult.ErrorInfo);
+                string readerOwnerPath = writeRes.strOutputResPath;
+
+                // 修改读者的密码
+                this.displayLine(this.getBold("修改读者" + readerBarcode + "的密码，后面用此读者身份登录。"));
+                this.ChangeReaderPasswordBySupervisor(readerBarcode);
+                UserInfo u = new UserInfo
+                {
+                    UserName = readerBarcode,
+                    Password = "1",
+                };
+
+                // 用supervisor创建第2个读者
+                this.displayLine(this.getLarge("用supervisor帐户创建第2个读者，下面会为这两个读者预约册。"));
+                string reader2 = "";
+                writeRes = this.CreateReaderBySuperviosr("",//setiteminfo, getiteminfo, writeitemobject, getitemobject",
+                    "",  //个人书斋
+                    out reader2);
+                if (writeRes.WriteResResult.Value == -1)
+                    throw new Exception("管理员创建读者异常：" + writeRes.WriteResResult.ErrorInfo);
+
+                // 用supervisor创建两个册记录
+                this.displayLine(this.getLarge("用supervisor帐号创建2条册记录。"));
+
+                string newPath = this.GetAppendPath(C_Type_item);
+                string itemBarcode1 = "";
+                string itemPath1 = "";
+                writeRes = this.WriteXml(this.mainForm.GetSupervisorAccount(),
+                     newPath,
+                     GetXml(C_Type_item, true, out itemBarcode1));
+                if (writeRes.WriteResResult.Value == -1)
+                    throw new Exception("管理员创建第1册异常：" + writeRes.WriteResResult.ErrorInfo);
+                itemPath1 = writeRes.strOutputResPath;
+
+                string itemBarcode2 = "";
+                string itemPath2 = "";
+                writeRes = this.WriteXml(this.mainForm.GetSupervisorAccount(),
+                     newPath,
+                     GetXml(C_Type_item, true, out itemBarcode2));
+                if (writeRes.WriteResResult.Value == -1)
+                    throw new Exception("管理员创建第2册异常：" + writeRes.WriteResResult.ErrorInfo);
+                itemPath2 = writeRes.strOutputResPath;
+
+                // 预约路径
+                string ownerArrivedPath = "";  //自己预约的书
+                string ownerObjectPath = "";
+                string otherArrivedPath = "";   // 他人预约的书
+                string otherObjectPath = "";
+                string arrivedNewPath = this.GetAppendPath(C_Type_Arrived);
+
+
+                // 管理员为读者1预约册1
+                this.displayLine(this.getLarge("管理员为读者"+readerBarcode+"预约册"+itemBarcode1));
+                writeRes = this.WriteXml(this.mainForm.GetSupervisorAccount(),
+                                                     arrivedNewPath,
+                                                     GetArrivedXml(readerBarcode, itemBarcode1,true),
+                                                     false);
+                if (writeRes.WriteResResult.Value == -1)
+                    throw new Exception("管理员写预约记录异常：" + writeRes.WriteResResult.ErrorInfo);
+                ownerArrivedPath = writeRes.strOutputResPath;
+                ownerObjectPath = ownerArrivedPath + "/object/0";
+
+                // 管理员为读者2预约册2
+                this.displayLine(this.getLarge("管理员为读者"+reader2+"预约册"+itemBarcode2));
+                writeRes = this.WriteXml(this.mainForm.GetSupervisorAccount(),
+                                                     arrivedNewPath,
+                                                     GetArrivedXml(reader2, itemBarcode2,true),
+                                                     false);
+                if (writeRes.WriteResResult.Value == -1)
+                    throw new Exception("管理员写预约记录异常：" + writeRes.WriteResResult.ErrorInfo);
+                otherArrivedPath = writeRes.strOutputResPath;
+                otherObjectPath = otherArrivedPath + "/object/0";
+
+                #endregion
+
+
+
+                #region 第1组测试：读者新建预约到书，应不能。
+
+                this.displayLine(this.getLarge("第1组测试：读者新建预约到书，应不可以。"));
+
+
+                // 用WriteRes新建评注
+                this.displayLine(GetBR() + getBold(u.UserName + "用WriteRes新建评注。"));
+                writeRes = this.WriteXml(u, arrivedNewPath,
+                    this.GetXml(C_Type_Arrived, true), true);
+                if (writeRes.WriteResResult.Value ==-1)
+                    this.displayLine("符合预期");
+                else
+                    this.displayLine(getRed("不符合预期，读者应不能创建预约到书记录。"));
+               
+
+                #endregion
+
+
+                #region 第2组测试：读者修改预约到书
+
+                this.displayLine(this.getLarge("第2组测试：读者修改预约到书，应不可以。"));
+
+
+                // 修改预约者是自己的预约到书xml
+                this.displayLine(GetBR() + getBold(u.UserName + "修改预约者是自己的预约到书xml，应成功。"));
+                writeRes = this.WriteXml(u, ownerArrivedPath,
+                    this.GetArrivedXml(readerBarcode,"B003",true), true);
+                if (writeRes.WriteResResult.Value ==0)
+                    this.displayLine("符合预期");
+                else
+                    this.displayLine(getRed("不符合预期，读者应不能修改预约者是自己的预约到书记录。"));
+
+                // 修改预约者是自己的预约到书的对象
+                this.displayLine(GetBR() + getBold(u.UserName + "修改预约者是自己的预约到书的对象，应成功。"));
+                writeRes = this.WriteObject(u, ownerObjectPath, true);
+                if (writeRes.WriteResResult.Value ==0)
+                    this.displayLine("符合预期");
+                else
+                    this.displayLine(getRed("不符合预期，读者应不能修改预约者是他人的预约到书记录。"));
+
+                //修改预约者是他人的预约到书xml
+                this.displayLine(GetBR() + getBold(u.UserName + "修改预约者是他人的预约到书xml，应失败。"));
+                writeRes = this.WriteXml(u, otherArrivedPath,
+                    this.GetArrivedXml(reader2, "B004",true), true);
+                if (writeRes.WriteResResult.Value == -1)
+                    this.displayLine("符合预期");
+                else
+                    this.displayLine(getRed("不符合预期"));
+
+
+                // 修改预约者是他人的预约到书的对象
+                this.displayLine(GetBR() + getBold(u.UserName + "修改预约者是他人的预约到书的对象，应失败。"));
+                writeRes = this.WriteObject(u, otherObjectPath, true);
+                if (writeRes.WriteResResult.Value == -1)
+                    this.displayLine("符合预期");
+                else
+                    this.displayLine(getRed("不符合预期"));
+
+                #endregion
+
+
+                #region 第3组测试：获取预约到书
+
+                this.displayLine(this.getLarge("第3组测试：获取预约到书"));
+
+
+                // 用GetRes()获取
+                this.displayLine(GetBR() + getBold(u.UserName + "获取预约者是自己的预约到书xml，应成功。"));
+                GetResResponse getRes = this.GetRes(u, ownerArrivedPath, true);
+                if (getRes.GetResResult.Value >= 0)
+                    this.displayLine("符合预期");
+                else
+                    this.displayLine(getRed("不符合预期"));
+
+                // 用GetRes()获取自己下的对象
+                this.displayLine(GetBR() + getBold(u.UserName + "获取预约者是自己的预约到书的对象，应成功。"));
+                getRes = this.GetRes(u, ownerObjectPath, true);
+                if (getRes.GetResResult.Value >= 0)
+                    this.displayLine("符合预期");
+                else
+                    this.displayLine(getRed("不符合预期"));
+
+
+                // 用GetRes()获取
+                this.displayLine(GetBR() + getBold(u.UserName + "获取预约者是他人的预约到书xml，应失败。"));
+                getRes = this.GetRes(u, otherArrivedPath, true);
+                if (getRes.GetResResult.Value == -1)
+                    this.displayLine("符合预期");
+                else
+                    this.displayLine(getRed("不符合预期"));
+
+                // 用GetRes()获取他人下的对象
+                this.displayLine(GetBR() + getBold(u.UserName + "获取预约者是他人的预约到书的对象，应失败。"));
+                getRes = this.GetRes(u, otherObjectPath, true);
+                if (getRes.GetResResult.Value == -1)
+                    this.displayLine("符合预期");
+                else
+                    this.displayLine(getRed("不符合预期"));
+
+                #endregion
+
+                #region 第4组测试：读者删除预约到书，应不可以
+
+                this.displayLine(this.getLarge("第4组测试：读者删除预约到书"));
+
+
+                // 删除预约者是自己的预约到书
+                this.displayLine(GetBR() + getBold(u.UserName + "删除预约者是自己的预约到书xml，应成功。"));
+                ret = this.DelXml(u, C_Type_Arrived,ownerArrivedPath, true);
+                if (ret.Value ==0)
+                    this.displayLine("符合预期");
+                else
+                    this.displayLine(getRed("不符合预期，读者不可能删除预约者是自己的预约到书xml。"));
+
+                // 删除预约者是他人的预约到书
+                this.displayLine(GetBR() + getBold(u.UserName + "删除预约者是他人的预约到书xml，应失败。"));
+                ret = this.DelXml(u, C_Type_Arrived, otherArrivedPath, true);
+                if (ret.Value == -1)
+                    this.displayLine("符合预期");
+                else
+                    this.displayLine(getRed("不符合预期，读者不能删除预约者是他人的预约到书xml。"));
+
+                #endregion
+
+
+
+
+            }
+            catch (Exception e1)
+            {
+                MessageBox.Show(this, "读者身份获取预约到书-异常:" + e1.Message);
+            }
+            finally
+            {
+                this.EnableCtrls(true);
+            }
+        }
+
+
+===
+2023/2/27 
+
+        // 订购
+        private void button_readerLogin_order_Click(object sender, EventArgs e)
+        {
+            /*
+            环境准备：       
+            用管理员身份创建一个读者，拥有完整的订购权限。
+            用管理员身份创建1条订购记录。
+
+            ==
+            读者应不能获取订购记录：
+            1）读者不能获取订购xml,用getres,getorders,getiteminfo三种接口测试
+            2) 读者不能获取订购object,用getres接口
+
+            ==
+            读者应不能新建/修改/删除 订购xml 和 对象。
+            1）新建，writeres,setiteminfo
+            2）修改，writeres,setiteminfo
+            3）删除，writeres,setiteminfo
+ */
+
+            this.EnableCtrls(false);
+            try
+            {
+                // 清空输出
+                ClearResult();
+
+                WriteResResponse writeResponse = null;
+                GetResResponse getResponse = null;
+                LibraryServerResult result = null;
+
+                // 用supervisor帐户创建一个读者，有册的读权限，后面用此读者帐户操作
+                this.displayLine(this.getLarge("用管理员身份创建一个读者，有完整的订购信息，后面用此读者帐户操作"));
+                string readerBarcode = "";
+                writeResponse = this.CreateReaderBySuperviosr("setorderinfo,getorderinfo,writeorderobject,getorderobject",
+                    "",  //个人书斋
+                    out readerBarcode);
+                if (writeResponse.WriteResResult.Value == -1)
+                    throw new Exception("管理员创建读者异常：" + writeResponse.WriteResResult.ErrorInfo);
+                string readerOwnerPath = writeResponse.strOutputResPath;
+
+                // 修改读者的密码
+                this.displayLine(this.getBold("修改读者" + readerBarcode + "的密码，后面用此读者身份登录。"));
+                this.ChangeReaderPasswordBySupervisor(readerBarcode);
+                UserInfo u = new UserInfo
+                {
+                    UserName = readerBarcode,
+                    Password = "1",
+                };
+                
+
+                // 用supervisor创建一条订购记录
+                string newPath = this.GetAppendPath(C_Type_order);
+                string orderPath = "";
+                writeResponse = this.WriteXml(this.mainForm.GetSupervisorAccount(),
+                     newPath,
+                     GetXml(C_Type_order, true));
+                if (writeResponse.WriteResResult.Value == -1)
+                    throw new Exception("管理员创建订购记录异常：" + writeResponse.WriteResResult.ErrorInfo);
+                orderPath = writeResponse.strOutputResPath;
+                string orderObjectPath = orderPath + "/object/0";
+
+                // 书目记录
+                string biblioPath=GetBiblioPath();
+
+
+
+
+                #region 第1组测试：读者获取订购记录
+
+                this.displayLine(this.getLarge("第1组测试：读者获取订购记录"));
+
+                //用 GetRes 获取
+                this.displayLine(GetBR() + getBold(u.UserName + "用 GetRes 获取订购xml，应失败。"));
+                getResponse = this.GetRes(u, orderPath, true);
+                if (getResponse.GetResResult.Value == -1)
+                    this.displayLine("符合预期");
+                else
+                    this.displayLine(getRed("不符合预期"));
+
+
+                // 用 GetItemInfo 获取
+                this.displayLine(GetBR() + getBold(u.UserName + "用 GetItemInfo 获取订购xml，应失败。"));
+                GetItemInfoResponse getItemResponse = this.GetItemInfo(u, C_Type_order, orderPath,true);
+                if (getItemResponse.GetItemInfoResult.Value ==-1)
+                    this.displayLine("符合预期");
+                else
+                    this.displayLine(getRed("不符合预期"));
+
+                // 用 GetOrders 获取
+                this.displayLine(GetBR() + getBold(u.UserName + "用 GetOrders 获取订购xml，应失败。"));
+                 result = this.GetFirstEntity(u, C_Type_order,biblioPath,out EntityInfo entity, true);
+                if (result.Value == -1)
+                    this.displayLine("符合预期");
+                else
+                    this.displayLine(getRed("不符合预期"));
+
+
+                //用 GetRes 获取 订购下的对象
+                this.displayLine(GetBR() + getBold(u.UserName + "用 GetRes 获取订购的对象，应失败。"));
+                getResponse = this.GetRes(u, orderObjectPath, true);
+                if (getResponse.GetResResult.Value == -1)
+                    this.displayLine("符合预期");
+                else
+                    this.displayLine(getRed("不符合预期"));
+
+                #endregion
+
+                #region 第2组测试：读者创建订购记录
+
+                string ownerOrderPath = "";
+
+                this.displayLine(GetBR() + getBold(u.UserName + "用 WriteRes 创建订购xml，应失败。"));
+                writeResponse = this.WriteXml(u,
+                     newPath,
+                     GetXml(C_Type_order, true),true);
+                if (writeResponse.WriteResResult.Value == -1)
+                    this.displayLine("符合预期");
+                else
+                    this.displayLine(getRed("不符合预期，读者应不能创建订购记录。"));
+
+                ownerOrderPath = writeResponse.strOutputResPath;
+                string ownerObjectPath = orderPath + "/object/0";
+
+                // 用 SetItemInfo 创建
+                this.displayLine(GetBR() + getBold(u.UserName + "用 SetItemInfo 创建订购xml，应失败。"));
+                result = this.SetItemInfo(u,
+                    "order",
+                    "new",
+                    newPath,
+                   GetXml(C_Type_order, true),
+                   true,
+                   out ownerObjectPath);
+                if(result.Value == -1)
+                    this.displayLine("符合预期");
+                else
+                    this.displayLine(getRed("不符合预期，读者应不能创建订购记录。"));
+
+                #endregion
+
+
+                #region 第2组测试：读者修改订购记录
+
+                // 修改订购xml
+                this.displayLine(GetBR() + getBold(u.UserName + "用 WriteRes 修改订购xml，应失败。"));
+                writeResponse = this.WriteXml(u,
+                     orderPath,
+                     GetXml(C_Type_order, true), true);
+                if (writeResponse.WriteResResult.Value == -1)
+                    this.displayLine("符合预期");
+                else
+                    this.displayLine(getRed("不符合预期，读者应不能修改订购xml。"));
+
+                // 用 SetItemInfo 修改
+                this.displayLine(GetBR() + getBold(u.UserName + "用 SetItemInfo 修改订购xml，应失败。"));
+                result = this.SetItemInfo(u,
+                    "order",
+                    "change",
+                    orderPath,
+                   GetXml(C_Type_order, true),
+                   true,
+                   out string tempPath);
+                if (result.Value == -1)
+                    this.displayLine("符合预期");
+                else
+                    this.displayLine(getRed("不符合预期，读者应不能修改订购记录。"));
+
+
+                // 修改订购object
+                this.displayLine(GetBR() + getBold(u.UserName + "用 WriteRes 修改订购对象，应失败。"));
+                writeResponse = this.WriteObject(u,
+                     orderObjectPath, true);
+                if (writeResponse.WriteResResult.Value == -1)
+                    this.displayLine("符合预期");
+                else
+                    this.displayLine(getRed("不符合预期，读者应不能修改订购的对象。"));
+
+
+                #endregion
+
+
+                #region 第3组测试：读者删除订购记录
+
+                // 删除订购xml
+                this.displayLine(GetBR() + getBold(u.UserName + "用 WriteRes 删除订购xml，应失败。"));
+                writeResponse = this.WriteResForDel(u,
+                     orderPath,
+                      true);
+                if (writeResponse.WriteResResult.Value == -1)
+                    this.displayLine("符合预期");
+                else
+                    this.displayLine(getRed("不符合预期，读者应不能删除订购xml。"));
+
+
+                // 用 SetItemInfo 删除
+                this.displayLine(GetBR() + getBold(u.UserName + "用 SetItemInfo 删除订购xml，应失败。"));
+                result = this.SetItemInfo(u,
+                    "order",
+                    "delete",
+                    orderPath,
+                   "",
+                   true,
+                   out string temp2);
+                if (result.Value == -1)
+                    this.displayLine("符合预期");
+                else
+                    this.displayLine(getRed("不符合预期，读者应不能删除订购记录。"));
+
+                #endregion
+
+            }
+            catch (Exception e1)
+            {
+                MessageBox.Show(this, "读者身份获取册-异常:" + e1.Message);
+            }
+            finally
+            {
+                this.EnableCtrls(true);
+            }
+        }
+
+===
+            this.EnableCtrls(false);
             try
             {
                 // 清空输出
