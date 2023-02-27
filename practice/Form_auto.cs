@@ -3749,7 +3749,7 @@ namespace practice
                 if (writeRes.WriteResResult.Value == 0)
                     this.displayLine("符合预期");
                 else
-                    this.displayLine(getRed("不符合预期，读者有managecomment权限，应可删除他人评注的对象。"));
+                    this.displayLine(getRed("不符合预期，读者有managecomment权限，应可修改他人评注的对象。"));
                 
                 //===
                 /*
@@ -4512,7 +4512,7 @@ namespace practice
                     
         }
 
-        public void CheckOrderIssueAmerceForReader(string type)
+        public void CheckOrderIssueForReader(string type)
         {
             /*
     环境准备：       
@@ -4544,7 +4544,7 @@ namespace practice
                 LibraryServerResult result = null;
 
                 // 用supervisor帐户创建一个读者，有操作xml与对象的完整，后面用此读者帐户操作
-                this.displayLine(this.getLarge("用管理员身份创建一个读者，有完整的"+type+"权限，后面用此读者帐户操作"));
+                this.displayLine(this.getLarge("用管理员身份创建一个读者，有完整的" + type + "权限，后面用此读者帐户操作"));
                 string readerBarcode = "";
                 writeResponse = this.CreateReaderBySuperviosr(rights,
                     "",  //个人书斋
@@ -4568,13 +4568,13 @@ namespace practice
                 string xmlPath = "";
 
                 string xml = this.GetXml(type, true);
-                    
+
 
                 writeResponse = this.WriteXml(this.mainForm.GetSupervisorAccount(),
                      newPath,
                      GetXml(type, true));
                 if (writeResponse.WriteResResult.Value == -1)
-                    throw new Exception("管理员创建"+type+"记录异常：" + writeResponse.WriteResResult.ErrorInfo);
+                    throw new Exception("管理员创建" + type + "记录异常：" + writeResponse.WriteResResult.ErrorInfo);
                 xmlPath = writeResponse.strOutputResPath;
                 string objectPath = xmlPath + "/object/0";
 
@@ -4591,41 +4591,40 @@ namespace practice
 
                 #region 第1组测试：读者获取记录
 
-                this.displayLine(this.getLarge("第1组测试：读者获取"+type+"记录"));
+                this.displayLine(this.getLarge("第1组测试：读者获取" + type + "记录"));
 
                 //用 GetRes 获取
-                this.displayLine(GetBR() + getBold(u.UserName + "用 GetRes 获取"+type+"xml，应失败。"));
+                this.displayLine(GetBR() + getBold(u.UserName + "用 GetRes 获取" + type + "xml，应失败。"));
                 getResponse = this.GetRes(u, xmlPath, true);
-                if (getResponse.GetResResult.Value == -1)
+                if (getResponse.GetResResult.Value == 0)
                     this.displayLine("符合预期");
                 else
                     this.displayLine(getRed("不符合预期"));
 
-                if (type == C_Type_order || type == C_Type_issue)
-                {
 
-                    // 用 GetItemInfo 获取
-                    this.displayLine(GetBR() + getBold(u.UserName + "用 GetItemInfo 获取" + type + "xml，应失败。"));
-                    GetItemInfoResponse getItemResponse = this.GetItemInfo(u, type, xmlPath, true);
-                    if (getItemResponse.GetItemInfoResult.Value == -1)
-                        this.displayLine("符合预期");
-                    else
-                        this.displayLine(getRed("不符合预期"));
 
-                    // 用 GetEntities等 获取
-                    this.displayLine(GetBR() + getBold(u.UserName + "用 GetOrders 获取" + type + "xml，应失败。"));
-                    result = this.GetFirstEntity(u, type, parentPath, out EntityInfo entity, true);
-                    if (result.Value == -1)
-                        this.displayLine("符合预期");
-                    else
-                        this.displayLine(getRed("不符合预期"));
-                }
+                // 用 GetItemInfo 获取
+                this.displayLine(GetBR() + getBold(u.UserName + "用 GetItemInfo 获取" + type + "xml，应失败。"));
+                GetItemInfoResponse getItemResponse = this.GetItemInfo(u, type, xmlPath, true);
+                if (getItemResponse.GetItemInfoResult.Value == 0)
+                    this.displayLine("符合预期");
+                else
+                    this.displayLine(getRed("不符合预期"));
+
+                // 用 GetEntities等 获取
+                this.displayLine(GetBR() + getBold(u.UserName + "用 GetOrders 获取" + type + "xml，应失败。"));
+                result = this.GetFirstEntity(u, type, parentPath, out EntityInfo entity, true);
+                if (result.Value == 0)
+                    this.displayLine("符合预期");
+                else
+                    this.displayLine(getRed("不符合预期"));
+
 
 
                 //用 GetRes 获取 订购下的对象
-                this.displayLine(GetBR() + getBold(u.UserName + "用 GetRes 获取"+type+"的对象，应失败。"));
+                this.displayLine(GetBR() + getBold(u.UserName + "用 GetRes 获取" + type + "的对象，应失败。"));
                 getResponse = this.GetRes(u, objectPath, true);
-                if (getResponse.GetResResult.Value == -1)
+                if (getResponse.GetResResult.Value == 0)
                     this.displayLine("符合预期");
                 else
                     this.displayLine(getRed("不符合预期"));
@@ -4636,14 +4635,14 @@ namespace practice
 
                 string ownerXmlPath = "";
 
-                this.displayLine(GetBR() + getBold(u.UserName + "用 WriteRes 创建"+type+"xml，应失败。"));
+                this.displayLine(GetBR() + getBold(u.UserName + "用 WriteRes 创建" + type + "xml，应失败。"));
                 writeResponse = this.WriteXml(u,
                      newPath,
                      GetXml(type, true), true);
                 if (writeResponse.WriteResResult.Value == -1)
                     this.displayLine("符合预期");
                 else
-                    this.displayLine(getRed("不符合预期，读者应不能创建"+type+"记录。"));
+                    this.displayLine(getRed("不符合预期，读者应不能创建" + type + "记录。"));
 
                 ownerXmlPath = writeResponse.strOutputResPath;
                 string ownerObjectPath = ownerXmlPath + "/object/0";
@@ -4672,14 +4671,14 @@ namespace practice
                 #region 第2组测试：读者修改记录
 
                 // 修改订购xml
-                this.displayLine(GetBR() + getBold(u.UserName + "用 WriteRes 修改"+type+"xml，应失败。"));
+                this.displayLine(GetBR() + getBold(u.UserName + "用 WriteRes 修改" + type + "xml，应失败。"));
                 writeResponse = this.WriteXml(u,
                      xmlPath,
                      GetXml(type, true), true);
                 if (writeResponse.WriteResResult.Value == -1)
                     this.displayLine("符合预期");
                 else
-                    this.displayLine(getRed("不符合预期，读者应不能修改"+type+"xml。"));
+                    this.displayLine(getRed("不符合预期，读者应不能修改" + type + "xml。"));
 
 
                 if (type == C_Type_order || type == C_Type_issue)
@@ -4701,13 +4700,13 @@ namespace practice
 
 
                 // 修改订购object
-                this.displayLine(GetBR() + getBold(u.UserName + "用 WriteRes 修改"+type+"的对象，应失败。"));
+                this.displayLine(GetBR() + getBold(u.UserName + "用 WriteRes 修改" + type + "的对象，应失败。"));
                 writeResponse = this.WriteObject(u,
                      objectPath, true);
                 if (writeResponse.WriteResResult.Value == -1)
                     this.displayLine("符合预期");
                 else
-                    this.displayLine(getRed("不符合预期，读者应不能修改"+type+"的对象。"));
+                    this.displayLine(getRed("不符合预期，读者应不能修改" + type + "的对象。"));
 
 
                 #endregion
@@ -4716,14 +4715,14 @@ namespace practice
                 #region 第3组测试：读者删除记录
 
                 // 删除订购xml
-                this.displayLine(GetBR() + getBold(u.UserName + "用 WriteRes 删除"+type+"xml，应失败。"));
+                this.displayLine(GetBR() + getBold(u.UserName + "用 WriteRes 删除" + type + "xml，应失败。"));
                 writeResponse = this.WriteResForDel(u,
                      xmlPath,
                       true);
                 if (writeResponse.WriteResResult.Value == -1)
                     this.displayLine("符合预期");
                 else
-                    this.displayLine(getRed("不符合预期，读者应不能删除"+type+"xml。"));
+                    this.displayLine(getRed("不符合预期，读者应不能删除" + type + "xml。"));
 
 
                 if (type == C_Type_order || type == C_Type_issue)
@@ -4748,7 +4747,7 @@ namespace practice
             }
             catch (Exception e1)
             {
-                MessageBox.Show(this, "用读者身份操作"+type+"-异常:" + e1.Message);
+                MessageBox.Show(this, "用读者身份操作" + type + "-异常:" + e1.Message);
             }
             finally
             {
