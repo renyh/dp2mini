@@ -45,19 +45,23 @@
             this.button_readerLogin_item = new System.Windows.Forms.Button();
             this.button_readerLogin_biblio = new System.Windows.Forms.Button();
             this.button_GetItemInfo = new System.Windows.Forms.Button();
+            this.button10 = new System.Windows.Forms.Button();
+            this.button9 = new System.Windows.Forms.Button();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.button_createZfgEnv = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
+            this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // button_accessAndObject
             // 
-            this.button_accessAndObject.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button_accessAndObject.Location = new System.Drawing.Point(943, 10);
+            this.button_accessAndObject.Location = new System.Drawing.Point(793, 12);
             this.button_accessAndObject.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.button_accessAndObject.Name = "button_accessAndObject";
-            this.button_accessAndObject.Size = new System.Drawing.Size(325, 56);
+            this.button_accessAndObject.Size = new System.Drawing.Size(273, 56);
             this.button_accessAndObject.TabIndex = 58;
             this.button_accessAndObject.Tag = "";
-            this.button_accessAndObject.Text = "书目存取定义与对象权限";
+            this.button_accessAndObject.Text = "存取定义与对象权限";
             this.button_accessAndObject.UseVisualStyleBackColor = true;
             this.button_accessAndObject.Click += new System.EventHandler(this.button_accessAndObject_Click);
             // 
@@ -69,7 +73,7 @@
             this.webBrowser1.Location = new System.Drawing.Point(31, 279);
             this.webBrowser1.MinimumSize = new System.Drawing.Size(20, 20);
             this.webBrowser1.Name = "webBrowser1";
-            this.webBrowser1.Size = new System.Drawing.Size(1237, 465);
+            this.webBrowser1.Size = new System.Drawing.Size(1573, 465);
             this.webBrowser1.TabIndex = 62;
             // 
             // label1
@@ -133,9 +137,9 @@
             this.groupBox1.Controls.Add(this.button_readerLogin_item);
             this.groupBox1.Controls.Add(this.button_readerLogin_biblio);
             this.groupBox1.Controls.Add(this.button_readerLogin_reader);
-            this.groupBox1.Location = new System.Drawing.Point(31, 72);
+            this.groupBox1.Location = new System.Drawing.Point(31, 82);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(1237, 185);
+            this.groupBox1.Size = new System.Drawing.Size(847, 161);
             this.groupBox1.TabIndex = 69;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "读者身份";
@@ -143,33 +147,33 @@
             // button_readerLogin_item3
             // 
             this.button_readerLogin_item3.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
-            this.button_readerLogin_item3.Location = new System.Drawing.Point(879, 37);
+            this.button_readerLogin_item3.Location = new System.Drawing.Point(646, 37);
             this.button_readerLogin_item3.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.button_readerLogin_item3.Name = "button_readerLogin_item3";
-            this.button_readerLogin_item3.Size = new System.Drawing.Size(241, 52);
+            this.button_readerLogin_item3.Size = new System.Drawing.Size(172, 52);
             this.button_readerLogin_item3.TabIndex = 77;
             this.button_readerLogin_item3.Tag = "";
-            this.button_readerLogin_item3.Text = "册(有借阅信息)";
+            this.button_readerLogin_item3.Text = "册(有借阅)";
             this.button_readerLogin_item3.UseVisualStyleBackColor = false;
             this.button_readerLogin_item3.Click += new System.EventHandler(this.button_readerLogin_item3_Click);
             // 
             // button_readerLogin_item2
             // 
             this.button_readerLogin_item2.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
-            this.button_readerLogin_item2.Location = new System.Drawing.Point(628, 37);
+            this.button_readerLogin_item2.Location = new System.Drawing.Point(464, 37);
             this.button_readerLogin_item2.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.button_readerLogin_item2.Name = "button_readerLogin_item2";
-            this.button_readerLogin_item2.Size = new System.Drawing.Size(241, 52);
+            this.button_readerLogin_item2.Size = new System.Drawing.Size(172, 52);
             this.button_readerLogin_item2.TabIndex = 76;
             this.button_readerLogin_item2.Tag = "";
-            this.button_readerLogin_item2.Text = "册(读者有书斋)";
+            this.button_readerLogin_item2.Text = "册(有书斋)";
             this.button_readerLogin_item2.UseVisualStyleBackColor = false;
             this.button_readerLogin_item2.Click += new System.EventHandler(this.button_readerLogin_item2_Click);
             // 
             // button_readerLogin_arrived
             // 
             this.button_readerLogin_arrived.BackColor = System.Drawing.SystemColors.Highlight;
-            this.button_readerLogin_arrived.Location = new System.Drawing.Point(199, 115);
+            this.button_readerLogin_arrived.Location = new System.Drawing.Point(147, 95);
             this.button_readerLogin_arrived.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.button_readerLogin_arrived.Name = "button_readerLogin_arrived";
             this.button_readerLogin_arrived.Size = new System.Drawing.Size(157, 52);
@@ -182,7 +186,7 @@
             // button_readerLogin_amerce
             // 
             this.button_readerLogin_amerce.BackColor = System.Drawing.SystemColors.Highlight;
-            this.button_readerLogin_amerce.Location = new System.Drawing.Point(366, 115);
+            this.button_readerLogin_amerce.Location = new System.Drawing.Point(314, 95);
             this.button_readerLogin_amerce.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.button_readerLogin_amerce.Name = "button_readerLogin_amerce";
             this.button_readerLogin_amerce.Size = new System.Drawing.Size(137, 52);
@@ -195,7 +199,7 @@
             // button_readerLogin_issue
             // 
             this.button_readerLogin_issue.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
-            this.button_readerLogin_issue.Location = new System.Drawing.Point(719, 115);
+            this.button_readerLogin_issue.Location = new System.Drawing.Point(642, 95);
             this.button_readerLogin_issue.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.button_readerLogin_issue.Name = "button_readerLogin_issue";
             this.button_readerLogin_issue.Size = new System.Drawing.Size(120, 52);
@@ -208,7 +212,7 @@
             // button_readerLogin_comment
             // 
             this.button_readerLogin_comment.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
-            this.button_readerLogin_comment.Location = new System.Drawing.Point(23, 115);
+            this.button_readerLogin_comment.Location = new System.Drawing.Point(23, 95);
             this.button_readerLogin_comment.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.button_readerLogin_comment.Name = "button_readerLogin_comment";
             this.button_readerLogin_comment.Size = new System.Drawing.Size(114, 52);
@@ -221,7 +225,7 @@
             // button_readerLogin_order
             // 
             this.button_readerLogin_order.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
-            this.button_readerLogin_order.Location = new System.Drawing.Point(572, 115);
+            this.button_readerLogin_order.Location = new System.Drawing.Point(495, 95);
             this.button_readerLogin_order.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.button_readerLogin_order.Name = "button_readerLogin_order";
             this.button_readerLogin_order.Size = new System.Drawing.Size(137, 52);
@@ -234,20 +238,20 @@
             // button_readerLogin_item
             // 
             this.button_readerLogin_item.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
-            this.button_readerLogin_item.Location = new System.Drawing.Point(376, 37);
+            this.button_readerLogin_item.Location = new System.Drawing.Point(276, 37);
             this.button_readerLogin_item.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.button_readerLogin_item.Name = "button_readerLogin_item";
-            this.button_readerLogin_item.Size = new System.Drawing.Size(242, 52);
+            this.button_readerLogin_item.Size = new System.Drawing.Size(178, 52);
             this.button_readerLogin_item.TabIndex = 70;
             this.button_readerLogin_item.Tag = "";
-            this.button_readerLogin_item.Text = "册(读者无书斋)";
+            this.button_readerLogin_item.Text = "册(无书斋)";
             this.button_readerLogin_item.UseVisualStyleBackColor = false;
             this.button_readerLogin_item.Click += new System.EventHandler(this.button_readerLogin_item_Click);
             // 
             // button_readerLogin_biblio
             // 
             this.button_readerLogin_biblio.BackColor = System.Drawing.SystemColors.Info;
-            this.button_readerLogin_biblio.Location = new System.Drawing.Point(199, 37);
+            this.button_readerLogin_biblio.Location = new System.Drawing.Point(147, 37);
             this.button_readerLogin_biblio.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.button_readerLogin_biblio.Name = "button_readerLogin_biblio";
             this.button_readerLogin_biblio.Size = new System.Drawing.Size(103, 52);
@@ -259,22 +263,69 @@
             // 
             // button_GetItemInfo
             // 
-            this.button_GetItemInfo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button_GetItemInfo.Location = new System.Drawing.Point(691, 10);
+            this.button_GetItemInfo.Location = new System.Drawing.Point(600, 12);
             this.button_GetItemInfo.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.button_GetItemInfo.Name = "button_GetItemInfo";
-            this.button_GetItemInfo.Size = new System.Drawing.Size(242, 56);
+            this.button_GetItemInfo.Size = new System.Drawing.Size(183, 56);
             this.button_GetItemInfo.TabIndex = 78;
             this.button_GetItemInfo.Tag = "";
-            this.button_GetItemInfo.Text = "测试GetItemInfo";
+            this.button_GetItemInfo.Text = "GetItemInfo";
             this.button_GetItemInfo.UseVisualStyleBackColor = true;
             this.button_GetItemInfo.Click += new System.EventHandler(this.button_GetItemInfo_Click);
+            // 
+            // button10
+            // 
+            this.button10.Location = new System.Drawing.Point(328, 72);
+            this.button10.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.button10.Name = "button10";
+            this.button10.Size = new System.Drawing.Size(114, 52);
+            this.button10.TabIndex = 68;
+            this.button10.Tag = "";
+            this.button10.Text = "读者";
+            this.button10.UseVisualStyleBackColor = true;
+            // 
+            // button9
+            // 
+            this.button9.BackColor = System.Drawing.SystemColors.Info;
+            this.button9.Location = new System.Drawing.Point(452, 72);
+            this.button9.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.button9.Name = "button9";
+            this.button9.Size = new System.Drawing.Size(103, 52);
+            this.button9.TabIndex = 69;
+            this.button9.Tag = "";
+            this.button9.Text = "书目";
+            this.button9.UseVisualStyleBackColor = false;
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.button_createZfgEnv);
+            this.groupBox2.Controls.Add(this.button9);
+            this.groupBox2.Controls.Add(this.button10);
+            this.groupBox2.Location = new System.Drawing.Point(900, 82);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(621, 161);
+            this.groupBox2.TabIndex = 79;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "分馆";
+            // 
+            // button_createZfgEnv
+            // 
+            this.button_createZfgEnv.Location = new System.Drawing.Point(20, 37);
+            this.button_createZfgEnv.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.button_createZfgEnv.Name = "button_createZfgEnv";
+            this.button_createZfgEnv.Size = new System.Drawing.Size(205, 52);
+            this.button_createZfgEnv.TabIndex = 70;
+            this.button_createZfgEnv.Tag = "";
+            this.button_createZfgEnv.Text = "创建分馆环境";
+            this.button_createZfgEnv.UseVisualStyleBackColor = true;
+            this.button_createZfgEnv.Click += new System.EventHandler(this.button_createZfgEnv_Click);
             // 
             // Form_auto
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(14F, 27F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1311, 777);
+            this.ClientSize = new System.Drawing.Size(1647, 777);
+            this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.button_GetItemInfo);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.button_testRight);
@@ -285,6 +336,7 @@
             this.Name = "Form_auto";
             this.Text = "自动测试";
             this.groupBox1.ResumeLayout(false);
+            this.groupBox2.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -308,5 +360,9 @@
         private System.Windows.Forms.Button button_readerLogin_item2;
         private System.Windows.Forms.Button button_readerLogin_item3;
         private System.Windows.Forms.Button button_GetItemInfo;
+        private System.Windows.Forms.Button button10;
+        private System.Windows.Forms.Button button9;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.Button button_createZfgEnv;
     }
 }

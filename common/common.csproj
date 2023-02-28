@@ -93,6 +93,7 @@
     </Compile>
     <Compile Include="rest\DataStructure.cs" />
     <Compile Include="rest\IsbnSplitter.cs" />
+    <Compile Include="rest\ManageHelper.cs" />
     <Compile Include="rest\RestChannel.cs" />
     <Compile Include="rest\RestChannelPool.cs" />
     <Compile Include="xml\DomUtil.cs" />

@@ -2078,4 +2078,18 @@ LibraryServerResult.ErrorInfo		出错信息
 
 
     #endregion
+
+
+    public class CalenderInfo
+    {
+        [DataMember]
+        public string Name { get; set; }
+        [DataMember]
+        public string Range { get; set; }
+
+        [DataMember]
+        public string Comment { get; set; }
+        [DataMember]
+        public string Content { get; set; }
+    }
 }

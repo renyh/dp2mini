@@ -3618,6 +3618,21 @@ namespace DigitalPlatform.LibraryRestClient
             }
         }
 
+        public long GetSystemParameter(
+    // DigitalPlatform.Stop stop,
+    string strCategory,
+    string strName,
+    out string strValue,
+    out string strError)
+        {
+
+            GetSystemParameterResponse response = this.GetSystemParameter(strCategory,
+                strName);
+            strValue = response.strValue;
+            strError = response.GetSystemParameterResult.ErrorInfo;
+
+            return response.GetSystemParameterResult.Value;
+        }
 
 
 
@@ -3687,6 +3702,7 @@ namespace DigitalPlatform.LibraryRestClient
 
             return response;
         }
+
 
 
         public WriteResResponse WriteRes(
@@ -4338,6 +4354,223 @@ namespace DigitalPlatform.LibraryRestClient
 
         #endregion
 
+
+        #region 创建环境相关函数 todo
+
+        // todo
+        public long SetSystemParameter(
+    // DigitalPlatform.Stop stop,
+    string strCategory,
+    string strName,
+    string strValue,
+    out string strError)
+        {
+            strError = "";
+
+            /*
+        REDO:
+            try
+            {
+                LibraryServerResult result = this.ws.SetSystemParameter(strCategory,
+                    strName,
+                    strValue);
+                if (result.Value == -1 && result.ErrorCode == ErrorCode.NotLogin)
+                {
+                    if (DoNotLogin(ref strError) == 1)
+                        goto REDO;
+                    return -1;
+                }
+                strError = result.ErrorInfo;
+                this.ErrorCode = result.ErrorCode;
+                this.ClearRedoCount();
+                return result.Value;
+            }
+            catch (Exception ex)
+            {
+                int nRet = ConvertWebError(ex, out strError);
+                if (nRet == 0)
+                    return -1;
+                goto REDO;
+            }
+            */
+
+            return 0;
+        }
+
+
+
+        // 管理数据库
+        /// <summary>
+        /// 管理数据库
+        /// </summary>
+        /// <param name="stop"></param>
+        /// <param name="strAction">动作参数</param>
+        /// <param name="strDatabaseName">数据库名</param>
+        /// <param name="strDatabaseInfo">数据库信息</param>
+        /// <param name="strOutputInfo">返回操作后的数据库信息</param>
+        /// <param name="strError">返回出错信息</param>
+        /// <returns>
+        /// <para>-1:   出错</para>
+        /// <para>0 或 1:    成功</para>
+        /// </returns>
+        public long ManageDatabase(
+            // DigitalPlatform.Stop stop,
+            string strAction,
+            string strDatabaseName,
+            string strDatabaseInfo,
+            out string strOutputInfo,
+            out string strError)
+        {
+            strError = "";
+            strOutputInfo = "";
+
+            /*
+        REDO:
+            try
+            {
+                LibraryServerResult result = this.ws.ManageDatabase(
+                    out strOutputInfo,
+                    strAction,
+                    strDatabaseName,
+                    strDatabaseInfo, ""  // 2022/3/9增加一个参数
+                    );
+                if (result.Value == -1 && result.ErrorCode == ErrorCode.NotLogin)
+                {
+                    if (DoNotLogin(ref strError) == 1)
+                        goto REDO;
+                    return -1;
+                }
+                strError = result.ErrorInfo;
+                this.ErrorCode = result.ErrorCode;
+                this.ClearRedoCount();
+                return result.Value;
+            }
+            catch (Exception ex)
+            {
+                int nRet = ConvertWebError(ex, out strError);
+                if (nRet == 0)
+                    return -1;
+                goto REDO;
+            }
+            */
+
+            return 0;
+        }
+
+        // 获得日历
+        /// <summary>
+        /// 获得流通日历
+        /// </summary>
+        /// <param name="stop"></param>
+        /// <param name="strAction">动作参数</param>
+        /// <param name="strName">日历名</param>
+        /// <param name="nStart">要获得的元素开始位置。从 0 开始计数</param>
+        /// <param name="nCount">要获得的元素数量。若为 -1 表示希望获得尽可能多的元素</param>
+        /// <param name="contents">返回的日历信息数组</param>
+        /// <param name="strError">返回出错信息</param>
+        /// <returns>
+        /// <para>-1:   出错</para>
+        /// <para>&gt;=0:   结果数量</para>
+        /// </returns>
+        public long GetCalendar(
+            // DigitalPlatform.Stop stop,
+            string strAction,
+            string strName,
+            int nStart,
+            int nCount,
+            out CalenderInfo[] contents,
+            out string strError)
+        {
+            strError = "";
+
+            contents = null;
+
+            /*
+        REDO:
+            try
+            {
+                LibraryServerResult result = this.ws.GetCalendar(
+                    out contents,
+                                        strAction,
+                    strName,
+                    nStart,
+                    nCount
+                    );
+                if (result.Value == -1 && result.ErrorCode == ErrorCode.NotLogin)
+                {
+                    if (DoNotLogin(ref strError) == 1)
+                        goto REDO;
+                    return -1;
+                }
+                strError = result.ErrorInfo;
+                this.ErrorCode = result.ErrorCode;
+                this.ClearRedoCount();
+                return result.Value;
+            }
+            catch (Exception ex)
+            {
+                int nRet = ConvertWebError(ex, out strError);
+                if (nRet == 0)
+                    return -1;
+                goto REDO;
+            }
+            */
+
+            return 0;
+        }
+
+        // 设置、修改日历
+        /// <summary>
+        /// 设置流通日历
+        /// </summary>
+        /// <param name="stop"></param>
+        /// <param name="strAction">动作参数</param>
+        /// <param name="info">日历信息</param>
+        /// <param name="strError">返回出错信息</param>
+        /// <returns>
+        /// <para>-1:   出错</para>
+        /// <para>0:    成功</para>
+        /// </returns>
+        public long SetCalendar(
+    // DigitalPlatform.Stop stop,
+    string strAction,
+    CalenderInfo info,
+    out string strError)
+        {
+            strError = "";
+
+            /*
+        REDO:
+            try
+            {
+                LibraryServerResult result = this.ws.SetCalendar(
+                    strAction,
+                    info);
+                if (result.Value == -1 && result.ErrorCode == ErrorCode.NotLogin)
+                {
+                    if (DoNotLogin(ref strError) == 1)
+                        goto REDO;
+                    return -1;
+                }
+                strError = result.ErrorInfo;
+                this.ErrorCode = result.ErrorCode;
+                this.ClearRedoCount();
+                return result.Value;
+            }
+            catch (Exception ex)
+            {
+                int nRet = ConvertWebError(ex, out strError);
+                if (nRet == 0)
+                    return -1;
+                goto REDO;
+            }
+            */
+
+            return 0;
+        }
+
+
+        #endregion
 
     }
 

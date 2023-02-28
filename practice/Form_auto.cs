@@ -15,6 +15,8 @@ using System.Web;
 using DigitalPlatform.Xml;
 using System.Xml;
 using System.Threading;
+using DigitalPlatform.CirculationClient;
+using DigitalPlatform.Marc;
 
 namespace practice
 {
@@ -32,15 +34,15 @@ namespace practice
 
         public void NewUser(UserInfo u)
         {
-            this.SetUser(u,"new");
+            this.SetUser1(u,"new");
         }
 
         public void DelUser(UserInfo u)
         {
-            this.SetUser(u, "delete");
+            this.SetUser1(u, "delete");
         }
 
-        public void SetUser(UserInfo user, string strAction)
+        public void SetUser1(UserInfo user, string strAction)
         {
             List<UserInfo> list = new List<UserInfo>();
             list.Add(user);
@@ -1353,6 +1355,7 @@ namespace practice
                               <parent>" + parent + @"</parent>
                               <title>评注标题"+temp+@"</title>
                               <content>一本好书"+temp+@"</content>"
+                              +"<creator>P001</creator>"   //实际不会按这个值来，而是自动写创建者。
                               + dprmsfile
                             + "</root>";
 
@@ -1624,13 +1627,19 @@ namespace practice
                 response = this.WriteXml(u, tempPath, this.GetXml(type,false));
                 if (response.WriteResResult.Value == 0)
                 {
-                    if (response.WriteResResult.ErrorCode != ErrorCode.NoError)
+                    if (type == C_Type_comment)  // 评注，因为提交的xml涉及到creator变化，所以错误码是部分成功
                     {
-                        this.displayLine(getRed("不符合预期，错误码不对，应为NoError。"));
+                        if (response.WriteResResult.ErrorCode != ErrorCode.PartialDenied)
+                            this.displayLine(getRed("不符合预期，错误码不对，应为PartialDenied。"));
+                        else
+                            this.displayLine("符合预期");
                     }
                     else
                     {
-                        this.displayLine("符合预期");
+                        if (response.WriteResResult.ErrorCode != ErrorCode.NoError)
+                            this.displayLine(getRed("不符合预期，错误码不对，应为NoError。"));
+                        else
+                            this.displayLine("符合预期");
                     }
                 }
                 else
@@ -1781,10 +1790,20 @@ namespace practice
                 response = this.WriteXml(u, tempPath, this.GetXml(type,true));
                 if (response.WriteResResult.Value == 0)
                 {
-                    if (response.WriteResResult.ErrorCode != ErrorCode.NoError)
-                        this.displayLine(getRed("不符合预期，错误码不对，应为NoError。"));
+                    if (type == C_Type_comment)  // 评注，因为提交的xml涉及到creator变化，所以错误码是部分成功
+                    {
+                        if (response.WriteResResult.ErrorCode != ErrorCode.PartialDenied)
+                            this.displayLine(getRed("不符合预期，错误码不对，应为PartialDenied。"));
+                        else
+                            this.displayLine("符合预期");
+                    }
                     else
-                        this.displayLine("符合预期");
+                    {
+                        if (response.WriteResResult.ErrorCode != ErrorCode.NoError)
+                            this.displayLine(getRed("不符合预期，错误码不对，应为NoError。"));
+                        else
+                            this.displayLine("符合预期");
+                    }
                 }
                 else
                     this.displayLine(getRed("不符合预期"));
@@ -1826,8 +1845,17 @@ namespace practice
                 response = this.WriteXml(u, tempPath, newFileXml);
                 if (response.WriteResResult.Value == 0)
                 {
-                    if (response.WriteResResult.ErrorCode != ErrorCode.NoError)
-                        this.displayLine(getRed("注意错误码不对，应为NoError。"));
+
+                    if (type == C_Type_comment)  // 评注，因为提交的xml涉及到creator变化，所以错误码是部分成功
+                    {
+                        if (response.WriteResResult.ErrorCode != ErrorCode.PartialDenied)
+                            this.displayLine(getRed("不符合预期，错误码不对，应为PartialDenied。"));
+                    }
+                    else
+                    {
+                        if (response.WriteResResult.ErrorCode != ErrorCode.NoError)
+                            this.displayLine(getRed("注意错误码不对，应为NoError。"));
+                    }
 
                     // 获取出来看下
                     GetResResponse tempResponse = this.GetRes(u, tempPath);
@@ -1856,8 +1884,16 @@ namespace practice
                 response = this.WriteXml(u, tempPath, changeFileXml);
                 if (response.WriteResResult.Value == 0)
                 {
-                    if (response.WriteResResult.ErrorCode != ErrorCode.NoError)
-                        this.displayLine(getRed("注意错误码不对，应为NoError。"));
+                    if (type == C_Type_comment)  // 评注，因为提交的xml涉及到creator变化，所以错误码是部分成功
+                    {
+                        if (response.WriteResResult.ErrorCode != ErrorCode.PartialDenied)
+                            this.displayLine(getRed("不符合预期，错误码不对，应为PartialDenied。"));
+                    }
+                    else
+                    {
+                        if (response.WriteResResult.ErrorCode != ErrorCode.NoError)
+                            this.displayLine(getRed("注意错误码不对，应为NoError。"));
+                    }
 
                     // 获取出来看下
                     GetResResponse tempResponse = this.GetRes(u, tempPath);
@@ -1896,8 +1932,16 @@ namespace practice
                 response = this.WriteXml(u, tempPath, delFileXml);
                 if (response.WriteResResult.Value == 0)
                 {
-                    if (response.WriteResResult.ErrorCode != ErrorCode.NoError)
-                        this.displayLine(getRed("注意错误码不对，应为NoError。"));
+                    if (type == C_Type_comment)  // 评注，因为提交的xml涉及到creator变化，所以错误码是部分成功
+                    {
+                        if (response.WriteResResult.ErrorCode != ErrorCode.PartialDenied)
+                            this.displayLine(getRed("不符合预期，错误码不对，应为PartialDenied。"));
+                    }
+                    else
+                    {
+                        if (response.WriteResResult.ErrorCode != ErrorCode.NoError)
+                            this.displayLine(getRed("注意错误码不对，应为NoError。"));
+                    }
 
                     // 获取出来看下
                     GetResResponse tempResponse = this.GetRes(u, tempPath);
@@ -3560,7 +3604,7 @@ namespace practice
 
                 #region 第2组测试：读者修改评注
 
-                this.displayLine(this.getLarge("第2组测试：读者修改评注，应可修改自己的，不能修改他人。"));
+                this.displayLine(this.getLarge("第2组测试：读者修改评注，应可修改自己的部分字段，不能修改他人。"));
 
 
                 // 修改自己的评注
@@ -3588,20 +3632,19 @@ namespace practice
 
 
 
-                    // 修改自己的creator
+                    // 修改自己的creator等元素
                     DomUtil.SetElementText(dom.DocumentElement, "title", "标题修改2");
                     DomUtil.SetElementText(dom.DocumentElement, "content", "内容修改2");
                     DomUtil.SetElementText(dom.DocumentElement, "creator", "创建者修改2");
 
-                    this.displayLine(GetBR() + getBold(u.UserName + "修改自己的评注xml的creator，应失败。"));
+                    this.displayLine(GetBR() + getBold(u.UserName + "修改自己的评注xml的creator等元素，应部分成功。"));
                     writeRes = this.WriteXml(u, ownerPathForChange,
                         dom.OuterXml, true);
-                    if (writeRes.WriteResResult.Value ==-1)
+                    if (writeRes.WriteResResult.Value ==0 
+                        && writeRes.WriteResResult.ErrorCode== ErrorCode.PartialDenied)  // 返回值是0，但有错误码，部分成功
                         this.displayLine("符合预期");
                     else
-                        this.displayLine(getRed("不符合预期"));
-
-
+                        this.displayLine(getRed("不符合预期,应部分成功。"));
                 }
                 else
                     this.displayLine(getRed("不符合预期"));
@@ -3626,7 +3669,7 @@ namespace practice
                      otherPath,
                      this.GetXml(C_Type_comment, false), true,out string temp);
                 if (ret.Value ==-1)
-                    this.displayLine(getWarn1("符合预期，注意检查报错信息"));
+                    this.displayLine("符合预期");
                 else
                     this.displayLine(getRed("不符合预期"));
 
@@ -3737,10 +3780,10 @@ namespace practice
                     "change",
                     otherPath,
                     this.GetXml(C_Type_comment, false), true,out string temp1);
-                if (ret.Value == 0)
-                    this.displayLine(getWarn1("符合预期"));
+                if (ret.Value == 0 && ret.ErrorCode== ErrorCode.PartialDenied)  //因为提交的xml涉及到creator，所以应部分成功
+                    this.displayLine("符合预期");
                 else
-                    this.displayLine(getRed("不符合预期，读者有managecomment权限，应可修改他人的评注。"));
+                    this.displayLine(getRed("不符合预期，读者有managecomment权限，应可修改他人的评注。如果提交的xml涉及到改变creator，则应部分成功。"));
 
 
                 // 修改他人评注下的对象
@@ -3751,8 +3794,7 @@ namespace practice
                 else
                     this.displayLine(getRed("不符合预期，读者有managecomment权限，应可修改他人评注的对象。"));
                 
-                //===
-                /*
+
                 // 删除他人的
                 this.displayLine(GetBR() + getBold(u.UserName + "删除他人的评注，应成功。"));
                 ret = this.DelXml(u, C_Type_comment, otherPath, true);
@@ -3760,8 +3802,28 @@ namespace practice
                     this.displayLine("符合预期");
                 else
                     this.displayLine(getRed("不符合预期，读者有managecomment权限，应可删除他人的评注。"));
-                */
+
                 #endregion
+
+
+                /*
+###  2023/2/27 23:10:34
+最新代码已经 push 到 GitHub 了。注意测试创建和修改评注记录的时候，读者身份可能需要在记录中包含 follow 和 orderSuggestion 元素。用法可以参考一下 dp2OPAC 创建和修改的评注记录，比如 follow 应该是跟帖的时候会产生，orderSuggestion 应该是订购建议
+
+
+### 2023/2/28 10:30
+最新 dp2 代码已经 push 到 GitHub 了。
+关于评注记录的测试，还需要注意一下几点：
+1) 读者已经注销的(读者记录 state 元素中包含“注销”)，不能用该读者身份创建、修改、删除任何评注记录；
+2) 评注记录的 state 元素中包含“锁定”的，非 managecomment 身份不允许修改和删除;
+锁定功能可以参考 dp2OPAC 界面，应该就是给评注记录状态添加一个“锁定”值
+
+                1）读者加了managecomment，则完全操作他人评注。
+2）不能修改creator，可修改title和content。
+3）读者不能修改状态。
+4）管理员也需要加managecomment才能修改评注。
+
+                 */
 
             }
             catch (Exception e1)
@@ -3913,18 +3975,18 @@ namespace practice
 
                 #region 第1组测试：读者新建预约到书/违约金，应不能。
 
-                this.displayLine(this.getLarge("第1组测试：读者新建"+type+"记录，应不可以。"));
+                this.displayLine(this.getLarge("第1组测试：读者新建"+type+"记录。"));
 
 
                 // 用WriteRes新建自己的预约到书 或 违约金
-                this.displayLine(GetBR() + getBold(u.UserName + "用WriteRes新建自己的"+type+"xml，应失败。"));
+                this.displayLine(GetBR() + getBold(u.UserName + "用WriteRes新建自己的"+type+"xml，应成功。"));
                 writeRes = this.WriteXml(u, newPath,
                    strXml1,//this.GetXml(C_Type_Arrived, true), 
                     true);
-                if (writeRes.WriteResResult.Value == -1)
+                if (writeRes.WriteResResult.Value == 0)
                     this.displayLine("符合预期");
                 else
-                    this.displayLine(getRed("不符合预期，读者应不能创建属于自己的"+type+"记录。"));
+                    this.displayLine(getRed("不符合预期，读者应可以创建属于自己的"+type+"记录。"));
 
 
                 // 用WriteRes新建别人的预约到书 或 违约金
@@ -3988,7 +4050,7 @@ namespace practice
 
                 #region 第4组测试：读者修改自己的预约到书 或 违约金
 
-                this.displayLine(this.getLarge("第2组测试：读者修改自己的"+type+"，应成功。"));
+                this.displayLine(this.getLarge("第4组测试：读者修改自己的"+type+"，应成功。"));
 
 
                 // 修改预约者是自己的预约到书/违约金xml
@@ -4040,7 +4102,7 @@ namespace practice
 
                 #region 第6组测试：读者删除预约到书/违约金，应不可以
 
-                this.displayLine(this.getLarge("第6组测试：读者删除预约到书"));
+                this.displayLine(this.getLarge("第6组测试：读者删除"+type+"记录"));
 
 
                 // 删除预约者是自己的预约到书
@@ -4462,13 +4524,13 @@ namespace practice
         // 订购
         private void button_readerLogin_order_Click(object sender, EventArgs e)
         {
-            this.CheckOrderIssueAmerceForReader(C_Type_order);
+            this.CheckOrderIssueForReader(C_Type_order);
         }
 
         // 期
         private void button_readerLogin_issue_Click(object sender, EventArgs e)
         {
-            this.CheckOrderIssueAmerceForReader(C_Type_issue);
+            this.CheckOrderIssueForReader(C_Type_issue);
         }
 
         public string GetFullRights(string type)
@@ -4594,9 +4656,9 @@ namespace practice
                 this.displayLine(this.getLarge("第1组测试：读者获取" + type + "记录"));
 
                 //用 GetRes 获取
-                this.displayLine(GetBR() + getBold(u.UserName + "用 GetRes 获取" + type + "xml，应失败。"));
+                this.displayLine(GetBR() + getBold(u.UserName + "用 GetRes 获取" + type + "xml，应成功。"));
                 getResponse = this.GetRes(u, xmlPath, true);
-                if (getResponse.GetResResult.Value == 0)
+                if (getResponse.GetResResult.Value >= 0)
                     this.displayLine("符合预期");
                 else
                     this.displayLine(getRed("不符合预期"));
@@ -4604,17 +4666,17 @@ namespace practice
 
 
                 // 用 GetItemInfo 获取
-                this.displayLine(GetBR() + getBold(u.UserName + "用 GetItemInfo 获取" + type + "xml，应失败。"));
+                this.displayLine(GetBR() + getBold(u.UserName + "用 GetItemInfo 获取" + type + "xml，应成功。"));
                 GetItemInfoResponse getItemResponse = this.GetItemInfo(u, type, xmlPath, true);
-                if (getItemResponse.GetItemInfoResult.Value == 0)
+                if (getItemResponse.GetItemInfoResult.Value >= 0)
                     this.displayLine("符合预期");
                 else
                     this.displayLine(getRed("不符合预期"));
 
                 // 用 GetEntities等 获取
-                this.displayLine(GetBR() + getBold(u.UserName + "用 GetOrders 获取" + type + "xml，应失败。"));
+                this.displayLine(GetBR() + getBold(u.UserName + "用 GetOrders 获取" + type + "xml，应成功。"));
                 result = this.GetFirstEntity(u, type, parentPath, out EntityInfo entity, true);
-                if (result.Value == 0)
+                if (result.Value >= 0)
                     this.displayLine("符合预期");
                 else
                     this.displayLine(getRed("不符合预期"));
@@ -4622,9 +4684,9 @@ namespace practice
 
 
                 //用 GetRes 获取 订购下的对象
-                this.displayLine(GetBR() + getBold(u.UserName + "用 GetRes 获取" + type + "的对象，应失败。"));
+                this.displayLine(GetBR() + getBold(u.UserName + "用 GetRes 获取" + type + "的对象，应成功。"));
                 getResponse = this.GetRes(u, objectPath, true);
-                if (getResponse.GetResResult.Value == 0)
+                if (getResponse.GetResResult.Value >= 0)
                     this.displayLine("符合预期");
                 else
                     this.displayLine(getRed("不符合预期"));
@@ -4763,5 +4825,1429 @@ namespace practice
 
             this.CheckArrivedAmerce(C_Type_Amerce);
         }
+
+
+        #region 总分馆
+
+        #region 常量
+
+
+        public string Env_ZG_LibraryCode = "";
+        public string Env_A_LibraryCode = "A馆";
+        public string Env_B_LibraryCode = "B馆";
+        public string Env_C_LibraryCode = "C馆";
+
+        public string Env_ZG_ReaderDbName = "总馆读者";
+        public string Env_A_ReaderDbName = "A馆读者";
+        public string Env_B_ReaderDbName = "B馆读者";
+        public string Env_C_ReaderDbName = "C馆读者";
+
+        public string Env_ZG_Location = "总馆图书馆";
+        public string Env_A_Location = "A馆图书馆";
+        public string Env_B_Location = "B馆图书馆";
+        public string Env_C_Location = "C馆图书馆";
+
+        public const string Env_ZG_CalenderName = "总馆日历";
+        public const string Env_A_CalenderName = "A馆日历";
+        public const string Env_B_CalenderName = "B馆日历";
+        public const string Env_C_CalenderName = "C馆日历";
+
+        public string Env_ZG_PatronType = "总馆学生";
+        public string Env_ZG_PatronType_teacher = "总馆教师";
+        public string Env_A_PatronType = "A馆学生";
+        public string Env_A_PatronType_teacher = "A馆教师";
+        public string Env_B_PatronType = "B馆学生";
+        public string Env_B_PatronType_teacher = "B馆教师";
+        public string Env_C_PatronType = "C馆学生";
+        public string Env_C_PatronType_teacher = "C馆教师";
+
+        public string Env_ZG_BookType = "总馆普通图书";
+        public string Env_A_BookType = "A馆普通图书";
+        public string Env_B_BookType = "B馆普通图书";
+        public string Env_C_BookType = "C馆普通图书";
+
+        #endregion
+
+        private void button_createZfgEnv_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        // 删除测试环境
+        public int DeleteLibEnv(bool bzfg,
+            int dbCount,
+            out string error)
+        {
+            error = "";
+            int nRet = 0;
+
+            // 检查登录信息
+            //if (string.IsNullOrEmpty(this.dp2ServerUrl) == true
+            //    || string.IsNullOrEmpty(this.dp2Username) == true)
+            //{
+            //    error = "尚未配置dp2系统登录信息";
+            //    return -1;
+            //}
+            //this._channelPool.BeforeLogin -= _channelPool_BeforeLogin;
+            //this._channelPool.BeforeLogin += _channelPool_BeforeLogin;
+
+
+            //===
+            RestChannel channel = null;// this.GetChannel();
+            //TimeSpan old_timeout = channel.Timeout;
+            //channel.Timeout = TimeSpan.FromMinutes(10);
+
+
+            string info = "开始删除测试环境 ...";
+
+            //LogManager.Logger.Info(info);
+            EnableCtrls(false);
+            try
+            {
+                if (dbCount <= 0)
+                    dbCount = 1;
+
+                string dbName = "测试中文图书";
+                for (int i = 0; i < dbCount; i++)
+                {
+                    if (dbName != "")
+                        dbName += ",";
+                    dbName += "测试中文图书" + (i + 1);
+                }
+
+                // 删除书目库
+                info = "正在删除测试用书目库 ...";
+                //ProgressSetMessage(info);
+                //LogManager.Logger.Info(info);
+                string strOutputInfo = "";
+                long lRet = channel.ManageDatabase(
+                    // _stop,
+                    "delete",
+                    dbName,//Env_BiblioDbName,    // strDatabaseNames,
+                    "",
+                    out strOutputInfo,
+                    out error);
+                if (lRet == -1)
+                {
+                    if (channel.ErrorCode != ErrorCode.NotFound)
+                        goto ERROR1;
+                }
+
+
+                // 删除读者库
+                info = "正在删除测试用读者库 ...";
+                string strDatabaseNames = Env_ZG_ReaderDbName;
+                if (bzfg == true)
+                {
+                    strDatabaseNames = Env_ZG_ReaderDbName
+                        + "," + Env_A_ReaderDbName
+                        + "," + Env_B_ReaderDbName
+                        + "," + Env_C_ReaderDbName;
+                }
+
+                //ProgressSetMessage(info);
+                //LogManager.Logger.Info(info);
+                lRet = channel.ManageDatabase(
+                   // _stop,
+                   "delete",
+                   strDatabaseNames,
+                   "",
+                   out strOutputInfo,
+                   out error);
+                if (lRet == -1)
+                {
+                    if (channel.ErrorCode !=ErrorCode.NotFound)
+                        goto ERROR1;
+                }
+
+
+
+                // *** 删除馆藏地配置
+                info = "正在删除馆藏地 ...";
+                //ProgressSetMessage(info);
+                //LogManager.Logger.Info(info);
+                List<DigitalPlatform.CirculationClient.ManageHelper.LocationItem> items = new List<DigitalPlatform.CirculationClient.ManageHelper.LocationItem>();
+                items.Add(new DigitalPlatform.CirculationClient.ManageHelper.LocationItem(Env_ZG_LibraryCode, Env_ZG_Location, true, false));
+                if (bzfg == true)
+                {
+                    items.Add(new DigitalPlatform.CirculationClient.ManageHelper.LocationItem(Env_A_LibraryCode, Env_A_Location, true, false));
+                    items.Add(new DigitalPlatform.CirculationClient.ManageHelper.LocationItem(Env_B_LibraryCode, Env_B_Location, true, false));
+                    items.Add(new DigitalPlatform.CirculationClient.ManageHelper.LocationItem(Env_C_LibraryCode, Env_C_Location, true, false));
+                }
+                nRet = ManageHelper.AddLocationTypes(
+                    channel,
+                    // this.Progress,
+                    "remove",
+                    items,
+                    out error);
+                if (nRet == -1)
+                    goto ERROR1;
+
+                //***删除工作日历
+                CalenderInfo cInfo = null;
+                info = "正在删除工作日历 ...";
+                //ProgressSetMessage(info);
+                //LogManager.Logger.Info(info);
+                CalenderInfo[] infos1 = null;
+                lRet = channel.GetCalendar(
+                    // this.Progress,
+                    "get",
+                    Env_ZG_CalenderName,
+                    0,
+                    -1,
+                    out infos1,
+                    out error);
+                if (lRet == -1)
+                    goto ERROR1;
+                if (lRet > 0)
+                {
+                    // 册总馆日历
+                    cInfo = new CalenderInfo();
+                    cInfo.Name = Env_ZG_CalenderName;
+                    cInfo.Range = "20220101-20241231";
+                    cInfo.Comment = "";
+                    cInfo.Content = "";
+                    lRet = channel.SetCalendar(
+                       // _stop,
+                       "delete",
+                       cInfo,
+                       out error);
+                    if (lRet == -1)
+                        goto ERROR1;
+                }
+
+                // 删除分馆的开馆日历
+                if (bzfg == true)
+                {
+                    lRet = channel.GetCalendar(
+                        // this.Progress,
+                        "get",
+                        Env_A_LibraryCode + "/" + Env_A_CalenderName,
+                        0,
+                        -1,
+                        out infos1,
+                        out error);
+                    if (lRet == -1)
+                        goto ERROR1;
+                    if (lRet > 0)
+                    {
+                        // 册A馆日历
+                        cInfo = new CalenderInfo();
+                        cInfo.Name = Env_A_LibraryCode + "/" + Env_A_CalenderName;
+                        cInfo.Range = "20220101-20241231";
+                        cInfo.Comment = "";
+                        cInfo.Content = "";
+                        lRet = channel.SetCalendar(
+                           // _stop,
+                           "delete",
+                           cInfo,
+                           out error);
+                        if (lRet == -1)
+                            goto ERROR1;
+                    }
+                    lRet = channel.GetCalendar(
+                        // this.Progress,
+                        "get",
+                        Env_B_LibraryCode + "/" + Env_B_CalenderName,
+                        0,
+                        -1,
+                        out infos1,
+                        out error);
+                    if (lRet == -1)
+                        goto ERROR1;
+                    if (lRet > 0)
+                    {
+                        // 册B馆日历
+                        cInfo = new CalenderInfo();
+                        cInfo.Name = Env_B_LibraryCode + "/" + Env_B_CalenderName;
+                        cInfo.Range = "20220101-20241231";
+                        cInfo.Comment = "";
+                        cInfo.Content = "";
+                        lRet = channel.SetCalendar(
+                           // _stop,
+                           "delete",
+                           cInfo,
+                           out error);
+                        if (lRet == -1)
+                            goto ERROR1;
+
+                    }
+
+                    // 册C馆日历
+                    cInfo = new CalenderInfo();
+                    cInfo.Name = Env_C_LibraryCode + "/" + Env_C_CalenderName;
+                    cInfo.Range = "20220101-20241231";
+                    cInfo.Comment = "";
+                    cInfo.Content = "";
+                    lRet = channel.SetCalendar(
+                       // _stop,
+                       "delete",
+                       cInfo,
+                       out error);
+                    if (lRet == -1)
+                    {
+                        // 删除失败有可能是根本没有这个日历
+                        //goto ERROR1;
+                    }
+                }
+
+
+                // ***删除权限流通权限
+                info = "正在删除流通权限 ...";
+                //ProgressSetMessage(info);
+                //LogManager.Logger.Info(info);
+
+                List<string> zgReaderTypes = new List<string>();
+                zgReaderTypes.Add(Env_ZG_PatronType);
+                zgReaderTypes.Add(Env_ZG_PatronType_teacher);
+                List<string> zgBookTypes = new List<string>();
+                zgBookTypes.Add(Env_ZG_BookType);
+
+                List<string> fglist = new List<string>();
+                if (bzfg == true)
+                {
+                    fglist.Add(Env_A_LibraryCode);
+                    fglist.Add(Env_B_LibraryCode);
+                    fglist.Add(Env_C_LibraryCode);
+                }
+                nRet = this.RemoveTestRightsTable(channel, null,
+                    zgReaderTypes,
+                    zgBookTypes,
+                    fglist,
+                    out error);
+                if (nRet == -1)
+                    goto ERROR1;
+
+                info = "正在删除工作人员帐号 ...";
+                //ProgressSetMessage(info);
+                //LogManager.Logger.Info(info);
+                lRet = this.SetUser(channel, "delete", Env_ZG_LibraryCode, "zg", out error);
+                if (lRet == -1)
+                    goto ERROR1;
+
+                if (bzfg == true)
+                {
+                    lRet = this.SetUser(channel, "delete", Env_A_LibraryCode, "a", out error);
+                    if (lRet == -1)
+                        goto ERROR1;
+                    lRet = this.SetUser(channel, "delete", Env_B_LibraryCode, "b", out error);
+                    if (lRet == -1)
+                        goto ERROR1;
+                    lRet = this.SetUser(channel, "delete", Env_C_LibraryCode, "c", out error);
+                    if (lRet == -1)
+                        goto ERROR1;
+                }
+
+                return 0;
+            }
+            catch (Exception ex)
+            {
+                error = "Exception: " + ExceptionUtil.GetExceptionText(ex);
+                goto ERROR1;
+            }
+            finally
+            {
+#if NO
+                Progress.EndLoop();
+                Progress.OnStop -= new StopEventHandler(this.DoStop);
+                Progress.Initial("");
+                Progress.HideProgress();
+#endif
+                EnableCtrls(true);
+
+                //channel.Timeout = old_timeout;
+                //this.ReturnChannel(channel);  //todo
+            }
+
+
+        ERROR1:
+
+            //LogManager.Logger.Error(error);
+            return -1;
+        }
+
+        public int DbCount = 1;
+
+
+        // 初始化测试环境
+        public void IniLibEnv(bool bzfg,
+            int dbCount,
+            int biblioCount,
+            int itemCountPerBiblio)
+        {
+            Task.Run(() =>
+            {
+                string error = "";
+                int nRet = 0;
+                long lRet = 0;
+                string strOutputInfo = "";
+                string info = "";
+
+
+                //先删除测试环境
+                nRet = this.DeleteLibEnv(bzfg, 1,//this.DbCount,
+                    out error);
+                if (nRet == -1)
+                {
+                    error = "删除测试环境出错：" + error;
+                    goto ERROR1;
+                }
+
+                //===
+
+
+                RestChannel channel = null;// this.GetChannel();  todo
+                //TimeSpan old_timeout = channel.Timeout;
+                //channel.Timeout = TimeSpan.FromMinutes(10);
+
+#if NO
+            Progress.Style = StopStyle.EnableHalfStop;
+            Progress.OnStop += new StopEventHandler(this.DoStop);
+            Progress.Initial(info);
+#endif
+                info = "开始初始化测试环境 ...";
+                //LogManager.Logger.Info(info);
+
+                // Progress.BeginLoop();
+                EnableCtrls(false);
+                try
+                {
+                    // 先要创建读者库，才能有分馆
+                    // ***创建测试所需的读者库
+                    info = "正在创建测试用读者库 ...";
+                    //ProgressSetMessage(info);
+                    //LogManager.Logger.Info(info);
+
+                    // 总馆读者库
+                    lRet = CreateReaderDb(channel, Env_ZG_ReaderDbName, Env_ZG_LibraryCode);
+                    if (lRet == -1)
+                        goto ERROR1;
+
+                    if (bzfg == true)
+                    {
+                        // A馆读者库
+                        info = "正在创建A馆读者库 ...";
+                        //ProgressSetMessage(info);
+                        //LogManager.Logger.Info(info);
+                        lRet = CreateReaderDb(channel, Env_A_ReaderDbName,
+                            Env_A_LibraryCode);
+                        if (lRet == -1)
+                            goto ERROR1;
+
+                        // B馆读者库
+                        info = "正在创建B馆读者库 ...";
+                        //ProgressSetMessage(info);
+                        //LogManager.Logger.Info(info);
+                        lRet = CreateReaderDb(channel, Env_B_ReaderDbName,
+                            Env_B_LibraryCode);
+                        if (lRet == -1)
+                            goto ERROR1;
+
+                        // C馆读者库
+                        info = "正在创建C馆读者库 ...";
+                        //ProgressSetMessage(info);
+                        //LogManager.Logger.Info(info);
+                        lRet = CreateReaderDb(channel, Env_C_ReaderDbName,
+                            Env_C_LibraryCode);
+                        if (lRet == -1)
+                            goto ERROR1;
+                    }
+
+                    // *** 定义测试所需的馆藏地
+                    info = "正在定义测试所需的馆藏地 ...";
+                    //ProgressSetMessage(info);
+                    //LogManager.Logger.Info(info);
+
+                    List<DigitalPlatform.CirculationClient.ManageHelper.LocationItem> items = new List<DigitalPlatform.CirculationClient.ManageHelper.LocationItem>();
+                    items.Add(new DigitalPlatform.CirculationClient.ManageHelper.LocationItem("", Env_ZG_Location, true, true));
+                    if (bzfg == true)
+                    {
+                        items.Add(new DigitalPlatform.CirculationClient.ManageHelper.LocationItem(Env_A_LibraryCode, Env_A_Location, true, true));
+                        items.Add(new DigitalPlatform.CirculationClient.ManageHelper.LocationItem(Env_B_LibraryCode, Env_B_Location, true, true));
+                        items.Add(new DigitalPlatform.CirculationClient.ManageHelper.LocationItem(Env_C_LibraryCode, Env_C_Location, true, true));
+                    }
+                    nRet = ManageHelper.AddLocationTypes(
+                        channel,
+                        // this.Progress,
+                        "add",
+                        items,
+                        out error);
+                    if (nRet == -1)
+                        goto ERROR1;
+
+                    //***创建工作日历
+                    info = "正在创建工作日历 ...";
+                    //ProgressSetMessage(info);
+                    //LogManager.Logger.Info(info);
+                    // 总馆
+                    CalenderInfo cInfo = new CalenderInfo();
+                    cInfo.Name = Env_ZG_CalenderName;
+                    cInfo.Range = "20220101-20241231";
+                    cInfo.Comment = "";
+                    cInfo.Content = "";
+                    lRet = channel.SetCalendar(
+                       // _stop,
+                       "new",
+                       cInfo,
+                       out error);
+                    if (lRet == -1)
+                        goto ERROR1;
+
+                    if (bzfg == true)
+                    {
+                        // A馆
+                        cInfo = new CalenderInfo();
+                        cInfo.Name = Env_A_LibraryCode + "/" + Env_A_CalenderName;
+                        cInfo.Range = "20220101-20241231";
+                        cInfo.Comment = "";
+                        cInfo.Content = "";
+                        lRet = channel.SetCalendar(
+                           // _stop,
+                           "new",
+                           cInfo,
+                           out error);
+                        if (lRet == -1)
+                            goto ERROR1;
+                        // B馆
+                        cInfo = new CalenderInfo();
+                        cInfo.Name = Env_B_LibraryCode + "/" + Env_B_CalenderName;
+                        cInfo.Range = "20220101-20241231";
+                        cInfo.Comment = "";
+                        cInfo.Content = "";
+                        lRet = channel.SetCalendar(
+                           // _stop,
+                           "new",
+                           cInfo,
+                           out error);
+                        if (lRet == -1)
+                            goto ERROR1;
+
+                        // C馆
+                        cInfo = new CalenderInfo();
+                        cInfo.Name = Env_C_LibraryCode + "/" + Env_C_CalenderName;
+                        cInfo.Range = "20220101-20241231";
+                        cInfo.Comment = "";
+                        cInfo.Content = "";
+                        lRet = channel.SetCalendar(
+                           // _stop,
+                           "new",
+                           cInfo,
+                           out error);
+                        if (lRet == -1)
+                            goto ERROR1;
+                    }
+
+                    // ***创建流通权限
+                    info = "正在创建测试所需的流通权限 ...";
+                    //ProgressSetMessage(info);
+                    //LogManager.Logger.Info(info);
+
+                    // 总馆
+                    List<rightTable> rightList = new List<rightTable>();
+                    rightTable zg = new rightTable(Env_ZG_LibraryCode,
+                        Env_ZG_PatronType, true,
+                        Env_ZG_BookType,
+                        Env_ZG_CalenderName);
+                    rightList.Add(zg);
+
+                    rightTable zg1 = new rightTable(Env_ZG_LibraryCode,
+                        Env_ZG_PatronType_teacher, true,
+                        Env_ZG_BookType,
+                        Env_ZG_CalenderName);
+                    rightList.Add(zg1);
+
+                    if (bzfg == true)
+                    {
+                        // A馆
+                        rightTable a = new rightTable(Env_A_LibraryCode,
+                            Env_A_PatronType, true,
+                            Env_A_BookType,
+                            Env_A_LibraryCode + "/" + Env_A_CalenderName);
+                        rightList.Add(a);
+
+                        rightTable a2 = new rightTable(Env_A_LibraryCode,
+                            Env_A_PatronType_teacher, true,
+                            Env_A_BookType,
+                            Env_A_LibraryCode + "/" + Env_A_CalenderName);
+                        rightList.Add(a2);
+
+                        //B馆
+                        rightTable b = new rightTable(Env_B_LibraryCode,
+                            Env_B_PatronType, true,
+                            Env_B_BookType,
+                            Env_B_LibraryCode + "/" + Env_B_CalenderName);
+                        rightList.Add(b);
+
+                        rightTable b2 = new rightTable(Env_B_LibraryCode,
+                            Env_B_PatronType_teacher, true,
+                            Env_B_BookType,
+                            Env_B_LibraryCode + "/" + Env_B_CalenderName);
+                        rightList.Add(b2);
+
+                        //C馆
+                        rightTable c = new rightTable(Env_C_LibraryCode,
+                            Env_C_PatronType, true,
+                            Env_C_BookType,
+                            Env_C_LibraryCode + "/" + Env_C_CalenderName);
+                        rightList.Add(c);
+
+                        rightTable c2 = new rightTable(Env_C_LibraryCode,
+                            Env_C_PatronType_teacher, true,
+                            Env_C_BookType,
+                            Env_C_LibraryCode + "/" + Env_C_CalenderName);
+                        rightList.Add(c2);
+                    }
+
+                    nRet = this.AddTestRightsTable(channel, null, rightList,
+                        out error);
+                    if (nRet == -1)
+                        goto ERROR1;
+
+
+
+
+                    for (int i = 0; i < DbCount; i++)
+                    {
+                        string biblioDbName = "测试中文图书" + (i + 1).ToString();
+
+                        // ***创建测试所需的书目库
+                        info = "正在创建" + biblioDbName;
+                        //ProgressSetMessage(info);
+                        //LogManager.Logger.Info(info);
+                        // 创建一个书目库
+                        // parameters:
+                        // return:
+                        //      -1  出错
+                        //      0   没有必要创建，或者操作者放弃创建。原因在 strError 中
+                        //      1   成功创建
+                        nRet = ManageHelper.CreateBiblioDatabase(
+                            channel,
+                            // this.Progress,
+                            biblioDbName, //Env_BiblioDbName, //C_BiblioDbName,
+                            "book",
+                            "unimarc",
+                            out error);
+                        if (nRet == -1)
+                            goto ERROR1;
+
+                        // 创建书目记录
+                        info = "正在创建书目记录和册记录 ...";
+                        //ProgressSetMessage(info);
+                        //LogManager.Logger.Info(info);
+
+                        List<LocItem> locs = new List<LocItem>();
+                        locs.Add(new LocItem(Env_ZG_Location, "Z", Env_ZG_BookType));
+                        if (bzfg == true)
+                        {
+                            locs.Add(new LocItem(Env_A_LibraryCode + "/" + Env_A_Location, "A", Env_A_BookType));
+                            locs.Add(new LocItem(Env_B_LibraryCode + "/" + Env_B_Location, "B", Env_B_BookType));
+                            locs.Add(new LocItem(Env_C_LibraryCode + "/" + Env_C_Location, "C", Env_C_BookType));
+                        }
+                        nRet = this.CreateBiblioRecord(channel,
+                            biblioDbName,
+                            locs,
+                            biblioCount,
+                            itemCountPerBiblio, out error);
+                        if (nRet == -1)
+                            goto ERROR1;
+                    }
+
+
+
+                    info = "正在创建测试读者记录 ...";
+                    //ProgressSetMessage(info);
+                    //LogManager.Logger.Info(info);
+                    //总库读者-学生
+                    lRet = this.CreateReaderRecord(channel, Env_ZG_ReaderDbName,
+                        Env_ZG_PatronType,
+                        "PZX",
+                        3,
+                        out error);
+                    if (lRet == -1)
+                        goto ERROR1;
+
+                    //总库读者-老师
+                    lRet = this.CreateReaderRecord(channel, Env_ZG_ReaderDbName,
+                        Env_ZG_PatronType_teacher,
+                        "PZT",
+                        3,
+                        out error);
+                    if (lRet == -1)
+                        goto ERROR1;
+
+                    if (bzfg == true)
+                    {
+                        info = "正在创建A馆读者记录 ...";
+                        //ProgressSetMessage(info);
+                        //LogManager.Logger.Info(info);
+                        //A读者
+                        lRet = this.CreateReaderRecord(channel, Env_A_ReaderDbName,
+                            Env_A_PatronType,
+                            "PAX",
+                            3,
+                            out error);
+                        if (lRet == -1)
+                            goto ERROR1;
+                        lRet = this.CreateReaderRecord(channel, Env_A_ReaderDbName,
+                            Env_A_PatronType_teacher,
+                            "PAT",
+                            3,
+                            out error);
+                        if (lRet == -1)
+                            goto ERROR1;
+
+
+                        info = "正在创建B馆读者记录 ...";
+                        //ProgressSetMessage(info);
+                        //LogManager.Logger.Info(info);
+                        //B库读者
+                        lRet = this.CreateReaderRecord(channel, Env_B_ReaderDbName,
+                            Env_B_PatronType,
+                            "PBX",
+                            3,
+                            out error);
+                        if (lRet == -1)
+                            goto ERROR1;
+                        lRet = this.CreateReaderRecord(channel, Env_B_ReaderDbName,
+                            Env_B_PatronType_teacher,
+                            "PBT",
+                            3,
+                            out error);
+                        if (lRet == -1)
+                            goto ERROR1;
+
+                        info = "正在创建C馆读者记录 ...";
+                        //ProgressSetMessage(info);
+                        //LogManager.Logger.Info(info);
+                        //C库读者
+                        lRet = this.CreateReaderRecord(channel, Env_C_ReaderDbName,
+                            Env_C_PatronType,
+                            "PCX",
+                            3,
+                            out error);
+                        if (lRet == -1)
+                            goto ERROR1;
+                        lRet = this.CreateReaderRecord(channel, Env_C_ReaderDbName,
+                            Env_C_PatronType_teacher,
+                            "PCT",
+                            3,
+                            out error);
+                        if (lRet == -1)
+                            goto ERROR1;
+
+                    }
+                    info = "正在创建工作人员帐号 ...";
+                    //ProgressSetMessage(info);
+                    //LogManager.Logger.Info(info);
+                    lRet = this.SetUser(channel, "new", Env_ZG_LibraryCode, "zg", out error);
+                    if (lRet == -1)
+                        goto ERROR1;
+                    if (bzfg == true)
+                    {
+                        lRet = this.SetUser(channel, "new", Env_A_LibraryCode, "a", out error);
+                        if (lRet == -1)
+                            goto ERROR1;
+                        lRet = this.SetUser(channel, "new", Env_B_LibraryCode, "b", out error);
+                        if (lRet == -1)
+                            goto ERROR1;
+                        lRet = this.SetUser(channel, "new", Env_C_LibraryCode, "c", out error);
+                        if (lRet == -1)
+                            goto ERROR1;
+                    }
+
+                    info = "初始化测试环境完成";
+                    //ProgressSetMessage(info);
+                    //LogManager.Logger.Info(info);
+                    MessageBoxShow(this, info);
+                    return;
+                }
+                catch (Exception ex)
+                {
+                    error = "Exception: " + ExceptionUtil.GetExceptionText(ex);
+                    goto ERROR1;
+                }
+                finally
+                {
+#if NO
+                Progress.EndLoop();
+                Progress.OnStop -= new StopEventHandler(this.DoStop);
+                Progress.Initial("");
+                Progress.HideProgress();
+#endif
+                   EnableCtrls(true);
+
+                    //channel.Timeout = old_timeout;
+                    //this.ReturnChannel(channel); //todo
+                }
+
+
+            ERROR1:
+                info = "初始化测试环境出错：" + error;
+                //LogManager.Logger.Info(info);
+                MessageBox.Show(this, info);
+                return;
+            });
+        }
+
+        void MessageBoxShow(Form form, string strText)
+        {
+            this.Invoke(new Action(() =>
+            {
+                MessageBox.Show(form, strText);
+            }));
+        }
+
+
+        public class LocItem
+        {
+            public LocItem(string location, string prefix, string bookType)
+            {
+                this.Location = location;
+                this.Prefix = prefix;
+                this.BookType = bookType;
+            }
+            public string Location { get; set; }
+            public string Prefix { get; set; }
+
+            public string BookType { get; set; }
+        }
+
+
+        // 创建书目记录与册记录
+        int CreateBiblioRecord(RestChannel channel,
+            string strBiblioDbName,
+            List<LocItem> locs,
+            int biblioCount,
+            int itemCountPerBiblio,
+            out string strError)
+        {
+            strError = "";
+
+            int barcordStart = 1;
+
+            for (int i = 0; i < biblioCount; i++)
+            {
+                string strTitle = "测试题名" + (i + 1);
+
+                MarcRecord record = new MarcRecord();
+                record.add(new MarcField('$', "200  $a" + strTitle));
+                record.add(new MarcField('$', "690  $aI247.5"));
+                record.add(new MarcField('$', "701  $a测试著者"));
+                string strMARC = record.Text;
+
+                string strMarcSyntax = "unimarc";
+                string strXml = "";
+                int nRet = MarcUtil.Marc2Xml(strMARC,
+                    strMarcSyntax,
+                    out strXml,
+                    out strError);
+                if (nRet == -1)
+                    return -1;
+
+                string strPath = strBiblioDbName + "/?";
+                byte[] baTimestamp = null;
+                byte[] baNewTimestamp = null;
+                string strOutputPath = "";
+
+
+                SetBiblioInfoResponse response = channel.SetBiblioInfo(
+                    // _stop,
+                    "new",
+                    strPath,
+                    "xml",
+                    strXml,
+                    baTimestamp,
+                    "",
+                    "");//
+                        //out strOutputPath,
+                        //out baNewTimestamp,
+                        //out strError);
+                strOutputPath = response.strOutputBiblioRecPath;
+                baNewTimestamp = response.baOutputTimestamp;
+                if (response.SetBiblioInfoResult.Value == -1)
+                {
+                    strError = "保存书目记录 '" + strPath + "' 时出错: " + response.SetBiblioInfoResult.ErrorInfo;
+                    return -1;
+                }
+
+
+
+                string dbpre = "";
+                string temp = strBiblioDbName.Substring(strBiblioDbName.Length - 1);
+                try
+                {
+                    int n = Convert.ToInt32(temp);
+                    dbpre = n.ToString();
+                }
+                catch
+                { }
+
+
+
+                //// 创建册记录
+                //List<string> refids = CreateEntityRecords(entity_form, 10);
+                EntityInfo[] entities = null;
+                entities = new EntityInfo[itemCountPerBiblio * locs.Count];
+
+
+                for (int j = 0; j < itemCountPerBiblio; j++)
+                {
+                    for (int x = 0; x < locs.Count; x++)
+                    {
+                        LocItem loc = locs[x];
+                        EntityInfo info = new EntityInfo();
+                        info.RefID = Guid.NewGuid().ToString();
+                        info.Action = "new";
+                        info.Style = "";
+
+                        info.OldRecPath = "";
+                        info.OldRecord = "";
+                        info.OldTimestamp = null;
+
+                        info.NewRecPath = "";
+                        info.NewRecord = "";
+                        info.NewTimestamp = null;
+
+                        int nIndex = j * locs.Count + x;
+                        entities[nIndex] = info;
+
+                        /*
+    <dprms:item path="中文图书实体/87" timestamp="2a3a427665d5d4080000000000000010" xmlns:dprms="http://dp2003.com/dprms">
+      <parent>43</parent> 
+      <refID>8e05d74b-650e-42f8-99cc-45442150c115</refID> 
+      <barcode>DPB000051</barcode> 
+      <location>方洲小学/图书馆</location> 
+      <seller>新华书店</seller> 
+      <source>本馆经费</source> 
+      <price>CNY10.00</price> 
+      <batchNo>201707</batchNo> 
+      <accessNo>I17(198.4)/Y498</accessNo> 
+      <bookType>普通</bookType>
+    </dprms:item>
+                         */
+                        XmlDocument itemDom = new XmlDocument();
+                        itemDom.LoadXml("<root />");
+                        XmlNode root = itemDom.DocumentElement;
+
+                        string strTargetBiblioRecID = GetRecordID(strOutputPath);
+                        DomUtil.SetElementText(root, "parent", strTargetBiblioRecID);
+
+                        string barcode = loc.Prefix + dbpre + barcordStart.ToString().PadLeft(5, '0');// i.ToString().PadLeft(2, '0')+j.ToString().PadLeft(3,'0');
+                        DomUtil.SetElementText(root, "barcode", barcode);
+                        DomUtil.SetElementText(root, "location", loc.Location);
+                        DomUtil.SetElementText(root, "batchNo", "test001");
+                        DomUtil.SetElementText(root, "bookType", loc.BookType);
+
+                        info.NewRecord = itemDom.DocumentElement.OuterXml;
+
+
+                    }
+
+                    barcordStart++;
+                }
+
+                EntityInfo[] errorinfos = null;
+
+                SetEntitiesResponse result = channel.SetEntities(
+                     // this._stop,   // this.BiblioStatisForm.stop,
+                     strOutputPath,
+                     entities);
+                //out errorinfos,
+                //out strError);
+                errorinfos = result.errorinfos;
+                strError = result.SetEntitiesResult.ErrorInfo;
+                if (result.SetEntitiesResult.Value == -1)
+                    return -1;
+
+
+            }
+
+
+            return 0;
+
+        }
+
+        // 从路径中获取id
+        public static string GetRecordID(string strPath)
+        {
+            int nRet = strPath.LastIndexOf("/");
+            if (nRet == -1)
+                return "";
+
+            return strPath.Substring(nRet + 1).Trim();
+        }
+
+
+        // 创建读者记录
+        int CreateReaderRecord(RestChannel channel,
+            string readerDbName,
+            string readerType,
+            string prefix,
+            int count,
+            out string strError)
+        {
+            strError = "";
+
+            // 创建测试用读者记录
+            string strTargetRecPath = readerDbName + "/?";
+            for (int i = 1; i <= count; i++)
+            {
+                XmlDocument dom = new XmlDocument();
+                dom.LoadXml("<root />");
+                XmlNode root = dom.DocumentElement;
+
+                string barcode = prefix + i.ToString().PadLeft(3, '0');
+                DomUtil.SetElementText(root, "barcode", barcode);
+
+                string name = prefix + "测试读者" + i.ToString().PadLeft(3, '0'); ;
+                DomUtil.SetElementText(root, "name", name);
+
+                DomUtil.SetElementText(root, "readerType", readerType);
+
+
+                //string strExistingXml = "";
+                //string strSavedXml = "";
+                //string strSavedPath = "";
+                //byte[] baNewTimestamp = null;
+                ErrorCodeValue kernel_errorcode = ErrorCodeValue.NoError;
+                //long lRet = channel.SetReaderInfo(
+                //   // _stop,
+                //   "new",  // this.m_strSetAction,
+                //   strTargetRecPath,
+                //   dom.OuterXml,
+                //   null,
+                //   null,
+
+                //   out strExistingXml,
+                //   out strSavedXml,
+                //   out strSavedPath,
+                //   out baNewTimestamp,
+                //   out kernel_errorcode,
+                //   out strError);
+                //if (lRet == -1)
+                //{
+                //    return -1;
+                //}
+
+                SetReaderInfoResponse response = channel.SetReaderInfo("new",
+                    strTargetRecPath,
+                    dom.OuterXml,
+                    null,
+                    null);
+                if (response.SetReaderInfoResult.Value == -1)
+                    return -1;
+
+                string strExistingXml = response.strExistingXml;
+                string strSavedXml = response.strSavedXml;
+                string strSavedPath = response.strSavedRecPath;
+                byte[] baNewTimestamp = response.baNewTimestamp;
+            }
+
+            return 0;
+
+        }
+
+        // 创建帐号
+        public int SetUser(RestChannel channel,
+            string action,
+            string libraryCode,
+            string userName,
+            out string strError)
+        {
+            strError = "";
+
+            UserInfo user = new UserInfo();
+            user.LibraryCode = libraryCode;
+            user.UserName = userName;
+            user.Password = "1";
+            user.SetPassword = true;
+            //user.Binding = "ip:[current]";  // 自动绑定当前请求者的 IP
+            // default_capo_rights
+            //user.Rights = "getsystemparameter,getres,search,getbiblioinfo,setbiblioinfo,getreaderinfo,writeobject,getbibliosummary,listdbfroms,simulatereader,simulateworker"
+            //    + ",getiteminfo,getorderinfo,getissueinfo,getcommentinfo"
+            //    + ",borrow,return,getmsmqmessage"
+            //    + ",bindpatron,searchbiblio,getpatrontempid,resetpasswordreturnmessage,getuser,changereaderpassword,renew,reservation,getcalendar";
+
+
+            user.Rights = "borrow,return,renew,lost,reservation,changereaderpassword"
+                + ",verifyreaderpassword,getbibliosummary,searchcharging"
+                + ",searchreader,getreaderinfo,setreaderinfo,changereaderstate"
+                + ",listdbfroms,searchbiblio,getbiblioinfo,searchitem,getiteminfo,setiteminfo"
+                + ",getoperlog,amerce,amercemodifyprice,amercemodifycomment,amerceundo"
+                + ",search,getrecord,getcalendar,newcalendar,changecalendar,getsystemparameter,setsystemparameter"
+                + ",urgentrecover,repairborrowinfo,getres,searchissue,getissueinfo,setissueinfo"
+                + ",searchorder,getorderinfo,setorderinfo,getcommentinfo,setcommentinfo,searchcomment"
+                + ",writeobject,writetemplate,managecache,managecomment,viewreport"
+                + ",getuser,newuser,changeuser,deleteuser";
+
+            SetUserResponse response = channel.SetUser(
+    action,//"new",
+    user);
+            if (response.SetUserResult.Value == -1 && action != "delete")
+            {
+                strError = "创建代理帐户时发生错误: " + response.SetUserResult.ErrorInfo;
+                return -1;
+            }
+
+            return 0;
+        }
+
+        public long CreateReaderDb(RestChannel channel, string dbName, string libraryCode)
+        {
+            string error = "";
+            string strOutputInfo = "";
+            XmlDocument database_dom = new XmlDocument();
+            database_dom.LoadXml("<root />");
+            // 创建总馆读者库
+            ManageHelper.CreateReaderDatabaseNode(database_dom,
+                dbName,
+                libraryCode,
+                true);
+            return channel.ManageDatabase(
+                 // this._stop,
+                 "create",
+                 "",
+                 database_dom.OuterXml,
+                 out strOutputInfo,
+                 out error);
+
+        }
+
+        #region 流通权限
+
+
+        // 获得流通读者权限相关定义
+        int GetRightsTableInfo(RestChannel channel,
+            out string strRightsTableXml,
+            out string strError)
+        {
+            strError = "";
+            strRightsTableXml = "";
+
+#if NO
+            _stop.OnStop += new StopEventHandler(this.DoStop);
+            _stop.Initial("正在获取读者流通权限定义 ...");
+            _stop.BeginLoop();
+#endif
+
+            try
+            {
+                long lRet = 0;
+                // todo
+                //long lRet = channel.GetSystemParameter(
+                //    // _stop,
+                //    "circulation",
+                //    "rightsTable",
+                //    out strRightsTableXml,
+                //    out strError);
+                //if (lRet == -1)
+                //    goto ERROR1;
+
+                return (int)lRet;
+            }
+            finally
+            {
+#if NO
+                _stop.EndLoop();
+                _stop.OnStop -= new StopEventHandler(this.DoStop);
+                _stop.Initial("");
+#endif
+            }
+
+        ERROR1:
+            return -1;
+        }
+
+        // 保存流通读者权限相关定义
+        // parameters:
+        //      strRightsTableXml   流通读者权限定义XML。注意，没有根元素
+        int SetRightsTableDef(RestChannel channel,
+            string strRightsTableXml,
+            out string strError)
+        {
+            strError = "";
+
+#if NO
+            _stop.OnStop += new StopEventHandler(this.DoStop);
+            _stop.Initial("正在保存读者流通权限定义 ...");
+            _stop.BeginLoop();
+#endif
+            try
+            {
+                long lRet = channel.SetSystemParameter(
+                    //_stop,
+                    "circulation",
+                    "rightsTable",
+                    strRightsTableXml,
+                    out strError);
+                if (lRet == -1)
+                    goto ERROR1;
+
+                return (int)lRet;
+            }
+            finally
+            {
+#if NO
+                _stop.EndLoop();
+                _stop.OnStop -= new StopEventHandler(this.DoStop);
+                _stop.Initial("");
+#endif
+            }
+
+        ERROR1:
+            return -1;
+        }
+
+        // 删除测试加的流通权限
+        public int RemoveTestRightsTable(RestChannel channel,
+            XmlDocument dom,
+            List<string> zgReaderTypes,
+            List<string> zgBookTypes,
+            //string zgReaderType,
+            //string zgBookType,
+            List<string> fgList,
+            out string strError)
+        {
+            strError = "";
+            int nRet = 0;
+
+            // 获取流通权限
+            if (dom == null)
+            {
+                string strRightsTableXml = "";
+                nRet = GetRightsTableInfo(channel, out strRightsTableXml, out strError);
+                if (nRet == -1)
+                    goto ERROR1;
+                strRightsTableXml = "<rightsTable>" + strRightsTableXml + "</rightsTable>";
+                dom = new XmlDocument();
+                try
+                {
+                    dom.LoadXml(strRightsTableXml);
+                }
+                catch (Exception ex)
+                {
+                    strError = "strRightsTableXml装入XMLDOM时发生错误：" + ex.Message;
+                    goto ERROR1;
+                }
+            }
+
+            XmlNode root = dom.DocumentElement;
+
+            // 删除总馆
+            foreach (string readerType in zgReaderTypes)
+            {
+                XmlNode node = root.SelectSingleNode("type[@reader='" + readerType + "']");
+                if (node != null)
+                {
+                    root.RemoveChild(node);
+                }
+                //XmlNodeList list = root.SelectNodes("//type[@book='" + zgBookType + "']");
+                //foreach (XmlNode n in list)
+                //{
+                //    n.ParentNode.RemoveChild(n);
+                //}
+                node = root.SelectSingleNode("readerTypes/item[text()='" + readerType + "']");
+                if (node != null)
+                {
+                    node.ParentNode.RemoveChild(node);
+                }
+            }
+
+            foreach (string bookType in zgBookTypes)
+            {
+                XmlNode node = root.SelectSingleNode("bookTypes/item[text()='" + bookType + "']");
+                if (node != null)
+                {
+                    node.ParentNode.RemoveChild(node);
+                }
+            }
+
+
+            // 删除分馆的权限
+            if (fgList != null && fgList.Count > 0)
+            {
+                foreach (string fg in fgList)
+                {
+                    XmlNodeList nodeList = root.SelectNodes("library[@code='" + fg + "']");
+                    foreach (XmlNode n in nodeList)
+                    {
+                        root.RemoveChild(n);
+                    }
+                }
+            }
+
+
+
+            // 保存到系统
+            nRet = this.SetRightsTableDef(channel, root.InnerXml, out strError);
+            if (nRet == -1)
+                goto ERROR1;
+
+            return 0;
+
+        ERROR1:
+            return -1;
+        }
+
+
+        public class rightTable
+        {
+            public rightTable(string libraryCode,
+                string patronType,
+                bool isNewPatronType,
+                string bookType,
+                string calenderName)
+            {
+                this.LibraryCode = libraryCode;
+                this.PatronType = patronType;
+                this.IsNewPatronType = isNewPatronType;
+                this.BookType = bookType;
+                this.CalenderName = calenderName;
+            }
+            public string LibraryCode { get; set; }
+            public string PatronType { get; set; }
+            public bool IsNewPatronType { get; set; }
+            public string BookType { get; set; }
+
+            //CalenderName
+            public string CalenderName { get; set; }
+
+        }
+
+
+        // 增加测试用的流通权限
+        public int AddTestRightsTable(RestChannel channel,
+            XmlDocument dom,
+            List<rightTable> rightTables,
+            out string strError)
+        {
+            strError = "";
+            int nRet = 0;
+
+            // 获取流通权限
+            if (dom == null)
+            {
+                string strRightsTableXml = "";
+                nRet = GetRightsTableInfo(channel, out strRightsTableXml, out strError);
+                if (nRet == -1)
+                    goto ERROR1;
+                strRightsTableXml = "<rightsTable>" + strRightsTableXml + "</rightsTable>";
+                dom = new XmlDocument();
+                try
+                {
+                    dom.LoadXml(strRightsTableXml);
+                }
+                catch (Exception ex)
+                {
+                    strError = "strRightsTableXml装入XMLDOM时发生错误：" + ex.Message;
+                    goto ERROR1;
+                }
+            }
+            XmlNode root = dom.DocumentElement;
+
+            foreach (rightTable one in rightTables)
+            {
+
+
+
+                // 总馆的情况
+                XmlNode patronNode = null;
+
+                // 分馆情况
+                if (string.IsNullOrEmpty(one.LibraryCode) == false)
+                {
+                    patronNode = root.SelectSingleNode("library[@code='" + one.LibraryCode + "']");
+                    if (patronNode == null)
+                    {
+                        //    <library code="B馆">
+                        patronNode = dom.CreateElement("library");
+                        DomUtil.SetAttr(patronNode, "code", one.LibraryCode);
+                        root.AppendChild(patronNode);
+                    }
+                }
+                else
+                {
+                    patronNode = root;
+                }
+
+
+                XmlNode node = patronNode.SelectSingleNode("type[@reader='" + one.PatronType + "']");
+                // 增加测试用权限
+                if (node == null)
+                {
+                    node = dom.CreateElement("type");
+                    DomUtil.SetAttr(node, "reader", one.PatronType);
+                    node.InnerXml = @"<param name='可借总册数' value='10' />
+                                                <param name='可预约册数' value='5' />
+                                                <param name='以停代金因子' value='' />
+                                                <param name='工作日历名' value='" + one.CalenderName + @"' />
+                                                <type book='" + one.BookType + @"'>
+                                                  <param name='可借册数' value='10' />
+                                                  <param name='借期' value='31day,60day' />
+                                                  <param name='超期违约金因子' value='' />
+                                                  <param name='丢失违约金因子' value='1.5' />
+                                                </type>";
+                    patronNode.AppendChild(node);
+
+                    // 2022/3/3 来宾馆读者类型不用创建读者类型
+                    if (one.IsNewPatronType == true)
+                    {
+                        /*
+    <readerTypes>
+        <item>总馆学生</item>
+    </readerTypes>
+                         */
+                        XmlNode readerTypesNode = patronNode.SelectSingleNode("readerTypes");
+                        if (readerTypesNode == null)
+                        {
+                            readerTypesNode = dom.CreateElement("readerTypes");
+                            patronNode.AppendChild(readerTypesNode);
+                        }
+                        node = dom.CreateElement("item");
+                        node.InnerText = one.PatronType;
+                        readerTypesNode.AppendChild(node);
+                    }
+
+                    /*
+                    <bookTypes>
+                    <item>总馆普通图书</item>
+                    </bookTypes>
+                     */
+                    XmlNode bookTypesNode = patronNode.SelectSingleNode("bookTypes");
+                    if (bookTypesNode == null)
+                    {
+                        bookTypesNode = dom.CreateElement("bookTypes");
+                        patronNode.AppendChild(bookTypesNode);
+                    }
+                    XmlNode temp = bookTypesNode.SelectSingleNode("item[text()='" + one.BookType + "']");
+                    if (temp == null)
+                    {
+                        node = dom.CreateElement("item");
+                        node.InnerText = one.BookType;
+                        bookTypesNode.AppendChild(node);
+                    }
+                }
+
+
+            }
+
+
+            // 保存
+            nRet = this.SetRightsTableDef(channel, dom.DocumentElement.InnerXml, out strError);
+            if (nRet == -1)
+                goto ERROR1;
+
+            return 0;
+        ERROR1:
+            return -1;
+        }
+
+        #endregion
+
+
+
+        #endregion
+
+
     }
 }
