@@ -34,7 +34,7 @@ namespace practice
 
         public void NewUser(UserInfo u)
         {
-            this.SetUser1(u,"new");
+            this.SetUser1(u, "new");
         }
 
         public void DelUser(UserInfo u)
@@ -46,8 +46,10 @@ namespace practice
         {
             List<UserInfo> list = new List<UserInfo>();
             list.Add(user);
-             this.SetUsers(list, strAction);
+            this.SetUsers(list, strAction);
         }
+
+
 
         public void DeleteAutoUsers()
         {
@@ -107,7 +109,7 @@ namespace practice
                     }
                     else
                     {
-                        this.displayLine("<br/>"+strAction + "帐户" + u.UserName);
+                        this.displayLine("<br/>" + strAction + "帐户" + u.UserName);
                     }
                 }
             }
@@ -137,7 +139,7 @@ namespace practice
         // 写对象
         public WriteResResponse WriteObject(UserInfo u,
           string objectPath,
-          bool isReader=false)
+          bool isReader = false)
         {
 
             this.displayLine("strResPath=" + objectPath);
@@ -175,7 +177,7 @@ namespace practice
                 }
 
                 this.displayLine("WriteRes()\r\n"
-                    +RestChannel.GetResultInfo(response));
+                    + RestChannel.GetResultInfo(response));
 
                 //this.displayLine("<br/>帐户=" + u.UserName + "<br/>"
                 //    + "Rights=" + u.Rights + "<br/>"
@@ -204,14 +206,14 @@ namespace practice
         public WriteResResponse WriteXml(UserInfo u,
           string strResPath,
           string strXml,
-          bool isReader=false)
+          bool isReader = false)
         {
             WriteResResponse response = null;
 
-            this.displayLine("strResPath="+ strResPath);
+            this.displayLine("strResPath=" + strResPath);
             this.displayLine("提交的xml<br/>"
-                +HttpUtility.HtmlEncode(DomUtil.GetIndentXml(strXml))
-                +"<br/>");
+                + HttpUtility.HtmlEncode(DomUtil.GetIndentXml(strXml))
+                + "<br/>");
 
 
             byte[] baContent = Encoding.UTF8.GetBytes(strXml);  //文本到二进制
@@ -224,7 +226,7 @@ namespace practice
             try
             {
                 // 用户登录
-                channel = mainForm.GetChannelAndLogin(u.UserName, u.Password,isReader);
+                channel = mainForm.GetChannelAndLogin(u.UserName, u.Password, isReader);
 
             REDO:
                 response = channel.WriteRes(strResPath,
@@ -328,7 +330,7 @@ namespace practice
         {
             WriteResResponse response = null;
 
-            this.displayLine("为读者"+readerBarcode+"借册"+itemBarcode);
+            this.displayLine("为读者" + readerBarcode + "借册" + itemBarcode);
 
 
             RestChannel channel = null;
@@ -376,7 +378,7 @@ namespace practice
                     null,
                     "1");
                 if (response.ChangeReaderPasswordResult.Value != 1)
-                    throw new Exception("superviosr修改读者密码出错:"+response.ChangeReaderPasswordResult.ErrorInfo);
+                    throw new Exception("superviosr修改读者密码出错:" + response.ChangeReaderPasswordResult.ErrorInfo);
 
 
             }
@@ -393,7 +395,7 @@ namespace practice
 
         public GetResResponse GetRes(UserInfo u,
             string strResPath,
-            bool isReader=false)
+            bool isReader = false)
         {
             GetResResponse response = null;
 
@@ -403,7 +405,7 @@ namespace practice
             try
             {
                 // 用户登录
-                channel = mainForm.GetChannelAndLogin(u.UserName, u.Password,isReader);
+                channel = mainForm.GetChannelAndLogin(u.UserName, u.Password, isReader);
 
                 response = channel.GetRes(strResPath,
                     0,
@@ -411,7 +413,7 @@ namespace practice
                     "data,metadata,outputpath,timestamp");
 
                 this.displayLine("GetRes()\r\n"
-                    +HttpUtility.HtmlEncode( RestChannel.GetResultInfo(response)));
+                    + HttpUtility.HtmlEncode(RestChannel.GetResultInfo(response)));
                 return response;
 
             }
@@ -449,14 +451,14 @@ namespace practice
                     strDbType = "comment";
                 else if (type == C_Type_issue)
                     strDbType = "issue";
-            
-                return this.SetItemInfo(u, strDbType, "delete", strResPath, "", isReader,out string temp);
-            
+
+                return this.SetItemInfo(u, strDbType, "delete", strResPath, "", isReader, out string temp);
+
             }
             else if (type == C_Type_Amerce
             || type == C_Type_Arrived)
             {
-                return  this.WriteResForDel(u,strResPath,isReader).WriteResResult;
+                return this.WriteResForDel(u, strResPath, isReader).WriteResResult;
 
             }
 
@@ -485,7 +487,7 @@ namespace practice
                 // 用户登录
                 channel = mainForm.GetChannelAndLogin(u.UserName, u.Password, isReader);
 
-                REDO:
+            REDO:
                 response = channel.SetReaderInfo(strAction,
                     strResPath,
                     strNewXml,
@@ -533,7 +535,7 @@ namespace practice
                 channel = mainForm.GetChannelAndLogin(u.UserName, u.Password, isReader);
 
             REDO:
-                response = channel.GetReaderInfo("@path:"+strResPath,"xml");
+                response = channel.GetReaderInfo("@path:" + strResPath, "xml");
 
 
                 this.displayLine("GetReaderInfo()\r\n"
@@ -592,7 +594,7 @@ namespace practice
 
                 this.displayLine("SetBiblioInfo()\r\n"
                     + HttpUtility.HtmlEncode(RestChannel.GetResultInfo(response)));
-                    //+ RestChannel.GetResultInfo(response)); ; ;
+                //+ RestChannel.GetResultInfo(response)); ; ;
 
                 // 时间戳
                 baTimestamp = response.baOutputTimestamp;
@@ -627,7 +629,7 @@ namespace practice
 
                 string strformats = "xml";
                 string[] formats = strformats.Split(new char[] { ',' });
-                response = channel.GetBiblioInfos(strResPath,formats);
+                response = channel.GetBiblioInfos(strResPath, formats);
 
                 this.displayLine("GetBiblioInfos()\r\n"
                     + HttpUtility.HtmlEncode(RestChannel.GetResultInfo(response)));
@@ -676,8 +678,8 @@ namespace practice
                     strXml,
                     baTimestamp,
                     "",//strStyle,
-                    out  strOutputRecPath,
-                    out byte[] baOutputTimestamp) ;
+                    out strOutputRecPath,
+                    out byte[] baOutputTimestamp);
                 // 间戳不匹配，自动重试
                 if (response.ErrorCode == ErrorCode.TimestampMismatch)
                 {
@@ -687,8 +689,8 @@ namespace practice
                 }
 
                 this.displayLine("SetItemInfo()\r\n"
-                    + HttpUtility.HtmlEncode(RestChannel.GetResultInfo(response)+"\r\n"
-                    + "strOutputRecPath:" + strOutputRecPath+"\r\n"
+                    + HttpUtility.HtmlEncode(RestChannel.GetResultInfo(response) + "\r\n"
+                    + "strOutputRecPath:" + strOutputRecPath + "\r\n"
                     + "baOutputTimestamp:" + ByteArray.GetHexTimeStampString(baOutputTimestamp) + "\r\n"
                     ));
 
@@ -718,12 +720,12 @@ namespace practice
                 strItemDbType = "item";
             else if (type == C_Type_issue)
                 strItemDbType = "issue";
-            else if (type== C_Type_comment)
+            else if (type == C_Type_comment)
                 strItemDbType = "comment";
             else if (type == C_Type_order)
-                strItemDbType= "order";
+                strItemDbType = "order";
             else
-                throw new Exception("不支持的type["+type+"]");
+                throw new Exception("不支持的type[" + type + "]");
 
             string strBarcode = "@path:" + strResPath;
 
@@ -753,11 +755,11 @@ namespace practice
                 // 用户登录
                 channel = mainForm.GetChannelAndLogin(u.UserName, u.Password, isReader);
 
-                 response = channel.GetItemInfo(strItemDbType,
-                    strBarcode,
-                    "",//strItemXml,
-                    strResultType,
-                    strBiblioType);
+                response = channel.GetItemInfo(strItemDbType,
+                   strBarcode,
+                   "",//strItemXml,
+                   strResultType,
+                   strBiblioType);
 
                 this.displayLine("GetItemInfo()\r\n"
                     + HttpUtility.HtmlEncode(RestChannel.GetResultInfo(response)));
@@ -807,7 +809,7 @@ namespace practice
 
 
         private LibraryServerResult GetEntities(UserInfo u,
-                    string type, 
+                    string type,
                     string strBiblioRecPath,
                     long lStart,
                     long lCount,
@@ -837,7 +839,7 @@ namespace practice
                     // 显示返回信息
                     //this.SetResultInfo("GetEntities()\r\n" + RestChannel.GetResultInfo(response));
                 }
-                else if (type==C_Type_order)
+                else if (type == C_Type_order)
                 {
                     GetOrdersResponse response = channel.GetOrders(strBiblioRecPath,
                         lStart,
@@ -851,7 +853,7 @@ namespace practice
                     // 显示返回信息
                     //this.SetResultInfo("GetOrders()\r\n" + RestChannel.GetResultInfo(response));
                 }
-                else if (type==C_Type_issue)
+                else if (type == C_Type_issue)
                 {
                     GetIssuesResponse response = channel.GetIssues(strBiblioRecPath,
                         lStart,
@@ -865,7 +867,7 @@ namespace practice
                     // 显示返回信息
                     //this.SetResultInfo("GetIssues()\r\n" + RestChannel.GetResultInfo(response));
                 }
-                else if (type==C_Type_comment)
+                else if (type == C_Type_comment)
                 {
                     GetCommentsResponse response = channel.GetComments(strBiblioRecPath,
                         lStart,
@@ -882,7 +884,7 @@ namespace practice
                 else
                 {
                     //MessageBox.Show(fun + "未完成");
-                    throw new Exception("不支持的类型"+type);
+                    throw new Exception("不支持的类型" + type);
                 }
 
             }
@@ -1155,7 +1157,7 @@ namespace practice
 
         #region 检查xml与对象权限
 
-        public const string C_Type_reader= "读者";
+        public const string C_Type_reader = "读者";
         public const string C_Type_biblio = "书目";
 
         public const string C_Type_item = "册";
@@ -1166,10 +1168,10 @@ namespace practice
         public const string C_Type_Amerce = "违约金";
         public const string C_Type_Arrived = "预约到书";
 
-        public string GetAppendPath(string type)
+        public string GetAppendPath(string type, string dbName = "")
         {
             if (type == C_Type_reader)
-                return "读者/?";
+                return string.IsNullOrEmpty(dbName) == true ? "读者/?" : dbName + "/?";
             else if (type == C_Type_biblio)
                 return "中文图书/?";
 
@@ -1189,7 +1191,7 @@ namespace practice
                 return "预约到书/?";
 
 
-            throw new Exception("不支持的类型"+type);
+            throw new Exception("不支持的类型" + type);
         }
 
 
@@ -1267,12 +1269,12 @@ namespace practice
 
         public string GetXml(string type, bool hasFile)
         {
-            string xml =this.GetXml(type, hasFile,out string barcode);
+            string xml = this.GetXml(type, hasFile, out string barcode);
             return xml;
         }
 
-            // barcode，当读者 和 册时有意义
-         public string GetXml(string type, bool hasFile,out string barcode)
+        // barcode，当读者 和 册时有意义
+        public string GetXml(string type, bool hasFile, out string barcode)
         {
             Random rd = new Random();
             int temp = rd.Next(1, 999999);
@@ -1304,7 +1306,7 @@ namespace practice
                     + "<barcode>" + barcode + "</barcode>"
                     + "<name>小张" + barcode + "</name>"
                     + "<readerType>本科生</readerType>"
-                    + "<displayName>显示名"+barcode + "</displayName>"
+                    + "<displayName>显示名" + barcode + "</displayName>"
                     + "<preference>个性化参数" + barcode + "</preference>"
                     + dprmsfile
                     + "</root>";
@@ -1325,7 +1327,7 @@ namespace practice
                 return "<root>"
                     + "<parent>" + parent + "</parent>"
                     + "<barcode>" + barcode + "</barcode>"
-                    + "<location>"+this._location+"</location>"
+                    + "<location>" + this._location + "</location>"
                     + "<bookType>普通</bookType>"
                     + dprmsfile
                     + "</root>";
@@ -1353,9 +1355,9 @@ namespace practice
             {
                 return @"<root>
                               <parent>" + parent + @"</parent>
-                              <title>评注标题"+temp+@"</title>
-                              <content>一本好书"+temp+@"</content>"
-                              +"<creator>P001</creator>"   //实际不会按这个值来，而是自动写创建者。
+                              <title>评注标题" + temp + @"</title>
+                              <content>一本好书" + temp + @"</content>"
+                              + "<creator>P001</creator>"   //实际不会按这个值来，而是自动写创建者。
                               + dprmsfile
                             + "</root>";
 
@@ -1398,14 +1400,14 @@ namespace practice
             }
             else if (type == C_Type_Arrived)
             {
-                return this.GetArrivedXml("P001", "B001",hasFile);  //这个读者和册也可能是不存在的，没有关系。
+                return this.GetArrivedXml("P001", "B001", hasFile);  //这个读者和册也可能是不存在的，没有关系。
 
             }
 
             throw new Exception("GetXml不支持的数据类型" + type);
         }
 
-        public string GetArrivedXml(string readerBarcode, string itemBarcode,bool hasFile)
+        public string GetArrivedXml(string readerBarcode, string itemBarcode, bool hasFile)
         {
             Random rd = new Random();
             int temp = rd.Next(1, 999999);
@@ -1416,15 +1418,15 @@ namespace practice
 
             return @"<root>
                         <state>arrived</state>
-                        <itemBarcode>" +itemBarcode+@"</itemBarcode>
+                        <itemBarcode>" + itemBarcode + @"</itemBarcode>
                         <box>#reservation</box>
-                        <readerBarcode>"+readerBarcode+@"</readerBarcode>
+                        <readerBarcode>" + readerBarcode + @"</readerBarcode>
                         <notifyDate>Thu, 23 Feb 2023 14:36:41 +0800</notifyDate>
                         <refID>4c267d45-dd1e-474f-8709-e9d5c084002d</refID>
                         <location>流通库</location>
                         <accessNo>I242.43/S495</accessNo>"
-                        +dprmsfile
-                    +"</root>";
+                        + dprmsfile
+                    + "</root>";
         }
 
 
@@ -1439,9 +1441,9 @@ namespace practice
                 dprmsfile = "<dprms:file id='0' xmlns:dprms='http://dp2003.com/dprms'   test='" + temp.ToString() + "'/>";
 
             return @"<root>
-                            <itemBarcode>"+itemBarcode+@"</itemBarcode>
+                            <itemBarcode>" + itemBarcode + @"</itemBarcode>
                             <location>流通库</location>
-                            <readerBarcode>"+readerBarcode+@"</readerBarcode>
+                            <readerBarcode>" + readerBarcode + @"</readerBarcode>
                             <libraryCode>
                             </libraryCode>
                             <state>amerced</state>
@@ -1475,7 +1477,7 @@ namespace practice
             return _biblioPath;
         }
 
-        public string CreateBiblioBySupervisor(bool bIssue,bool hasFile)
+        public string CreateBiblioBySupervisor(bool bIssue, bool hasFile)
         {
             string info = "";
             // 用supervisor帐户创建一条书目
@@ -1486,7 +1488,7 @@ namespace practice
                 info = "期刊";
             }
 
-            this.displayLine("用supervisor创建一条"+info+"书目，为相关测试提供支持。");
+            this.displayLine("用supervisor创建一条" + info + "书目，为相关测试提供支持。");
 
             WriteResResponse response = this.WriteXml(this.mainForm.GetSupervisorAccount(),
                 strResPath,
@@ -1531,16 +1533,44 @@ namespace practice
             throw new Exception("书目路径[" + biblioPath + "]异常，未找到id部分。");
         }
 
+        public UserInfo NewUser(string rights, string libraryCode)
+        {
+            UserInfo u = new UserInfo
+            {
+                UserName = "u",
+                Password = "1",
+                SetPassword = true,
+                Rights = rights,
+                Access = "",
+                LibraryCode = libraryCode
+            };
+
+            // 先删除再新建
+            try
+            {
+                DelUser(u);
+            }
+            catch (Exception ex)
+            {
+                // 有可能帐户不存天，没关系的。
+            }
+
+            //创建帐号
+            this.NewUser(u);
+
+            return u;
+        }
 
 
         public void checkRight(string type,
-            List<string> rightsList)
+            List<string> rightsList,
+            string workerLibraryCode)
         {
             if (rightsList == null || rightsList.Count != 9)
             {
                 throw new Exception("必须输入规定的9组权限");
             }
-            
+
 
             this.EnableCtrls(false);
             try
@@ -1553,7 +1583,7 @@ namespace practice
 
                 this.displayLine("");
 
-                this.displayLine(getLarge(type+"及下级对象所需权限的测试结果"));
+                this.displayLine(getLarge(type + "及下级对象所需权限的测试结果"));
 
 
                 string strResPath = GetAppendPath(type); //"读者/?";
@@ -1568,21 +1598,23 @@ namespace practice
                 //===
                 // 第1组测试  仅有setXXXinfo
                 this.displayLine(getLarge("第1组测试"));
-                UserInfo u = new UserInfo
-                {
-                    UserName = "u1",
-                    Password = "1",
-                    SetPassword = true,
-                    Rights = rightsList[0], //"setreaderinfo",
-                    Access = ""
-                };
-                //创建帐号
-                this.NewUser(u);
+                //UserInfo u = new UserInfo
+                //{
+                //    UserName = "u1",
+                //    Password = "1",
+                //    SetPassword = true,
+                //    Rights = rightsList[0], //"setreaderinfo",
+                //    Access = "",
+                //    LibraryCode= workerLibraryCode
+                //};
+                ////创建帐号
+                //this.NewUser(u);
+                UserInfo u = this.NewUser(rightsList[0], workerLibraryCode);
 
 
 
                 this.displayLine(GetBR() + getBold(u.UserName + "写简单xml，由于没有连带的读xml权限，应不成功。"));
-                response = this.WriteXml(u, strResPath, this.GetXml(type,false));
+                response = this.WriteXml(u, strResPath, this.GetXml(type, false));
                 if (response.WriteResResult.Value == -1)
                     this.displayLine("符合预期");
                 else
@@ -1601,20 +1633,22 @@ namespace practice
                 //可写简单读者xml，包括add/new/delete
                 //不可操作xml中dprms:file，不能写对象
                 this.displayLine(getLarge("第2组测试"));
-                u = new UserInfo
-                {
-                    UserName = "u2",
-                    Password = "1",
-                    SetPassword = true,
-                    Rights = rightsList[1], //"setreaderinfo,getreaderinfo",
-                    Access = ""
-                };
-                //创建帐号
-                this.NewUser(u);
+                //u = new UserInfo
+                //{
+                //    UserName = "u2",
+                //    Password = "1",
+                //    SetPassword = true,
+                //    Rights = rightsList[1], //"setreaderinfo,getreaderinfo",
+                //    Access = "",
+                //    LibraryCode = workerLibraryCode
+                //};
+                ////创建帐号
+                //this.NewUser(u);
+                u = this.NewUser(rightsList[1], workerLibraryCode);
 
                 // 新建简单xml
                 this.displayLine(GetBR() + getBold(u.UserName + "新建简单xml，有读写xml权限，应新建成功。"));
-                response = this.WriteXml(u, strResPath, this.GetXml(type,false));
+                response = this.WriteXml(u, strResPath, this.GetXml(type, false));
                 if (response.WriteResResult.Value == 0)
                     this.displayLine("符合预期");
                 else
@@ -1624,7 +1658,7 @@ namespace practice
 
                 // 修改简单xml
                 this.displayLine(GetBR() + getBold(u.UserName + "修改简单xml，应修改成功，且错误码应为NoError。"));
-                response = this.WriteXml(u, tempPath, this.GetXml(type,false));
+                response = this.WriteXml(u, tempPath, this.GetXml(type, false));
                 if (response.WriteResResult.Value == 0)
                 {
                     if (type == C_Type_comment)  // 评注，因为提交的xml涉及到creator变化，所以错误码是部分成功
@@ -1647,7 +1681,7 @@ namespace practice
 
                 // 删除简单xml
                 this.displayLine(GetBR() + getBold(u.UserName + "删除简单xml，应删除成功。"));
-                LibraryServerResult res = this.DelXml(u,type, tempPath,false);
+                LibraryServerResult res = this.DelXml(u, type, tempPath, false);
                 if (res.Value == 0)
                     this.displayLine("符合预期");
                 else
@@ -1657,7 +1691,7 @@ namespace practice
 
                 // 不可操作xml中的dprms:file
                 this.displayLine(GetBR() + getBold(u.UserName + "新建带dprms:file的xml，由于没有对象权限，应写入失败 或者 部分写入且过滤了file(注意观察提示)。"));
-                response = this.WriteXml(u, strResPath, this.GetXml(type,true));
+                response = this.WriteXml(u, strResPath, this.GetXml(type, true));
                 if (response.WriteResResult.Value == -1)
                     this.displayLine("符合预期");
                 else
@@ -1695,20 +1729,21 @@ namespace practice
                 // 第3组测试  setXXXinfo,getXXXinfo,writeXXXobject
                 // 应报权限违约规则，直接拒绝
                 this.displayLine(getLarge("第3组测试"));
-                u = new UserInfo
-                {
-                    UserName = "u3",
-                    Password = "1",
-                    SetPassword = true,
-                    Rights = rightsList[2],//"setreaderinfo,getreaderinfo,writereaderobject",
-                    Access = ""
-                };
-                //创建帐号
-                this.NewUser(u);
+                //u = new UserInfo
+                //{
+                //    UserName = "u3",
+                //    Password = "1",
+                //    SetPassword = true,
+                //    Rights = rightsList[2],//"setreaderinfo,getreaderinfo,writereaderobject",
+                //    Access = ""
+                //};
+                ////创建帐号
+                //this.NewUser(u);
+                u = this.NewUser(rightsList[2], workerLibraryCode);
 
                 // 无法写简单xml，因为写权限大于读者权限。
                 this.displayLine(GetBR() + getBold(u.UserName + "新建简单xml，应报权限配置不合理，因为有写对象权限，缺读对象权限。"));
-                response = this.WriteXml(u, strResPath, this.GetXml(type,false));
+                response = this.WriteXml(u, strResPath, this.GetXml(type, false));
                 if (response.WriteResResult.Value == -1)
                     this.displayLine("符合预期");
                 else
@@ -1752,16 +1787,17 @@ namespace practice
                 // 第4组测试 setXXXinfo,getXXXinfo,writeXXXobject,getXXXobject
                 // 这是完整权限，即可读xml及操作里面的dprms:file，又可以写对象。
                 this.displayLine(getLarge("第4组测试"));
-                u = new UserInfo
-                {
-                    UserName = "u4",
-                    Password = "1",
-                    SetPassword = true,
-                    Rights = rightsList[3],//"setreaderinfo,getreaderinfo,writereaderobject,getreaderobject",
-                    Access = ""
-                };
-                //创建帐号
-                this.NewUser(u);
+                //u = new UserInfo
+                //{
+                //    UserName = "u4",
+                //    Password = "1",
+                //    SetPassword = true,
+                //    Rights = rightsList[3],//"setreaderinfo,getreaderinfo,writereaderobject,getreaderobject",
+                //    Access = ""
+                //};
+                ////创建帐号
+                //this.NewUser(u);
+                u = this.NewUser(rightsList[3], workerLibraryCode);
 
                 // 此case无意义，因为前面当有setreaderinfo,getreaderinfo，已测过对简单xml的增删改
                 //// 写简单xml
@@ -1776,7 +1812,7 @@ namespace practice
 
                 // 新建带file的xml
                 this.displayLine(GetBR() + getBold(u.UserName + "新建带dprms:file的xml，应新建成功。"));
-                response = this.WriteXml(u, strResPath, this.GetXml(type,true));
+                response = this.WriteXml(u, strResPath, this.GetXml(type, true));
                 if (response.WriteResResult.Value == 0)
                     this.displayLine("符合预期");
                 else
@@ -1787,7 +1823,7 @@ namespace practice
 
                 // 修改带file的xml
                 this.displayLine(GetBR() + getBold(u.UserName + "修改带dprms:file的xml，应修改成功且NoError。"));
-                response = this.WriteXml(u, tempPath, this.GetXml(type,true));
+                response = this.WriteXml(u, tempPath, this.GetXml(type, true));
                 if (response.WriteResResult.Value == 0)
                 {
                     if (type == C_Type_comment)  // 评注，因为提交的xml涉及到creator变化，所以错误码是部分成功
@@ -1810,7 +1846,7 @@ namespace practice
 
                 // 删除带dprms:file的xml              
                 this.displayLine(GetBR() + getBold(u.UserName + "删除带dprms:file的xml，应删除成功。"));
-                res = this.DelXml(u,type, tempPath,false);
+                res = this.DelXml(u, type, tempPath, false);
                 if (res.Value == 0)
                     this.displayLine("符合预期");
                 else
@@ -1823,7 +1859,7 @@ namespace practice
                 // 再新建一条带dprms:file的记录，以便对其下级的dprms:file进行增/删/改
                 this.displayLine(GetBR() + getBold(u.UserName + "再新建一条带dprms:file的记录，以便对其下级的dprms:file进行增/删/改。"));
 
-                string originXml = this.GetXml(type,true);
+                string originXml = this.GetXml(type, true);
                 response = this.WriteXml(u, strResPath, originXml);
                 if (response.WriteResResult.Value == 0)
                     this.displayLine("符合预期");
@@ -1869,7 +1905,7 @@ namespace practice
                         }
                         else
                         {
-                            this.displayLine(this.getRed("xml中有"+fileNodes.Count+"个dprms:file元素，不符合预期，应有3个。"));
+                            this.displayLine(this.getRed("xml中有" + fileNodes.Count + "个dprms:file元素，不符合预期，应有3个。"));
                         }
 
                     }
@@ -1905,7 +1941,7 @@ namespace practice
                         if (fileNodes.Count >= 1)
                         {
                             XmlNode node = fileNodes[0];
-                           string a= DomUtil.GetAttr(node, "a");
+                            string a = DomUtil.GetAttr(node, "a");
                             if (string.IsNullOrEmpty(a) == false)
                             {
                                 this.displayLine(this.getGreenBackgroud("第1个dprms:file是否增加了a属性，符合预期"));
@@ -1951,8 +1987,8 @@ namespace practice
                         XmlNodeList fileNodes = this.GetFileNodes(tempXml);
                         if (fileNodes.Count == 2)
                         {
-                            string id0=DomUtil.GetAttr(fileNodes[0], "id");
-                            string id1=DomUtil.GetAttr(fileNodes[1], "id");
+                            string id0 = DomUtil.GetAttr(fileNodes[0], "id");
+                            string id1 = DomUtil.GetAttr(fileNodes[1], "id");
                             if (id0 == "0" && id1 == "1")
                             {
                                 this.displayLine(this.getGreenBackgroud("确实将xml中的第3个dprms:file元素(@id='2')删除了，符合预期"));
@@ -1997,16 +2033,17 @@ namespace practice
                 // 第5组测试 writeXXXobject
                 // 不能操作xml中的dprms:file，也不能change对象数据，写对象需要先有读对象权限，且还需读写xml的权限
                 this.displayLine(getLarge("第5组测试"));
-                u = new UserInfo
-                {
-                    UserName = "u5",
-                    Password = "1",
-                    SetPassword = true,
-                    Rights = rightsList[4],//"writereaderobject",
-                    Access = ""
-                };
-                //创建帐号
-                this.NewUser(u);
+                //u = new UserInfo
+                //{
+                //    UserName = "u5",
+                //    Password = "1",
+                //    SetPassword = true,
+                //    Rights = rightsList[4],//"writereaderobject",
+                //    Access = ""
+                //};
+                ////创建帐号
+                //this.NewUser(u);
+                u = this.NewUser(rightsList[4], workerLibraryCode);
 
                 // 不可操作xml中的dprms:file
                 this.displayLine(GetBR() + getBold(u.UserName + "写对象数据，由于没有连带的读对象权限 和 读写xml的权，应写不成功。"));
@@ -2028,16 +2065,17 @@ namespace practice
                 // 第6组测试  writeXXXobject, getXXXobject
                 // 不能修改对象数据，因为没有连带的读者xml权限
                 this.displayLine(getLarge("第6组测试"));
-                u = new UserInfo
-                {
-                    UserName = "u6",
-                    Password = "1",
-                    SetPassword = true,
-                    Rights = rightsList[5],//"writereaderobject, getreaderobject",
-                    Access = ""
-                };
-                //创建帐号
-                this.NewUser(u);
+                //u = new UserInfo
+                //{
+                //    UserName = "u6",
+                //    Password = "1",
+                //    SetPassword = true,
+                //    Rights = rightsList[5],//"writereaderobject, getreaderobject",
+                //    Access = ""
+                //};
+                ////创建帐号
+                //this.NewUser(u);
+                u = this.NewUser(rightsList[5], workerLibraryCode);
 
                 this.displayLine(GetBR() + getBold(u.UserName + "修改对象数据，因为没有连带的读者xml权限，应不成功。"));
                 response = this.WriteObject(u, path_object);
@@ -2048,7 +2086,7 @@ namespace practice
 
                 // 修改xml及dprms:file,应不能成功。
                 this.displayLine(GetBR() + getBold(u.UserName + "修改xml及dprms:file，由于没有读写xml的权限，应不成功。"));
-                response = this.WriteXml(u, path_xmlHasFile, this.GetXml(type,true));
+                response = this.WriteXml(u, path_xmlHasFile, this.GetXml(type, true));
                 if (response.WriteResResult.Value == -1)
                     this.displayLine("符合预期");
                 else
@@ -2068,16 +2106,17 @@ namespace practice
                 //第7组测试 getXXXinfo
                 //仅能获取xml普通节点，不能获取对象。
                 this.displayLine(getLarge("第7组测试"));
-                u = new UserInfo
-                {
-                    UserName = "u7",
-                    Password = "1",
-                    SetPassword = true,
-                    Rights = rightsList[6],//"getreaderinfo",
-                    Access = ""
-                };
-                //创建帐号
-                this.NewUser(u);
+                //u = new UserInfo
+                //{
+                //    UserName = "u7",
+                //    Password = "1",
+                //    SetPassword = true,
+                //    Rights = rightsList[6],//"getreaderinfo",
+                //    Access = ""
+                //};
+                ////创建帐号
+                //this.NewUser(u);
+                u = this.NewUser(rightsList[6], workerLibraryCode);
 
                 //可获取xml，须过滤了dprms:file
                 this.displayLine(GetBR() + getBold(u.UserName + "获取xml，应获取成功，且须过滤了dprms:file。"));
@@ -2113,16 +2152,17 @@ namespace practice
                 //第8组测试 getXXXinfo,getXXXobject
                 //可读取xml且包含dprms:file，可获取对象
                 this.displayLine(getLarge("第8组测试"));
-                u = new UserInfo
-                {
-                    UserName = "u8",
-                    Password = "1",
-                    SetPassword = true,
-                    Rights = rightsList[7],//"getreaderinfo,getreaderobject",
-                    Access = ""
-                };
-                //创建帐号
-                this.NewUser(u);
+                //u = new UserInfo
+                //{
+                //    UserName = "u8",
+                //    Password = "1",
+                //    SetPassword = true,
+                //    Rights = rightsList[7],//"getreaderinfo,getreaderobject",
+                //    Access = ""
+                //};
+                ////创建帐号
+                //this.NewUser(u);
+                u = this.NewUser(rightsList[7], workerLibraryCode);
 
                 //可获取xml，须过滤了dprms:file
                 this.displayLine(GetBR() + getBold(u.UserName + "获取xml，应获取成功，且包含dprms:file。"));
@@ -2169,20 +2209,21 @@ namespace practice
                 //第9组测试 getXXXobject
                 //什么都不能做，由于对象权限不能独立存在
                 this.displayLine(getLarge("第9组测试"));
-                u = new UserInfo
-                {
-                    UserName = "u9",
-                    Password = "1",
-                    SetPassword = true,
-                    Rights = rightsList[8],//"getreaderobject",
-                    Access = ""
-                };
+                //u = new UserInfo
+                //{
+                //    UserName = "u9",
+                //    Password = "1",
+                //    SetPassword = true,
+                //    Rights = rightsList[8],//"getreaderobject",
+                //    Access = ""
+                //};
 
-                //创建帐号
-                this.NewUser(u);
+                ////创建帐号
+                //this.NewUser(u);
+                u = this.NewUser(rightsList[8], workerLibraryCode);
 
                 //不能获取对象
-                this.displayLine(GetBR() + getBold(u.UserName+"获取对象，应不成功，由于对象权限不能独立存在。"));
+                this.displayLine(GetBR() + getBold(u.UserName + "获取对象，应不成功，由于对象权限不能独立存在。"));
                 getResponse = this.GetRes(u, path_object);
                 if (getResponse.GetResResult.Value == -1)
                 {
@@ -2240,21 +2281,54 @@ namespace practice
 
 
 
-            #endregion
+        #endregion
 
 
-
-
-            private void button_testRight_Click(object sender, EventArgs e)
+        public string GetFullRights(string type)
         {
-            string type = this.comboBox_TestRight_type.Text.Trim();
+            if (type == C_Type_reader)
+            {
+                return "setreaderinfo,getreaderinfo,writereaderobject,getreaderobject";
+            }
+            else if (type == C_Type_biblio)
+            {
+                return "setbiblioinfo,getbiblioinfo,writebiblioobject,getbiblioobject";
+            }
+            else if (type == C_Type_item)
+            {
+                return "setiteminfo,getiteminfo,writeitemobject,getitemobject";
+            }
+            else if (type == C_Type_comment)
+            {
+                return "setcommentinfo,getcommentinfo,writecommentobject,getcommentobject";
+            }
+            else if (type == C_Type_order)
+            {
+                return "setorderinfo,getorderinfo,writeorderobject,getorderobject";
+            }
+            else if (type == C_Type_issue)
+            {
+                return "setissueinfo,getissueinfo,writeissueobject,getissueobject";
+            }
+            else if (type == C_Type_Amerce)
+            {
+                return "setamerceinfo,getamerceinfo,writeamerceobject,getamerceobject";
+            }
+            else if (type == C_Type_Arrived)
+            {
+                return "setarrivedinfo,getarrivedinfo,writearrivedobject,getarrivedobject";
+            }
+            else
+            {
+                throw new Exception("GetFullRights不支持的类型");
+            }
 
-            //if (type ==C_Type_Amerce 
-            //    || type == C_Type_Arrived)
-            //{
-            //    MessageBox.Show(this, "自动测试尚不支持此类型" + type);
-            //    return;
-            //}
+        }
+
+
+        public List<string> Get9rights(string type)
+        {
+            string fullRights = this.GetFullRights(type);
 
             List<string> rightsList = new List<string>();
 
@@ -2263,7 +2337,7 @@ namespace practice
                 rightsList.Add("setreaderinfo");
                 rightsList.Add("setreaderinfo,getreaderinfo");//有用
                 rightsList.Add("setreaderinfo,getreaderinfo,writereaderobject");
-                rightsList.Add("setreaderinfo,getreaderinfo,writereaderobject,getreaderobject");//有用
+                rightsList.Add(fullRights);//"setreaderinfo,getreaderinfo,writereaderobject,getreaderobject");//有用
 
                 rightsList.Add("writereaderobject");
                 rightsList.Add("writereaderobject, getreaderobject");
@@ -2277,7 +2351,7 @@ namespace practice
                 rightsList.Add("setbiblioinfo");
                 rightsList.Add("setbiblioinfo,getbiblioinfo");//有用
                 rightsList.Add("setbiblioinfo,getbiblioinfo,writebiblioobject");
-                rightsList.Add("setbiblioinfo,getbiblioinfo,writebiblioobject,getbiblioobject");//有用
+                rightsList.Add(fullRights);// "setbiblioinfo,getbiblioinfo,writebiblioobject,getbiblioobject");//有用
 
                 rightsList.Add("writebiblioobject");
                 rightsList.Add("writebiblioobject, getbiblioobject");
@@ -2291,7 +2365,7 @@ namespace practice
                 rightsList.Add("setiteminfo");
                 rightsList.Add("setiteminfo,getiteminfo");//有用
                 rightsList.Add("setiteminfo,getiteminfo,writeitemobject");
-                rightsList.Add("setiteminfo,getiteminfo,writeitemobject,getitemobject");//有用
+                rightsList.Add(fullRights);// "setiteminfo,getiteminfo,writeitemobject,getitemobject");//有用
 
                 rightsList.Add("writeitemobject");
                 rightsList.Add("writeitemobject, getitemobject");
@@ -2305,7 +2379,7 @@ namespace practice
                 rightsList.Add("setorderinfo");
                 rightsList.Add("setorderinfo,getorderinfo");//有用
                 rightsList.Add("setorderinfo,getorderinfo,writeorderobject");
-                rightsList.Add("setorderinfo,getorderinfo,writeorderobject,getorderobject");//有用
+                rightsList.Add(fullRights);// "setorderinfo,getorderinfo,writeorderobject,getorderobject");//有用
 
                 rightsList.Add("writeorderobject");
                 rightsList.Add("writeorderobject, getorderobject");
@@ -2319,7 +2393,7 @@ namespace practice
                 rightsList.Add("setcommentinfo");
                 rightsList.Add("setcommentinfo,getcommentinfo");//有用
                 rightsList.Add("setcommentinfo,getcommentinfo,writecommentobject");
-                rightsList.Add("setcommentinfo,getcommentinfo,writecommentobject,getcommentobject");//有用
+                rightsList.Add(fullRights);// "setcommentinfo,getcommentinfo,writecommentobject,getcommentobject");//有用
 
                 rightsList.Add("writecommentobject");
                 rightsList.Add("writecommentobject, getcommentobject");
@@ -2333,7 +2407,7 @@ namespace practice
                 rightsList.Add("setissueinfo");
                 rightsList.Add("setissueinfo,getissueinfo");//有用
                 rightsList.Add("setissueinfo,getissueinfo,writeissueobject");
-                rightsList.Add("setissueinfo,getissueinfo,writeissueobject,getissueobject");//有用
+                rightsList.Add(fullRights);// "setissueinfo,getissueinfo,writeissueobject,getissueobject");//有用
 
                 rightsList.Add("writeissueobject");
                 rightsList.Add("writeissueobject, getissueobject");
@@ -2347,7 +2421,7 @@ namespace practice
                 rightsList.Add("setamerceinfo");
                 rightsList.Add("setamerceinfo,getamerceinfo");//有用
                 rightsList.Add("setamerceinfo,getamerceinfo,writeamerceobject");
-                rightsList.Add("setamerceinfo,getamerceinfo,writeamerceobject,getamerceobject");//有用
+                rightsList.Add(fullRights);// "setamerceinfo,getamerceinfo,writeamerceobject,getamerceobject");//有用
 
                 rightsList.Add("writeamerceobject");
                 rightsList.Add("writeamerceobject, getamerceobject");
@@ -2361,7 +2435,7 @@ namespace practice
                 rightsList.Add("setarrivedinfo");
                 rightsList.Add("setarrivedinfo,getarrivedinfo");//有用
                 rightsList.Add("setarrivedinfo,getarrivedinfo,writearrivedobject");
-                rightsList.Add("setarrivedinfo,getarrivedinfo,writearrivedobject,getarrivedobject");//有用
+                rightsList.Add(fullRights); //"setarrivedinfo,getarrivedinfo,writearrivedobject,getarrivedobject");//有用
 
                 rightsList.Add("writearrivedobject");
                 rightsList.Add("writearrivedobject, getarrivedobject");
@@ -2371,11 +2445,21 @@ namespace practice
                 rightsList.Add("getarrivedobject");
             }
 
+            return rightsList;
+        }
+
+        private void button_testRight_Click(object sender, EventArgs e)
+        {
+            string type = this.comboBox_TestRight_type.Text.Trim();
+
+
+            List<string> rightsList = this.Get9rights(type);
 
 
             // 调检查权限函数
             this.checkRight(type,
-                rightsList);
+                rightsList,
+                "");
         }
 
         // 个人书斋，册的馆藏地
@@ -2383,19 +2467,20 @@ namespace practice
 
         public WriteResResponse CreateReaderBySuperviosr(string rights,
             string personalLibrary,
-            out string readerBarcode)
+            out string readerBarcode,
+            string readerDbName = "")
         {
             string readerxml = this.GetXml(C_Type_reader, true, out readerBarcode);
 
             if (string.IsNullOrEmpty(rights) == false
-                || string.IsNullOrEmpty(personalLibrary) ==false)
+                || string.IsNullOrEmpty(personalLibrary) == false)
             {
                 // 修改一下权限
                 XmlDocument dom = new XmlDocument();
                 dom.LoadXml(readerxml);
                 XmlNode root = dom.DocumentElement;
-                
-                if (string.IsNullOrEmpty(rights)==false)
+
+                if (string.IsNullOrEmpty(rights) == false)
                     root.InnerXml += "<rights>" + rights + "</rights>";
 
                 if (string.IsNullOrEmpty(personalLibrary) == false)
@@ -2407,7 +2492,7 @@ namespace practice
             this.displayLine(this.getBold("用supervisor创建读者" + readerBarcode + "，为相关操作提供支持。"));
 
 
-            string strReaderPath = this.GetAppendPath(C_Type_reader);
+            string strReaderPath = this.GetAppendPath(C_Type_reader, readerDbName);
             WriteResResponse response = this.WriteXml(this.mainForm.GetSupervisorAccount(),
                 strReaderPath,
                  readerxml);
@@ -2416,6 +2501,31 @@ namespace practice
                 throw new Exception("用supervisor创建读者异常:" + response.WriteResResult.ErrorInfo);
 
             return response;
+        }
+
+        public UserInfo NewReaderUser(out string xmlPath)
+        {
+             xmlPath = "";
+            // 用管理员帐号创建一个读者
+            string readerBarcode = "";
+            WriteResResponse writeRes = this.CreateReaderBySuperviosr(this.GetFullRights(C_Type_reader),//"setreaderinfo,getreaderinfo,writereaderobject,getreaderobject",
+                "",
+                out readerBarcode);
+            // 读者自己的路径
+            xmlPath = writeRes.strOutputResPath;
+            //string ownerObject = ownerReaderPath + "/object/0";
+
+
+            // 修改读者的密码
+            this.displayLine(this.getBold("修改读者" + readerBarcode + "的密码，后面用此读者身份登录。"));
+            this.ChangeReaderPasswordBySupervisor(readerBarcode);
+            UserInfo u = new UserInfo
+            {
+                UserName = readerBarcode,
+                Password = "1",
+            };
+
+            return u;
         }
 
         private void button_readerLogin_Click(object sender, EventArgs e)
@@ -2431,24 +2541,27 @@ namespace practice
 
                 this.displayLine(this.getLarge("准备环境"));
 
-                // 用supervisor帐户创建一个读者
-                string readerBarcode = "";
-                writeRes = this.CreateReaderBySuperviosr("setreaderinfo,getreaderinfo,writereaderobject,getreaderobject",
-                    "",
-                    out readerBarcode);
-                // 读者自己的路径
-                string ownerReaderPath = writeRes.strOutputResPath;
+                // 用管理员帐号创建一个读者
+                UserInfo u = this.NewReaderUser(out string ownerReaderPath);
+                //string readerBarcode = "";
+                //writeRes = this.CreateReaderBySuperviosr(this.GetFullRights(C_Type_reader),//"setreaderinfo,getreaderinfo,writereaderobject,getreaderobject",
+                //    "",
+                //    out readerBarcode);
+                //// 读者自己的路径
+                //string ownerReaderPath = writeRes.strOutputResPath;
                 string ownerObject = ownerReaderPath + "/object/0";
 
 
-                // 修改读者的密码
-                this.displayLine(this.getBold("修改读者" + readerBarcode + "的密码，后面用此读者身份登录。"));
-                this.ChangeReaderPasswordBySupervisor(readerBarcode);
-                UserInfo u = new UserInfo
-                {
-                    UserName = readerBarcode,
-                    Password = "1",
-                };
+                //// 修改读者的密码
+                //this.displayLine(this.getBold("修改读者" + readerBarcode + "的密码，后面用此读者身份登录。"));
+                //this.ChangeReaderPasswordBySupervisor(readerBarcode);
+                //UserInfo u = new UserInfo
+                //{
+                //    UserName = readerBarcode,
+                //    Password = "1",
+                //};
+
+                
 
                 // 用superviosr帐户创建另一条读者，用于作为他人记录。
                 writeRes = this.CreateReaderBySuperviosr("","", out string tempBarcode);
@@ -2491,7 +2604,7 @@ namespace practice
                 this.displayLine(this.getLarge("第二组测试：修改他人记录-WriteRes/SetReaderInfo"));
 
                 // 用WriteRes修改其它读者记录xml，应不成功
-                this.displayLine(GetBR() + getBold(u.UserName + "用WriteRes修改其它读者xml，应不成功。注意观察提示。"));
+                this.displayLine(GetBR() + getBold(u.UserName + "用WriteRes修改其它读者xml，应失败。注意观察提示。"));
                 writeRes = this.WriteXml(u,
                    otherReaderPath,
                     this.GetXml(C_Type_reader, false), true);
@@ -2501,7 +2614,7 @@ namespace practice
                     this.displayLine(getRed("不符合预期"));
 
                 // 用SetReaderInfo修改其它读者
-                this.displayLine(GetBR() + getBold(u.UserName + "用SetReaderInfo修改其它读者xml，应成功。"));
+                this.displayLine(GetBR() + getBold(u.UserName + "用SetReaderInfo修改其它读者xml，应失败。"));
                 readerRes = this.SetReaderInfo(u, "change", otherReaderPath, this.GetXml(C_Type_reader, false), true);
                 if (readerRes.SetReaderInfoResult.Value == -1)
                     this.displayLine("符合预期");
@@ -3779,7 +3892,7 @@ namespace practice
                     "comment",
                     "change",
                     otherPath,
-                    this.GetXml(C_Type_comment, false), true,out string temp1);
+                    this.GetXml(C_Type_comment, true), true,out string temp1);
                 if (ret.Value == 0 && ret.ErrorCode== ErrorCode.PartialDenied)  //因为提交的xml涉及到creator，所以应部分成功
                     this.displayLine("符合预期");
                 else
@@ -3808,7 +3921,10 @@ namespace practice
 
                 /*
 ###  2023/2/27 23:10:34
-最新代码已经 push 到 GitHub 了。注意测试创建和修改评注记录的时候，读者身份可能需要在记录中包含 follow 和 orderSuggestion 元素。用法可以参考一下 dp2OPAC 创建和修改的评注记录，比如 follow 应该是跟帖的时候会产生，orderSuggestion 应该是订购建议
+最新代码已经 push 到 GitHub 了。注意测试创建和修改评注记录的时候，
+                读者身份可能需要在记录中包含 follow 和 orderSuggestion 元素。
+                用法可以参考一下 dp2OPAC 创建和修改的评注记录，比如 follow 应该是跟帖的时候会产生，
+                orderSuggestion 应该是订购建议
 
 
 ### 2023/2/28 10:30
@@ -4533,30 +4649,7 @@ namespace practice
             this.CheckOrderIssueForReader(C_Type_issue);
         }
 
-        public string GetFullRights(string type)
-        {
-            if (type == C_Type_order)
-            {
-                return "setorderinfo,getorderinfo,writeorderobject,getorderobject";
-            }
-            else if (type == C_Type_issue)
-            {
-                return "setissueinfo,getissueinfo,writeissueobject,getissueobject";
-            }
-            else if (type == C_Type_Amerce)
-            {
-                return "setamerceinfo,getamerceinfo,writeamerceobject,getamerceobject";
-            }
-            else if (type == C_Type_Arrived)
-            {
-                return "setarrivedinfo,getarrivedinfo,writearrivedobject,getarrivedobject";
-            }
-            else
-            {
-                throw new Exception("GetFullRights不支持的类型");
-            }
 
-        }
 
         public string type2dbtype(string type)
         {
@@ -4868,8 +4961,95 @@ namespace practice
 
         #endregion
 
+        bool _existZfgEnv = false;
+
         private void button_createZfgEnv_Click(object sender, EventArgs e)
         {
+            // 确保分馆环境
+            this.EnsureZfgEnv();
+        }
+
+        public void EnsureZfgEnv()
+        {
+            if (_existZfgEnv == true)
+                return;
+
+            CreateZfgEnv();
+        }
+
+        public void CreateZfgEnv()
+        {
+            string info = "";
+            long lRet = 0;
+            string strError = "";
+            // 用管理员帐号创建总分馆环境
+            UserInfo u = this.mainForm.GetSupervisorAccount();
+
+            RestChannel channel = null;
+            try
+            {
+                // 用户登录
+                channel = mainForm.GetChannelAndLogin(u.UserName, u.Password, false);
+
+                // 先从库中查看一下
+                int nRet =channel.GetAllDatabase(out string dbXml,out strError);
+                if (nRet == -1)
+                    goto ERROR1;
+                XmlDocument dom = new XmlDocument();
+                dom.LoadXml(dbXml);
+                XmlNode node = dom.DocumentElement.SelectSingleNode("database[@name='A馆读者']");
+                if (node != null)
+                {
+                    this._existZfgEnv = true;
+                    return;
+                }
+
+
+
+                // A馆读者库
+                info = "正在创建A馆读者库 ...";
+                //ProgressSetMessage(info);
+                //LogManager.Logger.Info(info);
+                ManageDatabaseResponse response = CreateReaderDb(channel,
+                    Env_A_ReaderDbName,
+                    Env_A_LibraryCode);
+                if (lRet == -1)
+                {
+                    strError = response.ManageDatabaseResult.ErrorInfo;
+                    goto ERROR1;
+                }
+                    
+
+                // B馆读者库
+                info = "正在创建B馆读者库 ...";
+                //ProgressSetMessage(info);
+                //LogManager.Logger.Info(info);
+                response = CreateReaderDb(channel, 
+                    Env_B_ReaderDbName,
+                    Env_B_LibraryCode);
+                if (lRet == -1)
+                {
+                    strError = response.ManageDatabaseResult.ErrorInfo;
+                    goto ERROR1;
+                }
+
+
+                this._existZfgEnv = true;
+
+                return;
+
+            ERROR1:
+                throw new Exception(strError);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(u.UserName + "创建总分馆异常：" + ex.Message);
+            }
+            finally
+            {
+                if (channel != null)
+                    this.mainForm._channelPool.ReturnChannel(channel);
+            }
 
         }
 
@@ -5218,13 +5398,14 @@ namespace practice
                     //ProgressSetMessage(info);
                     //LogManager.Logger.Info(info);
 
-                    // 总馆读者库
-                    lRet = CreateReaderDb(channel, Env_ZG_ReaderDbName, Env_ZG_LibraryCode);
-                    if (lRet == -1)
-                        goto ERROR1;
+                    //// 总馆读者库
+                    //lRet = CreateReaderDb(channel, Env_ZG_ReaderDbName, Env_ZG_LibraryCode);
+                    //if (lRet == -1)
+                    //    goto ERROR1;
 
                     if (bzfg == true)
                     {
+                        /*
                         // A馆读者库
                         info = "正在创建A馆读者库 ...";
                         //ProgressSetMessage(info);
@@ -5251,6 +5432,7 @@ namespace practice
                             Env_C_LibraryCode);
                         if (lRet == -1)
                             goto ERROR1;
+                        */
                     }
 
                     // *** 定义测试所需的馆藏地
@@ -5778,6 +5960,8 @@ namespace practice
         }
 
 
+
+
         // 创建读者记录
         int CreateReaderRecord(RestChannel channel,
             string readerDbName,
@@ -5892,10 +6076,10 @@ namespace practice
             return 0;
         }
 
-        public long CreateReaderDb(RestChannel channel, string dbName, string libraryCode)
+        public ManageDatabaseResponse CreateReaderDb(RestChannel channel, string dbName, string libraryCode)
         {
-            string error = "";
-            string strOutputInfo = "";
+            //string error = "";
+            //string strOutputInfo = "";
             XmlDocument database_dom = new XmlDocument();
             database_dom.LoadXml("<root />");
             // 创建总馆读者库
@@ -5903,13 +6087,13 @@ namespace practice
                 dbName,
                 libraryCode,
                 true);
-            return channel.ManageDatabase(
+            ManageDatabaseResponse r= channel.ManageDatabase(
                  // this._stop,
                  "create",
                  "",
                  database_dom.OuterXml,
-                 out strOutputInfo,
-                 out error);
+                 "");
+            return r;
 
         }
 
@@ -6242,11 +6426,247 @@ namespace practice
             return -1;
         }
 
-        #endregion
 
 
 
         #endregion
+
+        #endregion
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            string type = this.comboBox_TestRight_type.Text.Trim();
+
+
+            List<string> rightsList = this.Get9rights(type);
+
+
+            // 调检查权限函数
+            this.checkRight(type,
+                rightsList,
+                "A馆");
+        }
+
+        private void button_fg_reader_Click(object sender, EventArgs e)
+        {
+            /*
+             * 分馆馆员，能 新增/修改/删除 本馆的读者，不能操作他馆读者。
+             */
+
+            this.EnableCtrls(false);
+            try
+            {
+                // 清空输出
+                ClearResult();
+                this.displayLine("");
+
+                WriteResResponse response = null;
+
+                // 测试的A馆工作人员帐号
+                UserInfo u = this.NewUser(this.GetFullRights(C_Type_reader), "A馆");
+
+                //第1组测试，操作本馆读者
+                this.displayLine(getLarge("第1组测试，操作本馆读者"));
+                string aNewPath = GetAppendPath(C_Type_reader, "A馆读者");
+                this.CheckSucc(u,C_Type_reader, aNewPath, false);
+
+
+
+                // 第2组测试，操作他馆读者
+                this.displayLine(getLarge("第2组测试，操作他馆读者"));
+
+                // 用管理员身份新建一个B馆读者，作为他馆读者，测试A馆馆员操作他馆读者
+                string readerBarcode = "";
+                response = this.CreateReaderBySuperviosr("",
+                    "",
+                    out readerBarcode,
+                    "B馆读者");
+                string otherReaderPath = response.strOutputResPath;
+
+                string bNewPath = GetAppendPath(C_Type_reader, "B馆读者");
+                this.DoOtherReader(u, bNewPath, otherReaderPath, false);
+
+
+
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(this, ex.Message);
+            }
+            finally
+            {
+                this.EnableCtrls(true);
+            }
+        }
+
+        private void button_fg_reader_reader_Click(object sender, EventArgs e)
+        {
+            /*
+             * 分馆读者，
+             * 不能新建本馆读者，不能删除读者。
+             * 仅能 修改自己的两个字段和对象，
+             * 不能操作他馆读者。
+             */
+
+
+
+
+        }
+
+
+
+        // 可以是同一个馆的他人读者
+        // 也可以是不同馆的他人读者
+        public void DoOtherReader(UserInfo u, string newOtherPath, string otherXmlPath, bool isReader)
+        {
+            WriteResResponse writeRes = null;
+            SetReaderInfoResponse readerRes = null;
+
+            string otherObjectPath = otherXmlPath + "/object/0";
+
+            // 新建他馆的xml
+            this.displayLine(GetBR() + getBold(u.UserName + "新建他馆读者xml，应失败。"));
+            writeRes = this.WriteXml(u, newOtherPath, this.GetXml(C_Type_reader, true),isReader);
+            if (writeRes.WriteResResult.Value == -1)
+                this.displayLine("符合预期");
+            else
+                this.displayLine(getRed("不符合预期，不能给他馆新建读者"));
+
+
+            #region 修改他人记录-WriteRes/SetReaderInfo
+
+            this.displayLine(this.getLarge("修改他人读者xml-WriteRes/SetReaderInfo"));
+
+            // 用WriteRes修改其它读者记录xml，应不成功
+            this.displayLine(GetBR() + getBold(u.UserName + "用WriteRes修改其它读者xml，应失败。注意观察提示。"));
+            writeRes = this.WriteXml(u,
+               otherXmlPath,
+                this.GetXml(C_Type_reader, false), isReader);
+            if (writeRes.WriteResResult.Value == -1)
+                this.displayLine("符合预期");
+            else
+                this.displayLine(getRed("不符合预期"));
+
+            // 用SetReaderInfo修改其它读者
+            this.displayLine(GetBR() + getBold(u.UserName + "用SetReaderInfo修改其它读者xml，应失败。"));
+            readerRes = this.SetReaderInfo(u, "change", otherXmlPath, this.GetXml(C_Type_reader, false), isReader);
+            if (readerRes.SetReaderInfoResult.Value == -1)
+                this.displayLine("符合预期");
+            else
+                this.displayLine(getRed("不符合预期"));
+
+
+            #endregion
+
+            #region 修改他人对象-WriteRes
+
+            this.displayLine(this.getLarge("修改他人对象-WriteRes"));
+
+            // 用WriteRes修改其它读者的对象，应不成功
+            this.displayLine(GetBR() + getBold(u.UserName + "用WriteRes修改其它读者的对象，应失败。"));
+            writeRes = this.WriteObject(u,
+               otherObjectPath,
+               isReader);
+            if (writeRes.WriteResResult.Value == -1)
+                this.displayLine("符合预期");
+            else
+                this.displayLine(getRed("不符合预期"));
+
+            #endregion
+
+            #region 删除他人记录-SetReaderInfo
+            this.displayLine(this.getLarge("删除他人记录-SetReaderInfo"));
+
+            // 用SetReaderInfo删除书目
+            this.displayLine(GetBR() + getBold(u.UserName + "用SetReaderInfo删除其它读者xml，应失败。"));
+            readerRes = this.SetReaderInfo(u, "delete", otherXmlPath, "", isReader);
+            if (readerRes.SetReaderInfoResult.Value == -1)
+                this.displayLine("符合预期");
+            else
+                this.displayLine(getRed("不符合预期"));
+
+            #endregion
+        }
+
+        public void CheckSucc(UserInfo u,string type,string newPath,bool isReader)
+        {
+            WriteResResponse response = null;
+
+            // 新建带file的xml
+            this.displayLine(GetBR() + getBold(u.UserName + "新建"+type+"的xml，应成功。"));
+            response = this.WriteXml(u, newPath, this.GetXml(type, true),isReader);
+            if (response.WriteResResult.Value == 0)
+                this.displayLine("符合预期");
+            else
+                this.displayLine(getRed("不符合预期"));
+
+            // 下面针对上面新建的这条进行修改和删除
+            string tempPath = response.strOutputResPath;
+            string objectPath = tempPath + "/object/0";
+
+            // 修改带file的xml
+            this.displayLine(GetBR() + getBold(u.UserName + "修改"+type+"的xml，应修改成功且NoError。"));
+            response = this.WriteXml(u, tempPath, this.GetXml(type, true),isReader);
+            if (response.WriteResResult.Value == 0)
+            {
+                if (response.WriteResResult.ErrorCode != ErrorCode.NoError)
+                    this.displayLine(getRed("不符合预期，错误码不对，应为NoError。"));
+                else
+                    this.displayLine("符合预期");
+            }
+            else
+                this.displayLine(getRed("不符合预期"));
+
+            // 修改对象数据
+            this.displayLine(GetBR() + getBold(u.UserName + "修改"+type+"的对象数据，应成功。"));
+            response = this.WriteObject(u, objectPath,isReader);
+            if (response.WriteResResult.Value == 0)
+                this.displayLine("符合预期");
+            else
+                this.displayLine(getRed("不符合预期"));
+
+            // 删除带dprms:file的xml              
+            this.displayLine(GetBR() + getBold(u.UserName + "删除"+type+"的xml，应成功。"));
+            LibraryServerResult res = this.DelXml(u, type, tempPath,isReader);
+            if (res.Value == 0)
+                this.displayLine("符合预期");
+            else
+                this.displayLine(getRed("不符合预期"));
+        }
+        
+        // 分馆馆员 do  书目
+        private void button_fg_worker_biblio_Click(object sender, EventArgs e)
+        {
+            /*
+             * 分馆馆员，能 新增/修改/删除 书目，书目与总分馆无关
+             */
+
+            this.EnableCtrls(false);
+            try
+            {
+                // 清空输出
+                ClearResult();
+
+                // 测试的A馆工作人员帐号
+                UserInfo u = this.NewUser(this.GetFullRights(C_Type_biblio), "A馆");
+
+                //第1组测试，分馆帐户操作书目
+                this.displayLine(getLarge("第1组测试，分馆帐户操作书目"));
+                string aNewPath = GetAppendPath(C_Type_biblio);
+                this.CheckSucc(u, C_Type_biblio, aNewPath, false);
+
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(this, ex.Message);
+            }
+            finally
+            {
+                this.EnableCtrls(true);
+            }
+        }
 
 
     }

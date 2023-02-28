@@ -1,4 +1,48 @@
-﻿===
+﻿     public void CheckFail(UserInfo u, string type, string newPath,string otherXmlPath, bool isReader)
+        {
+            WriteResResponse response = null;
+
+            string otherObjectPath = otherXmlPath + "/object/0";
+
+            // 新建他馆的xml
+            this.displayLine(GetBR() + getBold(u.UserName + "新建他馆"+type+"xml，应失败。"));
+            response = this.WriteXml(u, newPath, this.GetXml(type, true));
+            if (response.WriteResResult.Value == -1)
+                this.displayLine("符合预期");
+            else
+                this.displayLine(getRed("不符合预期，不能给他馆新建读者"));
+
+
+
+            // 修改他馆读者
+            this.displayLine(GetBR() + getBold(u.UserName + "修改他馆"+type+"xml，应失败。"));
+            response = this.WriteXml(u, otherXmlPath, this.GetXml(C_Type_reader, true));
+            if (response.WriteResResult.Value == -1)
+            {
+                this.displayLine("符合预期");
+            }
+            else
+                this.displayLine(getRed("不符合预期"));
+
+            // 修改他馆读者对象数据
+            this.displayLine(GetBR() + getBold(u.UserName + "修改他人"+type+"下对象数据，应失败。"));
+            response = this.WriteObject(u, otherObjectPath);
+            if (response.WriteResResult.Value == -1)
+                this.displayLine("符合预期");
+            else
+                this.displayLine(getRed("不符合预期"));
+
+            // 删除他馆读者xml              
+            this.displayLine(GetBR() + getBold(u.UserName + "删除他馆"+type+"xml，应失败。"));
+            LibraryServerResult res = this.DelXml(u, C_Type_reader, otherXmlPath, false);
+            if (res.Value == -1)
+                this.displayLine("符合预期");
+            else
+                this.displayLine(getRed("不符合预期"));
+        }
+
+
+===
 2023/2/27 预约到书，老代码
         private void button_readerLogin_arrived_Click(object sender, EventArgs e)
         {

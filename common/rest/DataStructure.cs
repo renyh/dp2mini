@@ -201,6 +201,10 @@ namespace DigitalPlatform.LibraryRestClient
 
         [DataMember]
         public string strDatabaseInfo { get; set; }
+
+        //
+        [DataMember]
+        public string strStyle { get; set; }
     }
 
     [DataContract]

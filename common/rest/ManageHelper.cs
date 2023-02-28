@@ -266,7 +266,7 @@ namespace DigitalPlatform.CirculationClient
                 if (lRet == -1)
                     return -1;
 
-                lRet = channel.SetSystemParameter(
+                 lRet = channel.SetSystemParameter(
     // Stop,
     "opac",
     "databases",

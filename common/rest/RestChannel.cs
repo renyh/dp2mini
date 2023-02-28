@@ -4397,6 +4397,24 @@ namespace DigitalPlatform.LibraryRestClient
             return 0;
         }
 
+        public long ManageDatabase(string strAction,
+    string strDatabaseName,
+    string strDatabaseInfo,
+   out string strOutputInfo,
+   out string strError)
+        {
+            strError = "";
+            strOutputInfo = "";
+
+            ManageDatabaseResponse r = this.ManageDatabase(strAction,
+                strDatabaseName,
+                strDatabaseInfo,
+                "");
+            strOutputInfo = r.strOutputInfo;
+            strError = r.ManageDatabaseResult.ErrorInfo;
+
+            return r.ManageDatabaseResult.Value;
+        }
 
 
         // 管理数据库
@@ -4413,48 +4431,53 @@ namespace DigitalPlatform.LibraryRestClient
         /// <para>-1:   出错</para>
         /// <para>0 或 1:    成功</para>
         /// </returns>
-        public long ManageDatabase(
-            // DigitalPlatform.Stop stop,
-            string strAction,
+        public ManageDatabaseResponse ManageDatabase(string strAction,
             string strDatabaseName,
             string strDatabaseInfo,
-            out string strOutputInfo,
-            out string strError)
+            string strStyle)
         {
-            strError = "";
-            strOutputInfo = "";
+            //strError = "";
+            //strOutputInfo = "";
 
-            /*
         REDO:
             try
             {
-                LibraryServerResult result = this.ws.ManageDatabase(
-                    out strOutputInfo,
-                    strAction,
-                    strDatabaseName,
-                    strDatabaseInfo, ""  // 2022/3/9增加一个参数
-                    );
-                if (result.Value == -1 && result.ErrorCode == ErrorCode.NotLogin)
+
+                CookieAwareWebClient client = this.GetClient();
+
+                ManageDatabaseRequest request = new ManageDatabaseRequest()
                 {
+                    strAction = strAction,
+                    strDatabaseName = strDatabaseName,
+                    strDatabaseInfo = strDatabaseInfo,
+                    strStyle = strStyle
+                };
+
+                byte[] baData = Encoding.UTF8.GetBytes(Serialize(request));
+                byte[] result = client.UploadData(GetRestfulApiUrl("ManageDatabase"),
+                        "POST",
+                        baData);
+
+                string strResult = Encoding.UTF8.GetString(result);
+                ManageDatabaseResponse response = Deserialize<ManageDatabaseResponse>(strResult);
+                if (response.ManageDatabaseResult.Value == -1
+    && response.ManageDatabaseResult.ErrorCode == ErrorCode.NotLogin)
+                {
+                    string strError = "";
                     if (DoNotLogin(ref strError) == 1)
                         goto REDO;
-                    return -1;
                 }
-                strError = result.ErrorInfo;
-                this.ErrorCode = result.ErrorCode;
-                this.ClearRedoCount();
-                return result.Value;
+                return response;
             }
             catch (Exception ex)
             {
-                int nRet = ConvertWebError(ex, out strError);
+                int nRet = ConvertWebError(ex, out string strError);
                 if (nRet == 0)
-                    return -1;
+                    return null;
                 goto REDO;
             }
-            */
 
-            return 0;
+
         }
 
         // 获得日历

@@ -3167,6 +3167,33 @@ out string strError);
                 this._channelPool.ReturnChannel(channel);
             }
         }
+
+        private void button_setFullRightsForSupervisor_Click(object sender, EventArgs e)
+        {
+            // 用管理员帐号创建总分馆环境
+            UserInfo u = GetSupervisorAccount();
+
+            RestChannel channel = null;
+            try
+            {
+                // 用户登录
+                channel = this.GetChannelAndLogin(u.UserName, u.Password, false);
+
+                u.Rights = @"borrow,return,renew,lost,read,reservation,order,setclock,changereaderpassword,verifyreaderpassword,getbibliosummary,searchcharging,searchreader,getreaderinfo,setreaderinfo,movereaderinfo,changereaderstate,changereaderbarcode,listdbfroms,searchbiblio,searchbiblio_unlimited,getbiblioinfo,searchauthority,getauthorityinfo,searchitem,getiteminfo,setiteminfo,getoperlog,amerce,amercemodifyprice,amercemodifycomment,amerceundo,inventory,inventorydelete,search,getcalendar,changecalendar,newcalendar,deletecalendar,batchtask,clearalldbs,devolvereaderinfo,getuser,changeuser,newuser,deleteuser,changeuserpassword,simulatereader,simulateworker,getsystemparameter,setsystemparameter,urgentrecover,repairborrowinfo,passgate,getobject,getbiblioobject,getreaderobject,getorderobject,getissueobject,getitemobject,getcommentobject,getauthorityobject,getamerceobject,setbiblioinfo,setauthorityinfo,setzhongcihaoinfo,setdictionaryinfo,setpublisherinfo,setinventoryinfo,hire,foregift,returnforegift,settlement,undosettlement,deletesettlement,searchissue,getissueinfo,setissueinfo,searchorder,getorderinfo,setorderinfo,getcommentinfo,setcommentinfo,searchcomment,denychangemypassword,writeobject,writebiblioobject,writereaderobject,writeorderobject,writeissueobject,writeitemobject,writecommentobject,writeauthorityobject,writeamerceobject,writerecord,writecfgfile,writetemplate,managedatabase,backup,restore,managecache,managecomment,manageopac,settailnumber,setutilinfo,getpatrontempid,getchannelinfo,managechannel,viewreport,upload,download,checkclientversion,bindpatron,client_uimodifyorderrecord,client_forceverifydata,client_deletebibliosubrecords,client_simulateborrow,client_multiplecharging,getrecord,getres,writeres,_wx_setbb,_wx_setbook,_wx_setHomePage,resetpasswordreturnmessage,setiteminfo,setitemobject,searchcomment,searcharrived,setarrivedinfo,getarrivedinfo,writearrivedobject,getarrivedobject,setamerceinfo,getamerceinfo,writeamerceobject,getamerceobject";
+
+                SetUserResponse r= channel.SetUser("change", u);
+                this.SetResultInfo(RestChannel.GetResultInfo(r));
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(u.UserName + "创建总分馆异常：" + ex.Message);
+            }
+            finally
+            {
+                if (channel != null)
+                    this._channelPool.ReturnChannel(channel);
+            }
+        }
     }
 
 
