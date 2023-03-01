@@ -1,4 +1,115 @@
-﻿     public void CheckFail(UserInfo u, string type, string newPath,string otherXmlPath, bool isReader)
+﻿        // 多个动作
+        public void DoReader(UserInfo u, string xmlPath, List<string> actionList, bool expectSucc, bool isReader)
+        {
+            foreach (string action in actionList)
+            {
+                this.DoReader(u,xmlPath,action,expectSucc,isReader);
+            }
+        }
+        public string DoReader(UserInfo u, string xmlPath, string action, bool expectSucc, bool isReader, string xml = "")
+        {
+
+            return DoRes(u,C_Type_reader,xmlPath,action,expectSucc,isReader);  
+
+            /*
+            WriteResResponse writeResponse = null;
+            SetReaderInfoResponse setReaderResponse= null;
+            GetResResponse getResResponse = null;
+
+            string outputPath = "";
+
+
+            // 根据xml路径，算出对象路径
+            string objectPath =xmlPath + "/object/0";
+
+            string expectResult = "应失败";
+            if (expectSucc == true)
+                expectResult = "应成功";
+
+            // 删除的时候没必须准备xml
+            if (action !="delete" && string.IsNullOrEmpty(xml)==true)
+                xml = this.GetXml(C_Type_reader, true);
+
+            // 新增读者的情况，用两个接口测试
+            if (action == "new")
+            {
+                // 用WriteRes()新建读者xml
+                this.displayLine(GetBR() + getBold(u.UserName + "用WriteRes()新建读者xml，" + expectResult));
+                writeResponse = this.WriteXml(u, xmlPath, xml, isReader);
+                this.CheckResult(expectSucc, writeResponse.WriteResResult);
+
+                //返回第一笔path
+                outputPath = writeResponse.strOutputResPath;//.strSavedRecPath;
+
+                // 用SetReaderInfo新建读者
+                xml = this.GetXml(C_Type_reader, true);  //注意要重新获取一下xml,要不证号重复。
+                this.displayLine(GetBR() + getBold(u.UserName + "用SetReaderInfo()新建读者xml，" + expectResult));
+                setReaderResponse = this.SetReaderInfo(u, "new", xmlPath, xml, isReader);
+                this.CheckResult(expectSucc, setReaderResponse.SetReaderInfoResult);
+
+
+            }
+            else if (action == "change")
+            {
+                // 用WriteRes修改读者记录xml
+                this.displayLine(GetBR() + getBold(u.UserName + "用WriteRes()修改读者xml，" + expectResult));
+                writeResponse = this.WriteXml(u, xmlPath, xml, isReader);
+                this.CheckResult(expectSucc, writeResponse.WriteResResult);
+
+                // 用SetReaderInfo修改其它读者xml
+                this.displayLine(GetBR() + getBold(u.UserName + "用SetReaderInfo()修改读者xml，" + expectResult));
+                setReaderResponse = this.SetReaderInfo(u, "change", xmlPath, xml, isReader);
+                this.CheckResult(expectSucc, setReaderResponse.SetReaderInfoResult);
+
+                // 用WriteRes修改读者的对象，应不成功
+                this.displayLine(GetBR() + getBold(u.UserName + "用WriteRes()修改读者的对象，" + expectResult));
+                writeResponse = this.WriteObject(u, objectPath, isReader);
+                this.CheckResult(expectSucc, writeResponse.WriteResResult);
+            }
+            else if (action == "delete")
+            {
+                // 用SetReaderInfo()删除读者
+                this.displayLine(GetBR() + getBold(u.UserName + "用SetReaderInfo()删除读者xml，" + expectResult));
+                setReaderResponse = this.SetReaderInfo(u, "delete", xmlPath, "", isReader);
+                this.CheckResult(expectSucc, setReaderResponse.SetReaderInfoResult);
+
+                // 如果是预期失败的情况，可以再用WriteRes删一下。
+                // 如果是预期成功的，则不必要了，因为记录已经被删掉了。
+                if (expectSucc==false)
+                {
+                    // 用 WriteRes()删除读者
+                    this.displayLine(GetBR() + getBold(u.UserName + "用 WriteRes()删除读者xml，" + expectResult));
+                    writeResponse = this.WriteResForDel(u, xmlPath,  isReader);
+                    this.CheckResult(expectSucc, writeResponse.WriteResResult);
+                }
+            }
+            else if (action == "get")
+            {
+                // 获取读者xml
+                this.displayLine(GetBR() + getBold(u.UserName + "用GetRes() 获取读者xml，" + expectResult));
+                getResResponse = this.GetRes(u, xmlPath,isReader);
+                this.CheckResult(expectSucc,getResResponse.GetResResult);
+
+                // 获取读者对象
+                this.displayLine(GetBR() + getBold(u.UserName + "用GetRes() 获取读者的对象，" + expectResult));
+                getResResponse = this.GetRes(u, objectPath,isReader);
+                this.CheckResult(expectSucc, getResResponse.GetResResult);
+
+                // 用GetReaderInfo()获取读者xml
+                this.displayLine(GetBR() + getBold(u.UserName + "用GetReaderInfo() 获取读者xml，" + expectResult));
+                GetReaderInfoResponse response1 = this.GetReaderInfo(u, xmlPath,isReader);
+                this.CheckResult(expectSucc, response1.GetReaderInfoResult);
+            }
+            else
+                throw new Exception("DoReader不支持的action=" + action);
+
+            return outputPath;
+            */
+        }
+
+
+
+     public void CheckFail(UserInfo u, string type, string newPath,string otherXmlPath, bool isReader)
         {
             WriteResResponse response = null;
 

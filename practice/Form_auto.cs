@@ -105,7 +105,8 @@ namespace practice
                     {
                         this.displayLine(strAction + "帐户" + u.UserName
                             + "<br/>Rights=" + u.Rights
-                            + "<br/>Access=" + u.Access);
+                            + "<br/>Access=" + u.Access
+                            + "<br/>LibraryCode=" + u.LibraryCode);
                     }
                     else
                     {
@@ -1535,9 +1536,12 @@ namespace practice
 
         public UserInfo NewUser(string rights, string libraryCode)
         {
+            Random rd = new Random();
+            int temp = rd.Next(1, 999999);
+
             UserInfo u = new UserInfo
             {
-                UserName = "u",
+                UserName = "u"+temp.ToString(),
                 Password = "1",
                 SetPassword = true,
                 Rights = rights,
@@ -2465,11 +2469,13 @@ namespace practice
         // 个人书斋，册的馆藏地
         public string _location = "流通库";
 
-        public WriteResResponse CreateReaderBySuperviosr(string readerDbName,
+        public string CreateReaderBySuperviosr(string readerDbName,
             string rights,
             string personalLibrary,
             out string readerBarcode)
         {
+            string xmlPath = "";
+
             string readerxml = this.GetXml(C_Type_reader, true, out readerBarcode);
 
             if (string.IsNullOrEmpty(rights) == false
@@ -2497,11 +2503,20 @@ namespace practice
             WriteResResponse response = this.WriteXml(this.mainForm.GetSupervisorAccount(),
                 strReaderPath,
                  readerxml);
-
             if (response.WriteResResult.Value == -1)
                 throw new Exception("用管理员身份创建读者异常:" + response.WriteResResult.ErrorInfo);
 
-            return response;
+
+            //写一下对象，后面获取的时候方便看。
+           xmlPath = response.strOutputResPath;
+            string objectPath = xmlPath + "/object/0";
+            response = this.WriteObject(this.mainForm.GetSupervisorAccount(),
+                objectPath,
+                false);
+            if (response.WriteResResult.Value == -1)
+                throw new Exception("用管理员身份创建读者对象异常:" + response.WriteResResult.ErrorInfo);
+
+            return xmlPath;
         }
 
         public UserInfo NewReaderUser(string readerDbName,string rights, string personalLibrary, 
@@ -2509,14 +2524,10 @@ namespace practice
             out string readerPath)
         {
             // 用管理员帐号创建一个读者
-            WriteResResponse writeRes = this.CreateReaderBySuperviosr(readerDbName,
+           readerPath = this.CreateReaderBySuperviosr(readerDbName,
                 rights,//"setreaderinfo,getreaderinfo,writereaderobject,getreaderobject",
                 personalLibrary,
                 out readerBarcode);
-            // 读者自己的路径
-            readerPath = writeRes.strOutputResPath;
-            //string ownerObject = ownerReaderPath + "/object/0";
-
 
             // 修改读者的密码
             this.displayLine(this.getBold("修改读者" + readerBarcode + "的密码，后面用此读者身份登录。"));
@@ -2530,311 +2541,11 @@ namespace practice
             return u;
         }
 
-        private void button_readerLogin_Click(object sender, EventArgs e)
-        {
-            this.EnableCtrls(false);
-            try
-            {
-                // 清空输出
-                ClearResult();
 
-                WriteResResponse writeRes = null;
-                GetResResponse getRes = null;
 
-                this.displayLine(this.getLarge("准备环境"));
 
-                // 用管理员帐号创建一个读者，以下此读者帐号操作
-                UserInfo u = this.NewReaderUser("读者",this.GetFullRights(C_Type_reader),"",
-                    out string readerBarcode,
-                    out string ownerReaderPath);
-                string ownerObject = ownerReaderPath + "/object/0";
 
-                // 用superviosr帐户创建另一条读者，用于作为他人记录。
-                writeRes = this.CreateReaderBySuperviosr("读者","","", out string tempBarcode);
-                string otherReaderPath = writeRes.strOutputResPath;
-                string otherObject = otherReaderPath + "/object/0";
 
-                // ===
-                this.displayLine(this.getLarge("第一组测试：新建读者"));
-                string newPath = this.GetAppendPath(C_Type_reader);
-                this.DoReader(u, newPath, "new", false, true);
-
-                //===
-                this.displayLine(this.getLarge("第二组测试：读者获取自己的xml和对象"));
-                this.DoReader(u, ownerReaderPath, "get", true, true);
-
-                //===
-                this.displayLine(this.getLarge("第三组测试：读者修改自己的xml和对象"));
-                // 把提交的xml记下来，方便后面与结果比对
-                string submitXml = this.GetXml(C_Type_reader, true);
-                this.DoReader(u, ownerReaderPath, "change", true, true,submitXml);
-                // 修改完，需要把读者记录获取出来比对
-                getRes = this.GetRes(u, ownerReaderPath, true);
-                if (getRes.GetResResult.Value >= 0)
-                {
-                    string resultXml = Encoding.UTF8.GetString(getRes.baContent);
-
-                    // 比较提交的xml与返回的xml
-                    bool bResult = this.CompareReader(submitXml, resultXml,
-                        new List<string> { "displayName", "preference", "dprms:file" },  // 希望相等的字段
-                        new List<string> { "name" }, // 希望不等的字段
-                        out string info);
-                    this.displayLine(info);
-                    if (bResult == false)
-                        this.displayLine(getRed("不符合预期"));
-                    else
-                        this.displayLine("符合预期");
-                }
-                else
-                {
-                    this.displayLine(this.getRed("读者获取自己的记录返回-1，不符合预期。"));
-                }
-
-                //===
-                this.displayLine(this.getLarge("第四组测试：读者不能删除自己记录"));
-                this.DoReader(u, ownerReaderPath, "delete",false, true);
-
-                //===
-                this.displayLine(this.getLarge("第五组测试：读者不能获取/修改/删除他人记录"));
-                this.DoReader(u, otherReaderPath, new List<string> { "get", "change", "delete" }, false, true);
-            }
-            catch (Exception e1)
-            {
-                MessageBox.Show(this, "读者身份操作读者 异常:" + e1.Message);
-            }
-            finally
-            {
-                this.EnableCtrls(true);
-            }
-        }
-
-        // equalFields 希望相等的字段
-        // unequalFiles 希望不等的字段
-        public bool CompareReader(string submitXml, string resultXml, 
-            List<string> equalFields,
-            List<string> unequalFiles,
-            out string info)
-        {
-             info = "";
-
-            XmlDocument submitDom = new XmlDocument();
-            submitDom.LoadXml(submitXml);
-            XmlNode submitRoot = submitDom.DocumentElement;
-
-            XmlDocument resultDom = new XmlDocument();
-            resultDom.LoadXml(resultXml);
-            XmlNode resultRoot = resultDom.DocumentElement;
-
-            bool bResult = true;
-
-            XmlNamespaceManager nsmgr = new XmlNamespaceManager(new NameTable());
-            nsmgr.AddNamespace("dprms", DpNs.dprms);
-
-            //XmlNodeList nodes = root.SelectNodes("//dprms:file", nsmgr);
-
-            // 检查希望相等的字段
-            foreach (string f in equalFields)
-            {
-                string text1 = submitRoot.SelectSingleNode(f, nsmgr).InnerText;// DomUtil.GetElementText(submitRoot, f);
-                string text2= resultRoot.SelectSingleNode(f, nsmgr).InnerText;//DomUtil.GetElementText(resultRoot, f);
-
-                //XmlNode node=submitRoot.SelectSingleNode(f,nsmgr);
-
-
-                if (text1 == text2)
-                    info += f + "相同，符合预期。\r\n";
-                else
-                {
-                    info += f + "不同，不符合预期。\r\n";
-                    bResult = false;
-                }
-            }
-
-            // 检查不希望相等的字段
-            foreach (string f in unequalFiles)
-            {
-                string text1 = submitRoot.SelectSingleNode(f, nsmgr).InnerText;// DomUtil.GetElementText(submitRoot, f);
-                string text2 = resultRoot.SelectSingleNode(f, nsmgr).InnerText;
-
-                if (text1 != text2)
-                    info += f + "不同，符合预期。\r\n";
-                else
-                {
-                    info += f + "相同，不符合预期。\r\n";
-                    bResult = false;
-                }
-            }
-
-
-
-            return bResult;
-        }
-
-
-        // 读者身份 操作书目
-        private void button_readerLogin_biblio_Click(object sender, EventArgs e)
-        {
-
-            this.EnableCtrls(false);
-            try
-            {
-                // 清空输出
-                ClearResult();
-
-                WriteResResponse writeRes = null;
-
-                // 用管理员帐户创建一个读者,
-                UserInfo u = this.NewReaderUser("读者", this.GetFullRights(C_Type_biblio),"",
-                    out string readerBarcode,
-                    out string ownerReaderPath);
-                //string ownerObject = ownerReaderPath + "/object/0";
-
-                //string readerBarcode = "";
-                //writeRes = this.CreateReaderBySuperviosr("读者",this.GetFullRights(C_Type_biblio), //"setbiblioinfo,getbiblioinfo,writebiblioobject,getbiblioobject",
-                //    "",
-                //    out readerBarcode);
-                //string readerOwnerPath = writeRes.strOutputResPath;
-
-                //// 修改读者的密码
-                //this.displayLine(this.getBold("修改读者" + readerBarcode + "的密码，后面用此读者身份登录。"));
-                //this.ChangeReaderPasswordBySupervisor(readerBarcode);
-                //UserInfo u = new UserInfo
-                //{
-                //    UserName = readerBarcode,
-                //    Password = "1",
-                //};
-
-                // 这个路径有意义，不会被删除，下面的临时记录会被删除
-                string biblioPath = "";
-                string objectPath = "";
-
-                // 用于删除的路径
-                string tempBiblioPath1 = "";
-
-                #region 第一组测试：新建书目WriteRes/SetBiblioInfo
-
-                this.displayLine(this.getLarge("第一组测试：新建书目-WriteRes/SetBiblioInfo"));
-
-                string newPath = this.GetAppendPath(C_Type_biblio);
-                // 用WriteRes新建书目
-                this.displayLine(GetBR() + getBold(u.UserName + "用 WriteRes 新建书目xml，应成功。"));
-                writeRes = this.WriteXml(u, newPath, this.GetXml(C_Type_biblio, true), true);
-                if (writeRes.WriteResResult.Value == 0)
-                    this.displayLine("符合预期");
-                else
-                    this.displayLine(getRed("不符合预期"));
-
-                // 第一条记录作为有意义的记录，不会用来测删除
-                biblioPath = writeRes.strOutputResPath;
-                objectPath = biblioPath + "/object/0";
-
-
-                // 用SetBiblioInfo新建书目
-                this.displayLine(GetBR() + getBold(u.UserName + "用 SetBiblioInfo() 新建书目xml，应成功。"));
-                SetBiblioInfoResponse res = this.SetBiblioInfo(u, "new", newPath, this.GetXml(C_Type_biblio, true), true);
-                if (res.SetBiblioInfoResult.Value == 0)
-                    this.displayLine("符合预期");
-                else
-                    this.displayLine(getRed("不符合预期"));
-
-                // 用于删除
-                tempBiblioPath1 = res.strOutputBiblioRecPath;
-
-                #endregion
-
-                #region 第二组测试：修改书目-SetBiblioInfo
-
-                this.displayLine(this.getLarge("第二组测试：修改书目-SetBiblioInfo"));
-
-                // 用SetBiblioInfo修改书目
-                this.displayLine(GetBR() + getBold(u.UserName + "用SetBiblioInfo()修改书目xml，应成功。"));
-                res = this.SetBiblioInfo(u, "change", biblioPath, this.GetXml(C_Type_biblio, true), true);
-                if (res.SetBiblioInfoResult.Value == 0)
-                    this.displayLine("符合预期");
-                else
-                    this.displayLine(getRed("不符合预期"));
-
-                #endregion
-
-                #region 第三组测试，修改书目下的对象数据
-
-                this.displayLine(this.getLarge("第三组测试，修改书目下的对象数据"));
-
-                this.displayLine(GetBR() + getBold(u.UserName + "WriteRes()修改书目下对象数据，应成功。"));
-                writeRes = this.WriteObject(u, objectPath, true);
-                if (writeRes.WriteResResult.Value == 0)
-                    this.displayLine("符合预期");
-                else
-                    this.displayLine(getRed("不符合预期"));
-
-                #endregion
-
-                #region 第四组测试：删除书目-SetBiblioInfo
-
-                this.displayLine(this.getLarge("第四组测试：删除书目-SetBiblioInfo"));
-
-                // 用SetBiblioInfo删除书目
-                this.displayLine(GetBR() + getBold(u.UserName + "用SetBiblioInfo()删除书目xml，应成功。"));
-                res = this.SetBiblioInfo(u, "delete", tempBiblioPath1, "", true);
-                if (res.SetBiblioInfoResult.Value == 0)
-                    this.displayLine("符合预期");
-                else
-                    this.displayLine(getRed("不符合预期"));
-
-                #endregion
-
-
-
-
-
-
-                #region 第五组测试：获取书目-GetRes/GetBiblioInfos
-
-                this.displayLine(this.getLarge("第五组测试：获取书目-GetRes/GetBiblioInfos"));
-
-                // 用GetRes获取书目
-                this.displayLine(GetBR() + getBold(u.UserName + "用 GetRes()获取书目xml，应成功。"));
-                GetResResponse getResponse = this.GetRes(u, biblioPath, true);
-                if (getResponse.GetResResult.Value >= 0)
-                    this.displayLine("符合预期");
-                else
-                    this.displayLine(getRed("不符合预期"));
-
-                // 用GetBiblioInfos()获取书目
-                this.displayLine(GetBR() + getBold(u.UserName + "用 GetBiblioInfos()获取书目xml，应成功。"));
-                GetBiblioInfosResponse getBiblioResponse = this.GetBiblioInfos(u, biblioPath, true);
-                if (getBiblioResponse.GetBiblioInfosResult.Value >= 0)
-                    this.displayLine("符合预期");
-                else
-                    this.displayLine(getRed("不符合预期"));
-
-                #endregion
-
-                #region 第六组测试：获取书目下对象
-
-                this.displayLine(this.getLarge("第六组测试：获取书目下对象"));
-
-                // 用GetRes获取书目下对象
-                this.displayLine(GetBR() + getBold(u.UserName + "用 GetRes()获取书目下对象，应成功。"));
-                getResponse = this.GetRes(u, objectPath, true);
-                if (getResponse.GetResResult.Value >= 0)
-                    this.displayLine("符合预期");
-                else
-                    this.displayLine(getRed("不符合预期"));
-
-
-                #endregion
-
-            }
-            catch (Exception e1)
-            {
-                MessageBox.Show(this, "读者身份操作读者 异常:" + e1.Message);
-            }
-            finally
-            {
-                this.EnableCtrls(true);
-            }
-        }
 
         private void button_readerLogin_item_Click(object sender, EventArgs e)
         {
@@ -3292,11 +3003,9 @@ namespace practice
                 // 用supervisor创建第2个读者
                 this.displayLine(this.getLarge("用supervisor帐户创建第2个读者，下面会为这两个读者借书。"));
                 string reader2 = "";
-                writeRes = this.CreateReaderBySuperviosr("读者","",//setiteminfo, getiteminfo, writeitemobject, getitemobject",
+                string reader2Path = this.CreateReaderBySuperviosr("读者","",//setiteminfo, getiteminfo, writeitemobject, getitemobject",
                     "",  //个人书斋
                     out reader2);
-                if (writeRes.WriteResResult.Value == -1)
-                    throw new Exception("管理员创建读者异常：" + writeRes.WriteResResult.ErrorInfo);
 
                 // 用supervisor创建两个册记录
                 string newPath = this.GetAppendPath(C_Type_item);
@@ -3808,33 +3517,12 @@ namespace practice
                     out string readerBarcode,
                    out string tempPath);
 
-                //// 用管理员身份创建一个读者，有xml和对象的完整权限，后面用此读者帐户操作
-                //string readerBarcode = "";
-                //writeRes = this.CreateReaderBySuperviosr("读者",rights,
-                //    "",  //个人书斋
-                //    out readerBarcode);
-                //if (writeRes.WriteResResult.Value == -1)
-                //    throw new Exception("管理员创建读者异常：" + writeRes.WriteResResult.ErrorInfo);
-                //string readerOwnerPath = writeRes.strOutputResPath;
-                //this.displayLine(this.getLarge("用管理员身份创建一个读者"+readerBarcode+"，有" + type + "xml和对象的完整权限，后面用此读者帐户登录操作"));
-
-
-                //// 修改读者的密码
-                //this.displayLine(this.getBold("修改读者" + readerBarcode + "的密码。"));
-                //this.ChangeReaderPasswordBySupervisor(readerBarcode);
-                //UserInfo u = new UserInfo
-                //{
-                //    UserName = readerBarcode,
-                //    Password = "1",
-                //};
-
                 // 用supervisor创建第2个读者
                 string reader2 = "";
-                writeRes = this.CreateReaderBySuperviosr("读者","",//第2个读者不设权限,
+                string reader2path = this.CreateReaderBySuperviosr("读者","",//第2个读者不设权限,
                     "",  //个人书斋
                     out reader2);
-                if (writeRes.WriteResResult.Value == -1)
-                    throw new Exception("用管理员身份创建读者异常：" + writeRes.WriteResResult.ErrorInfo);
+
                 this.displayLine(this.getLarge("用管理员身份创建第2个读者"+reader2));
 
 
@@ -6255,25 +5943,364 @@ namespace practice
 
         #endregion
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            string type = this.comboBox_TestRight_type.Text.Trim();
-
-
-            List<string> rightsList = this.Get9rights(type);
-
-
-            // 调检查权限函数
-            this.checkRight(type,
-                rightsList,
-                "A馆");
-        }
 
         private void button_fg_reader_Click(object sender, EventArgs e)
         {
+
+        }
+
+        private void button_fg_reader_reader_Click(object sender, EventArgs e)
+        {
             /*
-             * 分馆馆员，能 新增/修改/删除 本馆的读者，不能操作他馆读者。
+             * 分馆读者，
+             * 不能新建本馆读者，不能删除读者。
+             * 仅能 修改自己的两个字段和对象，
+             * 不能操作他馆读者。
              */
+        }
+        
+
+
+
+
+        #region 操作各类数据
+
+        public void DoRes(UserInfo u, string type, string xmlPath, List<string> actionList, bool expectSucc, bool isReader)
+        {
+            foreach (string action in actionList)
+            {
+                this.DoRes(u, type, xmlPath, action, expectSucc, isReader);
+            }
+        }
+
+        public string DoRes(UserInfo u, 
+            string type,
+            string xmlPath, 
+            string action,
+            bool expectSucc, bool isReader, string xml = "")
+        {
+            WriteResResponse writeResponse = null;
+            GetResResponse getResResponse = null;
+
+            SetBiblioInfoResponse setBiblioResponse = null;
+            GetBiblioInfosResponse getBibliosResponse = null;
+
+            SetReaderInfoResponse setReaderResponse = null;
+            GetReaderInfoResponse getReaderResponse = null;
+
+            string outputPath = "";
+
+
+            // 根据xml路径，算出对象路径
+            string objectPath = xmlPath + "/object/0";
+
+            string expectResult = "应失败";
+            if (expectSucc == true)
+                expectResult = "应成功";
+
+            // 删除的时候没必须准备xml
+            if (action != "delete" && string.IsNullOrEmpty(xml) == true)
+                xml = this.GetXml(type, true);
+
+            // 新增读者的情况，用两个接口测试
+            if (action == "new")
+            {
+                // 用WriteRes()新建读者xml
+                this.displayLine(GetBR() + getBold(u.UserName + "用WriteRes()新建" + type + "xml，" + expectResult));
+                writeResponse = this.WriteXml(u, xmlPath, xml, isReader);
+                this.CheckResult(expectSucc, writeResponse.WriteResResult);
+
+                //返回第一笔path
+                outputPath = writeResponse.strOutputResPath;//.strSavedRecPath;
+
+                if (type == C_Type_reader)
+                {
+                    // 用SetReaderInfo新建读者
+                    xml = this.GetXml(type, true);  //注意要重新获取一下xml,要不证号重复。
+                    this.displayLine(GetBR() + getBold(u.UserName + "用SetReaderInfo()新建"+type+"xml，" + expectResult));
+                    setReaderResponse = this.SetReaderInfo(u, "new", xmlPath, xml, isReader);
+                    this.CheckResult(expectSucc, setReaderResponse.SetReaderInfoResult);
+                }
+                else if (type == C_Type_biblio)
+                {
+                    // 用SetBiblioInfo新建书目
+                    this.displayLine(GetBR() + getBold(u.UserName + "用SetBiblioInfo()新建"+type+ "xml，" + expectResult));
+                    setBiblioResponse = this.SetBiblioInfo(u, "new", xmlPath, xml, isReader);
+                    this.CheckResult(expectSucc, setBiblioResponse.SetBiblioInfoResult);
+                }
+
+            }
+            else if (action == "change")
+            {
+                // 用WriteRes修改读者记录xml
+                this.displayLine(GetBR() + getBold(u.UserName + "用WriteRes()修改" + type + "xml，" + expectResult));
+                writeResponse = this.WriteXml(u, xmlPath, xml, isReader);
+                this.CheckResult(expectSucc, writeResponse.WriteResResult);
+
+                // 用WriteRes修改读者的对象
+                this.displayLine(GetBR() + getBold(u.UserName + "用WriteRes()修改" + type + "的对象，" + expectResult));
+                writeResponse = this.WriteObject(u, objectPath, isReader);
+                this.CheckResult(expectSucc, writeResponse.WriteResResult);
+
+                if (type == C_Type_reader)
+                {
+                    // 用SetReaderInfo修改读者xml
+                    this.displayLine(GetBR() + getBold(u.UserName + "用SetReaderInfo()修改读者xml，" + expectResult));
+                    setReaderResponse = this.SetReaderInfo(u, "change", xmlPath, xml, isReader);
+                    this.CheckResult(expectSucc, setReaderResponse.SetReaderInfoResult);
+                }
+                else if (type == C_Type_biblio)
+                {
+                    // 用SetBiblioInfo新建书目
+                    this.displayLine(GetBR() + getBold(u.UserName + "用 SetBiblioInfo()修改" + type + "xml，" + expectResult));
+                    setBiblioResponse = this.SetBiblioInfo(u, "change", xmlPath, xml, isReader);
+                    this.CheckResult(expectSucc, setBiblioResponse.SetBiblioInfoResult);
+                }
+
+            }
+            else if (action == "delete")
+            {
+                // 用 WriteRes()删除读者
+                this.displayLine(GetBR() + getBold(u.UserName + "用 WriteRes()删除" + type + "xml，" + expectResult));
+                writeResponse = this.WriteResForDel(u, xmlPath, isReader);
+                this.CheckResult(expectSucc, writeResponse.WriteResResult);
+
+
+                // 如果是预期失败的情况，可以再用对应函数删一下。
+                // 如果是预期成功的，则不必要了，因为记录已经被删掉了。
+                if (expectSucc == false)
+                {
+                    if (type == C_Type_reader)
+                    {
+                        // 用SetReaderInfo()删除读者
+                        this.displayLine(GetBR() + getBold(u.UserName + "用SetReaderInfo()删除"+type+"xml，" + expectResult));
+                        setReaderResponse = this.SetReaderInfo(u, "delete", xmlPath, "", isReader);
+                        this.CheckResult(expectSucc, setReaderResponse.SetReaderInfoResult);
+                    }
+                    else
+                    {
+                        // 用SetBiblioInfo删除书目
+                        this.displayLine(GetBR() + getBold(u.UserName + "用SetBiblioInfo()删除"+type+ "xml，" + expectResult));
+                        setBiblioResponse = this.SetBiblioInfo(u, "delete", xmlPath, "", isReader);
+                        this.CheckResult(expectSucc, setBiblioResponse.SetBiblioInfoResult);
+                    }
+
+                }
+            }
+            else if (action == "get")
+            {
+                // 获取读者xml
+                this.displayLine(GetBR() + getBold(u.UserName + "用GetRes()获取" + type + "xml，" + expectResult));
+                getResResponse = this.GetRes(u, xmlPath, isReader);
+                this.CheckResult(expectSucc, getResResponse.GetResResult);
+
+                // 获取读者对象
+                this.displayLine(GetBR() + getBold(u.UserName + "用GetRes()获取" + type + "的对象，" + expectResult));
+                getResResponse = this.GetRes(u, objectPath, isReader);
+                this.CheckResult(expectSucc, getResResponse.GetResResult);
+
+                // 用专用函数来调
+                if (type == C_Type_reader)
+                {
+                    // 用GetReaderInfo()获取读者xml
+                    this.displayLine(GetBR() + getBold(u.UserName + "用GetReaderInfo() 获取读者xml，" + expectResult));
+                    getReaderResponse = this.GetReaderInfo(u, xmlPath, isReader);
+                    this.CheckResult(expectSucc, getReaderResponse.GetReaderInfoResult);
+                }
+                else
+                {
+                    // 用GetBiblioInfos()获取书目
+                    this.displayLine(GetBR() + getBold(u.UserName + "用GetBiblioInfos()获取书目xml，" + expectResult));
+                    getBibliosResponse = this.GetBiblioInfos(u, xmlPath,isReader);
+                    this.CheckResult(expectSucc, getBibliosResponse.GetBiblioInfosResult);
+                }
+            }
+            else
+                throw new Exception("DoRes不支持的action=" + action);
+
+            return outputPath;
+        }
+
+        // 检查结果
+        public void CheckResult(bool expectSucc, LibraryServerResult result)
+        {
+            if (expectSucc == true && result.Value >= 0)
+                this.displayLine("符合预期");
+            else if (expectSucc == false && result.Value == -1)
+                this.displayLine("符合预期");
+            else
+                this.displayLine(getRed("不符合预期"));
+        }
+        #endregion
+
+
+
+
+        // 分馆读者
+        private void button_fg_reader_reader_Click_1(object sender, EventArgs e)
+        {
+
+        }
+
+
+
+
+
+        #region 操作读者
+
+        private void button_reader_Click(object sender, EventArgs e)
+        {
+            string accountType = this.comboBox_accountType.Text.Trim();
+
+            if (accountType == C_accountType_zgworker)
+                DoReaderForZgWorker();
+            else if (accountType == C_accountType_zgreader)
+                DoReaderForZgReader();
+            else if (accountType == C_accountType_fgworker)
+                DoReaderForFgWorker();
+            else if (accountType == C_accountType_fgreader)
+                DoReaderForFgReader();
+            else
+                throw new Exception("不支持的身份类型" + accountType);
+        }
+
+        // 总馆工作人员 操作 读者
+        public void DoReaderForZgWorker()
+        {
+            /*
+ * 总馆馆员，能 新增/修改/删除 本馆的读者，能操作各分馆读者。
+ */
+
+            this.EnableCtrls(false);
+            try
+            {
+                // 清空输出
+                ClearResult();
+                this.displayLine("");
+
+                WriteResResponse response = null;
+
+                // 测试的总馆工作人员帐号
+                UserInfo u = this.NewUser(this.GetFullRights(C_Type_reader), "");
+
+                //===
+                //第1组测试，操作本馆读者
+                this.displayLine(getLarge("第1组测试，操作总馆读者"));
+                string newPath = GetAppendPath(C_Type_reader, "读者");
+                // 先新增，应成功
+                string outputPath = this.DoRes(u, C_Type_reader, newPath, "new", true, false);
+                // 获取/修改/删除   均应成功
+                this.DoRes(u, C_Type_reader, outputPath, new List<string> { "get", "change", "delete" }, true, false);
+
+
+
+                //===
+                // 第2组测试，操作他馆读者
+                this.displayLine(getLarge("第2组测试，操作分馆读者"));
+
+                newPath = GetAppendPath(C_Type_reader, "A馆读者");
+                // 先新增，应成功
+                outputPath = this.DoRes(u, C_Type_reader, newPath, "new", true, false);
+                // 获取/修改/删除   均应成功
+                this.DoRes(u, C_Type_reader, outputPath, new List<string> { "get", "change", "delete" }, true, false);
+
+
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(this, ex.Message);
+            }
+            finally
+            {
+                this.EnableCtrls(true);
+            }
+        }
+
+        // 总馆读者 操作 读者
+        public void DoReaderForZgReader()
+        {
+            this.EnableCtrls(false);
+            try
+            {
+                // 清空输出
+                ClearResult();
+
+                WriteResResponse writeRes = null;
+                GetResResponse getRes = null;
+
+                this.displayLine(this.getLarge("准备环境"));
+
+                // 用管理员帐号创建一个读者，以下此读者帐号操作
+                UserInfo u = this.NewReaderUser("读者", this.GetFullRights(C_Type_reader), "",
+                    out string readerBarcode,
+                    out string ownerReaderPath);
+                string ownerObject = ownerReaderPath + "/object/0";
+
+                // 用superviosr帐户创建另一条读者，用于作为他人记录。
+                string otherReaderPath = this.CreateReaderBySuperviosr("读者", "", "", out string tempBarcode);
+                string otherObject = otherReaderPath + "/object/0";
+
+                // ===
+                this.displayLine(this.getLarge("第一组测试：新建读者"));
+                string newPath = this.GetAppendPath(C_Type_reader);
+                this.DoRes(u, C_Type_reader, newPath, "new", false, true);
+
+                //===
+                this.displayLine(this.getLarge("第二组测试1：读者获取自己的xml和对象"));
+                this.DoRes(u, C_Type_reader, ownerReaderPath, "get", true, true);
+
+                //===
+                this.displayLine(this.getLarge("第二组测试2：读者修改自己的xml和对象"));
+                // 把提交的xml记下来，方便后面与结果比对
+                string submitXml = this.GetXml(C_Type_reader, true);
+                this.DoRes(u, C_Type_reader, ownerReaderPath, "change", true, true, submitXml);
+                // 修改完，需要把读者记录获取出来比对
+                getRes = this.GetRes(u, ownerReaderPath, true);
+                if (getRes.GetResResult.Value >= 0)
+                {
+                    string resultXml = Encoding.UTF8.GetString(getRes.baContent);
+
+                    // 比较提交的xml与返回的xml
+                    bool bResult = this.CompareReader(submitXml, resultXml,
+                        new List<string> { "displayName", "preference", "dprms:file" },  // 希望相等的字段
+                        new List<string> { "name" }, // 希望不等的字段
+                        out string info);
+                    this.displayLine(info);
+                    if (bResult == false)
+                        this.displayLine(getRed("不符合预期"));
+                    else
+                        this.displayLine("符合预期");
+                }
+                else
+                {
+                    this.displayLine(this.getRed("读者获取自己的记录返回-1，不符合预期。"));
+                }
+
+                //===
+                this.displayLine(this.getLarge("第二组测试3：读者不能删除自己记录"));
+                this.DoRes(u, C_Type_reader, ownerReaderPath, "delete", false, true);
+
+                //===
+                this.displayLine(this.getLarge("第三组测试：读者不能获取/修改/删除他人记录"));
+                this.DoRes(u, C_Type_reader, otherReaderPath, new List<string> { "get", "change", "delete" }, false, true);
+            }
+            catch (Exception e1)
+            {
+                MessageBox.Show(this, "读者身份操作读者 异常:" + e1.Message);
+            }
+            finally
+            {
+                this.EnableCtrls(true);
+            }
+        }
+
+        // 分馆工作人员 操作 读者
+        public void DoReaderForFgWorker()
+        {
+            /*
+ * 分馆馆员，能 新增/修改/删除 本馆的读者，不能操作他馆读者。
+ */
 
             this.EnableCtrls(false);
             try
@@ -6292,9 +6319,9 @@ namespace practice
                 this.displayLine(getLarge("第1组测试，操作本馆读者"));
                 string aNewPath = GetAppendPath(C_Type_reader, "A馆读者");
                 // 先新增，应成功
-                string  outputPath= this.DoReader(u,aNewPath,"new",true,false);
+                string outputPath = this.DoRes(u, C_Type_reader, aNewPath, "new", true, false);
                 // 获取/修改/删除   均应成功
-                this.DoReader(u, outputPath, new List<string> { "get", "change", "delete" }, true, false);
+                this.DoRes(u, C_Type_reader, outputPath, new List<string> { "get", "change", "delete" }, true, false);
 
 
 
@@ -6304,16 +6331,15 @@ namespace practice
 
                 // 给他馆新增记录，应失败 
                 string bNewPath = GetAppendPath(C_Type_reader, "B馆读者");
-                this.DoReader(u, bNewPath, "new", false, false);
+                this.DoRes(u, C_Type_reader, bNewPath, "new", false, false);
 
                 // 用管理员身份新建一个B馆读者，作为他馆读者，测试A馆馆员操作他馆读者
                 string readerBarcode = "";
-                response = this.CreateReaderBySuperviosr("B馆读者","",
+                string otherReaderPath = this.CreateReaderBySuperviosr("B馆读者", "",
                     "",
                     out readerBarcode);
-                string otherReaderPath = response.strOutputResPath;
                 // 获取/修改/删除   均应失败
-                this.DoReader(u, otherReaderPath, new List<string> { "get", "change", "delete" }, false, false);
+                this.DoRes(u, C_Type_reader, otherReaderPath, new List<string> { "get", "change", "delete" }, false, false);
 
             }
             catch (Exception ex)
@@ -6327,290 +6353,91 @@ namespace practice
             }
         }
 
-        private void button_fg_reader_reader_Click(object sender, EventArgs e)
+        // 总馆读者 操作 读者
+        public void DoReaderForFgReader()
         {
-            /*
-             * 分馆读者，
-             * 不能新建本馆读者，不能删除读者。
-             * 仅能 修改自己的两个字段和对象，
-             * 不能操作他馆读者。
-             */
-
-
-
-
-        }
-        
-        // 检查结果
-        public void CheckResult(bool expectSucc,LibraryServerResult result)
-        {
-            if (expectSucc == true && result.Value >= 0)
-                this.displayLine("符合预期");
-            else if (expectSucc == false && result.Value == -1)
-                this.displayLine("符合预期");
-            else
-                this.displayLine(getRed("不符合预期"));
-        }
-
-
-        // 多个动作
-        public void DoReader(UserInfo u, string xmlPath, List<string> actionList, bool expectSucc, bool isReader)
-        {
-            foreach (string action in actionList)
-            {
-                this.DoReader(u,xmlPath,action,expectSucc,isReader);
-            }
-        }
-
-        public string DoReader(UserInfo u, string xmlPath, string action, bool expectSucc, bool isReader, string xml = "")
-        {
-            WriteResResponse writeResponse = null;
-            SetReaderInfoResponse setReaderResponse= null;
-            GetResResponse getResResponse = null;
-
-            string outputPath = "";
-
-
-            // 根据xml路径，算出对象路径
-            string objectPath =xmlPath + "/object/0";
-
-            string expectResult = "应失败";
-            if (expectSucc == true)
-                expectResult = "应成功";
-
-            // 删除的时候没必须准备xml
-            if (action !="delete" && string.IsNullOrEmpty(xml)==true)
-                xml = this.GetXml(C_Type_reader, true);
-
-            // 新增读者的情况，用两个接口测试
-            if (action == "new")
-            {
-                // 用WriteRes()新建读者xml
-                this.displayLine(GetBR() + getBold(u.UserName + "用WriteRes()新建读者xml，" + expectResult));
-                writeResponse = this.WriteXml(u, xmlPath, xml, isReader);
-                this.CheckResult(expectSucc, writeResponse.WriteResResult);
-
-                //返回第一笔path
-                outputPath = writeResponse.strOutputResPath;//.strSavedRecPath;
-
-                // 用SetReaderInfo新建读者
-                xml = this.GetXml(C_Type_reader, true);  //注意要重新获取一下xml,要不证号重复。
-                this.displayLine(GetBR() + getBold(u.UserName + "用SetReaderInfo()新建读者xml，" + expectResult));
-                setReaderResponse = this.SetReaderInfo(u, "new", xmlPath, xml, isReader);
-                this.CheckResult(expectSucc, setReaderResponse.SetReaderInfoResult);
-
-
-            }
-            else if (action == "change")
-            {
-                // 用WriteRes修改读者记录xml
-                this.displayLine(GetBR() + getBold(u.UserName + "用WriteRes()修改读者xml，" + expectResult));
-                writeResponse = this.WriteXml(u, xmlPath, xml, isReader);
-                this.CheckResult(expectSucc, writeResponse.WriteResResult);
-
-                // 用SetReaderInfo修改其它读者xml
-                this.displayLine(GetBR() + getBold(u.UserName + "用SetReaderInfo()修改读者xml，" + expectResult));
-                setReaderResponse = this.SetReaderInfo(u, "change", xmlPath, xml, isReader);
-                this.CheckResult(expectSucc, setReaderResponse.SetReaderInfoResult);
-
-                // 用WriteRes修改读者的对象，应不成功
-                this.displayLine(GetBR() + getBold(u.UserName + "用WriteRes()修改读者的对象，" + expectResult));
-                writeResponse = this.WriteObject(u, objectPath, isReader);
-                this.CheckResult(expectSucc, writeResponse.WriteResResult);
-            }
-            else if (action == "delete")
-            {
-                // 用SetReaderInfo()删除读者
-                this.displayLine(GetBR() + getBold(u.UserName + "用SetReaderInfo()删除读者xml，" + expectResult));
-                setReaderResponse = this.SetReaderInfo(u, "delete", xmlPath, "", isReader);
-                this.CheckResult(expectSucc, setReaderResponse.SetReaderInfoResult);
-
-                // 如果是预期失败的情况，可以再用WriteRes删一下。
-                // 如果是预期成功的，则不必要了，因为记录已经被删掉了。
-                if (expectSucc==false)
-                {
-                    // 用 WriteRes()删除读者
-                    this.displayLine(GetBR() + getBold(u.UserName + "用 WriteRes()删除读者xml，" + expectResult));
-                    writeResponse = this.WriteResForDel(u, xmlPath,  isReader);
-                    this.CheckResult(expectSucc, writeResponse.WriteResResult);
-                }
-            }
-            else if (action == "get")
-            {
-                // 获取读者xml
-                this.displayLine(GetBR() + getBold(u.UserName + "用GetRes() 获取读者xml，" + expectResult));
-                getResResponse = this.GetRes(u, xmlPath,isReader);
-                this.CheckResult(expectSucc,getResResponse.GetResResult);
-
-                // 获取读者对象
-                this.displayLine(GetBR() + getBold(u.UserName + "用GetRes() 获取读者的对象，" + expectResult));
-                getResResponse = this.GetRes(u, objectPath,isReader);
-                this.CheckResult(expectSucc, getResResponse.GetResResult);
-
-                // 用GetReaderInfo()获取读者xml
-                this.displayLine(GetBR() + getBold(u.UserName + "用GetReaderInfo() 获取读者xml，" + expectResult));
-                GetReaderInfoResponse response1 = this.GetReaderInfo(u, xmlPath,isReader);
-                this.CheckResult(expectSucc, response1.GetReaderInfoResult);
-            }
-            else
-                throw new Exception("DoReader不支持的action=" + action);
-
-            return outputPath;
-        }
-
-
-        // 可以是同一个馆的他人读者
-        // 也可以是不同馆的他人读者
-        public void DoOtherReader(UserInfo u, string newOtherPath, string otherXmlPath, bool isReader)
-        {
-            WriteResResponse writeRes = null;
-            SetReaderInfoResponse readerRes = null;
-
-            string otherObjectPath = otherXmlPath + "/object/0";
-
-            // 如果不传new路径，则不新建
-            if (string.IsNullOrEmpty(newOtherPath) == false)
-            {
-                // 新建他馆的xml
-                this.displayLine(GetBR() + getBold(u.UserName + "新建其它读者xml，应失败。"));
-                writeRes = this.WriteXml(u, newOtherPath, this.GetXml(C_Type_reader, true), isReader);
-                if (writeRes.WriteResResult.Value == -1)
-                    this.displayLine("符合预期");
-                else
-                    this.displayLine(getRed("不符合预期，不能给他馆新建读者"));
-            }
-
-
-            #region 修改他人记录-WriteRes/SetReaderInfo
-
-            //this.displayLine(this.getLarge("修改他人读者xml-WriteRes/SetReaderInfo"));
-
-            // 用WriteRes修改其它读者记录xml，应不成功
-            this.displayLine(GetBR() + getBold(u.UserName + "用WriteRes修改其它读者xml，应失败。注意观察提示。"));
-            writeRes = this.WriteXml(u,
-               otherXmlPath,
-                this.GetXml(C_Type_reader, false), isReader);
-            if (writeRes.WriteResResult.Value == -1)
-                this.displayLine("符合预期");
-            else
-                this.displayLine(getRed("不符合预期"));
-
-            // 用SetReaderInfo修改其它读者
-            this.displayLine(GetBR() + getBold(u.UserName + "用SetReaderInfo修改其它读者xml，应失败。"));
-            readerRes = this.SetReaderInfo(u, "change", otherXmlPath, this.GetXml(C_Type_reader, false), isReader);
-            if (readerRes.SetReaderInfoResult.Value == -1)
-                this.displayLine("符合预期");
-            else
-                this.displayLine(getRed("不符合预期"));
-
-
-            #endregion
-
-            #region 修改他人对象-WriteRes
-
-            //this.displayLine(this.getLarge("修改他人对象-WriteRes"));
-
-            // 用WriteRes修改其它读者的对象，应不成功
-            this.displayLine(GetBR() + getBold(u.UserName + "用WriteRes修改其它读者的对象，应失败。"));
-            writeRes = this.WriteObject(u,
-               otherObjectPath,
-               isReader);
-            if (writeRes.WriteResResult.Value == -1)
-                this.displayLine("符合预期");
-            else
-                this.displayLine(getRed("不符合预期"));
-
-            #endregion
-
-            #region 删除他人记录-SetReaderInfo
-            //this.displayLine(this.getLarge("删除他人记录-SetReaderInfo"));
-
-            // 用SetReaderInfo删除书目
-            this.displayLine(GetBR() + getBold(u.UserName + "用SetReaderInfo删除其它读者xml，应失败。"));
-            readerRes = this.SetReaderInfo(u, "delete", otherXmlPath, "", isReader);
-            if (readerRes.SetReaderInfoResult.Value == -1)
-                this.displayLine("符合预期");
-            else
-                this.displayLine(getRed("不符合预期"));
-
-            #endregion
-        }
-
-        /*
-        public void CheckSucc(UserInfo u,string type,string newPath,bool isReader)
-        {
-            WriteResResponse response = null;
-
-
-
-            // 新建带file的xml
-            this.displayLine(GetBR() + getBold(u.UserName + "新建"+type+"的xml，应成功。"));
-            response = this.WriteXml(u, newPath, this.GetXml(type, true),isReader);
-            if (response.WriteResResult.Value == 0)
-                this.displayLine("符合预期");
-            else
-                this.displayLine(getRed("不符合预期"));
-
-            // 下面针对上面新建的这条进行修改和删除
-            string tempPath = response.strOutputResPath;
-            string objectPath = tempPath + "/object/0";
-
-            // 修改带file的xml
-            this.displayLine(GetBR() + getBold(u.UserName + "修改"+type+"的xml，应修改成功且NoError。"));
-            response = this.WriteXml(u, tempPath, this.GetXml(type, true),isReader);
-            if (response.WriteResResult.Value == 0)
-            {
-                if (response.WriteResResult.ErrorCode != ErrorCode.NoError)
-                    this.displayLine(getRed("不符合预期，错误码不对，应为NoError。"));
-                else
-                    this.displayLine("符合预期");
-            }
-            else
-                this.displayLine(getRed("不符合预期"));
-
-            // 修改对象数据
-            this.displayLine(GetBR() + getBold(u.UserName + "修改"+type+"的对象数据，应成功。"));
-            response = this.WriteObject(u, objectPath,isReader);
-            if (response.WriteResResult.Value == 0)
-                this.displayLine("符合预期");
-            else
-                this.displayLine(getRed("不符合预期"));
-
-            // 删除带dprms:file的xml              
-            this.displayLine(GetBR() + getBold(u.UserName + "删除"+type+"的xml，应成功。"));
-            LibraryServerResult res = this.DelXml(u, type, tempPath,isReader);
-            if (res.Value == 0)
-                this.displayLine("符合预期");
-            else
-                this.displayLine(getRed("不符合预期"));
-        }
-        */
-        // 分馆馆员 do  书目
-        private void button_fg_worker_biblio_Click(object sender, EventArgs e)
-        {
-            /*
-             * 分馆馆员，能 新增/修改/删除 书目，书目与总分馆无关
-             */
-
             this.EnableCtrls(false);
             try
             {
                 // 清空输出
                 ClearResult();
 
-                // 测试的A馆工作人员帐号
-                UserInfo u = this.NewUser(this.GetFullRights(C_Type_biblio), "A馆");
+                WriteResResponse writeRes = null;
+                GetResResponse getRes = null;
 
-                //第1组测试，分馆帐户操作书目
-                this.displayLine(getLarge("第1组测试，分馆帐户操作书目"));
-                string aNewPath = GetAppendPath(C_Type_biblio);
-                //this.CheckSucc(u, C_Type_biblio, aNewPath, false);
+                this.displayLine(this.getLarge("准备环境"));
 
+                // 用管理员帐号创建一个A馆的读者，以下此读者帐号操作
+                UserInfo u = this.NewReaderUser("A馆读者", this.GetFullRights(C_Type_reader), "",
+                    out string readerBarcode,
+                    out string ownerXmlPath);
+                string ownerObjectPath = ownerXmlPath + "/object/0";
+
+                // 用管理员帐号创建另一个A馆读者，用于作为本馆他人记录。
+                string aXmlPath = this.CreateReaderBySuperviosr("A馆读者", "", "", out string tempBarcode);
+                string aObjectPath = aXmlPath + "/object/0";
+
+                // 用管理员帐号创建一个B馆读者，用于作为他馆他人记录。
+                string bXmlPath = this.CreateReaderBySuperviosr("B馆读者", "", "", out tempBarcode);
+                string bObjectPath = bXmlPath + "/object/0";
+
+                // ===
+                this.displayLine(this.getLarge("第一组测试1：新建本馆读者"));
+                string newPath = "A馆读者/?";
+                this.DoRes(u, C_Type_reader, newPath, "new", false, true);
+
+                this.displayLine(this.getLarge("第一组测试2：新建他馆读者"));
+                newPath = "B馆读者/?";
+                this.DoRes(u, C_Type_reader, newPath, "new", false, true);
+
+
+                //===
+                this.displayLine(this.getLarge("第二组测试1：读者获取自己的xml和对象"));
+                this.DoRes(u, C_Type_reader, ownerXmlPath, "get", true, true);
+
+                //===
+                this.displayLine(this.getLarge("第二组测试2：读者修改自己的xml和对象"));
+                // 把提交的xml记下来，方便后面与结果比对
+                string submitXml = this.GetXml(C_Type_reader, true);
+                this.DoRes(u, C_Type_reader, ownerXmlPath, "change", true, true, submitXml);
+                // 修改完，需要把读者记录获取出来比对
+                getRes = this.GetRes(u, ownerXmlPath, true);
+                if (getRes.GetResResult.Value >= 0)
+                {
+                    string resultXml = Encoding.UTF8.GetString(getRes.baContent);
+
+                    // 比较提交的xml与返回的xml
+                    bool bResult = this.CompareReader(submitXml, resultXml,
+                        new List<string> { "displayName", "preference", "dprms:file" },  // 希望相等的字段
+                        new List<string> { "name" }, // 希望不等的字段
+                        out string info);
+                    this.displayLine(info);
+                    if (bResult == false)
+                        this.displayLine(getRed("不符合预期"));
+                    else
+                        this.displayLine("符合预期");
+                }
+                else
+                {
+                    this.displayLine(this.getRed("读者获取自己的记录返回-1，不符合预期。"));
+                }
+
+                //===
+                this.displayLine(this.getLarge("第二组测试3：读者不能删除自己记录"));
+                this.DoRes(u, C_Type_reader, ownerXmlPath, "delete", false, true);
+
+                //===
+                this.displayLine(this.getLarge("第三组测试：读者不能 获取/修改/删除 本馆他人记录"));
+                this.DoRes(u, C_Type_reader, aXmlPath, new List<string> { "get", "change", "delete" }, false, true);
+
+
+                //===
+                this.displayLine(this.getLarge("第四组测试：读者不能 获取/修改/删除 他馆他人记录"));
+                this.DoRes(u, C_Type_reader, bXmlPath, new List<string> { "get", "change", "delete" }, false, true);
             }
-            catch (Exception ex)
+            catch (Exception e1)
             {
-
-                MessageBox.Show(this, ex.Message);
+                MessageBox.Show(this, "读者身份操作读者 异常:" + e1.Message);
             }
             finally
             {
@@ -6618,10 +6445,151 @@ namespace practice
             }
         }
 
-        // 分馆读者
-        private void button_fg_reader_reader_Click_1(object sender, EventArgs e)
-        {
 
+        public string C_accountType_zgworker = "总馆工作人员";
+        public string C_accountType_zgreader = "总馆读者";
+        public string C_accountType_fgworker = "分馆工作人员";
+        public string C_accountType_fgreader = "分馆读者";
+
+
+        // equalFields 希望相等的字段
+        // unequalFiles 希望不等的字段
+        public bool CompareReader(string submitXml, string resultXml,
+            List<string> equalFields,
+            List<string> unequalFiles,
+            out string info)
+        {
+            info = "";
+
+            XmlDocument submitDom = new XmlDocument();
+            submitDom.LoadXml(submitXml);
+            XmlNode submitRoot = submitDom.DocumentElement;
+
+            XmlDocument resultDom = new XmlDocument();
+            resultDom.LoadXml(resultXml);
+            XmlNode resultRoot = resultDom.DocumentElement;
+
+            bool bResult = true;
+
+            XmlNamespaceManager nsmgr = new XmlNamespaceManager(new NameTable());
+            nsmgr.AddNamespace("dprms", DpNs.dprms);
+
+            //XmlNodeList nodes = root.SelectNodes("//dprms:file", nsmgr);
+
+            // 检查希望相等的字段
+            foreach (string f in equalFields)
+            {
+                string text1 = submitRoot.SelectSingleNode(f, nsmgr).InnerText;// DomUtil.GetElementText(submitRoot, f);
+                string text2 = resultRoot.SelectSingleNode(f, nsmgr).InnerText;//DomUtil.GetElementText(resultRoot, f);
+
+                //XmlNode node=submitRoot.SelectSingleNode(f,nsmgr);
+
+
+                if (text1 == text2)
+                    info += f + "相同，符合预期。\r\n";
+                else
+                {
+                    info += f + "不同，不符合预期。\r\n";
+                    bResult = false;
+                }
+            }
+
+            // 检查不希望相等的字段
+            foreach (string f in unequalFiles)
+            {
+                string text1 = submitRoot.SelectSingleNode(f, nsmgr).InnerText;// DomUtil.GetElementText(submitRoot, f);
+                string text2 = resultRoot.SelectSingleNode(f, nsmgr).InnerText;
+
+                if (text1 != text2)
+                    info += f + "不同，符合预期。\r\n";
+                else
+                {
+                    info += f + "相同，不符合预期。\r\n";
+                    bResult = false;
+                }
+            }
+
+
+
+            return bResult;
         }
+
+        #endregion
+
+
+        #region 操作书目
+
+        private void button_biblio_Click(object sender, EventArgs e)
+        {
+            // 清空输出
+            ClearResult();
+
+            string accountType = this.comboBox_accountType.Text.Trim();
+
+            UserInfo u = null;
+            bool isReader = false;
+
+            if (accountType == C_accountType_zgworker)
+            {
+                //分馆馆员，能 新增/修改/删除 书目，书目与总分馆无关
+                u = this.NewUser(this.GetFullRights(C_Type_biblio), "");
+            }
+            else if (accountType == C_accountType_zgreader)
+            {
+                // 用管理员帐户创建一个总馆读者,下面以此读者身份操作
+                u = this.NewReaderUser("读者", this.GetFullRights(C_Type_biblio), "",
+                   out string readerBarcode,
+                   out string ownerReaderPath);
+                isReader = true;
+
+            }
+            else if (accountType == C_accountType_fgworker)
+            {
+                //分馆馆员，能 新增/修改/删除 书目，书目与总分馆无关
+                u = this.NewUser(this.GetFullRights(C_Type_biblio), "A馆");
+            }
+            else if (accountType == C_accountType_fgreader)
+            {
+                // 用管理员帐户创建一个分馆读者,下面以此读者身份操作
+                 u = this.NewReaderUser("A馆读者", this.GetFullRights(C_Type_biblio), "",
+                    out string readerBarcode,
+                    out string ownerReaderPath);
+                isReader = true;
+            }
+            else
+                throw new Exception("不支持的身份类型" + accountType);
+
+            // 操作书目
+            this.DoBiblio(u, isReader);
+        }
+
+
+        public void DoBiblio(UserInfo u, bool isReader)
+        {
+            this.EnableCtrls(false);
+            try
+            {
+                // 先新增，应成功
+                string newPath = GetAppendPath(C_Type_biblio);
+                string outputPath = this.DoRes(u, C_Type_biblio, newPath, "new", true,isReader);
+
+                // 获取/修改/删除   均应成功
+                this.DoRes(u, C_Type_biblio, outputPath, new List<string> { "get", "change", "delete" }, true,isReader);
+
+            }
+            catch (Exception e1)
+            {
+                MessageBox.Show(this, u.UserName + "操作读者异常:" + e1.Message);
+            }
+            finally
+            {
+                this.EnableCtrls(true);
+            }
+        }
+
+
+        #endregion
+
+
     }
 }
