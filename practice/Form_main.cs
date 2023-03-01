@@ -3194,6 +3194,11 @@ out string strError);
                     this._channelPool.ReturnChannel(channel);
             }
         }
+
+        private void 功能ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 
 
