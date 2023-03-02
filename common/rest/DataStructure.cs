@@ -2029,6 +2029,33 @@ LibraryServerResult.ErrorInfo		出错信息
 
     #endregion
 
+    #region SetSystemParameter
+
+    [DataContract]
+    public class SetSystemParameterRequest
+    {
+        [DataMember]
+        public string strCategory { get; set; }
+        [DataMember]
+        public string strName { get; set; }
+
+        //strValue
+        [DataMember]
+        public string strValue { get; set; }
+    }
+
+    [DataContract]
+    public class SetSystemParameterResponse
+    {
+        [DataMember]
+        public LibraryServerResult SetSystemParameterResult { get; set; }
+
+        [DataMember]
+        public string strValue { get; set; }
+    }
+
+    #endregion
+
     #region Search
 
     [DataContract]

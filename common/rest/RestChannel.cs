@@ -4359,42 +4359,40 @@ namespace DigitalPlatform.LibraryRestClient
 
         // todo
         public long SetSystemParameter(
-    // DigitalPlatform.Stop stop,
     string strCategory,
     string strName,
     string strValue,
     out string strError)
         {
+
             strError = "";
 
-            /*
         REDO:
-            try
-            {
-                LibraryServerResult result = this.ws.SetSystemParameter(strCategory,
-                    strName,
-                    strValue);
-                if (result.Value == -1 && result.ErrorCode == ErrorCode.NotLogin)
-                {
-                    if (DoNotLogin(ref strError) == 1)
-                        goto REDO;
-                    return -1;
-                }
-                strError = result.ErrorInfo;
-                this.ErrorCode = result.ErrorCode;
-                this.ClearRedoCount();
-                return result.Value;
-            }
-            catch (Exception ex)
-            {
-                int nRet = ConvertWebError(ex, out strError);
-                if (nRet == 0)
-                    return -1;
-                goto REDO;
-            }
-            */
+            CookieAwareWebClient client = this.GetClient();
 
-            return 0;
+            SetSystemParameterRequest request = new SetSystemParameterRequest()
+            {
+                strCategory = strCategory,
+                strName = strName,
+                strValue = strValue
+            };
+            byte[] baData = Encoding.UTF8.GetBytes(Serialize(request));
+            byte[] result = client.UploadData(GetRestfulApiUrl("SetSystemParameter"),
+                "POST",
+                baData);
+
+            string strResult = Encoding.UTF8.GetString(result);
+            SetSystemParameterResponse response = Deserialize<SetSystemParameterResponse>(strResult);
+            if (response.SetSystemParameterResult.Value == -1
+                && response.SetSystemParameterResult.ErrorCode == ErrorCode.NotLogin)
+            {
+                if (DoNotLogin(ref strError) == 1)
+                    goto REDO;
+            }
+
+            strError = response.SetSystemParameterResult.ErrorInfo;
+
+            return response.SetSystemParameterResult.Value;
         }
 
         public long ManageDatabase(string strAction,

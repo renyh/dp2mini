@@ -38,13 +38,12 @@
             this.label2 = new System.Windows.Forms.Label();
             this.comboBox_accountType = new System.Windows.Forms.ComboBox();
             this.button_readerLogin_item3 = new System.Windows.Forms.Button();
-            this.button_readerLogin_item2 = new System.Windows.Forms.Button();
             this.button_readerLogin_arrived = new System.Windows.Forms.Button();
             this.button_readerLogin_amerce = new System.Windows.Forms.Button();
             this.button_readerLogin_issue = new System.Windows.Forms.Button();
             this.button_readerLogin_comment = new System.Windows.Forms.Button();
             this.button_readerLogin_order = new System.Windows.Forms.Button();
-            this.button_readerLogin_item = new System.Windows.Forms.Button();
+            this.button_item = new System.Windows.Forms.Button();
             this.button_biblio = new System.Windows.Forms.Button();
             this.button_GetItemInfo = new System.Windows.Forms.Button();
             this.button_createZfgEnv = new System.Windows.Forms.Button();
@@ -116,7 +115,7 @@
             this.button_reader.Location = new System.Drawing.Point(7, 83);
             this.button_reader.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.button_reader.Name = "button_reader";
-            this.button_reader.Size = new System.Drawing.Size(103, 52);
+            this.button_reader.Size = new System.Drawing.Size(100, 50);
             this.button_reader.TabIndex = 68;
             this.button_reader.Tag = "";
             this.button_reader.Text = "读者";
@@ -128,13 +127,12 @@
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.comboBox_accountType);
             this.groupBox1.Controls.Add(this.button_readerLogin_item3);
-            this.groupBox1.Controls.Add(this.button_readerLogin_item2);
             this.groupBox1.Controls.Add(this.button_readerLogin_arrived);
             this.groupBox1.Controls.Add(this.button_readerLogin_amerce);
             this.groupBox1.Controls.Add(this.button_readerLogin_issue);
             this.groupBox1.Controls.Add(this.button_readerLogin_comment);
             this.groupBox1.Controls.Add(this.button_readerLogin_order);
-            this.groupBox1.Controls.Add(this.button_readerLogin_item);
+            this.groupBox1.Controls.Add(this.button_item);
             this.groupBox1.Controls.Add(this.button_biblio);
             this.groupBox1.Controls.Add(this.button_reader);
             this.groupBox1.Location = new System.Drawing.Point(12, 82);
@@ -169,7 +167,7 @@
             // button_readerLogin_item3
             // 
             this.button_readerLogin_item3.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
-            this.button_readerLogin_item3.Location = new System.Drawing.Point(585, 83);
+            this.button_readerLogin_item3.Location = new System.Drawing.Point(349, 83);
             this.button_readerLogin_item3.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.button_readerLogin_item3.Name = "button_readerLogin_item3";
             this.button_readerLogin_item3.Size = new System.Drawing.Size(172, 52);
@@ -179,23 +177,10 @@
             this.button_readerLogin_item3.UseVisualStyleBackColor = false;
             this.button_readerLogin_item3.Click += new System.EventHandler(this.button_readerLogin_item3_Click);
             // 
-            // button_readerLogin_item2
-            // 
-            this.button_readerLogin_item2.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
-            this.button_readerLogin_item2.Location = new System.Drawing.Point(403, 83);
-            this.button_readerLogin_item2.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
-            this.button_readerLogin_item2.Name = "button_readerLogin_item2";
-            this.button_readerLogin_item2.Size = new System.Drawing.Size(172, 52);
-            this.button_readerLogin_item2.TabIndex = 76;
-            this.button_readerLogin_item2.Tag = "";
-            this.button_readerLogin_item2.Text = "册(有书斋)";
-            this.button_readerLogin_item2.UseVisualStyleBackColor = false;
-            this.button_readerLogin_item2.Click += new System.EventHandler(this.button_readerLogin_item2_Click);
-            // 
             // button_readerLogin_arrived
             // 
             this.button_readerLogin_arrived.BackColor = System.Drawing.SystemColors.Highlight;
-            this.button_readerLogin_arrived.Location = new System.Drawing.Point(884, 83);
+            this.button_readerLogin_arrived.Location = new System.Drawing.Point(655, 81);
             this.button_readerLogin_arrived.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.button_readerLogin_arrived.Name = "button_readerLogin_arrived";
             this.button_readerLogin_arrived.Size = new System.Drawing.Size(157, 52);
@@ -208,7 +193,7 @@
             // button_readerLogin_amerce
             // 
             this.button_readerLogin_amerce.BackColor = System.Drawing.SystemColors.Highlight;
-            this.button_readerLogin_amerce.Location = new System.Drawing.Point(1051, 83);
+            this.button_readerLogin_amerce.Location = new System.Drawing.Point(822, 81);
             this.button_readerLogin_amerce.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.button_readerLogin_amerce.Name = "button_readerLogin_amerce";
             this.button_readerLogin_amerce.Size = new System.Drawing.Size(129, 52);
@@ -221,7 +206,7 @@
             // button_readerLogin_issue
             // 
             this.button_readerLogin_issue.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
-            this.button_readerLogin_issue.Location = new System.Drawing.Point(1308, 83);
+            this.button_readerLogin_issue.Location = new System.Drawing.Point(1079, 81);
             this.button_readerLogin_issue.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.button_readerLogin_issue.Name = "button_readerLogin_issue";
             this.button_readerLogin_issue.Size = new System.Drawing.Size(81, 52);
@@ -234,7 +219,7 @@
             // button_readerLogin_comment
             // 
             this.button_readerLogin_comment.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
-            this.button_readerLogin_comment.Location = new System.Drawing.Point(760, 83);
+            this.button_readerLogin_comment.Location = new System.Drawing.Point(531, 81);
             this.button_readerLogin_comment.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.button_readerLogin_comment.Name = "button_readerLogin_comment";
             this.button_readerLogin_comment.Size = new System.Drawing.Size(114, 52);
@@ -247,7 +232,7 @@
             // button_readerLogin_order
             // 
             this.button_readerLogin_order.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
-            this.button_readerLogin_order.Location = new System.Drawing.Point(1190, 83);
+            this.button_readerLogin_order.Location = new System.Drawing.Point(961, 81);
             this.button_readerLogin_order.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.button_readerLogin_order.Name = "button_readerLogin_order";
             this.button_readerLogin_order.Size = new System.Drawing.Size(108, 52);
@@ -257,18 +242,18 @@
             this.button_readerLogin_order.UseVisualStyleBackColor = false;
             this.button_readerLogin_order.Click += new System.EventHandler(this.button_readerLogin_order_Click);
             // 
-            // button_readerLogin_item
+            // button_item
             // 
-            this.button_readerLogin_item.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
-            this.button_readerLogin_item.Location = new System.Drawing.Point(215, 83);
-            this.button_readerLogin_item.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
-            this.button_readerLogin_item.Name = "button_readerLogin_item";
-            this.button_readerLogin_item.Size = new System.Drawing.Size(178, 52);
-            this.button_readerLogin_item.TabIndex = 70;
-            this.button_readerLogin_item.Tag = "";
-            this.button_readerLogin_item.Text = "册(无书斋)";
-            this.button_readerLogin_item.UseVisualStyleBackColor = false;
-            this.button_readerLogin_item.Click += new System.EventHandler(this.button_readerLogin_item_Click);
+            this.button_item.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
+            this.button_item.Location = new System.Drawing.Point(230, 83);
+            this.button_item.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.button_item.Name = "button_item";
+            this.button_item.Size = new System.Drawing.Size(100, 50);
+            this.button_item.TabIndex = 70;
+            this.button_item.Tag = "";
+            this.button_item.Text = "册";
+            this.button_item.UseVisualStyleBackColor = false;
+            this.button_item.Click += new System.EventHandler(this.button_item_Click);
             // 
             // button_biblio
             // 
@@ -276,7 +261,7 @@
             this.button_biblio.Location = new System.Drawing.Point(120, 83);
             this.button_biblio.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.button_biblio.Name = "button_biblio";
-            this.button_biblio.Size = new System.Drawing.Size(88, 52);
+            this.button_biblio.Size = new System.Drawing.Size(100, 50);
             this.button_biblio.TabIndex = 69;
             this.button_biblio.Tag = "";
             this.button_biblio.Text = "书目";
@@ -344,9 +329,8 @@
         private System.Windows.Forms.Button button_readerLogin_issue;
         private System.Windows.Forms.Button button_readerLogin_comment;
         private System.Windows.Forms.Button button_readerLogin_order;
-        private System.Windows.Forms.Button button_readerLogin_item;
+        private System.Windows.Forms.Button button_item;
         private System.Windows.Forms.Button button_biblio;
-        private System.Windows.Forms.Button button_readerLogin_item2;
         private System.Windows.Forms.Button button_readerLogin_item3;
         private System.Windows.Forms.Button button_GetItemInfo;
         private System.Windows.Forms.Button button_createZfgEnv;

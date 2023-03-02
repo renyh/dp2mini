@@ -531,12 +531,13 @@ namespace DigitalPlatform.CirculationClient
                 return -1;
             }
 
-            lRet = channel.SetSystemParameter(
+             lRet = channel.SetSystemParameter(
     // stop,
     "circulation",
     "locationTypes",
     dom.DocumentElement.InnerXml,
     out strError);
+
             if (lRet == -1)
                 return -1;
 
