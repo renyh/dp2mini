@@ -3618,7 +3618,7 @@ namespace DigitalPlatform.LibraryRestClient
             }
         }
 
-        public long GetSystemParameter(
+        public int GetSystemParameter(
     // DigitalPlatform.Stop stop,
     string strCategory,
     string strName,
@@ -3631,7 +3631,7 @@ namespace DigitalPlatform.LibraryRestClient
             strValue = response.strValue;
             strError = response.GetSystemParameterResult.ErrorInfo;
 
-            return response.GetSystemParameterResult.Value;
+            return (int)response.GetSystemParameterResult.Value;
         }
 
 
@@ -4355,10 +4355,9 @@ namespace DigitalPlatform.LibraryRestClient
         #endregion
 
 
-        #region 创建环境相关函数 todo
+        #region 创建环境相关函数
 
-        // todo
-        public long SetSystemParameter(
+        public int SetSystemParameter(
     string strCategory,
     string strName,
     string strValue,
@@ -4392,14 +4391,14 @@ namespace DigitalPlatform.LibraryRestClient
 
             strError = response.SetSystemParameterResult.ErrorInfo;
 
-            return response.SetSystemParameterResult.Value;
+            return (int)response.SetSystemParameterResult.Value;
         }
 
         public long ManageDatabase(string strAction,
-    string strDatabaseName,
-    string strDatabaseInfo,
-   out string strOutputInfo,
-   out string strError)
+                string strDatabaseName,
+                string strDatabaseInfo,
+               out string strOutputInfo,
+               out string strError)
         {
             strError = "";
             strOutputInfo = "";
@@ -4493,51 +4492,54 @@ namespace DigitalPlatform.LibraryRestClient
         /// <para>-1:   出错</para>
         /// <para>&gt;=0:   结果数量</para>
         /// </returns>
-        public long GetCalendar(
+        public GetCalendarResponse GetCalendar(
             // DigitalPlatform.Stop stop,
             string strAction,
             string strName,
             int nStart,
-            int nCount,
-            out CalenderInfo[] contents,
-            out string strError)
+            int nCount)
         {
-            strError = "";
+            string strError = "";
 
-            contents = null;
-
-            /*
         REDO:
             try
             {
-                LibraryServerResult result = this.ws.GetCalendar(
-                    out contents,
-                                        strAction,
-                    strName,
-                    nStart,
-                    nCount
-                    );
-                if (result.Value == -1 && result.ErrorCode == ErrorCode.NotLogin)
+
+                CookieAwareWebClient client = this.GetClient();
+
+                GetCalendarRequest request = new GetCalendarRequest()
+                {
+                    strAction = strAction,
+                    strName = strName,
+                    nStart = nStart,
+                    nCount = nCount
+                };
+
+                byte[] baData = Encoding.UTF8.GetBytes(Serialize(request));
+                byte[] result = client.UploadData(GetRestfulApiUrl("GetCalendar"),
+                        "POST",
+                        baData);
+
+                string strResult = Encoding.UTF8.GetString(result);
+                GetCalendarResponse response = Deserialize<GetCalendarResponse>(strResult);
+                if (response.GetCalendarResult.Value == -1
+    && response.GetCalendarResult.ErrorCode == ErrorCode.NotLogin)
                 {
                     if (DoNotLogin(ref strError) == 1)
                         goto REDO;
-                    return -1;
                 }
-                strError = result.ErrorInfo;
-                this.ErrorCode = result.ErrorCode;
-                this.ClearRedoCount();
-                return result.Value;
+
+                return response;
             }
             catch (Exception ex)
             {
                 int nRet = ConvertWebError(ex, out strError);
                 if (nRet == 0)
-                    return -1;
+                    return null;
                 goto REDO;
             }
-            */
 
-            return 0;
+
         }
 
         // 设置、修改日历
@@ -4560,34 +4562,44 @@ namespace DigitalPlatform.LibraryRestClient
         {
             strError = "";
 
-            /*
+
         REDO:
             try
             {
-                LibraryServerResult result = this.ws.SetCalendar(
-                    strAction,
-                    info);
-                if (result.Value == -1 && result.ErrorCode == ErrorCode.NotLogin)
+
+                CookieAwareWebClient client = this.GetClient();
+
+                SetCalendarRequest request = new SetCalendarRequest()
+                {
+                    strAction = strAction,
+                    info = info
+                };
+
+                byte[] baData = Encoding.UTF8.GetBytes(Serialize(request));
+                byte[] result = client.UploadData(GetRestfulApiUrl("SetCalendar"),
+                        "POST",
+                        baData);
+
+                string strResult = Encoding.UTF8.GetString(result);
+                SetCalendarResponse response = Deserialize<SetCalendarResponse>(strResult);
+                if (response.SetCalendarResult.Value == -1
+    && response.SetCalendarResult.ErrorCode == ErrorCode.NotLogin)
                 {
                     if (DoNotLogin(ref strError) == 1)
                         goto REDO;
-                    return -1;
                 }
-                strError = result.ErrorInfo;
-                this.ErrorCode = result.ErrorCode;
-                this.ClearRedoCount();
-                return result.Value;
+
+                strError = response.SetCalendarResult.ErrorInfo;
+                return response.SetCalendarResult.Value;
             }
             catch (Exception ex)
             {
-                int nRet = ConvertWebError(ex, out strError);
+                int nRet = ConvertWebError(ex, out  strError);
                 if (nRet == 0)
                     return -1;
                 goto REDO;
             }
-            */
 
-            return 0;
         }
 
 

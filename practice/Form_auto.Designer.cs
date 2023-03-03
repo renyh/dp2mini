@@ -34,10 +34,8 @@
             this.comboBox_TestRight_type = new System.Windows.Forms.ComboBox();
             this.button_testRight = new System.Windows.Forms.Button();
             this.button_reader = new System.Windows.Forms.Button();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label2 = new System.Windows.Forms.Label();
             this.comboBox_accountType = new System.Windows.Forms.ComboBox();
-            this.button_readerLogin_item3 = new System.Windows.Forms.Button();
             this.button_readerLogin_arrived = new System.Windows.Forms.Button();
             this.button_readerLogin_amerce = new System.Windows.Forms.Button();
             this.button_readerLogin_issue = new System.Windows.Forms.Button();
@@ -45,21 +43,21 @@
             this.button_readerLogin_order = new System.Windows.Forms.Button();
             this.button_item = new System.Windows.Forms.Button();
             this.button_biblio = new System.Windows.Forms.Button();
+            this.button_ItemHasBorrow = new System.Windows.Forms.Button();
             this.button_GetItemInfo = new System.Windows.Forms.Button();
-            this.button_createZfgEnv = new System.Windows.Forms.Button();
-            this.groupBox1.SuspendLayout();
+            this.button_createEnv = new System.Windows.Forms.Button();
+            this.button_delEnv = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // button_accessAndObject
             // 
-            this.button_accessAndObject.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button_accessAndObject.Location = new System.Drawing.Point(1083, 14);
+            this.button_accessAndObject.Location = new System.Drawing.Point(787, 26);
             this.button_accessAndObject.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.button_accessAndObject.Name = "button_accessAndObject";
-            this.button_accessAndObject.Size = new System.Drawing.Size(273, 56);
+            this.button_accessAndObject.Size = new System.Drawing.Size(213, 56);
             this.button_accessAndObject.TabIndex = 58;
             this.button_accessAndObject.Tag = "";
-            this.button_accessAndObject.Text = "存取定义与对象权限";
+            this.button_accessAndObject.Text = "存取定义与对象";
             this.button_accessAndObject.UseVisualStyleBackColor = true;
             this.button_accessAndObject.Click += new System.EventHandler(this.button_accessAndObject_Click);
             // 
@@ -68,10 +66,10 @@
             this.webBrowser1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.webBrowser1.Location = new System.Drawing.Point(19, 245);
+            this.webBrowser1.Location = new System.Drawing.Point(19, 169);
             this.webBrowser1.MinimumSize = new System.Drawing.Size(20, 20);
             this.webBrowser1.Name = "webBrowser1";
-            this.webBrowser1.Size = new System.Drawing.Size(1323, 563);
+            this.webBrowser1.Size = new System.Drawing.Size(1292, 630);
             this.webBrowser1.TabIndex = 62;
             // 
             // label1
@@ -94,57 +92,38 @@
             "期",
             "违约金",
             "预约到书"});
-            this.comboBox_TestRight_type.Location = new System.Drawing.Point(32, 25);
+            this.comboBox_TestRight_type.Location = new System.Drawing.Point(35, 37);
             this.comboBox_TestRight_type.Name = "comboBox_TestRight_type";
-            this.comboBox_TestRight_type.Size = new System.Drawing.Size(235, 35);
+            this.comboBox_TestRight_type.Size = new System.Drawing.Size(114, 35);
             this.comboBox_TestRight_type.TabIndex = 66;
             this.comboBox_TestRight_type.Text = "读者";
             // 
             // button_testRight
             // 
-            this.button_testRight.Location = new System.Drawing.Point(273, 17);
+            this.button_testRight.Location = new System.Drawing.Point(155, 29);
             this.button_testRight.Name = "button_testRight";
-            this.button_testRight.Size = new System.Drawing.Size(368, 50);
+            this.button_testRight.Size = new System.Drawing.Size(171, 50);
             this.button_testRight.TabIndex = 67;
-            this.button_testRight.Text = "权限测试（用总馆馆员）";
+            this.button_testRight.Text = "权限测试";
             this.button_testRight.UseVisualStyleBackColor = true;
             this.button_testRight.Click += new System.EventHandler(this.button_testRight_Click);
             // 
             // button_reader
             // 
-            this.button_reader.Location = new System.Drawing.Point(7, 83);
+            this.button_reader.Location = new System.Drawing.Point(361, 94);
             this.button_reader.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.button_reader.Name = "button_reader";
-            this.button_reader.Size = new System.Drawing.Size(100, 50);
+            this.button_reader.Size = new System.Drawing.Size(91, 50);
             this.button_reader.TabIndex = 68;
             this.button_reader.Tag = "";
             this.button_reader.Text = "读者";
             this.button_reader.UseVisualStyleBackColor = true;
             this.button_reader.Click += new System.EventHandler(this.button_reader_Click);
             // 
-            // groupBox1
-            // 
-            this.groupBox1.Controls.Add(this.label2);
-            this.groupBox1.Controls.Add(this.comboBox_accountType);
-            this.groupBox1.Controls.Add(this.button_readerLogin_item3);
-            this.groupBox1.Controls.Add(this.button_readerLogin_arrived);
-            this.groupBox1.Controls.Add(this.button_readerLogin_amerce);
-            this.groupBox1.Controls.Add(this.button_readerLogin_issue);
-            this.groupBox1.Controls.Add(this.button_readerLogin_comment);
-            this.groupBox1.Controls.Add(this.button_readerLogin_order);
-            this.groupBox1.Controls.Add(this.button_item);
-            this.groupBox1.Controls.Add(this.button_biblio);
-            this.groupBox1.Controls.Add(this.button_reader);
-            this.groupBox1.Location = new System.Drawing.Point(12, 82);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(1370, 157);
-            this.groupBox1.TabIndex = 69;
-            this.groupBox1.TabStop = false;
-            // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(6, 34);
+            this.label2.Location = new System.Drawing.Point(39, 106);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(120, 27);
             this.label2.TabIndex = 79;
@@ -158,29 +137,16 @@
             "总馆读者",
             "分馆工作人员",
             "分馆读者"});
-            this.comboBox_accountType.Location = new System.Drawing.Point(132, 31);
+            this.comboBox_accountType.Location = new System.Drawing.Point(165, 103);
             this.comboBox_accountType.Name = "comboBox_accountType";
-            this.comboBox_accountType.Size = new System.Drawing.Size(235, 35);
+            this.comboBox_accountType.Size = new System.Drawing.Size(188, 35);
             this.comboBox_accountType.TabIndex = 78;
             this.comboBox_accountType.Text = "总馆读者";
-            // 
-            // button_readerLogin_item3
-            // 
-            this.button_readerLogin_item3.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
-            this.button_readerLogin_item3.Location = new System.Drawing.Point(349, 83);
-            this.button_readerLogin_item3.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
-            this.button_readerLogin_item3.Name = "button_readerLogin_item3";
-            this.button_readerLogin_item3.Size = new System.Drawing.Size(172, 52);
-            this.button_readerLogin_item3.TabIndex = 77;
-            this.button_readerLogin_item3.Tag = "";
-            this.button_readerLogin_item3.Text = "册(有借阅)";
-            this.button_readerLogin_item3.UseVisualStyleBackColor = false;
-            this.button_readerLogin_item3.Click += new System.EventHandler(this.button_readerLogin_item3_Click);
             // 
             // button_readerLogin_arrived
             // 
             this.button_readerLogin_arrived.BackColor = System.Drawing.SystemColors.Highlight;
-            this.button_readerLogin_arrived.Location = new System.Drawing.Point(655, 81);
+            this.button_readerLogin_arrived.Location = new System.Drawing.Point(806, 94);
             this.button_readerLogin_arrived.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.button_readerLogin_arrived.Name = "button_readerLogin_arrived";
             this.button_readerLogin_arrived.Size = new System.Drawing.Size(157, 52);
@@ -193,7 +159,7 @@
             // button_readerLogin_amerce
             // 
             this.button_readerLogin_amerce.BackColor = System.Drawing.SystemColors.Highlight;
-            this.button_readerLogin_amerce.Location = new System.Drawing.Point(822, 81);
+            this.button_readerLogin_amerce.Location = new System.Drawing.Point(973, 94);
             this.button_readerLogin_amerce.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.button_readerLogin_amerce.Name = "button_readerLogin_amerce";
             this.button_readerLogin_amerce.Size = new System.Drawing.Size(129, 52);
@@ -206,7 +172,7 @@
             // button_readerLogin_issue
             // 
             this.button_readerLogin_issue.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
-            this.button_readerLogin_issue.Location = new System.Drawing.Point(1079, 81);
+            this.button_readerLogin_issue.Location = new System.Drawing.Point(1230, 94);
             this.button_readerLogin_issue.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.button_readerLogin_issue.Name = "button_readerLogin_issue";
             this.button_readerLogin_issue.Size = new System.Drawing.Size(81, 52);
@@ -219,7 +185,7 @@
             // button_readerLogin_comment
             // 
             this.button_readerLogin_comment.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
-            this.button_readerLogin_comment.Location = new System.Drawing.Point(531, 81);
+            this.button_readerLogin_comment.Location = new System.Drawing.Point(682, 94);
             this.button_readerLogin_comment.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.button_readerLogin_comment.Name = "button_readerLogin_comment";
             this.button_readerLogin_comment.Size = new System.Drawing.Size(114, 52);
@@ -232,7 +198,7 @@
             // button_readerLogin_order
             // 
             this.button_readerLogin_order.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
-            this.button_readerLogin_order.Location = new System.Drawing.Point(961, 81);
+            this.button_readerLogin_order.Location = new System.Drawing.Point(1112, 94);
             this.button_readerLogin_order.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.button_readerLogin_order.Name = "button_readerLogin_order";
             this.button_readerLogin_order.Size = new System.Drawing.Size(108, 52);
@@ -245,10 +211,10 @@
             // button_item
             // 
             this.button_item.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
-            this.button_item.Location = new System.Drawing.Point(230, 83);
+            this.button_item.Location = new System.Drawing.Point(572, 94);
             this.button_item.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.button_item.Name = "button_item";
-            this.button_item.Size = new System.Drawing.Size(100, 50);
+            this.button_item.Size = new System.Drawing.Size(88, 50);
             this.button_item.TabIndex = 70;
             this.button_item.Tag = "";
             this.button_item.Text = "册";
@@ -258,20 +224,32 @@
             // button_biblio
             // 
             this.button_biblio.BackColor = System.Drawing.SystemColors.Info;
-            this.button_biblio.Location = new System.Drawing.Point(120, 83);
+            this.button_biblio.Location = new System.Drawing.Point(462, 94);
             this.button_biblio.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.button_biblio.Name = "button_biblio";
-            this.button_biblio.Size = new System.Drawing.Size(100, 50);
+            this.button_biblio.Size = new System.Drawing.Size(87, 50);
             this.button_biblio.TabIndex = 69;
             this.button_biblio.Tag = "";
             this.button_biblio.Text = "书目";
             this.button_biblio.UseVisualStyleBackColor = false;
             this.button_biblio.Click += new System.EventHandler(this.button_biblio_Click);
             // 
+            // button_ItemHasBorrow
+            // 
+            this.button_ItemHasBorrow.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.button_ItemHasBorrow.Location = new System.Drawing.Point(334, 28);
+            this.button_ItemHasBorrow.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.button_ItemHasBorrow.Name = "button_ItemHasBorrow";
+            this.button_ItemHasBorrow.Size = new System.Drawing.Size(250, 52);
+            this.button_ItemHasBorrow.TabIndex = 77;
+            this.button_ItemHasBorrow.Tag = "";
+            this.button_ItemHasBorrow.Text = "获取有借阅者的册";
+            this.button_ItemHasBorrow.UseVisualStyleBackColor = false;
+            this.button_ItemHasBorrow.Click += new System.EventHandler(this.button_readerLogin_item3_Click);
+            // 
             // button_GetItemInfo
             // 
-            this.button_GetItemInfo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button_GetItemInfo.Location = new System.Drawing.Point(890, 14);
+            this.button_GetItemInfo.Location = new System.Drawing.Point(594, 26);
             this.button_GetItemInfo.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.button_GetItemInfo.Name = "button_GetItemInfo";
             this.button_GetItemInfo.Size = new System.Drawing.Size(183, 56);
@@ -281,36 +259,58 @@
             this.button_GetItemInfo.UseVisualStyleBackColor = true;
             this.button_GetItemInfo.Click += new System.EventHandler(this.button_GetItemInfo_Click);
             // 
-            // button_createZfgEnv
+            // button_createEnv
             // 
-            this.button_createZfgEnv.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button_createZfgEnv.Location = new System.Drawing.Point(684, 16);
-            this.button_createZfgEnv.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
-            this.button_createZfgEnv.Name = "button_createZfgEnv";
-            this.button_createZfgEnv.Size = new System.Drawing.Size(196, 52);
-            this.button_createZfgEnv.TabIndex = 70;
-            this.button_createZfgEnv.Tag = "";
-            this.button_createZfgEnv.Text = "创建分馆环境";
-            this.button_createZfgEnv.UseVisualStyleBackColor = true;
-            this.button_createZfgEnv.Click += new System.EventHandler(this.button_createZfgEnv_Click);
+            this.button_createEnv.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.button_createEnv.Location = new System.Drawing.Point(1041, 30);
+            this.button_createEnv.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.button_createEnv.Name = "button_createEnv";
+            this.button_createEnv.Size = new System.Drawing.Size(130, 52);
+            this.button_createEnv.TabIndex = 70;
+            this.button_createEnv.Tag = "";
+            this.button_createEnv.Text = "创建环境";
+            this.button_createEnv.UseVisualStyleBackColor = true;
+            this.button_createEnv.Click += new System.EventHandler(this.button_createZfgEnv_Click);
+            // 
+            // button_delEnv
+            // 
+            this.button_delEnv.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.button_delEnv.Location = new System.Drawing.Point(1181, 30);
+            this.button_delEnv.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.button_delEnv.Name = "button_delEnv";
+            this.button_delEnv.Size = new System.Drawing.Size(151, 52);
+            this.button_delEnv.TabIndex = 79;
+            this.button_delEnv.Tag = "";
+            this.button_delEnv.Text = "删除环境";
+            this.button_delEnv.UseVisualStyleBackColor = true;
+            this.button_delEnv.Click += new System.EventHandler(this.button_delEnv_Click);
             // 
             // Form_auto
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(14F, 27F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1397, 841);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(216F, 216F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
+            this.ClientSize = new System.Drawing.Size(1366, 832);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.comboBox_accountType);
+            this.Controls.Add(this.button_delEnv);
+            this.Controls.Add(this.button_readerLogin_arrived);
             this.Controls.Add(this.button_GetItemInfo);
-            this.Controls.Add(this.button_createZfgEnv);
-            this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.button_readerLogin_amerce);
+            this.Controls.Add(this.button_createEnv);
+            this.Controls.Add(this.button_readerLogin_issue);
+            this.Controls.Add(this.button_ItemHasBorrow);
+            this.Controls.Add(this.button_readerLogin_comment);
+            this.Controls.Add(this.button_readerLogin_order);
             this.Controls.Add(this.button_testRight);
+            this.Controls.Add(this.button_item);
             this.Controls.Add(this.comboBox_TestRight_type);
+            this.Controls.Add(this.button_biblio);
             this.Controls.Add(this.label1);
+            this.Controls.Add(this.button_reader);
             this.Controls.Add(this.webBrowser1);
             this.Controls.Add(this.button_accessAndObject);
             this.Name = "Form_auto";
             this.Text = "自动测试";
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -323,7 +323,6 @@
         private System.Windows.Forms.ComboBox comboBox_TestRight_type;
         private System.Windows.Forms.Button button_testRight;
         private System.Windows.Forms.Button button_reader;
-        private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Button button_readerLogin_arrived;
         private System.Windows.Forms.Button button_readerLogin_amerce;
         private System.Windows.Forms.Button button_readerLogin_issue;
@@ -331,10 +330,11 @@
         private System.Windows.Forms.Button button_readerLogin_order;
         private System.Windows.Forms.Button button_item;
         private System.Windows.Forms.Button button_biblio;
-        private System.Windows.Forms.Button button_readerLogin_item3;
+        private System.Windows.Forms.Button button_ItemHasBorrow;
         private System.Windows.Forms.Button button_GetItemInfo;
-        private System.Windows.Forms.Button button_createZfgEnv;
+        private System.Windows.Forms.Button button_createEnv;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ComboBox comboBox_accountType;
+        private System.Windows.Forms.Button button_delEnv;
     }
 }

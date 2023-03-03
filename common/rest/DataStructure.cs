@@ -2110,6 +2110,71 @@ LibraryServerResult.ErrorInfo		出错信息
 
     #endregion
 
+    #region GetCalendar
+
+    /*
+        public LibraryServerResult GetCalendar(
+            string strAction,
+            string strName,
+            int nStart,
+            int nCount,
+            out CalenderInfo[] contents)
+     */
+
+    [DataContract]
+    public class GetCalendarRequest
+    {
+        [DataMember]
+        public string strAction { get; set; }
+
+        [DataMember]
+        public string strName { get; set; }
+
+        [DataMember]
+        public int nStart { get; set; }
+
+        [DataMember]
+        public int nCount { get; set; }
+    }
+
+
+    [DataContract]
+    public class GetCalendarResponse
+    {
+        [DataMember]
+        public LibraryServerResult GetCalendarResult { get; set; }
+
+        [DataMember]
+        public CalenderInfo contents { get; set; }
+    }
+
+
+    #endregion
+
+    #region SetCalendar
+
+    [DataContract]
+    public class SetCalendarRequest
+    {
+        [DataMember]
+        public string strAction { get; set; }
+        [DataMember]
+        public CalenderInfo info { get; set; }
+
+    }
+
+
+    [DataContract]
+    public class SetCalendarResponse
+    {
+        [DataMember]
+        public LibraryServerResult SetCalendarResult { get; set; }
+
+
+    }
+
+
+    #endregion
 
     public class CalenderInfo
     {
