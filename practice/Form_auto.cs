@@ -5685,7 +5685,7 @@ bool isReader = false)
         private void button_item_Click(object sender, EventArgs e)
         {
             // 确保准备好总分馆环境
-            EnsureZfgEnv();
+            //EnsureZfgEnv();
 
             string accountType = this.comboBox_accountType.Text.Trim();
 

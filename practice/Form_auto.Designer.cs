@@ -262,10 +262,10 @@
             // button_createEnv
             // 
             this.button_createEnv.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button_createEnv.Location = new System.Drawing.Point(1041, 30);
+            this.button_createEnv.Location = new System.Drawing.Point(1031, 30);
             this.button_createEnv.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.button_createEnv.Name = "button_createEnv";
-            this.button_createEnv.Size = new System.Drawing.Size(130, 52);
+            this.button_createEnv.Size = new System.Drawing.Size(140, 52);
             this.button_createEnv.TabIndex = 70;
             this.button_createEnv.Tag = "";
             this.button_createEnv.Text = "创建环境";
