@@ -3085,36 +3085,16 @@ bool isReader = false)
                     "",  //个人书斋
                     out reader2);
 
-                this.displayLine(this.getLarge("用管理员身份创建第2个读者"+reader2));
-
 
                 // 用supervisor创建两个册记录
                 this.displayLine(this.getLarge("用管理员身份创建2条册记录。"));
-
-                string itemNewPath = this.GetAppendPath(C_Type_item);
-                string itemBarcode1 = "";
-                string itemPath1 = "";
-                writeRes = this.WriteXml(this.mainForm.GetSupervisorAccount(),
-                     itemNewPath,
-                     GetXml(C_Type_item, true, out itemBarcode1));
-                if (writeRes.WriteResResult.Value == -1)
-                    throw new Exception("管理员创建第1册异常：" + writeRes.WriteResResult.ErrorInfo);
-                itemPath1 = writeRes.strOutputResPath;
-
-                string itemBarcode2 = "";
-                string itemPath2 = "";
-                writeRes = this.WriteXml(this.mainForm.GetSupervisorAccount(),
-                     itemNewPath,
-                     GetXml(C_Type_item, true, out itemBarcode2));
-                if (writeRes.WriteResResult.Value == -1)
-                    throw new Exception("管理员创建第2册异常：" + writeRes.WriteResResult.ErrorInfo);
-                itemPath2 = writeRes.strOutputResPath;
+               string itemPath1 = this.CreateItemBySupervisor(Env_ZG_Location, Env_ZG_BookType, out string itemBarcode1);
+                string itemPath2 = this.CreateItemBySupervisor(Env_ZG_Location, Env_ZG_BookType, out string itemBarcode2);
 
                 // 预约路径
                 string ownerXmlPath = "";  //自己预约的书
-                string ownerObjectPath = "";
                 string otherXmlPath = "";   // 他人预约的书
-                string otherObjectPath = "";
+
                 string newPath = this.GetAppendPath(type);
 
 
@@ -3124,7 +3104,6 @@ bool isReader = false)
                     strXml1 = GetArrivedXml(readerBarcode, itemBarcode1, true);
                 else if (type == C_Type_Amerce)
                     strXml1= this.GetAmerceXml(readerBarcode, itemBarcode1, true);
-
                 this.displayLine(this.getLarge("管理员为读者" + readerBarcode + "针对册" + itemBarcode1 +"创建'"+type+"'记录"));
                 writeRes = this.WriteXml(this.mainForm.GetSupervisorAccount(),
                                                      newPath,
@@ -3133,7 +3112,7 @@ bool isReader = false)
                 if (writeRes.WriteResResult.Value == -1)
                     throw new Exception("管理员写"+type+"记录异常：" + writeRes.WriteResResult.ErrorInfo);
                 ownerXmlPath = writeRes.strOutputResPath;
-                ownerObjectPath = ownerXmlPath + "/object/0";
+                //ownerObjectPath = ownerXmlPath + "/object/0";
 
                 // 管理员为读者2 针对 册2 写预约到书 或者 违约金记录
                 string strXml2 = "";
@@ -3149,169 +3128,28 @@ bool isReader = false)
                 if (writeRes.WriteResResult.Value == -1)
                     throw new Exception("管理员写"+type+"异常：" + writeRes.WriteResResult.ErrorInfo);
                 otherXmlPath = writeRes.strOutputResPath;
-                otherObjectPath = otherXmlPath + "/object/0";
+                //otherObjectPath = otherXmlPath + "/object/0";
 
                 #endregion
+         
+                //===
+                this.displayLine(this.getLarge("第1组测试：读者操作自己的"+type+"记录。"));
+                this.DoRes1(u, C_Type_Arrived, newPath, "new", true, true, strXml1);
+                this.DoRes1(u, C_Type_Arrived, ownerXmlPath, "get", true, true, "");
+                string xml = this.GetArrivedXml(readerBarcode, "B003", true);
+                this.DoResMultiple(u,C_Type_Arrived,ownerXmlPath,"change,delete",true,true, xml);
 
-
-
-                #region 第1组测试：读者新建预约到书/违约金，应不能。
-
-                this.displayLine(this.getLarge("第1组测试：读者新建"+type+"记录。"));
-
-
-                // 用WriteRes新建自己的预约到书 或 违约金
-                this.displayLine(GetBR() + getBold(u.UserName + "用WriteRes新建自己的"+type+"xml，应成功。"));
-                writeRes = this.WriteXml(u, newPath,
-                   strXml1,//this.GetXml(C_Type_Arrived, true), 
-                    true);
-                if (writeRes.WriteResResult.Value == 0)
-                    this.displayLine("符合预期");
-                else
-                    this.displayLine(getRed("不符合预期，读者应可以创建属于自己的"+type+"记录。"));
-
-
-                // 用WriteRes新建别人的预约到书 或 违约金
-                this.displayLine(GetBR() + getBold(u.UserName + "用WriteRes新建他人的" + type + "xml，应失败。"));
-                writeRes = this.WriteXml(u, newPath,
-                   strXml2,//this.GetXml(C_Type_Arrived, true), 
-                    true);
-                if (writeRes.WriteResResult.Value == -1)
-                    this.displayLine("符合预期");
-                else
-                    this.displayLine(getRed("不符合预期，读者应不能创建他人的"+type+"记录。"));
-
-                #endregion
-
-                #region 第2组测试：获取自己的预约到书/违约金
-
-                this.displayLine(this.getLarge("第2组测试：获取自己的" + type));
-
-
-                // 用GetRes()获取
-                this.displayLine(GetBR() + getBold(u.UserName + "获取自己的" + type + "xml，应成功。"));
-                GetResResponse getRes = this.GetRes(u, ownerXmlPath, true);
-                if (getRes.GetResResult.Value >= 0)
-                    this.displayLine("符合预期");
-                else
-                    this.displayLine(getRed("不符合预期"));
-
-                // 用GetRes()获取自己下的对象
-                this.displayLine(GetBR() + getBold(u.UserName + "获取自己的" + type + "的对象，应成功。"));
-                getRes = this.GetRes(u, ownerObjectPath, true);
-                if (getRes.GetResResult.Value >= 0)
-                    this.displayLine("符合预期");
-                else
-                    this.displayLine(getRed("不符合预期"));
-
-                #endregion
-
-                #region 第3组测试：获取他人的预约到书/违约金
-
-                this.displayLine(this.getLarge("第3组测试：获取他人的" + type));
-
-
-                // 用GetRes()获取
-                this.displayLine(GetBR() + getBold(u.UserName + "获取他人的" + type + "xml，应失败。"));
-                getRes = this.GetRes(u, otherXmlPath, true);
-                if (getRes.GetResResult.Value == -1)
-                    this.displayLine("符合预期");
-                else
-                    this.displayLine(getRed("不符合预期"));
-
-                // 用GetRes()获取他人下的对象
-                this.displayLine(GetBR() + getBold(u.UserName + "获取他人的" + type + "下的对象，应失败。"));
-                getRes = this.GetRes(u, otherObjectPath, true);
-                if (getRes.GetResResult.Value == -1)
-                    this.displayLine("符合预期");
-                else
-                    this.displayLine(getRed("不符合预期"));
-
-                #endregion
-
-
-                #region 第4组测试：读者修改自己的预约到书 或 违约金
-
-                this.displayLine(this.getLarge("第4组测试：读者修改自己的"+type+"，应成功。"));
-
-
-                // 修改预约者是自己的预约到书/违约金xml
-                this.displayLine(GetBR() + getBold(u.UserName + "修改自己的"+type+"xml，应成功。"));
-                writeRes = this.WriteXml(u, ownerXmlPath,
-                    this.GetArrivedXml(readerBarcode, "B003", true), true);
-                if (writeRes.WriteResResult.Value == 0)
-                    this.displayLine("符合预期");
-                else
-                    this.displayLine(getRed("不符合预期，读者应可以修改自己的"+type+"xml。"));
-
-                // 修改预约者是自己的预约到书的对象
-                this.displayLine(GetBR() + getBold(u.UserName + "修改自己的"+type+"的对象，应成功。"));
-                writeRes = this.WriteObject(u, ownerObjectPath, true);
-                if (writeRes.WriteResResult.Value == 0)
-                    this.displayLine("符合预期");
-                else
-                    this.displayLine(getRed("不符合预期，读者应可以修改自己"+type+"下的对象。"));
-
-                #endregion
-
-                #region 第5组测试：读者修改他人的预约到书 或 违约金
-
-                this.displayLine(this.getLarge("第5组测试：读者修改他人的" + type + "，应失败。"));
-
-
-                //修改预约者是他人的预约到书xml
-                this.displayLine(GetBR() + getBold(u.UserName + "修改他人的"+type+"xml，应失败。"));
-                writeRes = this.WriteXml(u, otherXmlPath,
-                    this.GetArrivedXml(reader2, "B004", true), true);
-                if (writeRes.WriteResResult.Value == -1)
-                    this.displayLine("符合预期");
-                else
-                    this.displayLine(getRed("不符合预期"));
-
-
-                // 修改预约者是他人的预约到书的对象
-                this.displayLine(GetBR() + getBold(u.UserName + "修改他人的"+type+"的对象，应失败。"));
-                writeRes = this.WriteObject(u, otherObjectPath, true);
-                if (writeRes.WriteResResult.Value == -1)
-                    this.displayLine("符合预期");
-                else
-                    this.displayLine(getRed("不符合预期"));
-
-                #endregion
-
-
-
-
-                #region 第6组测试：读者删除预约到书/违约金，应不可以
-
-                this.displayLine(this.getLarge("第6组测试：读者删除"+type+"记录"));
-
-
-                // 删除预约者是自己的预约到书
-                this.displayLine(GetBR() + getBold(u.UserName + "删除自己的"+type+"xml，应成功。"));
-                ret = this.DelXml(u, C_Type_Arrived, ownerXmlPath, true);
-                if (ret.Value == 0)
-                    this.displayLine("符合预期");
-                else
-                    this.displayLine(getRed("不符合预期，读者应可以删除自己的"+type+"xml。"));
-
-                // 删除预约者是他人的预约到书
-                this.displayLine(GetBR() + getBold(u.UserName + "删除他人的"+type+"xml，应失败。"));
-                ret = this.DelXml(u, C_Type_Arrived, otherXmlPath, true);
-                if (ret.Value == -1)
-                    this.displayLine("符合预期");
-                else
-                    this.displayLine(getRed("不符合预期，读者不能删除他人的"+type+"xml。"));
-
-                #endregion
-
-
-
+                //===
+                this.displayLine(this.getLarge("第2组测试：读者操作他人的" + type + "记录。"));
+                this.DoRes1(u, C_Type_Arrived, newPath, "new", false, true, strXml2);
+                this.DoRes1(u, C_Type_Arrived, otherXmlPath, "get", false, true, "");
+                xml = this.GetArrivedXml(reader2, "B004", true);
+                this.DoResMultiple(u, C_Type_Arrived, otherXmlPath, "change,delete", false, true, xml);
 
             }
             catch (Exception e1)
             {
-                MessageBox.Show(this, "读者身份获取预约到书-异常:" + e1.Message);
+                MessageBox.Show(this, "读者身份操作"+type+"-异常:" + e1.Message);
             }
             finally
             {
@@ -4953,13 +4791,7 @@ bool isReader = false)
 
         #region 操作各类数据
 
-        public void DoRes(UserInfo u, string type, string xmlPath, List<string> actionList, bool expectSucc, bool isReader,string xml)
-        {
-            foreach (string action in actionList)
-            {
-                this.DoRes(u, type, xmlPath, action, expectSucc, isReader,xml);
-            }
-        }
+
 
         public string ChangeBarcode(string xml)
         {
@@ -4983,7 +4815,16 @@ bool isReader = false)
             return dom.OuterXml;
         }
 
-        public string DoRes(UserInfo u, 
+        public void DoResMultiple(UserInfo u, string type, string xmlPath, string actions, bool expectSucc, bool isReader, string xml)
+        {
+            string[] actionList = actions.Split(new char[] { ',' });
+            foreach (string action in actionList)
+            {
+                this.DoRes1(u, type, xmlPath, action, expectSucc, isReader, xml);
+            }
+        }
+
+        public string DoRes1(UserInfo u, 
             string type,
             string xmlPath, 
             string action,
@@ -5040,6 +4881,21 @@ bool isReader = false)
                     setBiblioResponse = this.SetBiblioInfo(u, "new", xmlPath, xml, isReader);
                     this.CheckResult(expectSucc, setBiblioResponse.SetBiblioInfoResult);
                 }
+                else if (type == C_Type_item
+                        || type == C_Type_issue
+                        || type == C_Type_comment
+                        || type == C_Type_order)
+                {
+                    // SetItemInfo1
+                    this.displayLine(GetBR() + getBold(u.UserName + "SetItemInfo()新增" + type + "xml，" + expectResult));
+                    result = this.SetItemInfo1(u,
+                       type,
+                        "new",
+                        xmlPath,
+                        xml,
+                        isReader, out string temp1);
+                    this.CheckResult(expectSucc, result);
+                }
 
             }
             else if (action == "change")
@@ -5068,7 +4924,10 @@ bool isReader = false)
                     setBiblioResponse = this.SetBiblioInfo(u, "change", xmlPath, xml, isReader);
                     this.CheckResult(expectSucc, setBiblioResponse.SetBiblioInfoResult);
                 }
-                else
+                else if (type==C_Type_item
+                    || type==C_Type_issue
+                    || type== C_Type_comment
+                    || type==C_Type_order)
                 {
                     // SetItemInfo1
                     this.displayLine(GetBR() + getBold(u.UserName + "SetItemInfo()修改" + type + "xml，" + expectResult));
@@ -5257,10 +5116,10 @@ bool isReader = false)
                 string newPath = GetAppendPath(C_Type_reader, Env_ZG_ReaderDbName);
                 // 先新增，应成功
                 string xml = this.GetReaderXml(Env_ZG_PatronType, true, out string b1);
-                string outputPath = this.DoRes(u, C_Type_reader, newPath, "new", true, false,xml);
+                string outputPath = this.DoRes1(u, C_Type_reader, newPath, "new", true, false,xml);
                 // 获取/修改/删除   均应成功
                 xml = this.GetReaderXml(Env_ZG_PatronType, true, out string b2);
-                this.DoRes(u, C_Type_reader, outputPath, new List<string> { "get", "change", "delete" }, true, false,xml);
+                this.DoResMultiple(u, C_Type_reader, outputPath,  "get,change,delete", true, false,xml);
 
 
 
@@ -5271,10 +5130,10 @@ bool isReader = false)
                 newPath = GetAppendPath(C_Type_reader, Env_A_ReaderDbName);
                 // 先新增，应成功
                 xml = this.GetReaderXml(Env_A_PatronType, true, out string b3);
-                outputPath = this.DoRes(u, C_Type_reader, newPath, "new", true, false,xml);
+                outputPath = this.DoRes1(u, C_Type_reader, newPath, "new", true, false,xml);
                 // 获取/修改/删除   均应成功
                 xml = this.GetReaderXml(Env_A_PatronType, true, out string b4);
-                this.DoRes(u, C_Type_reader, outputPath, new List<string> { "get", "change", "delete" }, true, false,xml);
+                this.DoResMultiple(u, C_Type_reader, outputPath, "get,change,delete", true, false,xml);
 
 
             }
@@ -5319,17 +5178,17 @@ bool isReader = false)
                 this.displayLine(this.getLarge("第一组测试：新建读者"));
                 string newPath = this.GetAppendPath(C_Type_reader);
                 string xml = this.GetReaderXml(Env_ZG_PatronType, true, out string b1);
-                this.DoRes(u, C_Type_reader, newPath, "new", false, true,xml);
+                this.DoRes1(u, C_Type_reader, newPath, "new", false, true,xml);
 
                 //===
                 this.displayLine(this.getLarge("第二组测试1：读者获取自己的xml和对象"));
-                this.DoRes(u, C_Type_reader, ownerReaderPath, "get", true, true,"");
+                this.DoRes1(u, C_Type_reader, ownerReaderPath, "get", true, true,"");
 
                 //===
                 this.displayLine(this.getLarge("第二组测试2：读者修改自己的xml和对象"));
                 // 把提交的xml记下来，方便后面与结果比对
                 string submitXml = this.GetReaderXml(Env_ZG_PatronType, true, out string b2);
-                this.DoRes(u, C_Type_reader, ownerReaderPath, "change", true, true, submitXml);
+                this.DoRes1(u, C_Type_reader, ownerReaderPath, "change", true, true, submitXml);
                 // 修改完，需要把读者记录获取出来比对
                 getRes = this.GetRes(u, ownerReaderPath, true);
                 if (getRes.GetResResult.Value >= 0)
@@ -5354,12 +5213,12 @@ bool isReader = false)
 
                 //===
                 this.displayLine(this.getLarge("第二组测试3：读者不能删除自己记录"));
-                this.DoRes(u, C_Type_reader, ownerReaderPath, "delete", false, true,"");
+                this.DoRes1(u, C_Type_reader, ownerReaderPath, "delete", false, true,"");
 
                 //===
                 this.displayLine(this.getLarge("第三组测试：读者不能获取/修改/删除他人记录"));
                 xml= this.GetReaderXml(Env_ZG_PatronType, true, out string b3);
-                this.DoRes(u, C_Type_reader, otherReaderPath, new List<string> { "get", "change", "delete" }, false, true,xml);
+                this.DoResMultiple(u, C_Type_reader, otherReaderPath, "get,change,delete", false, true,xml);
             }
             catch (Exception e1)
             {
@@ -5398,10 +5257,10 @@ bool isReader = false)
 
                 // 先新增，应成功
                 string xml=this.GetReaderXml(Env_A_PatronType, true, out string b1);
-                string outputPath = this.DoRes(u, C_Type_reader, aNewPath, "new", true, false,xml);
+                string outputPath = this.DoRes1(u, C_Type_reader, aNewPath, "new", true, false,xml);
                 // 获取/修改/删除   均应成功
                 xml=this.GetReaderXml(Env_A_PatronType, true, out string b2);
-                this.DoRes(u, C_Type_reader, outputPath, new List<string> { "get", "change", "delete" }, true, false,xml);
+                this.DoResMultiple(u, C_Type_reader, outputPath,  "get, change, delete", true, false,xml);
 
 
 
@@ -5412,7 +5271,7 @@ bool isReader = false)
                 // 给他馆新增记录，应失败 
                 string bNewPath = GetAppendPath(C_Type_reader, Env_B_ReaderDbName);
                 xml = this.GetReaderXml(Env_B_PatronType, true, out string b3);
-                this.DoRes(u, C_Type_reader, bNewPath, "new", false, false,xml);
+                this.DoRes1(u, C_Type_reader, bNewPath, "new", false, false,xml);
 
                 // 用管理员身份新建一个B馆读者，作为他馆读者，测试A馆馆员操作他馆读者
                 string readerBarcode = "";
@@ -5421,7 +5280,7 @@ bool isReader = false)
                     out readerBarcode);
                 // 获取/修改/删除   均应失败
                 xml=this.GetReaderXml(Env_B_PatronType, true, out string b4);
-                this.DoRes(u, C_Type_reader, otherReaderPath, new List<string> { "get", "change", "delete" }, false, false,xml);
+                this.DoResMultiple(u, C_Type_reader, otherReaderPath, "get,change,delete", false, false,xml);
 
             }
             catch (Exception ex)
@@ -5470,23 +5329,23 @@ bool isReader = false)
                 this.displayLine(this.getLarge("第一组测试1：新建本馆读者"));
                 string newPath = Env_A_ReaderDbName+"/?";
                 string xml=this.GetReaderXml(Env_A_PatronType, true, out string b1);
-                this.DoRes(u, C_Type_reader, newPath, "new", false, true,xml);
+                this.DoRes1(u, C_Type_reader, newPath, "new", false, true,xml);
 
                 this.displayLine(this.getLarge("第一组测试2：新建他馆读者"));
                 newPath = Env_B_ReaderDbName+"/?";
                 xml = this.GetReaderXml(Env_B_PatronType, true, out string b2);
-                this.DoRes(u, C_Type_reader, newPath, "new", false, true,xml);
+                this.DoRes1(u, C_Type_reader, newPath, "new", false, true,xml);
 
 
                 //===
                 this.displayLine(this.getLarge("第二组测试1：读者获取自己的xml和对象"));
-                this.DoRes(u, C_Type_reader, ownerXmlPath, "get", true, true,"");
+                this.DoRes1(u, C_Type_reader, ownerXmlPath, "get", true, true,"");
 
                 //===
                 this.displayLine(this.getLarge("第二组测试2：读者修改自己的xml和对象"));
                 // 把提交的xml记下来，方便后面与结果比对
                 string submitXml = xml = this.GetReaderXml(Env_A_PatronType, true, out string b3);//this.GetXml(C_Type_reader, true);
-                this.DoRes(u, C_Type_reader, ownerXmlPath, "change", true, true, submitXml);
+                this.DoRes1(u, C_Type_reader, ownerXmlPath, "change", true, true, submitXml);
                 // 修改完，需要把读者记录获取出来比对
                 getRes = this.GetRes(u, ownerXmlPath, true);
                 if (getRes.GetResResult.Value >= 0)
@@ -5511,18 +5370,18 @@ bool isReader = false)
 
                 //===
                 this.displayLine(this.getLarge("第二组测试3：读者不能删除自己记录"));
-                this.DoRes(u, C_Type_reader, ownerXmlPath, "delete", false, true,"");
+                this.DoRes1(u, C_Type_reader, ownerXmlPath, "delete", false, true,"");
 
                 //===
                 this.displayLine(this.getLarge("第三组测试：读者不能 获取/修改/删除 本馆他人记录"));
                 xml = this.GetReaderXml(Env_A_PatronType, true, out string b4);
-                this.DoRes(u, C_Type_reader, aXmlPath, new List<string> { "get", "change", "delete" }, false, true,xml);
+                this.DoResMultiple(u, C_Type_reader, aXmlPath, "get, change,delete", false, true,xml);
 
 
                 //===
                 this.displayLine(this.getLarge("第四组测试：读者不能 获取/修改/删除 他馆他人记录"));
                 xml = this.GetReaderXml(Env_B_PatronType, true, out string b5);
-                this.DoRes(u, C_Type_reader, bXmlPath, new List<string> { "get", "change", "delete" }, false, true,xml);
+                this.DoResMultiple(u, C_Type_reader, bXmlPath, "get,change,delete", false, true,xml);
             }
             catch (Exception e1)
             {
@@ -5661,10 +5520,10 @@ bool isReader = false)
                 // 先新增，应成功
                 string newPath = GetAppendPath(C_Type_biblio);
                 string xml = this.GetXml(C_Type_biblio,true);
-                string outputPath = this.DoRes(u, C_Type_biblio, newPath, "new", true,isReader,xml);
+                string outputPath = this.DoRes1(u, C_Type_biblio, newPath, "new", true,isReader,xml);
 
                 // 获取/修改/删除   均应成功
-                this.DoRes(u, C_Type_biblio, outputPath, new List<string> { "get", "change", "delete" }, true,isReader,xml);
+                this.DoResMultiple(u, C_Type_biblio, outputPath,  "get,change,delete", true,isReader,xml);
 
             }
             catch (Exception e1)
@@ -5735,11 +5594,11 @@ bool isReader = false)
                 // 先新增，应成功
                 string loc = this.Env_ZG_Location;
                 string itemXml = this.GetItemXml(loc, this.Env_ZG_BookType,true, out string temp1);
-                string outputPath = this.DoRes(u, C_Type_item, newPath, "new", true, false,itemXml);
+                string outputPath = this.DoRes1(u, C_Type_item, newPath, "new", true, false,itemXml);
 
                 // 获取/修改/删除   均应成功
                  itemXml = this.GetItemXml(loc, Env_ZG_BookType, true, out string temp2);
-                this.DoRes(u, C_Type_item, outputPath, new List<string> { "get", "change", "delete" }, true, false,itemXml);
+                this.DoResMultiple(u, C_Type_item, outputPath, "get,change,delete", true, false,itemXml);
 
                 //===
                 // 第2组测试，操作分馆册
@@ -5748,11 +5607,11 @@ bool isReader = false)
 
                 // 先新增，应成功
                 itemXml = this.GetItemXml(loc, this.Env_B_BookType, true, out string temp3);
-                outputPath = this.DoRes(u, C_Type_item, newPath, "new", true, false, itemXml);
+                outputPath = this.DoRes1(u, C_Type_item, newPath, "new", true, false, itemXml);
 
                 // 获取/修改/删除   均应成功
                 itemXml = this.GetItemXml(loc, this.Env_B_BookType, true, out string temp4);
-                this.DoRes(u, C_Type_item, outputPath, new List<string> { "get", "change", "delete" }, true,false, itemXml);
+                this.DoResMultiple(u, C_Type_item, outputPath,  "get,change,delete", true,false, itemXml);
 
 
             }
@@ -5792,11 +5651,11 @@ bool isReader = false)
                 // 先新增，应成功
                 string loc= Env_A_LibraryCode + "/" + Env_A_Location;
                 string itemXml = this.GetItemXml(loc, this.Env_A_BookType,true, out string temp1);
-                string outputPath = this.DoRes(u, C_Type_item, newPath, "new", true, false, itemXml);
+                string outputPath = this.DoRes1(u, C_Type_item, newPath, "new", true, false, itemXml);
 
                 // 获取/修改/删除   均应成功
                 itemXml = this.GetItemXml(loc, this.Env_A_BookType, true, out string temp2);
-                this.DoRes(u, C_Type_item, outputPath, new List<string> { "get", "change", "delete" }, true, false, itemXml);
+                this.DoResMultiple(u, C_Type_item, outputPath, "get,change,delete", true, false, itemXml);
 
 
 
@@ -5807,7 +5666,7 @@ bool isReader = false)
 
                 // 新增，应失败
                 itemXml = this.GetItemXml(loc, this.Env_B_BookType, true, out string temp3);
-                outputPath = this.DoRes(u, C_Type_item, newPath, "new", false, false, itemXml);
+                outputPath = this.DoRes1(u, C_Type_item, newPath, "new", false, false, itemXml);
 
                 // 用管理员身份创建一册
                 this.displayLine(GetBR() + getBold("用管理员身份创建一条册为后面使用"));
@@ -5820,12 +5679,12 @@ bool isReader = false)
                 outputPath = writeRes.strOutputResPath;
 
                 // 获取，应成功
-                this.DoRes(u, C_Type_item, outputPath, new List<string> { "get" }, true, false, itemXml);
+                this.DoRes1(u, C_Type_item, outputPath, "get" , true, false, itemXml);
 
 
                 // 修改/删除   应失败
                 itemXml = this.GetItemXml(loc, this.Env_B_BookType, true, out string temp4);
-                this.DoRes(u, C_Type_item, outputPath, new List<string> {"change", "delete" }, false, false, itemXml);
+                this.DoResMultiple(u, C_Type_item, outputPath, "change,delete", false, false, itemXml);
 
 
             }
@@ -5866,7 +5725,7 @@ bool isReader = false)
                 // 新增册,应不成功
                 string newPath = this.GetAppendPath(C_Type_item);
                 string xml = this.GetItemXml(  Env_ZG_Location, Env_ZG_BookType, true, out string b1);
-                this.DoRes(u, C_Type_item, newPath, "new", false, true,xml);
+                this.DoRes1(u, C_Type_item, newPath, "new", false, true,xml);
 
                 // 用管理员身份创建一条册为后面使用
                 this.displayLine(GetBR() + getBold("用管理员身份创建一条册为后面使用"));
@@ -5878,11 +5737,11 @@ bool isReader = false)
                 string itemPath = writeRes.strOutputResPath;
 
                 // 应能获取
-                this.DoRes(u, C_Type_item, itemPath, "get", true, true,"");
+                this.DoRes1(u, C_Type_item, itemPath, "get", true, true,"");
 
                 // 不能 修改/删除
                 xml = this.GetItemXml( Env_ZG_Location, Env_ZG_BookType, true, out string b2);
-                this.DoRes(u, C_Type_item, itemPath, new List<string> { "change", "delete" }, false, true,xml);
+                this.DoResMultiple(u, C_Type_item, itemPath,"change,delete", false, true,xml);
 
 
                 // 
@@ -5897,15 +5756,15 @@ bool isReader = false)
                 // ===能操作属于个人书斋的册
                 // 新建册的馆藏地属于个人书斋
                 string itemXml = this.GetItemXml(this.Env_ZG_Location, this.Env_ZG_BookType, true, out string barcode1);
-                string ownerPath = this.DoRes(u, C_Type_item, newPath, "new", true, true, itemXml);
+                string ownerPath = this.DoRes1(u, C_Type_item, newPath, "new", true, true, itemXml);
 
                 // 可get/change/delete
                 itemXml = this.GetItemXml(this.Env_ZG_Location, this.Env_ZG_BookType, true, out string barcode2);
-                this.DoRes(u, C_Type_item, ownerPath, new List<string> { "get", "change", "delete" }, true, true,xml);
+                this.DoResMultiple(u, C_Type_item, ownerPath, "get,change,delete", true, true,xml);
 
                 // 不能new非个人书斋的册
                 itemXml = this.GetItemXml(this.Env_ZG_Location_阅览室, this.Env_ZG_BookType, true, out string barcode3);  //
-                this.DoRes(u, C_Type_item, newPath, "new", false, true, itemXml);
+                this.DoRes1(u, C_Type_item, newPath, "new", false, true, itemXml);
 
                 // 用管理员身份创建一册
                 this.displayLine(GetBR() + getBold("用管理员身份创建一条册为后面使用"));
@@ -5918,11 +5777,11 @@ bool isReader = false)
                 string otherPath = writeRes.strOutputResPath;
 
                 // 应能获取非个人书斋的册
-                this.DoRes(u, C_Type_item, otherPath, "get", true, true,"");
+                this.DoRes1(u, C_Type_item, otherPath, "get", true, true,"");
 
                 // 不能 修改/删除 非个人书斋的册
                 itemXml = this.GetItemXml(this.Env_ZG_Location_阅览室, this.Env_ZG_BookType, true, out string barcode4);  //
-                this.DoRes(u, C_Type_item, otherPath, new List<string> { "change", "delete" }, false, true,xml);
+                this.DoResMultiple(u, C_Type_item, otherPath, "change,delete", false, true,xml);
 
             }
             catch (Exception e1)
@@ -5962,18 +5821,18 @@ bool isReader = false)
                 string itemXml = this.GetItemXml(loc, this.Env_A_BookType, true, out string barcode1);
 
                 // 可新建个人书斋
-                string ownerPath = this.DoRes(u, C_Type_item, newPath, "new", true, true, itemXml);
+                string ownerPath = this.DoRes1(u, C_Type_item, newPath, "new", true, true, itemXml);
 
                 // 可get/change/delete
                 itemXml = this.GetItemXml(loc, this.Env_A_BookType, true, out string barcode2);
-                this.DoRes(u, C_Type_item, ownerPath, new List<string> { "get", "change", "delete" }, true, true,itemXml);
+                this.DoResMultiple(u, C_Type_item, ownerPath, "get,change,delete", true, true,itemXml);
 
                 // ====对本馆非个人书斋，可get，不可change/delete
                 this.displayLine(this.getLarge("第二组：分馆读者 对于不属于书斋的册，能get，不能new/change/delete。"));
                 // 不能new非个人书斋的册
                 loc = Env_A_LibraryCode + "/" + Env_A_Location_阅览室;
                 itemXml = this.GetItemXml(loc, this.Env_A_BookType, true, out string barcode3);
-                this.DoRes(u, C_Type_item, newPath, "new", false, true, itemXml);
+                this.DoRes1(u, C_Type_item, newPath, "new", false, true, itemXml);
 
                 // 用管理员身份创建一册
                 this.displayLine(GetBR() + getBold("用管理员身份创建一条册为后面使用"));
@@ -5986,11 +5845,11 @@ bool isReader = false)
                 string otherPath = writeRes.strOutputResPath;
 
                 // 应能获取本馆非个人书斋的册
-                this.DoRes(u, C_Type_item, otherPath, "get", true, true,"");
+                this.DoRes1(u, C_Type_item, otherPath, "get", true, true,"");
 
                 // 不能 修改/删除 非个人书斋的册
                 itemXml = this.GetItemXml(loc, this.Env_A_BookType, true, out string barcode4);
-                this.DoRes(u, C_Type_item, otherPath, new List<string> { "change", "delete" }, false, true,itemXml);
+                this.DoResMultiple(u, C_Type_item, otherPath,"change,delete", false, true,itemXml);
 
 
                 // 对本馆非个人书斋，可读，不可change/delete
@@ -5998,7 +5857,7 @@ bool isReader = false)
                 // 不能new他馆的册
                 loc = Env_B_LibraryCode + "/" + Env_A_Location; //注意：这里馆藏地设为”A馆图书馆“是故意的
                 itemXml = this.GetItemXml(loc, this.Env_B_BookType, true, out string barcode5);
-                this.DoRes(u, C_Type_item, newPath, "new", false, true, itemXml);
+                this.DoRes1(u, C_Type_item, newPath, "new", false, true, itemXml);
 
                 // 用管理员身份创建一册
                 this.displayLine(GetBR() + getBold("用管理员身份创建一条册为后面使用"));
@@ -6011,11 +5870,11 @@ bool isReader = false)
                  otherPath = writeRes.strOutputResPath;
 
                 // 应能获取他馆的册
-                this.DoRes(u, C_Type_item, otherPath, "get", true, true,"");
+                this.DoRes1(u, C_Type_item, otherPath, "get", true, true,"");
 
                 // 不能 修改/删除 他馆的册
                 itemXml = this.GetItemXml(loc, this.Env_B_BookType, true, out string barcode6);
-                this.DoRes(u, C_Type_item, otherPath, new List<string> { "change", "delete" }, false, true, itemXml);
+                this.DoResMultiple(u, C_Type_item, otherPath, "change,delete",false, true, itemXml);
 
             }
             catch (Exception e1)
@@ -6028,9 +5887,11 @@ bool isReader = false)
             }
         }
 
+
+        // 用管理员身份创建册记录
         public string CreateItemBySupervisor(string location,string bookType, out string itemBarcode)
         {
-            // 用管理员帐号给总馆馆藏地创建建两个册记录
+            // 用管理员帐号给总馆馆藏地创建建册记录
             string newPath = this.GetAppendPath(C_Type_item);
             string xml = this.GetItemXml(location, bookType, true, out itemBarcode);
             WriteResResponse writeRes = this.WriteXml(this.mainForm.GetSupervisorAccount(),
@@ -6101,24 +5962,24 @@ bool isReader = false)
 
                 //==总馆读者获取册
                 this.displayLine(this.getLarge("总馆读者获取总馆册（借阅者是自己）"));
-                this.DoRes(uZgReader, C_Type_item, zgItemPath1, "get", true, true,"");
+                this.DoRes1(uZgReader, C_Type_item, zgItemPath1, "get", true, true,"");
 
                 this.displayLine(this.getLarge("总馆读者获取总馆册（借阅者是别人），注意观察是否脱敏。"));
-                this.DoRes(uZgReader, C_Type_item, zgItemPath2, "get", true, true,"");
+                this.DoRes1(uZgReader, C_Type_item, zgItemPath2, "get", true, true,"");
 
                 this.displayLine(this.getLarge("总馆读者获取分馆册（借阅者是别人），注意观察是否脱敏。"));
-                this.DoRes(uZgReader, C_Type_item, fgItemPath1, "get", true, true,"");
+                this.DoRes1(uZgReader, C_Type_item, fgItemPath1, "get", true, true,"");
 
 
                 //==分馆读者获取册
                 this.displayLine(this.getLarge("分馆读者获取分馆册（借阅者是自己）"));
-                this.DoRes(uFgReader, C_Type_item, fgItemPath1, "get", true, true,"");
+                this.DoRes1(uFgReader, C_Type_item, fgItemPath1, "get", true, true,"");
 
                 this.displayLine(this.getLarge("分馆读者获取分馆册（借阅者是别人），注意观察是否脱敏。"));
-                this.DoRes(uFgReader, C_Type_item, fgItemPath2, "get", true, true,"");
+                this.DoRes1(uFgReader, C_Type_item, fgItemPath2, "get", true, true,"");
 
                 this.displayLine(this.getLarge("分馆读者获取总馆册（借阅者是别人），注意观察是否脱敏。"));
-                this.DoRes(uFgReader, C_Type_item, zgItemPath1, "get", true, true,"");
+                this.DoRes1(uFgReader, C_Type_item, zgItemPath1, "get", true, true,"");
 
 
 
