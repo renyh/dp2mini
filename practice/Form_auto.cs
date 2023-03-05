@@ -1444,11 +1444,11 @@ bool isReader = false)
             }
             else if (type == C_Type_Amerce)
             {
-                return this.GetAmerceXml("P001", "B001", hasFile);
+                return this.GetAmerceXml(Env_ZG_LibraryCode,"P001", "B001",Env_ZG_Location, hasFile);
             }
             else if (type == C_Type_Arrived)
             {
-                return this.GetArrivedXml("P001", "B001", hasFile);  //这个读者和册也可能是不存在的，没有关系。
+                return this.GetArrivedXml(Env_ZG_LibraryCode,"P001", "B001", Env_ZG_Location, hasFile);  //这个读者和册也可能是不存在的，没有关系。
 
             }
 
@@ -1479,7 +1479,7 @@ bool isReader = false)
         }
 
         // 得到预约到书
-        public string GetArrivedXml(string readerBarcode, string itemBarcode, bool hasFile)
+        public string GetArrivedXml(string libraryCode,string readerBarcode, string itemBarcode,string location, bool hasFile)
         {
             Random rd = new Random();
             int temp = rd.Next(1, 999999);
@@ -1491,19 +1491,40 @@ bool isReader = false)
             return @"<root>
                         <state>arrived</state>
                         <itemBarcode>" + itemBarcode + @"</itemBarcode>
-                        <box>#reservation</box>
+                        <onShelf>true</onShelf>
                         <readerBarcode>" + readerBarcode + @"</readerBarcode>
                         <notifyDate>Thu, 23 Feb 2023 14:36:41 +0800</notifyDate>
                         <refID>4c267d45-dd1e-474f-8709-e9d5c084002d</refID>
-                        <location>流通库</location>
+                        <libraryCode>"+ libraryCode + @"</libraryCode>
+                        <location>" + location+@"</location>
                         <accessNo>I242.43/S495</accessNo>"
                         + dprmsfile
                     + "</root>";
+
+
+            /*
+             <root>
+    <state>arrived</state>
+    <itemBarcode>B441924</itemBarcode>
+    <itemRefID>
+    </itemRefID>
+    <onShelf>true</onShelf>
+    <libraryCode>A馆</libraryCode>
+    <readerBarcode>P713445</readerBarcode>
+    <notifyDate>Sun, 05 Mar 2023 22:53:59 +0800</notifyDate>
+    <refID>8e378e72-671f-4d11-95eb-bf2f6d00705e</refID>
+    <location>A馆/A馆图书馆</location>
+    <accessNo>
+    </accessNo>
+</root>
+             */
+
+           
         }
 
 
         // 创建违约金记录
-        public string GetAmerceXml(string readerBarcode, string itemBarcode, bool hasFile)
+        public string GetAmerceXml(string libraryCode,string readerBarcode, string itemBarcode, string location, bool hasFile)
         {
             Random rd = new Random();
             int temp = rd.Next(1, 999999);
@@ -1514,10 +1535,9 @@ bool isReader = false)
 
             return @"<root>
                             <itemBarcode>" + itemBarcode + @"</itemBarcode>
-                            <location>流通库</location>
+                            <location>"+location+@"</location>
                             <readerBarcode>" + readerBarcode + @"</readerBarcode>
-                            <libraryCode>
-                            </libraryCode>
+                            <libraryCode>"+ libraryCode + @"</libraryCode>
                             <state>amerced</state>
                             <id>637986612496654587-1</id>
                             <reason>超期。超 23天; 违约金因子: CNY1.0/day</reason>
@@ -1534,6 +1554,31 @@ bool isReader = false)
                             <operTime>Tue, 13 Sep 2022 10:21:07 +0800</operTime>"
                           + dprmsfile
                     + "</root>";
+
+
+            /*
+<root>
+   <itemBarcode>DPB000005</itemBarcode>
+   <location>星洲学校/图书馆</location>
+   <readerBarcode>P101</readerBarcode>
+   <libraryCode>星洲学校</libraryCode>
+   <state>amerced</state>
+   <id>637999543337013048-1</id>
+   <reason>超期。超 33天; 违约金因子: CNY1.0/day</reason>
+   <overduePeriod>33day</overduePeriod>
+   <price>CNY33</price>
+   <comment>
+   </comment>
+   <borrowDate>Tue, 16 Aug 2022 17:25:45 +0800</borrowDate>
+   <borrowPeriod>10day</borrowPeriod>
+   <borrowOperator>supervisor</borrowOperator>
+   <returnDate>Wed, 28 Sep 2022 09:32:13 +0800</returnDate>
+   <returnOperator>supervisor</returnOperator>
+   <operator>supervisor</operator>
+   <operTime>Wed, 28 Sep 2022 09:32:50 +0800</operTime>
+   <pauseStart>Wed, 28 Sep 2022 09:32:13 +0800</pauseStart>
+</root>
+            */
         }
 
         // 得到册记录
@@ -3035,25 +3080,44 @@ bool isReader = false)
         private void button_readerLogin_arrived_Click(object sender, EventArgs e)
         {
 
-            this.CheckArrivedAmerce(C_Type_Arrived);
+            //确保准备好总分馆环境
+            EnsureZfgEnv();
+
+            string accountType = this.comboBox_accountType.Text.Trim();
+
+            if (accountType == C_accountType_zgworker)
+            {
+                this.CheckArrivedAmerceForZgWorker(C_Type_Arrived);
+            }
+            else if (accountType == C_accountType_zgreader)
+            {
+                this.CheckArrivedAmerceForZgReader(C_Type_Arrived);
+            }
+            else if (accountType == C_accountType_fgworker)
+            {
+                CheckArrivedAmerceForFgWorker(C_Type_Arrived);
+            }
+            else if (accountType == C_accountType_fgreader)
+            {
+                this.CheckArrivedAmerceForFgReader(C_Type_Arrived);
+            }
+            else
+                throw new Exception("不支持的身份类型" + accountType);
+
+
+            
         }
 
 
-        public void CheckArrivedAmerce(string type)
+        // 总馆读者身份操作预约到书 或 违约金
+        public void CheckArrivedAmerceForZgReader(string type)
         {
             /*
-准备环境：
-管理员创建两个读者
-创建两个册记录
-为读者1预约1，直接用WriteRes来写，主要是使用这条记录。
-为读者2预约2，
-
-用读者身份，应可以获取自己的预约到书，不能获取别人的预约到书。
-不能 创建/修改/删除 自己和他人的预约记录。
-目前读者可以 修改 和 删除预约者是自己的记录？？？
-
-
- */
+            准备环境：
+            管理员为总馆创建两个读者，两个册，
+            读者，应可以获取/创建/修改/删除 预约者是自己的预约到书记录。
+            不能获取/创建/修改/删除 他人的预约到书记录
+            */
             string rights = this.GetFullRights(type);
 
             this.EnableCtrls(false);
@@ -3063,7 +3127,6 @@ bool isReader = false)
                 ClearResult();
 
                 WriteResResponse writeRes = null;
-                LibraryServerResult ret = null;
 
                 // 目前此函数仅支持 预约到书 和 违约金
                 if (type != C_Type_Arrived && type != C_Type_Amerce)
@@ -3079,72 +3142,44 @@ bool isReader = false)
                    out string tempPath);
 
                 // 用supervisor创建第2个读者
-                string reader2 = "";
-                string reader2path = this.CreateReaderBySuperviosr( Env_ZG_ReaderDbName, Env_ZG_PatronType,
-                    "",//第2个读者不设权限,
-                    "",  //个人书斋
-                    out reader2);
+                 this.CreateReaderBySuperviosr( Env_ZG_ReaderDbName, Env_ZG_PatronType, "", "", out string reader2);
 
 
-                // 用supervisor创建两个册记录
+                // 用管理员身份创建两个册记录
                 this.displayLine(this.getLarge("用管理员身份创建2条册记录。"));
-               string itemPath1 = this.CreateItemBySupervisor(Env_ZG_Location, Env_ZG_BookType, out string itemBarcode1);
-                string itemPath2 = this.CreateItemBySupervisor(Env_ZG_Location, Env_ZG_BookType, out string itemBarcode2);
+                this.CreateItemBySupervisor(Env_ZG_Location, Env_ZG_BookType, out string itemBarcode1);
+                 this.CreateItemBySupervisor(Env_ZG_Location, Env_ZG_BookType, out string itemBarcode2);
 
-                // 预约路径
-                string ownerXmlPath = "";  //自己预约的书
-                string otherXmlPath = "";   // 他人预约的书
-
-                string newPath = this.GetAppendPath(type);
-
-
-                // 管理员为读者1 针对 册1 写预约到书 或者 违约金记录
-                string strXml1 = "";
-                if (type == C_Type_Arrived)
-                    strXml1 = GetArrivedXml(readerBarcode, itemBarcode1, true);
-                else if (type == C_Type_Amerce)
-                    strXml1= this.GetAmerceXml(readerBarcode, itemBarcode1, true);
-                this.displayLine(this.getLarge("管理员为读者" + readerBarcode + "针对册" + itemBarcode1 +"创建'"+type+"'记录"));
-                writeRes = this.WriteXml(this.mainForm.GetSupervisorAccount(),
-                                                     newPath,
-                                                     strXml1,
-                                                     false);
-                if (writeRes.WriteResResult.Value == -1)
-                    throw new Exception("管理员写"+type+"记录异常：" + writeRes.WriteResResult.ErrorInfo);
-                ownerXmlPath = writeRes.strOutputResPath;
-                //ownerObjectPath = ownerXmlPath + "/object/0";
-
-                // 管理员为读者2 针对 册2 写预约到书 或者 违约金记录
-                string strXml2 = "";
-                if (type == C_Type_Arrived)
-                    strXml2 = GetArrivedXml(reader2, itemBarcode2, true);
-                else if (type == C_Type_Amerce)
-                    strXml2 = this.GetAmerceXml(reader2, itemBarcode2, true);
-                this.displayLine(this.getLarge("管理员为读者" + reader2 + "针对册" + itemBarcode2 + "创建'" + type + "'记录"));
-                writeRes = this.WriteXml(this.mainForm.GetSupervisorAccount(),
-                                                     newPath,
-                                                    strXml2,
-                                                     false);
-                if (writeRes.WriteResResult.Value == -1)
-                    throw new Exception("管理员写"+type+"异常：" + writeRes.WriteResResult.ErrorInfo);
-                otherXmlPath = writeRes.strOutputResPath;
-                //otherObjectPath = otherXmlPath + "/object/0";
+                // 用管理员身份创建两条预约到书记录
+                this.displayLine(this.getLarge("用管理员身份创建2条预约到书记录。"));
+                // 预约者是自己的记录
+                string ownerXmlPath = this.CreateArrivedAmerceBySupervisor(type, Env_ZG_LibraryCode, readerBarcode, itemBarcode1,Env_ZG_Location);
+                // 预约者是他人的记录
+                string otherXmlPath = this.CreateArrivedAmerceBySupervisor(type, Env_ZG_LibraryCode, reader2, itemBarcode2, Env_ZG_Location);
+                
 
                 #endregion
          
-                //===
-                this.displayLine(this.getLarge("第1组测试：读者操作自己的"+type+"记录。"));
-                this.DoRes1(u, C_Type_Arrived, newPath, "new", true, true, strXml1);
-                this.DoRes1(u, C_Type_Arrived, ownerXmlPath, "get", true, true, "");
-                string xml = this.GetArrivedXml(readerBarcode, "B003", true);
-                this.DoResMultiple(u,C_Type_Arrived,ownerXmlPath,"change,delete",true,true, xml);
+                //==读者操作自己的记录===
+                this.displayLine(this.getLarge("第1组测试：读者操作自己的"+type+"记录，应成功"));
+                this.DoRes1(u, type, ownerXmlPath, "get", true, true, "");
 
-                //===
+                string xml = this.GetArrivedOrAmerceXml(type,Env_ZG_LibraryCode, readerBarcode,itemBarcode1+"-1",Env_ZG_Location);
+                this.DoResMultiple(u,type,ownerXmlPath,"change,delete",true,true, xml);
+
+                string newPath = this.GetAppendPath(type);
+                xml = this.GetArrivedOrAmerceXml(type, Env_ZG_LibraryCode, readerBarcode, itemBarcode1, Env_ZG_Location);
+                this.DoRes1(u, type, newPath, "new", true, true, xml);
+
+
+                //==读者操作他人的记录===
                 this.displayLine(this.getLarge("第2组测试：读者操作他人的" + type + "记录。"));
-                this.DoRes1(u, C_Type_Arrived, newPath, "new", false, true, strXml2);
-                this.DoRes1(u, C_Type_Arrived, otherXmlPath, "get", false, true, "");
-                xml = this.GetArrivedXml(reader2, "B004", true);
-                this.DoResMultiple(u, C_Type_Arrived, otherXmlPath, "change,delete", false, true, xml);
+                this.DoRes1(u, type, otherXmlPath, "get", false, true, "");
+
+                xml = this.GetArrivedOrAmerceXml(type, Env_ZG_LibraryCode, reader2, itemBarcode2 + "-1", Env_ZG_Location);
+                this.DoResMultiple(u, type, otherXmlPath, "change,delete", false, true, xml);
+
+                this.DoRes1(u, type, newPath, "new", false, true, xml);
 
             }
             catch (Exception e1)
@@ -3157,6 +3192,309 @@ bool isReader = false)
             }
         }
 
+        // 总馆读者身份操作预约到书 或 违约金
+        public void CheckArrivedAmerceForFgReader(string type)
+        {
+            /*
+            准备环境：
+            管理员为分馆A创建两个读者，两个册，
+            管理员为分馆B创建一读者一册
+
+            分馆A读者，应可以获取/创建/修改/删除 自己的预约到书记录。
+            不能获取/创建/修改/删除 本馆他人的预约到书记录
+            不能获取/创建/修改/删除 他馆他人的预约到书记录
+            */
+
+            this.EnableCtrls(false);
+            try
+            {
+                // 清空输出
+                ClearResult();
+
+                WriteResResponse writeRes = null;
+
+                // 目前此函数仅支持 预约到书 和 违约金
+                if (type != C_Type_Arrived && type != C_Type_Amerce)
+                    throw new Exception("CheckArrivedAmerce()不支持的类型" + type);
+
+
+                #region 环境准备
+
+                // 用管理员帐号创建一个读者，有managecomment权限，以下此读者帐号操作
+                UserInfo u = this.NewReaderUser(Env_A_ReaderDbName, Env_A_PatronType,
+                    this.GetFullRights(type), "",
+                    out string reader1,
+                   out string tempPath);
+
+                // 用supervisor创建第2个读者
+                this.CreateReaderBySuperviosr(Env_A_ReaderDbName, Env_A_PatronType, "", "", out string reader2);
+
+                // 用管理员身份创建两个册记录
+                string aLocation = Env_A_LibraryCode + "/" + Env_A_Location;
+                this.CreateItemBySupervisor(aLocation, Env_A_BookType, out string itemBarcode1);
+                this.CreateItemBySupervisor(aLocation, Env_A_BookType, out string itemBarcode2);
+
+                // 用管理员为分馆B创建一个读者，一册
+                this.CreateReaderBySuperviosr(Env_B_ReaderDbName, Env_B_PatronType, "", "", out string readerB);
+                string bLocation = Env_B_LibraryCode + "/" + Env_B_Location;
+                this.CreateItemBySupervisor(bLocation, Env_B_BookType, out string itemBarcodeB);
+
+                // 用管理员身份创建两条预约到书记录
+                //this.displayLine(this.getLarge("用管理员身份创建2条预约到书记录。"));
+                // 预约者是自己的记录
+
+                // 预约者是他人的记录
+                //string otherXmlPath = this.CreateArrivedAmerceBySupervisor(type, reader2, itemBarcode2, Env_ZG_Location);
+
+
+                #endregion
+
+                //==读者操作自己的记录===
+
+                this.displayLine(this.getLarge("第1组测试：读者操作自己的" + type + "记录，应成功"));
+
+
+                string newPath = this.GetAppendPath(type);
+                string xml = this.GetArrivedOrAmerceXml(type, Env_A_LibraryCode, reader1, itemBarcode1, aLocation);
+                string ownerXmlPath= this.DoRes1(u, type, newPath, "new", true, true, xml);
+                if (string.IsNullOrEmpty(ownerXmlPath)==true)//不成功的时候，管理员创建一下
+                {
+                     ownerXmlPath = this.CreateArrivedAmerceBySupervisor(type, Env_A_LibraryCode, reader1, itemBarcode1, aLocation);
+                }
+                this.DoRes1(u, type, ownerXmlPath, "get", true, true, "");
+
+                 xml = this.GetArrivedOrAmerceXml(type, Env_A_LibraryCode, reader1, itemBarcode1 + "-1", aLocation);
+                this.DoResMultiple(u, type, ownerXmlPath, "change,delete", true, true, xml);
+
+
+                //==读者操作本馆他人的记录===
+                this.displayLine(this.getLarge("第2组测试：读者操作本馆他人的" + type + "记录。"));
+
+                string otherXml = this.GetArrivedOrAmerceXml(type, Env_A_LibraryCode, reader2, itemBarcode2, aLocation);
+                string otherXmlPath=this.DoRes1(u, type, newPath, "new", false, true, otherXml);
+                if (string.IsNullOrEmpty(otherXmlPath) == true)  //不成功的时候，管理员创建一下
+                {
+                    otherXmlPath = this.CreateArrivedAmerceBySupervisor(type, Env_A_LibraryCode, reader2, itemBarcode2, aLocation);
+                }
+                this.DoRes1(u, type, otherXmlPath, "get", false, true, "");
+
+                xml = this.GetArrivedOrAmerceXml(type, Env_A_LibraryCode, reader2, itemBarcode2 + "-1", aLocation);
+                this.DoResMultiple(u, type, otherXmlPath, "change,delete", false, true, xml);
+
+
+
+                //==读者操作他馆他人的记录===
+                this.displayLine(this.getLarge("第3组测试：读者操作他馆他人的" + type + "记录。"));
+
+                xml = this.GetArrivedOrAmerceXml(type, Env_B_LibraryCode, readerB, itemBarcodeB, bLocation);
+                string bXmlPath = this.DoRes1(u, type, newPath, "new", false, true, xml);
+                if (string.IsNullOrEmpty(bXmlPath) == true)  //不成功的时候，管理员创建一下
+                {
+                    bXmlPath = this.CreateArrivedAmerceBySupervisor(type, Env_B_LibraryCode, readerB, itemBarcodeB, bLocation);
+                }
+                this.DoRes1(u, type, bXmlPath, "get", false, true, "");
+
+                xml = this.GetArrivedOrAmerceXml(type, Env_B_LibraryCode, readerB, itemBarcodeB + "-1", bLocation);
+                this.DoResMultiple(u, type, bXmlPath, "change,delete", false, true, xml);
+
+            }
+            catch (Exception e1)
+            {
+                MessageBox.Show(this, "读者身份操作" + type + "-异常:" + e1.Message);
+            }
+            finally
+            {
+                this.EnableCtrls(true);
+            }
+        }
+
+
+        // 总馆工作人员身份操作 预约到书 或 违约金
+        public void CheckArrivedAmerceForZgWorker(string type)
+        {
+            /*
+            准备环境：
+            管理员创建一个总馆读者，一个总馆册。
+            管理员创建一个分馆读者，一个分馆册
+
+
+
+            创建一个总馆工作人员，拥有预约到书完整权限，登录
+            为总馆读者预约到书，new/get/change/delete
+            为分馆读者预约到书，new/get/change/delete
+
+            ？？？读者是否跨馆预约，例另一分馆读者，预约另一分馆的册。
+            目前是可以的，实际不会直接写预约到书记录，只是一个特殊管理接口。所以不判断是否跨馆，是可以的，暂不做多的业务判断。
+
+
+ */
+
+
+            this.EnableCtrls(false);
+            try
+            {
+                // 清空输出
+                ClearResult();
+
+
+                // 目前此函数仅支持 预约到书 和 违约金
+                if (type != C_Type_Arrived && type != C_Type_Amerce)
+                    throw new Exception("CheckArrivedAmerce()不支持的类型" + type);
+
+
+                #region 环境准备
+
+                // 用管理员身份为总馆创建一个读者，一条册
+                this.CreateReaderBySuperviosr(Env_ZG_ReaderDbName, Env_ZG_PatronType, "", "", out string zgReader);
+                this.CreateItemBySupervisor(Env_ZG_Location, Env_ZG_BookType, out string zgItemBarcode);
+
+
+                // 用管理员身份为分馆创建一个读者，一条册
+                this.CreateReaderBySuperviosr(Env_A_ReaderDbName, Env_A_PatronType, "", "", out string fgReader);
+                this.CreateItemBySupervisor(Env_A_LibraryCode+"/"+ Env_A_Location, Env_A_BookType, out string fgItemBarcode);
+
+
+
+                #endregion
+
+                // 创建一个总工作人员帐户
+                UserInfo u = this.NewUser(this.GetFullRights(type), Env_ZG_LibraryCode);
+
+                //==操作总馆的预约到书/违约金===
+                this.displayLine(this.getLarge("第1组测试：操作总馆的" + type + "，应成功"));
+                string newPath = this.GetAppendPath(type);
+                string xml = this.GetArrivedOrAmerceXml(type, Env_ZG_LibraryCode, zgReader, zgItemBarcode, Env_ZG_Location);
+                string zgXmlPath = this.DoRes1(u, type, newPath, "new", true, false, xml);
+
+
+                 xml = this.GetArrivedOrAmerceXml(type, Env_ZG_LibraryCode, zgReader, zgItemBarcode + "-1", Env_ZG_Location);
+                this.DoResMultiple(u, type, zgXmlPath, "get,change,delete", true, false, xml);
+
+
+
+
+                //==操作分馆的预约到书/违约金===
+                this.displayLine(this.getLarge("第2组测试：操作分馆的" + type + "，应成功"));
+                xml = this.GetArrivedOrAmerceXml(type, Env_A_LibraryCode, fgReader, fgItemBarcode,Env_A_LibraryCode+"/"+ Env_A_Location);
+                string fgXmlPath = this.DoRes1(u, type, newPath, "new", true, false, xml);
+
+                xml = this.GetArrivedOrAmerceXml(type, Env_A_LibraryCode, fgReader, fgItemBarcode + "-1", Env_A_LibraryCode + "/" + Env_A_Location);
+                this.DoResMultiple(u, type, fgXmlPath, "get,change,delete", true, false, xml);
+
+                //== 测试读者跨馆预约，实现不会走这个接口
+                this.displayLine(this.getLarge("第3组测试：测试跨馆的" + type + "。"));
+                xml = this.GetArrivedOrAmerceXml(type, Env_ZG_LibraryCode, zgReader, fgItemBarcode, Env_ZG_Location);
+                string kgXmlPath = this.DoRes1(u, type, newPath, "new", true, false, xml);
+
+                xml = this.GetArrivedOrAmerceXml(type, Env_A_LibraryCode, fgReader, zgItemBarcode, Env_A_LibraryCode + "/" + Env_A_Location);
+                 kgXmlPath = this.DoRes1(u, type, newPath, "new", true, false, xml);
+
+            }
+            catch (Exception e1)
+            {
+                MessageBox.Show(this, "读者身份操作" + type + "-异常:" + e1.Message);
+            }
+            finally
+            {
+                this.EnableCtrls(true);
+            }
+        }
+
+
+        public void CheckArrivedAmerceForFgWorker(string type)
+        {
+            /*
+            准备环境：
+            管理员为分馆A创建好读者，册记录
+            管理员为分馆B创建好读者，册记录
+
+
+            给分馆A创建一工作人员，拥有预约到书完整权限，登录
+            针对分馆A的预约到书，new/get/change/delete，应成功
+            针对分馆B的预约到书，new/get/change/delete，应失败
+
+ */
+
+
+            this.EnableCtrls(false);
+            try
+            {
+                // 清空输出
+                ClearResult();
+
+
+                // 目前此函数仅支持 预约到书 和 违约金
+                if (type != C_Type_Arrived && type != C_Type_Amerce)
+                    throw new Exception("CheckArrivedAmerce()不支持的类型" + type);
+
+
+                #region 环境准备
+
+                // 用管理员身份为总馆创建一个读者，一条册
+                this.CreateReaderBySuperviosr(Env_A_ReaderDbName, Env_A_PatronType, "", "", out string aReader);
+                this.CreateItemBySupervisor(Env_A_LibraryCode + "/" +Env_A_Location, Env_A_BookType, out string aItemBarcode);
+
+
+                // 用管理员身份为分馆创建一个读者，一条册
+                this.CreateReaderBySuperviosr(Env_B_ReaderDbName, Env_B_PatronType, "", "", out string bReader);
+                this.CreateItemBySupervisor(Env_B_LibraryCode + "/" + Env_B_Location, Env_B_BookType, out string bItemBarcode);
+
+
+
+                #endregion
+
+                // 给分馆A创建一工作帐户
+                UserInfo u = this.NewUser(this.GetFullRights(type), Env_A_LibraryCode);
+
+                //==操作总馆的预约到书/违约金===
+                this.displayLine(this.getLarge("第1组测试：操作本馆的" + type + "，应成功"));
+                string newPath = this.GetAppendPath(type);
+                string loc = Env_A_LibraryCode + "/" + Env_A_Location;
+                string xml = this.GetArrivedOrAmerceXml(type, Env_A_LibraryCode, aReader, aItemBarcode, loc);
+                string xmlPath = this.DoRes1(u, type, newPath, "new", true, false, xml);
+                if (string.IsNullOrEmpty(xmlPath) == true)
+                {
+                    xmlPath = this.CreateArrivedAmerceBySupervisor(type, Env_A_LibraryCode, bReader, bItemBarcode, loc);
+                }
+
+                xml = this.GetArrivedOrAmerceXml(type, Env_A_LibraryCode, aReader, aItemBarcode + "-1", loc);
+                this.DoResMultiple(u, type, xmlPath, "get,change,delete", true, false, xml);
+
+
+
+
+                //==操作分馆的预约到书/违约金===
+                this.displayLine(this.getLarge("第2组测试：操作他馆的" + type + "，应失败"));
+                loc = Env_B_LibraryCode + "/" + Env_B_Location;
+                xml = this.GetArrivedOrAmerceXml(type, Env_B_LibraryCode, bReader, bItemBarcode, loc);
+                 xmlPath = this.DoRes1(u, type, newPath, "new", false, false, xml);
+
+                // 如果当前帐户不能创建，则由管理员创建一条
+                if (string.IsNullOrEmpty(xmlPath) == true)
+                {
+                   xmlPath= this.CreateArrivedAmerceBySupervisor(type, Env_B_LibraryCode, bReader, bItemBarcode, loc);
+                }
+                xml = this.GetArrivedOrAmerceXml(type, Env_B_LibraryCode, bReader, bItemBarcode + "-1",loc);
+                this.DoResMultiple(u, type, xmlPath, "get,change,delete", false, false, xml); ;
+
+                //== 测试读者跨馆预约，实现不会走这个接口
+                this.displayLine(this.getLarge("第3组测试：测试跨馆的" + type + "。"));
+                xml = this.GetArrivedOrAmerceXml(type, Env_A_LibraryCode, aReader, bItemBarcode, Env_A_LibraryCode + "/" + Env_A_Location);
+                string kgXmlPath = this.DoRes1(u, type, newPath, "new", false, false, xml);
+
+                xml = this.GetArrivedOrAmerceXml(type, Env_B_LibraryCode, bReader, aItemBarcode, Env_B_LibraryCode + "/" + Env_B_Location);
+                kgXmlPath = this.DoRes1(u, type, newPath, "new", false, false, xml);
+
+            }
+            catch (Exception e1)
+            {
+                MessageBox.Show(this, "读者身份操作" + type + "-异常:" + e1.Message);
+            }
+            finally
+            {
+                this.EnableCtrls(true);
+            }
+        }
 
         // 测试GetItemInfo接口获取册信息，以及测试有无书目权限时，返回书目是否正常。
         public void CheckGetItemInfo(string type)
@@ -3823,10 +4161,9 @@ bool isReader = false)
         // 用读者身份测试违约金
         private void button_readerLogin_amerce_Click(object sender, EventArgs e)
         {
-            //this.CheckOrderIssueAmerceForReader(C_Type_Amerce);
 
 
-            this.CheckArrivedAmerce(C_Type_Amerce);
+            //this.CheckArrivedAmerce(C_Type_Amerce);
         }
 
 
@@ -3878,8 +4215,40 @@ bool isReader = false)
         bool _existZfgEnv = false;
         public void EnsureZfgEnv()
         {
+            // 如果已经存在分馆环境，则不需要再次创建了。
             if (_existZfgEnv == true)
                 return;
+
+            // 先获取一下
+            RestChannel channel = null;
+            try
+            {
+                // 用管理员身份登录
+                UserInfo u = this.mainForm.GetSupervisorAccount();
+                channel = mainForm.GetChannelAndLogin(u.UserName, u.Password, false);
+
+                int nRet = channel.GetAllDatabase(out string dbXml, out string error);
+                if (nRet == -1)
+                {
+                    MessageBox.Show(this, "GetAllDatabase()出错：" + error);
+                    return;
+                }
+
+
+                XmlDocument dom = new XmlDocument();
+                dom.LoadXml(dbXml);  //测试中文图书
+                XmlNode node = dom.DocumentElement.SelectSingleNode("database[@name='" + this.Env_biblioDbName + "']");
+                if (node != null)
+                {
+                    this._existZfgEnv = true;
+                    return;
+                }
+            }
+            finally
+            {
+                if (channel != null)
+                    this.mainForm._channelPool.ReturnChannel(channel);
+            }
 
             CreateZfgEnv();
         }
@@ -4288,6 +4657,9 @@ bool isReader = false)
                     goto ERROR1;
 
                 displayLine("删除环境完成 ...");
+
+                // 分馆环境变量
+                this._existZfgEnv = false;
 
                 return 0;
             }
@@ -5004,7 +5376,7 @@ bool isReader = false)
                     Record rec = r2.searchresults[0];
                     if (expectSucc == true && (rec.RecordBody.Result == null || rec.RecordBody.Result.Value >= 0) )
                         this.displayLine("符合预期");
-                    else if (expectSucc == false && rec.RecordBody.Result.Value == -1)
+                    else if (expectSucc == false && (rec.RecordBody.Result == null || rec.RecordBody.Result.Value == -1))
                         this.displayLine("符合预期");
                     else
                         this.displayLine(getRed("不符合预期"));
@@ -5543,8 +5915,8 @@ bool isReader = false)
         #region 册
         private void button_item_Click(object sender, EventArgs e)
         {
-            // 确保准备好总分馆环境
-            //EnsureZfgEnv();
+            //确保准备好总分馆环境
+            EnsureZfgEnv();
 
             string accountType = this.comboBox_accountType.Text.Trim();
 
@@ -5901,6 +6273,36 @@ bool isReader = false)
                 throw new Exception("管理员创建册异常：" + writeRes.WriteResResult.ErrorInfo);
             return  writeRes.strOutputResPath;
         }
+
+        // 用管理身份创建预约到书 或 违约金记录
+        public string CreateArrivedAmerceBySupervisor(string type,string libraryCode, string readerBarcode, string itemBarcode,string location)
+        {
+            // 获取xml
+            string strXml = GetArrivedOrAmerceXml(type, libraryCode, readerBarcode, itemBarcode,location);
+
+            this.displayLine("管理员为读者" + readerBarcode + "针对册" + itemBarcode + "创建'" + type + "'记录");
+            string newPath = this.GetAppendPath(type);
+            WriteResResponse writeRes = this.WriteXml(this.mainForm.GetSupervisorAccount(),
+                                                 newPath,
+                                                 strXml,
+                                                 false);
+            if (writeRes.WriteResResult.Value == -1)
+                throw new Exception("管理员写" + type + "记录异常：" + writeRes.WriteResResult.ErrorInfo);
+            
+            return writeRes.strOutputResPath;
+        }
+
+        public string GetArrivedOrAmerceXml(string type,string libraryCode, string readerBarcode, string itemBarcode,string location)
+        {
+            if (type == C_Type_Arrived)
+                return GetArrivedXml(libraryCode, readerBarcode, itemBarcode, location,true);
+            else if (type == C_Type_Amerce)
+                return this.GetAmerceXml(libraryCode, readerBarcode, itemBarcode, location,true);
+            else
+                throw new Exception("GetArrivedOrAmerceXml()不支持的类型"+type);
+        }
+
+
 
         private void button_readerLogin_item3_Click(object sender, EventArgs e)
         {

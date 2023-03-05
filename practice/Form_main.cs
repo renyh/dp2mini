@@ -2411,11 +2411,11 @@ out string strError);
 
             // strResPath
             string strPath = this.textBox_GetRecord_strPath.Text.Trim();
-            if (string.IsNullOrEmpty(strPath) == true)
-            {
-                MessageBox.Show(this, "路径不能为空。");
-                return;
-            }
+            //if (string.IsNullOrEmpty(strPath) == true)
+            //{
+            //    MessageBox.Show(this, "路径不能为空。");
+            //    return;
+            //}
 
             RestChannel channel = this.GetChannel();
             try
