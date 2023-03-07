@@ -2189,6 +2189,7 @@ out string strError);
                     {
                         using (FileStream fs = new FileStream(fileName, FileMode.Create, FileAccess.Write))
                         {
+                            
                             fs.Write(baContent, 0, baContent.Length);
                             fs.Close();
                         }

@@ -4161,7 +4161,29 @@ bool isReader = false)
         // 用读者身份测试违约金
         private void button_readerLogin_amerce_Click(object sender, EventArgs e)
         {
+            //确保准备好总分馆环境
+            EnsureZfgEnv();
 
+            string accountType = this.comboBox_accountType.Text.Trim();
+
+            if (accountType == C_accountType_zgworker)
+            {
+                this.CheckArrivedAmerceForZgWorker(C_Type_Amerce);
+            }
+            else if (accountType == C_accountType_zgreader)
+            {
+                this.CheckArrivedAmerceForZgReader(C_Type_Amerce);
+            }
+            else if (accountType == C_accountType_fgworker)
+            {
+                CheckArrivedAmerceForFgWorker(C_Type_Amerce);
+            }
+            else if (accountType == C_accountType_fgreader)
+            {
+                this.CheckArrivedAmerceForFgReader(C_Type_Amerce);
+            }
+            else
+                throw new Exception("不支持的身份类型" + accountType);
 
             //this.CheckArrivedAmerce(C_Type_Amerce);
         }
