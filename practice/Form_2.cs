@@ -242,24 +242,33 @@ writeobject	写入对象资源	write object	2	废弃
                      */
                     if (r.Length >= 5)
                     {
-                        string state=r[4].Trim();
+                        string state = r[4].Trim();
                         if (string.IsNullOrEmpty(state) == false)
                             continue;
                     }
 
-                    string name=r[0].Trim();
+                    string name = r[0].Trim();
 
                     // 表示 是一个空行
                     if (string.IsNullOrEmpty(name) == true)
                         continue;
 
-                    string zh=r[1].Trim();
-                    string en=r[2].Trim();
-                    string level=r[3].Trim();
+                    // 表示是一个分类行
+                    if (r.Length < 2 || r[1].Trim() == "")
+                    {
+                        xml += "<!--" + name + "-->";  //输出一个分类
+                        continue;
+                    }
 
-                    xml += @"<property name='"+name+"' risklevel='"+level+"'>"
-                                + "<comment lang='zh'>"+zh+"</comment>"
-                                + "<comment lang='en'>"+en+"</comment>"
+                    string zh = r[1].Trim();
+
+
+                    string en = r[2].Trim();
+                    string level = r[3].Trim();
+
+                    xml += @"<property name='" + name + "' risklevel='" + level + "'>"
+                                + "<comment lang='zh'>" + zh + "</comment>"
+                                + "<comment lang='en'>" + en + "</comment>"
                                 + "</property>";
                 }
             }

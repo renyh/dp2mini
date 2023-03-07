@@ -992,7 +992,7 @@ bool isReader = false)
                     UserName = "u1",
                     Password = "1",
                     SetPassword = true,
-                    Rights = "writebiblioobject,getbiblioobject",
+                    Rights = "setbiblioobject,getbiblioobject",
                     Access = this.Env_biblioDbName+":setbiblioinfo=change|getbiblioinfo=*"
                 };
                 //创建帐号
@@ -1019,7 +1019,7 @@ bool isReader = false)
                     UserName = "u2",
                     Password = "1",
                     SetPassword = true,
-                    Rights = "writebiblioobject,getbiblioobject",
+                    Rights = "setbiblioobject,getbiblioobject",
                     Access = this.Env_biblioDbName+":setbiblioinfo=change(606)|getbiblioinfo=*"
                 };
                 //创建帐号
@@ -1048,7 +1048,7 @@ bool isReader = false)
                     SetPassword = true,
 
                     //new,应不能change对象
-                    Rights = "writebiblioobject,getbiblioobject",
+                    Rights = "setbiblioobject,getbiblioobject",
                     Access = this.Env_biblioDbName+ ":setbiblioinfo=new|getbiblioinfo=*"
                 };
                 //创建帐号
@@ -1076,7 +1076,7 @@ bool isReader = false)
                     SetPassword = true,
 
                     //delete,应不能change对象
-                    Rights = "writebiblioobject,getbiblioobject",
+                    Rights = "setbiblioobject,getbiblioobject",
                     Access = this.Env_biblioDbName+":setbiblioinfo=delete|getbiblioinfo=*"
                 };
                 //创建帐号
@@ -1104,7 +1104,7 @@ bool isReader = false)
                     SetPassword = true,
 
                     //通配符*表示new,change,and，应能change对象
-                    Rights = "writebiblioobject,getbiblioobject",
+                    Rights = "setbiblioobject,getbiblioobject",
                     Access = this.Env_biblioDbName+":setbiblioinfo=*|getbiblioinfo=*"
                 };
                 //创建帐号
@@ -1875,7 +1875,7 @@ bool isReader = false)
                 //    UserName = "u3",
                 //    Password = "1",
                 //    SetPassword = true,
-                //    Rights = rightsList[2],//"setreaderinfo,getreaderinfo,writereaderobject",
+                //    Rights = rightsList[2],//"setreaderinfo,getreaderinfo,setreaderobject",
                 //    Access = ""
                 //};
                 ////创建帐号
@@ -1933,7 +1933,7 @@ bool isReader = false)
                 //    UserName = "u4",
                 //    Password = "1",
                 //    SetPassword = true,
-                //    Rights = rightsList[3],//"setreaderinfo,getreaderinfo,writereaderobject,getreaderobject",
+                //    Rights = rightsList[3],//"setreaderinfo,getreaderinfo,setreaderobject,getreaderobject",
                 //    Access = ""
                 //};
                 ////创建帐号
@@ -2179,7 +2179,7 @@ bool isReader = false)
                 //    UserName = "u5",
                 //    Password = "1",
                 //    SetPassword = true,
-                //    Rights = rightsList[4],//"writereaderobject",
+                //    Rights = rightsList[4],//"setreaderobject",
                 //    Access = ""
                 //};
                 ////创建帐号
@@ -2211,7 +2211,7 @@ bool isReader = false)
                 //    UserName = "u6",
                 //    Password = "1",
                 //    SetPassword = true,
-                //    Rights = rightsList[5],//"writereaderobject, getreaderobject",
+                //    Rights = rightsList[5],//"setreaderobject, getreaderobject",
                 //    Access = ""
                 //};
                 ////创建帐号
@@ -2429,35 +2429,35 @@ bool isReader = false)
         {
             if (type == C_Type_reader)
             {
-                return "setreaderinfo,getreaderinfo,writereaderobject,getreaderobject";
+                return "setreaderinfo,getreaderinfo,setreaderobject,getreaderobject";
             }
             else if (type == C_Type_biblio)
             {
-                return "setbiblioinfo,getbiblioinfo,writebiblioobject,getbiblioobject";
+                return "setbiblioinfo,getbiblioinfo,setbiblioobject,getbiblioobject";
             }
             else if (type == C_Type_item)
             {
-                return "setiteminfo,getiteminfo,writeitemobject,getitemobject";
+                return "setiteminfo,getiteminfo,setitemobject,getitemobject";
             }
             else if (type == C_Type_comment)
             {
-                return "setcommentinfo,getcommentinfo,writecommentobject,getcommentobject";
+                return "setcommentinfo,getcommentinfo,setcommentobject,getcommentobject";
             }
             else if (type == C_Type_order)
             {
-                return "setorderinfo,getorderinfo,writeorderobject,getorderobject";
+                return "setorderinfo,getorderinfo,setorderobject,getorderobject";
             }
             else if (type == C_Type_issue)
             {
-                return "setissueinfo,getissueinfo,writeissueobject,getissueobject";
+                return "setissueinfo,getissueinfo,setissueobject,getissueobject";
             }
             else if (type == C_Type_Amerce)
             {
-                return "setamerceinfo,getamerceinfo,writeamerceobject,getamerceobject";
+                return "setamerceinfo,getamerceinfo,setamerceobject,getamerceobject";
             }
             else if (type == C_Type_Arrived)
             {
-                return "setarrivedinfo,getarrivedinfo,writearrivedobject,getarrivedobject";
+                return "setarrivedinfo,getarrivedinfo,setarrivedobject,getarrivedobject";
             }
             else
             {
@@ -2477,11 +2477,11 @@ bool isReader = false)
             {
                 rightsList.Add("setreaderinfo");
                 rightsList.Add("setreaderinfo,getreaderinfo");//有用
-                rightsList.Add("setreaderinfo,getreaderinfo,writereaderobject");
-                rightsList.Add(fullRights);//"setreaderinfo,getreaderinfo,writereaderobject,getreaderobject");//有用
+                rightsList.Add("setreaderinfo,getreaderinfo,setreaderobject");
+                rightsList.Add(fullRights);//"setreaderinfo,getreaderinfo,setreaderobject,getreaderobject");//有用
 
-                rightsList.Add("writereaderobject");
-                rightsList.Add("writereaderobject, getreaderobject");
+                rightsList.Add("setreaderobject");
+                rightsList.Add("setreaderobject, getreaderobject");
 
                 rightsList.Add("getreaderinfo");//有用
                 rightsList.Add("getreaderinfo,getreaderobject");//有用
@@ -2491,11 +2491,11 @@ bool isReader = false)
             {
                 rightsList.Add("setbiblioinfo");
                 rightsList.Add("setbiblioinfo,getbiblioinfo");//有用
-                rightsList.Add("setbiblioinfo,getbiblioinfo,writebiblioobject");
-                rightsList.Add(fullRights);// "setbiblioinfo,getbiblioinfo,writebiblioobject,getbiblioobject");//有用
+                rightsList.Add("setbiblioinfo,getbiblioinfo,setbiblioobject");
+                rightsList.Add(fullRights);// "setbiblioinfo,getbiblioinfo,setbiblioobject,getbiblioobject");//有用
 
-                rightsList.Add("writebiblioobject");
-                rightsList.Add("writebiblioobject, getbiblioobject");
+                rightsList.Add("setbiblioobject");
+                rightsList.Add("setbiblioobject, getbiblioobject");
 
                 rightsList.Add("getbiblioinfo");//有用
                 rightsList.Add("getbiblioinfo,getbiblioobject");//有用
@@ -2505,11 +2505,11 @@ bool isReader = false)
             {
                 rightsList.Add("setiteminfo");
                 rightsList.Add("setiteminfo,getiteminfo");//有用
-                rightsList.Add("setiteminfo,getiteminfo,writeitemobject");
-                rightsList.Add(fullRights);// "setiteminfo,getiteminfo,writeitemobject,getitemobject");//有用
+                rightsList.Add("setiteminfo,getiteminfo,setitemobject");
+                rightsList.Add(fullRights);// "setiteminfo,getiteminfo,setitemobject,getitemobject");//有用
 
-                rightsList.Add("writeitemobject");
-                rightsList.Add("writeitemobject, getitemobject");
+                rightsList.Add("setitemobject");
+                rightsList.Add("setitemobject, getitemobject");
 
                 rightsList.Add("getiteminfo");//有用
                 rightsList.Add("getiteminfo,getitemobject");//有用
@@ -2519,11 +2519,11 @@ bool isReader = false)
             {
                 rightsList.Add("setorderinfo");
                 rightsList.Add("setorderinfo,getorderinfo");//有用
-                rightsList.Add("setorderinfo,getorderinfo,writeorderobject");
-                rightsList.Add(fullRights);// "setorderinfo,getorderinfo,writeorderobject,getorderobject");//有用
+                rightsList.Add("setorderinfo,getorderinfo,setorderobject");
+                rightsList.Add(fullRights);// "setorderinfo,getorderinfo,setorderobject,getorderobject");//有用
 
-                rightsList.Add("writeorderobject");
-                rightsList.Add("writeorderobject, getorderobject");
+                rightsList.Add("setorderobject");
+                rightsList.Add("setorderobject, getorderobject");
 
                 rightsList.Add("getorderinfo");//有用
                 rightsList.Add("getorderinfo,getorderobject");//有用
@@ -2533,11 +2533,11 @@ bool isReader = false)
             {
                 rightsList.Add("setcommentinfo");
                 rightsList.Add("setcommentinfo,getcommentinfo");//有用
-                rightsList.Add("setcommentinfo,getcommentinfo,writecommentobject");
-                rightsList.Add(fullRights);// "setcommentinfo,getcommentinfo,writecommentobject,getcommentobject");//有用
+                rightsList.Add("setcommentinfo,getcommentinfo,setcommentobject");
+                rightsList.Add(fullRights);// "setcommentinfo,getcommentinfo,setcommentobject,getcommentobject");//有用
 
-                rightsList.Add("writecommentobject");
-                rightsList.Add("writecommentobject, getcommentobject");
+                rightsList.Add("setcommentobject");
+                rightsList.Add("setcommentobject, getcommentobject");
 
                 rightsList.Add("getcommentinfo");//有用
                 rightsList.Add("getcommentinfo,getcommentobject");//有用
@@ -2547,11 +2547,11 @@ bool isReader = false)
             {
                 rightsList.Add("setissueinfo");
                 rightsList.Add("setissueinfo,getissueinfo");//有用
-                rightsList.Add("setissueinfo,getissueinfo,writeissueobject");
-                rightsList.Add(fullRights);// "setissueinfo,getissueinfo,writeissueobject,getissueobject");//有用
+                rightsList.Add("setissueinfo,getissueinfo,setissueobject");
+                rightsList.Add(fullRights);// "setissueinfo,getissueinfo,setissueobject,getissueobject");//有用
 
-                rightsList.Add("writeissueobject");
-                rightsList.Add("writeissueobject, getissueobject");
+                rightsList.Add("setissueobject");
+                rightsList.Add("setissueobject, getissueobject");
 
                 rightsList.Add("getissueinfo");//有用
                 rightsList.Add("getissueinfo,getissueobject");//有用
@@ -2561,11 +2561,11 @@ bool isReader = false)
             {
                 rightsList.Add("setamerceinfo");
                 rightsList.Add("setamerceinfo,getamerceinfo");//有用
-                rightsList.Add("setamerceinfo,getamerceinfo,writeamerceobject");
-                rightsList.Add(fullRights);// "setamerceinfo,getamerceinfo,writeamerceobject,getamerceobject");//有用
+                rightsList.Add("setamerceinfo,getamerceinfo,setamerceobject");
+                rightsList.Add(fullRights);// "setamerceinfo,getamerceinfo,setamerceobject,getamerceobject");//有用
 
-                rightsList.Add("writeamerceobject");
-                rightsList.Add("writeamerceobject, getamerceobject");
+                rightsList.Add("setamerceobject");
+                rightsList.Add("setamerceobject, getamerceobject");
 
                 rightsList.Add("getamerceinfo");//有用
                 rightsList.Add("getamerceinfo,getamerceobject");//有用
@@ -2575,11 +2575,11 @@ bool isReader = false)
             {
                 rightsList.Add("setarrivedinfo");
                 rightsList.Add("setarrivedinfo,getarrivedinfo");//有用
-                rightsList.Add("setarrivedinfo,getarrivedinfo,writearrivedobject");
-                rightsList.Add(fullRights); //"setarrivedinfo,getarrivedinfo,writearrivedobject,getarrivedobject");//有用
+                rightsList.Add("setarrivedinfo,getarrivedinfo,setarrivedobject");
+                rightsList.Add(fullRights); //"setarrivedinfo,getarrivedinfo,setarrivedobject,getarrivedobject");//有用
 
-                rightsList.Add("writearrivedobject");
-                rightsList.Add("writearrivedobject, getarrivedobject");
+                rightsList.Add("setarrivedobject");
+                rightsList.Add("setarrivedobject, getarrivedobject");
 
                 rightsList.Add("getarrivedinfo");//有用
                 rightsList.Add("getarrivedinfo,getarrivedobject");//有用
@@ -2667,7 +2667,7 @@ bool isReader = false)
         {
             // 用管理员帐号创建一个读者
            readerPath = this.CreateReaderBySuperviosr(readerDbName, readerType,
-                rights,//"setreaderinfo,getreaderinfo,writereaderobject,getreaderobject",
+                rights,//"setreaderinfo,getreaderinfo,setreaderobject,getreaderobject",
                 personalLibrary,
                 out readerBarcode);
 
@@ -2705,7 +2705,7 @@ bool isReader = false)
 
             ===
             读者帐号如果有 managecomment 权限，可以修改和删除他人评注。
-            注意managecomment权限，目前是按增强权限的思路开发，即不能少了基础的setcommentinfo,getcommentinfo,writecommentobject,getcommentobject。
+            注意managecomment权限，目前是按增强权限的思路开发，即不能少了基础的setcommentinfo,getcommentinfo,setcommentobject,getcommentobject。
             也就是说读者有了基本的4个权限，就可以发表修改删除自己的书评，有了managecomment权限后，还可以管理别人的书评。
             这个设计思路挺清晰的，目前不需要调整。
 
@@ -2762,7 +2762,7 @@ bool isReader = false)
                 //// 用supervisor帐户创建一个读者，有册的读权限，后面用此读者帐户操作
                 //this.displayLine(this.getLarge("用supervisor帐户创建一个读者，有评论的完整权限，后面用此读者帐户操作"));
                 //string readerBarcode = "";
-                //writeRes = this.CreateReaderBySuperviosr("读者",this.GetFullRights(C_Type_comment),// "setcommentinfo,getcommentinfo,writecommentobject,getcommentobject",
+                //writeRes = this.CreateReaderBySuperviosr("读者",this.GetFullRights(C_Type_comment),// "setcommentinfo,getcommentinfo,setcommentobject,getcommentobject",
                 //    "",  //个人书斋
                 //    out readerBarcode);
                 //if (writeRes.WriteResResult.Value == -1)
@@ -2994,7 +2994,7 @@ bool isReader = false)
                 //// 用supervisor帐户创建一个读者，有managecomment权限，后面用此读者帐号操作他人评注，应成功。
                 //this.displayLine(this.getLarge("读者帐号有 managecomment 权限，应可以修改和删除他人评注"));
                 //string reader2 = "";
-                //writeRes = this.CreateReaderBySuperviosr("读者","managecomment,"+this.GetFullRights(C_Type_comment),//setcommentinfo,getcommentinfo,writecommentobject,getcommentobject",
+                //writeRes = this.CreateReaderBySuperviosr("读者","managecomment,"+this.GetFullRights(C_Type_comment),//setcommentinfo,getcommentinfo,setcommentobject,getcommentobject",
                 //    "",  //个人书斋
                 //    out reader2);
                 //if (writeRes.WriteResResult.Value == -1)
@@ -3479,8 +3479,10 @@ bool isReader = false)
 
                 //== 测试读者跨馆预约，实现不会走这个接口
                 this.displayLine(this.getLarge("第3组测试：测试跨馆的" + type + "。"));
+
+                // 只要librarycode是帐户的馆代码，不论图书实际是哪个馆的，都能写成功？？？
                 xml = this.GetArrivedOrAmerceXml(type, Env_A_LibraryCode, aReader, bItemBarcode, Env_A_LibraryCode + "/" + Env_A_Location);
-                string kgXmlPath = this.DoRes1(u, type, newPath, "new", false, false, xml);
+                string kgXmlPath = this.DoRes1(u, type, newPath, "new", true, false, xml);
 
                 xml = this.GetArrivedOrAmerceXml(type, Env_B_LibraryCode, bReader, aItemBarcode, Env_B_LibraryCode + "/" + Env_B_Location);
                 kgXmlPath = this.DoRes1(u, type, newPath, "new", false, false, xml);
@@ -5654,7 +5656,7 @@ bool isReader = false)
                 string outputPath = this.DoRes1(u, C_Type_reader, aNewPath, "new", true, false,xml);
                 // 获取/修改/删除   均应成功
                 xml=this.GetReaderXml(Env_A_PatronType, true, out string b2);
-                this.DoResMultiple(u, C_Type_reader, outputPath,  "get, change, delete", true, false,xml);
+                this.DoResMultiple(u, C_Type_reader, outputPath,  "get,change,delete", true, false,xml);
 
 
 
@@ -5769,7 +5771,7 @@ bool isReader = false)
                 //===
                 this.displayLine(this.getLarge("第三组测试：读者不能 获取/修改/删除 本馆他人记录"));
                 xml = this.GetReaderXml(Env_A_PatronType, true, out string b4);
-                this.DoResMultiple(u, C_Type_reader, aXmlPath, "get, change,delete", false, true,xml);
+                this.DoResMultiple(u, C_Type_reader, aXmlPath, "get,change,delete", false, true,xml);
 
 
                 //===
