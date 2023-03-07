@@ -261,8 +261,6 @@ writeobject	写入对象资源	write object	2	废弃
                     }
 
                     string zh = r[1].Trim();
-
-
                     string en = r[2].Trim();
                     string level = r[3].Trim();
 
