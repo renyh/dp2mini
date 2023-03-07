@@ -198,10 +198,6 @@ namespace practice
 
         private void button_createUserRights_Click(object sender, EventArgs e)
         {
-
-
-
-
             this.textBox_result.Text = "";
 
             //userrightsdef.xml
