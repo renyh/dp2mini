@@ -47,11 +47,12 @@
             this.button_GetItemInfo = new System.Windows.Forms.Button();
             this.button_createEnv = new System.Windows.Forms.Button();
             this.button_delEnv = new System.Windows.Forms.Button();
+            this.button_deleteBiblioHHasChildren = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // button_accessAndObject
             // 
-            this.button_accessAndObject.Location = new System.Drawing.Point(787, 26);
+            this.button_accessAndObject.Location = new System.Drawing.Point(755, 27);
             this.button_accessAndObject.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.button_accessAndObject.Name = "button_accessAndObject";
             this.button_accessAndObject.Size = new System.Drawing.Size(213, 56);
@@ -69,7 +70,7 @@
             this.webBrowser1.Location = new System.Drawing.Point(19, 169);
             this.webBrowser1.MinimumSize = new System.Drawing.Size(20, 20);
             this.webBrowser1.Name = "webBrowser1";
-            this.webBrowser1.Size = new System.Drawing.Size(1292, 630);
+            this.webBrowser1.Size = new System.Drawing.Size(1456, 663);
             this.webBrowser1.TabIndex = 62;
             // 
             // label1
@@ -102,7 +103,7 @@
             // 
             this.button_testRight.Location = new System.Drawing.Point(155, 29);
             this.button_testRight.Name = "button_testRight";
-            this.button_testRight.Size = new System.Drawing.Size(171, 50);
+            this.button_testRight.Size = new System.Drawing.Size(139, 50);
             this.button_testRight.TabIndex = 67;
             this.button_testRight.Text = "权限测试";
             this.button_testRight.UseVisualStyleBackColor = true;
@@ -237,7 +238,7 @@
             // button_ItemHasBorrow
             // 
             this.button_ItemHasBorrow.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.button_ItemHasBorrow.Location = new System.Drawing.Point(334, 28);
+            this.button_ItemHasBorrow.Location = new System.Drawing.Point(302, 29);
             this.button_ItemHasBorrow.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.button_ItemHasBorrow.Name = "button_ItemHasBorrow";
             this.button_ItemHasBorrow.Size = new System.Drawing.Size(250, 52);
@@ -249,7 +250,7 @@
             // 
             // button_GetItemInfo
             // 
-            this.button_GetItemInfo.Location = new System.Drawing.Point(594, 26);
+            this.button_GetItemInfo.Location = new System.Drawing.Point(562, 27);
             this.button_GetItemInfo.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.button_GetItemInfo.Name = "button_GetItemInfo";
             this.button_GetItemInfo.Size = new System.Drawing.Size(183, 56);
@@ -262,7 +263,7 @@
             // button_createEnv
             // 
             this.button_createEnv.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button_createEnv.Location = new System.Drawing.Point(1031, 30);
+            this.button_createEnv.Location = new System.Drawing.Point(1114, 30);
             this.button_createEnv.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.button_createEnv.Name = "button_createEnv";
             this.button_createEnv.Size = new System.Drawing.Size(140, 52);
@@ -275,7 +276,7 @@
             // button_delEnv
             // 
             this.button_delEnv.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button_delEnv.Location = new System.Drawing.Point(1181, 30);
+            this.button_delEnv.Location = new System.Drawing.Point(1264, 30);
             this.button_delEnv.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.button_delEnv.Name = "button_delEnv";
             this.button_delEnv.Size = new System.Drawing.Size(151, 52);
@@ -285,11 +286,24 @@
             this.button_delEnv.UseVisualStyleBackColor = true;
             this.button_delEnv.Click += new System.EventHandler(this.button_delEnv_Click);
             // 
+            // button_deleteBiblioHHasChildren
+            // 
+            this.button_deleteBiblioHHasChildren.Location = new System.Drawing.Point(978, 31);
+            this.button_deleteBiblioHHasChildren.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.button_deleteBiblioHHasChildren.Name = "button_deleteBiblioHHasChildren";
+            this.button_deleteBiblioHHasChildren.Size = new System.Drawing.Size(258, 56);
+            this.button_deleteBiblioHHasChildren.TabIndex = 80;
+            this.button_deleteBiblioHHasChildren.Tag = "";
+            this.button_deleteBiblioHHasChildren.Text = "删有下级的书目";
+            this.button_deleteBiblioHHasChildren.UseVisualStyleBackColor = true;
+            this.button_deleteBiblioHHasChildren.Click += new System.EventHandler(this.button_deleteBiblioHHasChildren_Click);
+            // 
             // Form_auto
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(216F, 216F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
-            this.ClientSize = new System.Drawing.Size(1366, 832);
+            this.ClientSize = new System.Drawing.Size(1530, 865);
+            this.Controls.Add(this.button_deleteBiblioHHasChildren);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.comboBox_accountType);
             this.Controls.Add(this.button_delEnv);
@@ -336,5 +350,6 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ComboBox comboBox_accountType;
         private System.Windows.Forms.Button button_delEnv;
+        private System.Windows.Forms.Button button_deleteBiblioHHasChildren;
     }
 }

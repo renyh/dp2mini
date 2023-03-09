@@ -1333,7 +1333,7 @@ bool isReader = false)
         }
 
         // barcode，当读者 和 册时有意义
-        public string GetXml(string type, bool hasFile, out string barcode)
+        public string GetXml(string type, bool hasFile, out string barcode,string parent="")
         {
             Random rd = new Random();
             int temp = rd.Next(1, 999999);
@@ -1344,16 +1344,19 @@ bool isReader = false)
                 dprmsfile = "<dprms:file id='0' xmlns:dprms='http://dp2003.com/dprms'   test='" + temp.ToString() + "'/>";
 
             // 得到parent
-            string parent = "";
-            if (type == C_Type_item
-                || type == C_Type_order
-                || type == C_Type_comment)
+            if (string.IsNullOrEmpty(parent) == true)
             {
-                parent = this.GetBiblioParent();
-            }
-            else if (type == C_Type_issue)
-            {
-                parent = this.GetIssueParent();
+                parent = "";
+                if (type == C_Type_item
+                    || type == C_Type_order
+                    || type == C_Type_comment)
+                {
+                    parent = this.GetBiblioParent(this.GetBiblioPath());
+                }
+                else if (type == C_Type_issue)
+                {
+                    parent = this.GetIssueParent();
+                }
             }
 
 
@@ -1384,7 +1387,7 @@ bool isReader = false)
             }
             else if (type == C_Type_item)
             {
-                return this.GetItemXml(this.Env_ZG_Location,this.Env_ZG_BookType,hasFile,out barcode);
+                return this.GetItemXml(this.Env_ZG_Location,this.Env_ZG_BookType,hasFile,out barcode,parent);
 
 
             }
@@ -1582,7 +1585,7 @@ bool isReader = false)
         }
 
         // 得到册记录
-        public string GetItemXml(string location,string bookType,bool hasFile,out string barcode)
+        public string GetItemXml(string location,string bookType,bool hasFile,out string barcode,string parent="")
         {
             Random rd = new Random();
             int temp = rd.Next(1, 999999);
@@ -1592,7 +1595,8 @@ bool isReader = false)
             if (hasFile == true)
                 dprmsfile = "<dprms:file id='0' xmlns:dprms='http://dp2003.com/dprms'   test='" + temp.ToString() + "'/>";
 
-            string  parent = this.GetBiblioParent();
+            if (string.IsNullOrEmpty(parent)==true)
+              parent = this.GetBiblioParent(this.GetBiblioPath());
 
             barcode = "B" + barcode;
             return "<root>"
@@ -1639,9 +1643,8 @@ bool isReader = false)
             return response.strOutputResPath;
         }
 
-        public string GetBiblioParent()
+        public string GetBiblioParent(string biblioPath)
         {
-            string biblioPath = GetBiblioPath();
             int nIndex = biblioPath.LastIndexOf("/");
             if (nIndex != -1)
                 return biblioPath.Substring(nIndex + 1);
@@ -2424,9 +2427,113 @@ bool isReader = false)
 
         #endregion
 
-
-        public string GetFullRights(string type)
+        public string GetInfoRights1(string type)
         {
+            if (type == C_Type_reader)
+                return "getreaderinfo";
+            else if (type == C_Type_biblio)
+                return "getbiblioinfo";
+            else if (type == C_Type_item)
+                return "getiteminfo";
+            else if (type == C_Type_comment)
+                return "getcommentinfo";
+            else if (type == C_Type_order)
+                return "getorderinfo";
+            else if (type == C_Type_issue)
+                return "getissueinfo";
+            else if (type == C_Type_Amerce)
+                return "getamerceinfo";
+            else if (type == C_Type_Arrived)
+                return "getarrivedinfo";
+            else
+                throw new Exception("GetFullRights不支持的类型");
+
+        }
+        public string SetInfoRights(string type,bool full=false)
+        {
+            string rights = "";
+            if (type == C_Type_reader)
+                rights= "setreaderinfo";
+            else if (type == C_Type_biblio)
+                rights = "setbiblioinfo";
+            else if (type == C_Type_item)
+                rights = "setiteminfo";
+            else if (type == C_Type_comment)
+                rights = "setcommentinfo";
+            else if (type == C_Type_order)
+                rights = "setorderinfo";
+            else if (type == C_Type_issue)
+                rights = "setissueinfo";
+            else if (type == C_Type_Amerce)
+                rights = "setamerceinfo";
+            else if (type == C_Type_Arrived)
+                rights = "setarrivedinfo";
+            else
+                throw new Exception("GetFullRights不支持的类型");
+
+            if (full == true)
+                rights += "," + this.GetInfoRights1(type);
+
+            return rights;
+        }
+
+        public string SetObjectRights(string type,bool full=false)
+        {
+            string rights = "";
+            if (type == C_Type_reader)
+                rights = "setreaderobject";
+            else if (type == C_Type_biblio)
+                rights = "setbiblioobject";
+            else if (type == C_Type_item)
+                rights = "setitemobject";
+            else if (type == C_Type_comment)
+                rights = "setcommentobject";
+            else if (type == C_Type_order)
+                rights = "setorderobject";
+            else if (type == C_Type_issue)
+                rights = "setissueobject";
+            else if (type == C_Type_Amerce)
+                rights = "setamerceobject";
+            else if (type == C_Type_Arrived)
+                rights = "setarrivedobject";
+            else
+                throw new Exception("GetFullRights不支持的类型");
+
+            // 如果是完整权限，加上getxxxobject
+            if (full == true)
+                rights += ","+this.getObjectRight(type);
+
+            return rights;
+        }
+
+        public string getObjectRight(string type)
+        {
+            if (type == C_Type_reader)
+                return "getreaderobject";
+            else if (type == C_Type_biblio)
+                return "getbiblioobject";
+            else if (type == C_Type_item)
+                return "getitemobject";
+            else if (type == C_Type_comment)
+                return "getcommentobject";
+            else if (type == C_Type_order)
+                return "getorderobject";
+            else if (type == C_Type_issue)
+                return "getissueobject";
+            else if (type == C_Type_Amerce)
+                return "getamerceobject";
+            else if (type == C_Type_Arrived)
+                return "getarrivedobject";
+            else
+                throw new Exception("GetFullRights不支持的类型");
+        }
+
+
+        public string SetFullRights(string type)
+        {
+            return this.SetInfoRights(type,true) + "," + this.SetObjectRights(type,true);
+
+            /*
             if (type == C_Type_reader)
             {
                 return "setreaderinfo,getreaderinfo,setreaderobject,getreaderobject";
@@ -2463,16 +2570,26 @@ bool isReader = false)
             {
                 throw new Exception("GetFullRights不支持的类型");
             }
-
+            */
         }
 
 
         public List<string> Get9rights(string type)
         {
-            string fullRights = this.GetFullRights(type);
-
             List<string> rightsList = new List<string>();
 
+            rightsList.Add(this.SetInfoRights(type));//"setreaderinfo");
+            rightsList.Add(this.SetInfoRights(type, true));//"setreaderinfo,getreaderinfo");//有用
+            rightsList.Add(this.SetInfoRights(type, true) + "," + this.SetObjectRights(type));//"setreaderinfo,getreaderinfo,setreaderobject");
+            rightsList.Add(this.SetInfoRights(type, true) + "," + this.SetObjectRights(type, true));//"setreaderinfo,getreaderinfo,setreaderobject,getreaderobject");//有用
+
+            rightsList.Add(this.SetObjectRights(type));// "setreaderobject");
+            rightsList.Add(this.SetObjectRights(type, true));//"setreaderobject, getreaderobject");
+
+            rightsList.Add(this.GetInfoRights1(type));//"getreaderinfo");//有用
+            rightsList.Add(this.GetInfoRights1(type) + "," + this.getObjectRight(type));// "getreaderinfo,getreaderobject");//有用
+            rightsList.Add(this.getObjectRight(type));//"getreaderobject");
+            /*
             if (type == C_Type_reader)
             {
                 rightsList.Add("setreaderinfo");
@@ -2585,7 +2702,7 @@ bool isReader = false)
                 rightsList.Add("getarrivedinfo,getarrivedobject");//有用
                 rightsList.Add("getarrivedobject");
             }
-
+            */
             return rightsList;
         }
 
@@ -2755,7 +2872,7 @@ bool isReader = false)
                 this.displayLine(this.getLarge("创建环境"));
 
                 // 用管理员帐号创建一个读者，以下此读者帐号操作
-                UserInfo u = this.NewReaderUser(Env_ZG_ReaderDbName, Env_ZG_PatronType, this.GetFullRights(C_Type_comment), "",
+                UserInfo u = this.NewReaderUser(Env_ZG_ReaderDbName, Env_ZG_PatronType, this.SetFullRights(C_Type_comment), "",
                     out string readerBarcode,
                     out string ownerReaderPath);
 
@@ -2987,7 +3104,7 @@ bool isReader = false)
                 #region 第5组测试：读者帐号有 managecomment 权限，应可以修改和删除他人评注。
 
                 // 用管理员帐号创建一个读者，有managecomment权限，以下此读者帐号操作
-                 u = this.NewReaderUser(Env_ZG_ReaderDbName, Env_ZG_PatronType, "managecomment," + this.GetFullRights(C_Type_comment), "",
+                 u = this.NewReaderUser(Env_ZG_ReaderDbName, Env_ZG_PatronType, "managecomment," + this.SetFullRights(C_Type_comment), "",
                      out string readerBarcode1,
                     out string tempPath);
 
@@ -3118,7 +3235,7 @@ bool isReader = false)
             读者，应可以获取/创建/修改/删除 预约者是自己的预约到书记录。
             不能获取/创建/修改/删除 他人的预约到书记录
             */
-            string rights = this.GetFullRights(type);
+            string rights = this.SetFullRights(type);
 
             this.EnableCtrls(false);
             try
@@ -3222,7 +3339,7 @@ bool isReader = false)
 
                 // 用管理员帐号创建一个读者，有managecomment权限，以下此读者帐号操作
                 UserInfo u = this.NewReaderUser(Env_A_ReaderDbName, Env_A_PatronType,
-                    this.GetFullRights(type), "",
+                    this.SetFullRights(type), "",
                     out string reader1,
                    out string tempPath);
 
@@ -3358,7 +3475,7 @@ bool isReader = false)
                 #endregion
 
                 // 创建一个总工作人员帐户
-                UserInfo u = this.NewUser(this.GetFullRights(type), Env_ZG_LibraryCode);
+                UserInfo u = this.NewUser(this.SetFullRights(type), Env_ZG_LibraryCode);
 
                 //==操作总馆的预约到书/违约金===
                 this.displayLine(this.getLarge("第1组测试：操作总馆的" + type + "，应成功"));
@@ -3444,7 +3561,7 @@ bool isReader = false)
                 #endregion
 
                 // 给分馆A创建一工作帐户
-                UserInfo u = this.NewUser(this.GetFullRights(type), Env_A_LibraryCode);
+                UserInfo u = this.NewUser(this.SetFullRights(type), Env_A_LibraryCode);
 
                 //==操作总馆的预约到书/违约金===
                 this.displayLine(this.getLarge("第1组测试：操作本馆的" + type + "，应成功"));
@@ -3930,7 +4047,7 @@ bool isReader = false)
     3）删除，writeres,setiteminfo
 */
 
-            string rights = this.GetFullRights(type);
+            string rights = this.SetFullRights(type);
 
             this.EnableCtrls(false);
             try
@@ -5504,7 +5621,7 @@ bool isReader = false)
                 WriteResResponse response = null;
 
                 // 测试的总馆工作人员帐号
-                UserInfo u = this.NewUser(this.GetFullRights(C_Type_reader), "");
+                UserInfo u = this.NewUser(this.SetFullRights(C_Type_reader), "");
 
                 //===
                 //第1组测试，操作本馆读者
@@ -5560,7 +5677,7 @@ bool isReader = false)
 
                 // 用管理员帐号创建一个读者，以下此读者帐号操作
                 UserInfo u = this.NewReaderUser(Env_ZG_ReaderDbName, Env_ZG_PatronType
-                    , this.GetFullRights(C_Type_reader), "",
+                    , this.SetFullRights(C_Type_reader), "",
                     out string readerBarcode,
                     out string ownerReaderPath);
                 string ownerObject = ownerReaderPath + "/object/0";
@@ -5643,7 +5760,7 @@ bool isReader = false)
                 WriteResResponse response = null;
 
                 // 测试的A馆工作人员帐号
-                UserInfo u = this.NewUser(this.GetFullRights(C_Type_reader), Env_A_LibraryCode);
+                UserInfo u = this.NewUser(this.SetFullRights(C_Type_reader), Env_A_LibraryCode);
 
                 //===
                 //第1组测试，操作本馆读者
@@ -5706,7 +5823,7 @@ bool isReader = false)
 
                 // 用管理员帐号创建一个A馆的读者，以下此读者帐号操作
                 UserInfo u = this.NewReaderUser(Env_A_ReaderDbName,Env_A_PatronType,
-                    this.GetFullRights(C_Type_reader), "",
+                    this.SetFullRights(C_Type_reader), "",
                     out string readerBarcode,
                     out string ownerXmlPath);
                 string ownerObjectPath = ownerXmlPath + "/object/0";
@@ -5876,12 +5993,12 @@ bool isReader = false)
             if (accountType == C_accountType_zgworker)
             {
                 //分馆馆员，能 新增/修改/删除 书目，书目与总分馆无关
-                u = this.NewUser(this.GetFullRights(C_Type_biblio), "");
+                u = this.NewUser(this.SetFullRights(C_Type_biblio), "");
             }
             else if (accountType == C_accountType_zgreader)
             {
                 // 用管理员帐户创建一个总馆读者,下面以此读者身份操作
-                u = this.NewReaderUser(Env_ZG_ReaderDbName, Env_ZG_PatronType, this.GetFullRights(C_Type_biblio), "",
+                u = this.NewReaderUser(Env_ZG_ReaderDbName, Env_ZG_PatronType, this.SetFullRights(C_Type_biblio), "",
                    out string readerBarcode,
                    out string ownerReaderPath);
                 isReader = true;
@@ -5890,12 +6007,12 @@ bool isReader = false)
             else if (accountType == C_accountType_fgworker)
             {
                 //分馆馆员，能 新增/修改/删除 书目，书目与总分馆无关
-                u = this.NewUser(this.GetFullRights(C_Type_biblio), Env_A_LibraryCode);
+                u = this.NewUser(this.SetFullRights(C_Type_biblio), Env_A_LibraryCode);
             }
             else if (accountType == C_accountType_fgreader)
             {
                 // 用管理员帐户创建一个分馆读者,下面以此读者身份操作
-                 u = this.NewReaderUser(Env_A_ReaderDbName, Env_A_PatronType, this.GetFullRights(C_Type_biblio), "",
+                 u = this.NewReaderUser(Env_A_ReaderDbName, Env_A_PatronType, this.SetFullRights(C_Type_biblio), "",
                     out string readerBarcode,
                     out string ownerReaderPath);
                 isReader = true;
@@ -5980,7 +6097,7 @@ bool isReader = false)
                 this.displayLine("");
 
                 // 测试的总馆工作人员帐号
-                UserInfo u = this.NewUser(this.GetFullRights(C_Type_item), "");
+                UserInfo u = this.NewUser(this.SetFullRights(C_Type_item), "");
 
                 //===
                 //第1组测试，操作总馆册
@@ -6036,7 +6153,7 @@ bool isReader = false)
                 this.displayLine("");
 
                 // 创建分馆工作人员帐号
-                UserInfo u = this.NewUser(this.GetFullRights(C_Type_item),Env_A_LibraryCode);  //A馆
+                UserInfo u = this.NewUser(this.SetFullRights(C_Type_item),Env_A_LibraryCode);  //A馆
 
                 //===
                 //第1组测试，操作本馆读者
@@ -6113,7 +6230,7 @@ bool isReader = false)
 
                 // 用管理员帐户创建一个读者,没有配置 个人书斋
                 UserInfo u = this.NewReaderUser(Env_ZG_ReaderDbName, Env_ZG_PatronType, 
-                    this.GetFullRights(C_Type_item),
+                    this.SetFullRights(C_Type_item),
                     "",  //个人书斋
                     out string readerBarcode,
                     out string ownerReaderPath);
@@ -6144,7 +6261,7 @@ bool isReader = false)
                 this.displayLine(this.getLarge("第二组测试：读者有书斋，可get/new/change/delete属于书斋的册，对于不属于书斋的册，能get，不能new/change/delete。"));
 
                 // 用管理员帐户创建一个读者,后面用此读者帐户操作
-                u = this.NewReaderUser(Env_ZG_ReaderDbName, Env_ZG_PatronType, this.GetFullRights(C_Type_item),
+                u = this.NewReaderUser(Env_ZG_ReaderDbName, Env_ZG_PatronType, this.SetFullRights(C_Type_item),
                    this.Env_ZG_Location,
                    out readerBarcode,
                    out ownerReaderPath);
@@ -6206,7 +6323,7 @@ bool isReader = false)
 
 
                 // 用管理员帐户创建一个分馆读者,后面用此读者帐户操作
-                UserInfo u = this.NewReaderUser(Env_A_ReaderDbName, this.Env_A_PatronType, this.GetFullRights(C_Type_item),  //A馆读者
+                UserInfo u = this.NewReaderUser(Env_A_ReaderDbName, this.Env_A_PatronType, this.SetFullRights(C_Type_item),  //A馆读者
                   Env_A_Location,  //个人书斋
                    out string readerBarcode,
                    out string ownerReaderPath);
@@ -6422,7 +6539,134 @@ bool isReader = false)
 
 
 
+
         #endregion
+
+        private void button_deleteBiblioHHasChildren_Click(object sender, EventArgs e)
+        {
+            //册
+            this.TestBiblioHasChildren(C_Type_item);
+            // 订购
+            this.TestBiblioHasChildren(C_Type_order);
+            // 评注
+            this.TestBiblioHasChildren(C_Type_comment);
+            //期
+            this.TestBiblioHasChildren(C_Type_issue);
+            
+        }
+
+        public void TestBiblioHasChildren(string type)
+        {
+            //===
+            // 书目下，两个下级都没有file
+            this.displayLine(this.getLarge("第1组测试：书目下两个下级"+type+"都没有file"));
+
+            // 无下级setXXXinfo，应失败。
+            this.displayLine("有书目权限，无下级"+type+"的setXXXinfo，应失败");
+            string biblioPath = this.CreateBiblioHasChildrenBySupervisor(type, new List<bool> { false, false });
+            string rights = this.SetInfoRights(C_Type_biblio, true);//this.GetFullRights(C_Type_biblio);
+            UserInfo u = this.NewUser(rights, "");
+            this.DoRes1(u, C_Type_biblio, biblioPath, "delete", false, false, "");
+
+            //有下级的setXXXinfo权限，无连带的getXXXinfo，应失败。
+            this.displayLine("有书目权限，有下级"+type+"的setXXXinfo权限，无连带的getXXXinfo，应失败。");
+            //biblioPath = this.CreateBiblioHasChildrenBySupervisor(type, new List<bool> { false, false });
+            rights = this.SetInfoRights(C_Type_biblio, true) + "," + this.SetInfoRights(type, false);
+            u = this.NewUser(rights, "");
+            this.DoRes1(u, C_Type_biblio, biblioPath, "delete", false, false, "");
+
+            //有下级的setXXXinfo权限，有连带的getXXXinfo，应成功。
+            this.displayLine("有书目权限，有下级" + type + "的set/getXXXinfo权限，应成功。");
+            //biblioPath = this.CreateBiblioHasChildrenBySupervisor(type, new List<bool> { false, false });
+            rights = this.SetInfoRights(C_Type_biblio, true) + "," + this.SetInfoRights(type, true); ;
+            u = this.NewUser(rights, "");
+            this.DoRes1(u, C_Type_biblio, biblioPath, "delete", true, false, "");
+
+
+            //===
+            // 书目下两个下级其中1个有file
+            this.displayLine(this.getLarge("第2组测试：书目下两个下级"+type+"其中1个有file"));
+
+            //有书目权限，有下级的set/getXXXinfo，无下级setXXXobject，应失败。
+            this.displayLine("有书目权限，有下级" + type + "的set/getXXXinfo，无对象set/getXXXobject，应失败。");
+            biblioPath = this.CreateBiblioHasChildrenBySupervisor(type, new List<bool> { false, true });
+            rights = this.SetInfoRights(C_Type_biblio, true) + "," + this.SetInfoRights(type, true);
+            u = this.NewUser(rights, "");
+            this.DoRes1(u, C_Type_biblio, biblioPath, "delete", false, false, "");
+
+            //有书目权限，有下级的set/getXXXinfo，有下级setXXXobject，无连带的getXXXobject,应失败。
+            this.displayLine("有书目权限，有下级" + type + "的set/getXXXinfo，有对象setXXXobject，无连带的getXXXobject,应失败。");
+           // biblioPath = this.CreateBiblioHasChildrenBySupervisor(type, new List<bool> { false, true });
+            rights = this.SetInfoRights(C_Type_biblio, true) + "," + this.SetInfoRights(type, true)+","+this.SetObjectRights(type);
+            u = this.NewUser(rights, "");
+            this.DoRes1(u, C_Type_biblio, biblioPath, "delete", false, false, "");
+
+
+            //有书目权限，有下级的set/getXXXinfo，有下级setXXXobject，有连带的getXXXobject，应成功。
+            this.displayLine("有书目权限，有下级" + type + "的set/getXXXinfo，有对象set/getXXXobject，应成功。");
+            //biblioPath = this.CreateBiblioHasChildrenBySupervisor(type, new List<bool> { false, true });
+            rights = this.SetInfoRights(C_Type_biblio, true) + "," + this.SetInfoRights(type, true) + "," + this.SetObjectRights(type,true);
+            u = this.NewUser(rights, "");
+            this.DoRes1(u, C_Type_biblio, biblioPath, "delete", true, false, "");
+        }
+
+        // 用管理员身份创建册记录
+        public string CreateBiblioHasChildrenBySupervisor(string type,List<bool> childHasFile)
+        {
+            UserInfo u=this.mainForm.GetSupervisorAccount();
+            RestChannel channel = null;
+            try
+            {
+                // 用户登录
+                channel = mainForm.GetChannelAndLogin(u.UserName, u.Password, false);
+
+
+                // 创建一条书目
+                // 先新增，应成功
+                string newPath = GetAppendPath(C_Type_biblio);
+                string xml = this.GetXml(C_Type_biblio,false);
+
+                // 用WriteRes()新建读者xml
+                WriteResResponse writeResponse = this.WriteXml(u, newPath, xml, false);
+                string biblioPath = writeResponse.strOutputResPath;
+                string parent = this.GetBiblioParent(biblioPath);
+
+                // 创建下级
+                foreach (bool hasFile in childHasFile)
+                {
+                    string childPath = GetAppendPath(type);
+                    string childXml = this.GetXml(type,hasFile, out string barcode1, parent);
+                    this.WriteXml(u, childPath, childXml,false);
+                }
+
+                return biblioPath;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(u.UserName + "异常：" + ex.Message);
+            }
+            finally
+            {
+                if (channel != null)
+                    this.mainForm._channelPool.ReturnChannel(channel);
+            }
+
+        }
+
+        public void CreateBiblioChildren(string biblioPath,string type,bool childHasFile)
+        {
+            // 创建下级册
+            string parent = this.GetBiblioParent(biblioPath);
+
+            string newPath = this.GetAppendPath(C_Type_item);
+            string xml = this.GetXml(type, childHasFile, out string barcode,parent); 
+            WriteResResponse writeRes = this.WriteXml(this.mainForm.GetSupervisorAccount(),
+                 newPath,
+                 xml);
+            if (writeRes.WriteResResult.Value == -1)
+                throw new Exception("管理员创建册异常：" + writeRes.WriteResResult.ErrorInfo);
+            //return writeRes.strOutputResPath;
+        }
 
 
     }
