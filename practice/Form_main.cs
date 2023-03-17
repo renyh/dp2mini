@@ -3202,6 +3202,35 @@ out string strError);
         {
 
         }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            // 清空底部输出信息
+            this.ClearResultInfo();
+
+            // 输入参数
+            // strResPath
+            string strPath = this.textBox_GetRecord_strPath.Text.Trim();
+
+
+            //RestChannel channel = this.GetChannel();
+            //try
+            //{
+            //    GetRecordResponse response =  channel.GetSystemParameter();
+
+            //    // 显示返回信息
+            //    this.SetResultInfo("GetSystemParameter()\r\n" + RestChannel.GetResultInfo(response));
+            //}
+            //catch (Exception ex)
+            //{
+            //    MessageBox.Show(this, "GetSystemParameter()异常：" + ex.Message);
+            //    return;
+            //}
+            //finally
+            //{
+            //    this._channelPool.ReturnChannel(channel);
+            //}
+        }
     }
 
 

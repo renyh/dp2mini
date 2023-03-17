@@ -805,9 +805,10 @@ namespace DigitalPlatform.LibraryRestClient
             return response;
         }
 
+        //public GetSystemParamete
 
         // 2021/3/1
-        // 获取一条预约记录
+        // 获取一条记录
         public GetRecordResponse GetRecord(string strPath)
         {
             string strError = "";
@@ -845,6 +846,8 @@ namespace DigitalPlatform.LibraryRestClient
 
             return response;
         }
+
+
 
 
         // 2011/1/21
