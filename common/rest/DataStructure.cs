@@ -740,7 +740,10 @@ LibraryServerResult.ErrorInfo		出错信息
         public LibraryServerResult CopyBiblioInfoResult { get; set; }
 
         [DataMember]
-        public LibraryServerResult strOutputBiblioRecPath { get; set; }
+        public string strOutputBiblio { get; set; }
+
+        [DataMember]
+        public string strOutputBiblioRecPath { get; set; }
 
         [DataMember]
         public byte[] baOutputTimestamp { get; set; }

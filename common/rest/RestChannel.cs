@@ -376,8 +376,9 @@ namespace DigitalPlatform.LibraryRestClient
             {
                 CopyBiblioInfoResponse r = (CopyBiblioInfoResponse)o;
                 return GetServerResultInfo(r.CopyBiblioInfoResult) + "\r\n"
+                    + "strOutputBiblio:" + r.strOutputBiblio + "\r\n"
                     + "strOutputBiblioRecPath:" + r.strOutputBiblioRecPath + "\r\n"
-                    + "baOutputTimestamp:" + r.baOutputTimestamp;
+                    + "baOutputTimestamp:" + ByteArray.GetHexTimeStampString(r.baOutputTimestamp);
             }
             return "未识别的对象" + o.ToString();
         }
