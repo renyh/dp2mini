@@ -222,10 +222,9 @@ namespace practice
                 this.textBox_result.Text += "Result:"
                     + response.LoginResult.ErrorCode
                     + response.LoginResult.ErrorInfo + "\r\n"
-                                        + "UserName:" + response.strOutputUserName
-
-                + "Rights:" + response.strRights + "\r\n"
-                + "Rights:" + response.strLibraryCode + "\r\n";
+                    + "UserName:" + response.strOutputUserName+"\r\n"
+                + "strRights:" + response.strRights + "\r\n"
+                + "strLibraryCode:" + response.strLibraryCode + "\r\n";
             }
             catch (Exception ex)
             {
