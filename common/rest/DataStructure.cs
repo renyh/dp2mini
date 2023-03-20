@@ -730,6 +730,9 @@ LibraryServerResult.ErrorInfo		出错信息
         public string strNewBiblioRecPath { get; set; }
         [DataMember]
         public string strNewBiblio { get; set; }
+
+        [DataMember]
+        public string strMergeStyle { get; set; }
     }
 
     [DataContract]

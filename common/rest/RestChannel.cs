@@ -2079,7 +2079,8 @@ namespace DigitalPlatform.LibraryRestClient
          string strBiblio,
          byte[] baTimestamp,
          string strNewBiblioRecPath,
-         string strNewBiblio)
+         string strNewBiblio,
+         string strMergeStyle)
 
         {
             string strError = "";
@@ -2095,6 +2096,7 @@ namespace DigitalPlatform.LibraryRestClient
                 request.baTimestamp = baTimestamp;// ByteArray.GetTimeStampByteArray(strOldTimestamp);
                 request.strNewBiblioRecPath = strNewBiblioRecPath;
                 request.strNewBiblio = strNewBiblio;
+                request.strMergeStyle = strMergeStyle;
                 byte[] baData = Encoding.UTF8.GetBytes(Serialize(request));
 
                 byte[] result = client.UploadData(this.GetRestfulApiUrl("CopyBiblioInfo"),

@@ -3130,7 +3130,7 @@ out string strError);
             string strNewBiblioType = this.textBox_CopyBiblioInfo_strNewBiblioResPath.Text;
             string strNewBiblio = this.textBox_CopyBiblioInfo_strNewBiblio.Text;
             string strNewBiblioRecPath = this.textBox_CopyBiblioInfo_strNewBiblioResPath.Text;
-            //string strComment = this.textBox_CopyBiblioInfo_strComment.Text;
+            string strMergeStyle = this.textBox_CopyBiblioInfo_strMergeStyle.Text;
             // string strStyle = this.textBox_SetBiblioInfo_strStyle.Text;
 
             RestChannel channel = this.GetChannel();
@@ -3143,7 +3143,8 @@ out string strError);
                 strBiblio,
                 baTimestamp,
                 strNewBiblioRecPath,
-                strNewBiblio);
+                strNewBiblio,
+                strMergeStyle);
                 //strNewBiblioRecPath,
                 //strNewBiblio)
                 //SetBiblioInfoResponse response = channel.CopyBiblioInfo(
@@ -3229,6 +3230,11 @@ out string strError);
             //{
             //    this._channelPool.ReturnChannel(channel);
             //}
+        }
+
+        private void splitContainer1_Panel2_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 
