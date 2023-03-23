@@ -654,7 +654,7 @@ LibraryServerResult.ErrorInfo		出错信息
             string strBiblioRecPath,
             string strBiblioType,
             string strBiblio,
-            byte[] baTimestamp,
+            byte[] item_timestamp,
             string strComment,
             string strStyle,    // 2016/12/22
             out string strOutputBiblioRecPath,
@@ -704,7 +704,7 @@ LibraryServerResult.ErrorInfo		出错信息
             string strBiblioRecPath,
             string strBiblioType,
             string strBiblio,
-            byte[] baTimestamp,
+            byte[] item_timestamp,
             string strNewBiblioRecPath,
             string strNewBiblio,
             out string strOutputBiblioRecPath,
@@ -1242,7 +1242,7 @@ LibraryServerResult.ErrorInfo		出错信息
         [DataMember]
         public string strItemRecPath { get; set; }
         [DataMember]
-        public byte[] baTimestamp { get; set; }
+        public byte[] item_timestamp { get; set; }
         [DataMember]
         public string strBiblio { get; set; }
         [DataMember]

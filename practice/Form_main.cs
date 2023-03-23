@@ -3152,7 +3152,7 @@ out string strError);
                 //    strBiblioRecPath,
                 //    strBiblioType,
                 //    strBiblio,
-                //    baTimestamp,
+                //    item_timestamp,
                 //    strComment,
                 //    strStyle);
 

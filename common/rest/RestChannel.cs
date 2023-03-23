@@ -200,7 +200,7 @@ namespace DigitalPlatform.LibraryRestClient
             {
                 GetBiblioInfosResponse r = (GetBiblioInfosResponse)o;
                 string info = GetServerResultInfo(r.GetBiblioInfosResult) + "\r\n"
-                    + "baTimestamp:" + ByteArray.GetHexTimeStampString(r.baTimestamp) + "\r\n";
+                    + "item_timestamp:" + ByteArray.GetHexTimeStampString(r.baTimestamp) + "\r\n";
 
                 info += "result:\r\n";
                 if (r.results != null)
@@ -226,7 +226,7 @@ namespace DigitalPlatform.LibraryRestClient
             {
                 GetReaderInfoResponse r = (GetReaderInfoResponse)o;
                 string info = GetServerResultInfo(r.GetReaderInfoResult) + "\r\n"
-                    + "baTimestamp:" + ByteArray.GetHexTimeStampString(r.baTimestamp) + "\r\n";
+                    + "item_timestamp:" + ByteArray.GetHexTimeStampString(r.baTimestamp) + "\r\n";
 
                 info += "result:\r\n";
                 if (r.results != null)
@@ -305,7 +305,7 @@ namespace DigitalPlatform.LibraryRestClient
                 GetItemInfoResponse r = (GetItemInfoResponse)o;
 
                 return GetServerResultInfo(r.GetItemInfoResult) + "\r\n"
-                    + "baTimestamp:" + ByteArray.GetHexTimeStampString(r.baTimestamp) + "\r\n"
+                    + "item_timestamp:" + ByteArray.GetHexTimeStampString(r.item_timestamp) + "\r\n"
                     + "strItemRecPath:" + r.strItemRecPath + "\r\n"
                     + "strResult:" + r.strResult + "\r\n"
                     + "\r\n"
@@ -1963,7 +1963,7 @@ namespace DigitalPlatform.LibraryRestClient
     string strAction,
     string strRecPath,
     string strXml,
-    byte[] baTimestamp,
+    byte[] item_timestamp,
     string strStyle)
         {
             string strError = "";
@@ -1977,7 +1977,7 @@ namespace DigitalPlatform.LibraryRestClient
                 request.strAction = strAction;
                 request.strRecPath = strRecPath;
                 request.strXml = strXml;
-                request.baTimestamp = baTimestamp;
+                request.item_timestamp = item_timestamp;
                 request.strStyle = strStyle;
                 byte[] baData = Encoding.UTF8.GetBytes(Serialize(request));
                 byte[] result = client.UploadData(this.GetRestfulApiUrl("SetItemInfo"),
