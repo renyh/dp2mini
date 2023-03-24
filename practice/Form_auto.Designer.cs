@@ -52,7 +52,7 @@
             // 
             // button_accessAndObject
             // 
-            this.button_accessAndObject.Location = new System.Drawing.Point(755, 27);
+            this.button_accessAndObject.Location = new System.Drawing.Point(745, 72);
             this.button_accessAndObject.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.button_accessAndObject.Name = "button_accessAndObject";
             this.button_accessAndObject.Size = new System.Drawing.Size(213, 56);
@@ -67,10 +67,10 @@
             this.webBrowser1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.webBrowser1.Location = new System.Drawing.Point(19, 169);
+            this.webBrowser1.Location = new System.Drawing.Point(19, 198);
             this.webBrowser1.MinimumSize = new System.Drawing.Size(20, 20);
             this.webBrowser1.Name = "webBrowser1";
-            this.webBrowser1.Size = new System.Drawing.Size(1456, 663);
+            this.webBrowser1.Size = new System.Drawing.Size(1429, 599);
             this.webBrowser1.TabIndex = 62;
             // 
             // label1
@@ -93,7 +93,7 @@
             "期",
             "违约金",
             "预约到书"});
-            this.comboBox_TestRight_type.Location = new System.Drawing.Point(35, 37);
+            this.comboBox_TestRight_type.Location = new System.Drawing.Point(25, 83);
             this.comboBox_TestRight_type.Name = "comboBox_TestRight_type";
             this.comboBox_TestRight_type.Size = new System.Drawing.Size(114, 35);
             this.comboBox_TestRight_type.TabIndex = 66;
@@ -101,7 +101,7 @@
             // 
             // button_testRight
             // 
-            this.button_testRight.Location = new System.Drawing.Point(155, 29);
+            this.button_testRight.Location = new System.Drawing.Point(145, 75);
             this.button_testRight.Name = "button_testRight";
             this.button_testRight.Size = new System.Drawing.Size(139, 50);
             this.button_testRight.TabIndex = 67;
@@ -111,7 +111,7 @@
             // 
             // button_reader
             // 
-            this.button_reader.Location = new System.Drawing.Point(361, 94);
+            this.button_reader.Location = new System.Drawing.Point(345, 132);
             this.button_reader.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.button_reader.Name = "button_reader";
             this.button_reader.Size = new System.Drawing.Size(91, 50);
@@ -124,7 +124,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(39, 106);
+            this.label2.Location = new System.Drawing.Point(23, 144);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(120, 27);
             this.label2.TabIndex = 79;
@@ -138,7 +138,7 @@
             "总馆读者",
             "分馆工作人员",
             "分馆读者"});
-            this.comboBox_accountType.Location = new System.Drawing.Point(165, 103);
+            this.comboBox_accountType.Location = new System.Drawing.Point(149, 140);
             this.comboBox_accountType.Name = "comboBox_accountType";
             this.comboBox_accountType.Size = new System.Drawing.Size(188, 35);
             this.comboBox_accountType.TabIndex = 78;
@@ -147,7 +147,7 @@
             // button_readerLogin_arrived
             // 
             this.button_readerLogin_arrived.BackColor = System.Drawing.SystemColors.Highlight;
-            this.button_readerLogin_arrived.Location = new System.Drawing.Point(806, 94);
+            this.button_readerLogin_arrived.Location = new System.Drawing.Point(790, 131);
             this.button_readerLogin_arrived.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.button_readerLogin_arrived.Name = "button_readerLogin_arrived";
             this.button_readerLogin_arrived.Size = new System.Drawing.Size(157, 52);
@@ -160,7 +160,7 @@
             // button_readerLogin_amerce
             // 
             this.button_readerLogin_amerce.BackColor = System.Drawing.SystemColors.Highlight;
-            this.button_readerLogin_amerce.Location = new System.Drawing.Point(973, 94);
+            this.button_readerLogin_amerce.Location = new System.Drawing.Point(957, 131);
             this.button_readerLogin_amerce.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.button_readerLogin_amerce.Name = "button_readerLogin_amerce";
             this.button_readerLogin_amerce.Size = new System.Drawing.Size(129, 52);
@@ -173,7 +173,7 @@
             // button_readerLogin_issue
             // 
             this.button_readerLogin_issue.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
-            this.button_readerLogin_issue.Location = new System.Drawing.Point(1230, 94);
+            this.button_readerLogin_issue.Location = new System.Drawing.Point(1214, 131);
             this.button_readerLogin_issue.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.button_readerLogin_issue.Name = "button_readerLogin_issue";
             this.button_readerLogin_issue.Size = new System.Drawing.Size(81, 52);
@@ -186,7 +186,7 @@
             // button_readerLogin_comment
             // 
             this.button_readerLogin_comment.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
-            this.button_readerLogin_comment.Location = new System.Drawing.Point(682, 94);
+            this.button_readerLogin_comment.Location = new System.Drawing.Point(666, 131);
             this.button_readerLogin_comment.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.button_readerLogin_comment.Name = "button_readerLogin_comment";
             this.button_readerLogin_comment.Size = new System.Drawing.Size(114, 52);
@@ -199,7 +199,7 @@
             // button_readerLogin_order
             // 
             this.button_readerLogin_order.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
-            this.button_readerLogin_order.Location = new System.Drawing.Point(1112, 94);
+            this.button_readerLogin_order.Location = new System.Drawing.Point(1096, 131);
             this.button_readerLogin_order.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.button_readerLogin_order.Name = "button_readerLogin_order";
             this.button_readerLogin_order.Size = new System.Drawing.Size(108, 52);
@@ -212,7 +212,7 @@
             // button_item
             // 
             this.button_item.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
-            this.button_item.Location = new System.Drawing.Point(572, 94);
+            this.button_item.Location = new System.Drawing.Point(556, 132);
             this.button_item.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.button_item.Name = "button_item";
             this.button_item.Size = new System.Drawing.Size(88, 50);
@@ -225,7 +225,7 @@
             // button_biblio
             // 
             this.button_biblio.BackColor = System.Drawing.SystemColors.Info;
-            this.button_biblio.Location = new System.Drawing.Point(462, 94);
+            this.button_biblio.Location = new System.Drawing.Point(446, 132);
             this.button_biblio.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.button_biblio.Name = "button_biblio";
             this.button_biblio.Size = new System.Drawing.Size(87, 50);
@@ -238,7 +238,7 @@
             // button_ItemHasBorrow
             // 
             this.button_ItemHasBorrow.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.button_ItemHasBorrow.Location = new System.Drawing.Point(302, 29);
+            this.button_ItemHasBorrow.Location = new System.Drawing.Point(292, 74);
             this.button_ItemHasBorrow.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.button_ItemHasBorrow.Name = "button_ItemHasBorrow";
             this.button_ItemHasBorrow.Size = new System.Drawing.Size(250, 52);
@@ -250,7 +250,7 @@
             // 
             // button_GetItemInfo
             // 
-            this.button_GetItemInfo.Location = new System.Drawing.Point(562, 27);
+            this.button_GetItemInfo.Location = new System.Drawing.Point(552, 72);
             this.button_GetItemInfo.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.button_GetItemInfo.Name = "button_GetItemInfo";
             this.button_GetItemInfo.Size = new System.Drawing.Size(183, 56);
@@ -262,8 +262,7 @@
             // 
             // button_createEnv
             // 
-            this.button_createEnv.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button_createEnv.Location = new System.Drawing.Point(1114, 30);
+            this.button_createEnv.Location = new System.Drawing.Point(19, 12);
             this.button_createEnv.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.button_createEnv.Name = "button_createEnv";
             this.button_createEnv.Size = new System.Drawing.Size(140, 52);
@@ -275,8 +274,7 @@
             // 
             // button_delEnv
             // 
-            this.button_delEnv.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button_delEnv.Location = new System.Drawing.Point(1264, 30);
+            this.button_delEnv.Location = new System.Drawing.Point(169, 12);
             this.button_delEnv.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.button_delEnv.Name = "button_delEnv";
             this.button_delEnv.Size = new System.Drawing.Size(151, 52);
@@ -288,7 +286,7 @@
             // 
             // button_deleteBiblioHHasChildren
             // 
-            this.button_deleteBiblioHHasChildren.Location = new System.Drawing.Point(978, 31);
+            this.button_deleteBiblioHHasChildren.Location = new System.Drawing.Point(968, 72);
             this.button_deleteBiblioHHasChildren.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.button_deleteBiblioHHasChildren.Name = "button_deleteBiblioHHasChildren";
             this.button_deleteBiblioHHasChildren.Size = new System.Drawing.Size(258, 56);
@@ -302,7 +300,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(216F, 216F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
-            this.ClientSize = new System.Drawing.Size(1530, 865);
+            this.ClientSize = new System.Drawing.Size(1528, 830);
             this.Controls.Add(this.button_deleteBiblioHHasChildren);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.comboBox_accountType);
