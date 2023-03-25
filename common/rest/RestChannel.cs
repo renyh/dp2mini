@@ -200,7 +200,7 @@ namespace DigitalPlatform.LibraryRestClient
             {
                 GetBiblioInfosResponse r = (GetBiblioInfosResponse)o;
                 string info = GetServerResultInfo(r.GetBiblioInfosResult) + "\r\n"
-                    + "item_timestamp:" + ByteArray.GetHexTimeStampString(r.baTimestamp) + "\r\n";
+                    + "baTimestamp:" + ByteArray.GetHexTimeStampString(r.baTimestamp) + "\r\n";
 
                 info += "result:\r\n";
                 if (r.results != null)
@@ -226,7 +226,7 @@ namespace DigitalPlatform.LibraryRestClient
             {
                 GetReaderInfoResponse r = (GetReaderInfoResponse)o;
                 string info = GetServerResultInfo(r.GetReaderInfoResult) + "\r\n"
-                    + "item_timestamp:" + ByteArray.GetHexTimeStampString(r.baTimestamp) + "\r\n";
+                    + "baTimestamp:" + ByteArray.GetHexTimeStampString(r.baTimestamp) + "\r\n";
 
                 info += "result:\r\n";
                 if (r.results != null)

@@ -1643,7 +1643,7 @@
             this.label31.Name = "label31";
             this.label31.Size = new System.Drawing.Size(208, 27);
             this.label31.TabIndex = 51;
-            this.label31.Text = "item_timestamp";
+            this.label31.Text = "baTimestamp";
             // 
             // textBox_SetBiblioInfo_baTimestamp
             // 
@@ -1896,7 +1896,7 @@
             this.label112.Name = "label112";
             this.label112.Size = new System.Drawing.Size(208, 27);
             this.label112.TabIndex = 5;
-            this.label112.Text = "item_timestamp";
+            this.label112.Text = "baTimestamp";
             // 
             // label111
             // 
@@ -2333,7 +2333,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.textBox_SetItemInfo_baTimestamp.Location = new System.Drawing.Point(233, 492);
             this.textBox_SetItemInfo_baTimestamp.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
-            this.textBox_SetItemInfo_baTimestamp.Name = "textBox_SetItemInfo_baTimestamp";
+            this.textBox_SetItemInfo_baTimestamp.Name = "textBox_SetItemInfo_item_timestamp";
             this.textBox_SetItemInfo_baTimestamp.Size = new System.Drawing.Size(985, 38);
             this.textBox_SetItemInfo_baTimestamp.TabIndex = 79;
             // 
