@@ -5458,14 +5458,19 @@ bool isReader = false)
         }
 
         // 检查结果
-        public void CheckResult(bool expectSucc, LibraryServerResult result)
+        public bool CheckResult(bool expectSucc, LibraryServerResult result)
         {
             if (expectSucc == true && result.Value >= 0)
                 this.displayLine("符合预期");
             else if (expectSucc == false && result.Value == -1)
                 this.displayLine("符合预期");
             else
+            {
                 this.displayLine(getRed("不符合预期"));
+                return false;
+            }
+
+            return true;
         }
         #endregion
 
@@ -6563,6 +6568,156 @@ bool isReader = false)
                 throw new Exception("管理员创建册异常：" + writeRes.WriteResResult.ErrorInfo);
             //return writeRes.strOutputResPath;
         }
+
+        // 获取测试头标区相关的xml
+        private string GetXmlForHeader(string header, string field200a)
+        {
+            string leaderXml = "";
+            if (string.IsNullOrEmpty(header) == false)
+                leaderXml = "<unimarc:leader>" + header + "</unimarc:leader>";
+
+            return "<unimarc:record xmlns:dprms='http://dp2003.com/dprms' xmlns:unimarc='http://dp2003.com/UNIMARC'>"
+                  + leaderXml
+                  + @"<unimarc:datafield tag='200' ind1='1' ind2=' '>
+                    <unimarc:subfield code='a'>" + field200a + @"</unimarc:subfield>
+                  </unimarc:datafield>
+                </unimarc:record>";
+        }
+
+        // 4种书目xml：正常的头标区，24个?号，*?，无leader元素
+        string _headerCommon = "01992nam0 22003851  450 ";
+        string _xmlCommon = "";
+
+        string _header24 = "????????????????????????";
+        string _xml24 = "";
+
+        string _headerAutoChanged = "*???????????????????????";
+        string _xmlAutoChanged = "";//this.GetXmlForHeader(headerAutoChanged, "头标区输入的*?");
+
+        string _xmlNoHeader = "";//this.GetXmlForHeader(null, "无leader元素");
+
+        private void Write4HeaderData(UserInfo u,List<string> expectHeaders)
+        {
+            // 写普通的头标区，预期完全一致
+            this.displayLine(this.getBold("写普通的头标区，预期为"+ expectHeaders[0]));
+            this.writeLeaderXml(u, this._xmlCommon, expectHeaders[0]);
+
+            // 写24个?号，预期为*?
+            this.displayLine(this.getBold("写24个?号，预期为"+ expectHeaders[1]));
+            this.writeLeaderXml(u, this._xml24, expectHeaders[1]);
+
+            // 写*?，预期为*?
+            this.displayLine(this.getBold("写*?，预期为"+ expectHeaders[2]));
+            this.writeLeaderXml(u, this._xmlAutoChanged, expectHeaders[2]);
+
+            // 写无header，预期为*?
+            this.displayLine(this.getBold("写无header，预期为"+ expectHeaders[3]));
+            this.writeLeaderXml(u, this._xmlNoHeader, expectHeaders[3]);
+        }
+
+        // 头标区测试
+        private void button_leader_Click(object sender, EventArgs e)
+        {
+            // 给4种书目xml的变量赋好值：正常的头标区，24个?号，*?，无leader元素
+            this._xmlCommon = this.GetXmlForHeader(this._headerCommon, "正常的头标区");
+            this._xml24 = this.GetXmlForHeader(_header24, "头标区输入的24个?号");
+            this._xmlAutoChanged = this.GetXmlForHeader(_headerAutoChanged, "头标区输入的*?");
+            this._xmlNoHeader = this.GetXmlForHeader(null, "无leader元素");
+
+
+            // 有###权限（3种帐户配置）
+            List<string> expectHeadersForHasRights = new List<string> {
+                this._headerCommon,
+                this._headerAutoChanged,
+                this._headerAutoChanged,
+                this._headerAutoChanged
+            };
+            // 帐号1，有大权限
+            this.displayLine(this.getLarge("有权限帐号1，有大权限"));
+            string hasHeaderRight1 = "getbiblioinfo,setbiblioinfo";
+            UserInfo u = this.NewUser(hasHeaderRight1, "", "");
+            this.Write4HeaderData(u,expectHeadersForHasRights);
+            
+
+            // 帐号2，在存取定义中配置的*号,表示完整字段权限
+            this.displayLine(this.getLarge("有权限帐号2，在存取定义中配置的*号,表示完整字段权限"));
+            string hasHeaderRight2_access = Env_biblioDbName + ":setbiblioinfo=*|getbiblioinfo=*";  //中文图书:setbiblioinfo=*|getbiblioinfo=*
+            u = this.NewUser("", "", hasHeaderRight2_access);
+            this.Write4HeaderData(u, expectHeadersForHasRights);
+
+            // 帐号3，在存取定义中指定了###字段
+            this.displayLine(this.getLarge("有权限帐号3，在存取定义中指定了###字段"));
+            string hasHeaderRight3_access = Env_biblioDbName + ":setbiblioinfo=*(###,200)|getbiblioinfo=*"; //"中文图书:setbiblioinfo=*(###,200)|getbiblioinfo=*";
+            u = this.NewUser("","", hasHeaderRight3_access);
+            this.Write4HeaderData(u, expectHeadersForHasRights);
+
+            // 无###权限
+            List<string> expectHeadersForNoRights = new List<string> {
+                this._header24,
+                this._header24,
+                this._header24,
+                this._header24
+            };
+            // 中文图书:setbiblioinfo=*(200)|getbiblioinfo=*
+            string noHeaderRight = Env_biblioDbName + ":setbiblioinfo=*(200)|getbiblioinfo=*";
+            this.displayLine(this.getLarge("无###权限帐号"));
+            u = this.NewUser("", "", noHeaderRight);
+            this.Write4HeaderData(u, expectHeadersForNoRights);
+
+            //=========
+
+
+        }
+
+        public void writeLeaderXml(UserInfo u,string xml,string expectHeader)
+        {
+            string appendPath = this.GetAppendPath(C_Type_biblio, Env_biblioDbName);
+
+            // 写普通头标区的xml
+            SetBiblioInfoResponse setResponse = this.SetBiblioInfo(u, "new", appendPath, xml, false);
+            bool bRet = this.CheckResult(true, setResponse.SetBiblioInfoResult);  // 预期写入成功
+            if (bRet == false)  //不符合预期的话，退出不再继续。
+                return;
+
+            // 再取出来这条记录，比对写入的头标区是否与提交的一致
+            string resPath = setResponse.strOutputBiblioRecPath;
+            GetBiblioInfosResponse getResponse = this.GetBiblioInfos(u, resPath, false);
+            bRet = this.CheckResult(true, getResponse.GetBiblioInfosResult);
+            if (bRet == false)  //不符合预期的话，退出不再继续。
+                return;
+            if (getResponse.results == null || getResponse.results.Length != 1)
+            {
+                this.displayLine(this.getRed("不符合预期，用GetBiblioInfos获取刚写入的记录[" + resPath + "]，result应该等于1才对。"));
+                return;
+            }
+            string okXml = getResponse.results[0];
+
+            int nRet = MarcUtil.Xml2Marc(okXml,
+                false,
+                "", // 自动识别 MARC 格式
+                out string strOutMarcSyntax,
+                out string strMARC,
+                out string strError);
+            if (nRet == -1)
+            {
+                this.displayLine(this.getRed("调Xml2Marc()将写入的xml转为marc时出错" + strError));
+                return;
+            }
+
+            this.displayLine("\r\n");//加一空格，阅读起来容易些
+            MarcRecord marcRecord = new MarcRecord(strMARC);
+            string okHeader = marcRecord.Header.ToString();
+            if (okHeader != expectHeader)
+            {
+                this.displayLine(getRed("校验写入库中的头标区为[" + okHeader + "]" +
+                    ",不是预期的值[" + expectHeader + "]，不符合预期。"));
+            }
+            else
+            {
+                this.displayLine(this.getGreenBackgroud("校验写入库中的头标区与预期的值一致，符合预期。"));
+            }
+        }
+
 
 
     }

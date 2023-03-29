@@ -48,6 +48,7 @@
             this.button_createEnv = new System.Windows.Forms.Button();
             this.button_delEnv = new System.Windows.Forms.Button();
             this.button_deleteBiblioHHasChildren = new System.Windows.Forms.Button();
+            this.button_leader = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // button_accessAndObject
@@ -296,11 +297,24 @@
             this.button_deleteBiblioHHasChildren.UseVisualStyleBackColor = true;
             this.button_deleteBiblioHHasChildren.Click += new System.EventHandler(this.button_deleteBiblioHHasChildren_Click);
             // 
+            // button_leader
+            // 
+            this.button_leader.Location = new System.Drawing.Point(370, 12);
+            this.button_leader.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.button_leader.Name = "button_leader";
+            this.button_leader.Size = new System.Drawing.Size(151, 52);
+            this.button_leader.TabIndex = 81;
+            this.button_leader.Tag = "";
+            this.button_leader.Text = "头标区";
+            this.button_leader.UseVisualStyleBackColor = true;
+            this.button_leader.Click += new System.EventHandler(this.button_leader_Click);
+            // 
             // Form_auto
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(216F, 216F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.ClientSize = new System.Drawing.Size(1528, 830);
+            this.Controls.Add(this.button_leader);
             this.Controls.Add(this.button_deleteBiblioHHasChildren);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.comboBox_accountType);
@@ -349,5 +363,6 @@
         private System.Windows.Forms.ComboBox comboBox_accountType;
         private System.Windows.Forms.Button button_delEnv;
         private System.Windows.Forms.Button button_deleteBiblioHHasChildren;
+        private System.Windows.Forms.Button button_leader;
     }
 }
