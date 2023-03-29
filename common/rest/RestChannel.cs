@@ -67,7 +67,7 @@ namespace DigitalPlatform.LibraryRestClient
                 this.Logout();
             }
             catch (WebException ex) // 2023/1/23 增加，这里捕捉web异常，可能服务器已经访问不通了，
-            { 
+            {
             }
         }
 
@@ -380,6 +380,32 @@ namespace DigitalPlatform.LibraryRestClient
                     + "strOutputBiblioRecPath:" + r.strOutputBiblioRecPath + "\r\n"
                     + "baOutputTimestamp:" + ByteArray.GetHexTimeStampString(r.baOutputTimestamp);
             }
+            else if (o is GetOperLogResponse)
+            {
+                GetOperLogResponse r = (GetOperLogResponse)o;
+                return GetServerResultInfo(r.GetOperLogResult) + "\r\n"
+                    + "strXml:" + r.strXml + "\r\n"
+                    + "lHintNext:" + r.lHintNext + "\r\n"
+                    + "attachment_data:" + ByteArray.GetHexTimeStampString(r.attachment_data) + "\r\n"
+                    + "lAttachmentTotalLength:" + r.lAttachmentTotalLength + "\r\n";
+            }
+
+            /*
+    public class GetOperLogResponse
+    {
+        [DataMember]
+        public LibraryServerResult GetOperLogResult { get; set; }
+        [DataMember]
+        public string strXml { get; set; }
+        [DataMember]
+        public long lHintNext { get; set; }
+        [DataMember]
+        public byte[] attachment_data { get; set; }
+        [DataMember]
+        public long lAttachmentTotalLength { get; set; }
+    }
+             * */
+
             return "未识别的对象" + o.ToString();
         }
 
@@ -388,9 +414,9 @@ namespace DigitalPlatform.LibraryRestClient
             if (entityinfos == null)
                 return "";
 
-            
-               string info = "\r\n";
-                int nIndex = 1;
+
+            string info = "\r\n";
+            int nIndex = 1;
             foreach (EntityInfo e in entityinfos)
             {
                 info += nIndex.ToString() + "\r\n";
@@ -496,9 +522,9 @@ namespace DigitalPlatform.LibraryRestClient
             byte[] result = null;
             //try
             //{
-                result = client.UploadData(GetRestfulApiUrl("logout"),
-                    "POST",
-                    data);
+            result = client.UploadData(GetRestfulApiUrl("logout"),
+                "POST",
+                data);
             //}
             //catch (WebException ex)
             //{
@@ -819,7 +845,7 @@ namespace DigitalPlatform.LibraryRestClient
             CookieAwareWebClient client = this.GetClient();
 
             GetRecordRequest request = new GetRecordRequest();
-            request.strPath=strPath;
+            request.strPath = strPath;
 
             byte[] baData = Encoding.UTF8.GetBytes(Serialize(request));
             string strRequest = Encoding.UTF8.GetString(baData);
@@ -1008,7 +1034,7 @@ namespace DigitalPlatform.LibraryRestClient
             long nRet = 0;
             try
             {
-                REDO:
+            REDO:
 
                 CookieAwareWebClient client = this.GetClient();
 
@@ -1077,7 +1103,7 @@ namespace DigitalPlatform.LibraryRestClient
 */
             ManageDatabaseRequest request = new ManageDatabaseRequest();
             //strAction 动作。create delete initialize backup getinfo
-            request.strAction = "getinfo"; 
+            request.strAction = "getinfo";
             request.strDatabaseName = "";
             request.strDatabaseInfo = "";
 
@@ -1153,7 +1179,7 @@ namespace DigitalPlatform.LibraryRestClient
                                                 baData);
             string strResult = Encoding.UTF8.GetString(result);
             SearchReaderResponse response = Deserialize<SearchReaderResponse>(strResult);
-            if (response.SearchReaderResult.Value == -1 
+            if (response.SearchReaderResult.Value == -1
                 && response.SearchReaderResult.ErrorCode == ErrorCode.NotLogin)
             {
                 if (DoNotLogin(ref strError) == 1)
@@ -1231,7 +1257,7 @@ namespace DigitalPlatform.LibraryRestClient
 
             // 请求参数
             GetOperLogRequest request = new GetOperLogRequest();
-            request.strFileName = strFileName;       
+            request.strFileName = strFileName;
             request.lIndex = lIndex;
             request.lHint = lHint;
             request.strStyle = strStyle;
@@ -1245,7 +1271,7 @@ namespace DigitalPlatform.LibraryRestClient
                                                 baData);
             string strResult = Encoding.UTF8.GetString(result);
             GetOperLogResponse response = Deserialize<GetOperLogResponse>(strResult);
-            if (response.GetOperLogResult.Value == -1 
+            if (response.GetOperLogResult.Value == -1
                 && response.GetOperLogResult.ErrorCode == ErrorCode.NotLogin)
             {
                 if (DoNotLogin(ref strError) == 1)
@@ -1317,7 +1343,121 @@ namespace DigitalPlatform.LibraryRestClient
 
         }
 
-    public long  GetOperLogs(
+        public GetOperLogResponse GetOperLog(string strFileName,
+long lIndex,
+long lHint,
+string strStyle,
+string strFilter,
+long lAttachmentFragmentStart,
+int nAttachmentFragmentLength)
+        {
+        REDO:
+            CookieAwareWebClient client = this.GetClient();
+
+            // 请求参数
+            GetOperLogRequest request = new GetOperLogRequest();
+            request.strFileName = strFileName;
+            request.lIndex = lIndex;
+            request.lHint = lHint;
+            request.strStyle = strStyle;
+            request.strFilter = strFilter;
+            request.lAttachmentFragmentStart = lAttachmentFragmentStart;
+            request.nAttachmentFragmentLength = nAttachmentFragmentLength;
+
+            byte[] baData = Encoding.UTF8.GetBytes(Serialize(request));
+            byte[] result = client.UploadData(this.GetRestfulApiUrl("GetOperLog"),
+                                                "POST",
+                                                baData);
+            string strResult = Encoding.UTF8.GetString(result);
+            GetOperLogResponse response = Deserialize<GetOperLogResponse>(strResult);
+
+            {
+                string strError = response.GetOperLogResult.ErrorInfo;
+                if (response.GetOperLogResult.Value == -1
+                    && response.GetOperLogResult.ErrorCode == ErrorCode.NotLogin)
+                {
+                    if (DoNotLogin(ref strError) == 1)
+                        goto REDO;
+                    return new GetOperLogResponse
+                    {
+                        GetOperLogResult = new LibraryServerResult
+                        {
+                            Value = -1,
+                            ErrorInfo = strError,
+                            ErrorCode = ErrorCode.SystemError,
+                        },
+                        strXml = null,
+                    };
+                }
+            }
+
+            return response;
+        }
+
+        public LibraryServerResult GetOperLog(string strFileName,
+    long lIndex,
+    long lHint,
+    string strStyle,
+    string strFilter,
+    out string strXml,
+    out long lHintNext,
+    long lAttachmentFragmentStart,
+    int nAttachmentFragmentLength,
+    out byte[] attachment_data,
+    out long lAttachmentTotalLength)
+        {
+            strXml = "";
+            lHintNext = -1;
+
+            attachment_data = null;
+            lAttachmentTotalLength = 0;
+        REDO:
+            CookieAwareWebClient client = this.GetClient();
+
+            // 请求参数
+            GetOperLogRequest request = new GetOperLogRequest();
+            request.strFileName = strFileName;
+            request.lIndex = lIndex;
+            request.lHint = lHint;
+            request.strStyle = strStyle;
+            request.strFilter = strFilter;
+            request.lAttachmentFragmentStart = lAttachmentFragmentStart;
+            request.nAttachmentFragmentLength = nAttachmentFragmentLength;
+
+            byte[] baData = Encoding.UTF8.GetBytes(Serialize(request));
+            byte[] result = client.UploadData(this.GetRestfulApiUrl("GetOperLog"),
+                                                "POST",
+                                                baData);
+            string strResult = Encoding.UTF8.GetString(result);
+            GetOperLogResponse response = Deserialize<GetOperLogResponse>(strResult);
+
+            {
+                string strError = response.GetOperLogResult.ErrorInfo;
+                if (response.GetOperLogResult.Value == -1
+                    && response.GetOperLogResult.ErrorCode == ErrorCode.NotLogin)
+                {
+                    if (DoNotLogin(ref strError) == 1)
+                        goto REDO;
+                    return new LibraryServerResult
+                    {
+                        Value = -1,
+                        ErrorInfo = strError,
+                        ErrorCode = ErrorCode.SystemError,
+                    };
+                }
+            }
+
+            // 给返回值赋值
+            strXml = response.strXml;
+            lHintNext = response.lHintNext;
+            attachment_data = response.attachment_data;
+            lAttachmentTotalLength = response.lAttachmentTotalLength;
+
+            return response.GetOperLogResult;
+        }
+
+
+        public long GetOperLogs(
             string strFileName,
             long lIndex,
             long lHint,
@@ -1484,7 +1624,7 @@ namespace DigitalPlatform.LibraryRestClient
                                                     baData);
 
                 string strResult = Encoding.UTF8.GetString(result);
-                 response = Deserialize<GetSearchResultResponse>(strResult);
+                response = Deserialize<GetSearchResultResponse>(strResult);
 
                 if (response.GetSearchResultResult.Value == -1
                     && response.GetSearchResultResult.ErrorCode == ErrorCode.NotLogin)
@@ -1563,7 +1703,7 @@ namespace DigitalPlatform.LibraryRestClient
                 GetReaderInfoResponse response = Deserialize<GetReaderInfoResponse>(strResult);
                 strRecPath = response.strRecPath;
 
-                if (response.GetReaderInfoResult.Value == -1 
+                if (response.GetReaderInfoResult.Value == -1
                     && response.GetReaderInfoResult.ErrorCode == ErrorCode.NotLogin)
                 {
                     if (DoNotLogin(ref strError) == 1)
@@ -1571,7 +1711,7 @@ namespace DigitalPlatform.LibraryRestClient
                 }
                 if (response.GetReaderInfoResult.Value == -1)
                 {
-                    strError = "ErrorCode:" + response.GetReaderInfoResult.ErrorCode+"--ErrorInfo:"+response.GetReaderInfoResult.ErrorInfo;
+                    strError = "ErrorCode:" + response.GetReaderInfoResult.ErrorCode + "--ErrorInfo:" + response.GetReaderInfoResult.ErrorInfo;
                     return -1;
                 }
                 else if (response.GetReaderInfoResult.Value == 0)
@@ -1579,7 +1719,7 @@ namespace DigitalPlatform.LibraryRestClient
                     strError = "获取读者记录'" + strBarcode + "'未命中。";// + readerRet.GetReaderInfoResult.ErrorInfo;
                     return -1;
                 }
-                else if (response.GetReaderInfoResult.Value >1)
+                else if (response.GetReaderInfoResult.Value > 1)
                 {
                     strError = "获取读者记录'" + strBarcode + "'出现多条，数据异常，请联系系统管理员。";// + readerRet.GetReaderInfoResult.ErrorInfo;
                     return -1;
@@ -1632,7 +1772,7 @@ namespace DigitalPlatform.LibraryRestClient
             }
             catch (Exception ex)
             {
-                int nRet = ConvertWebError(ex, out  strError);
+                int nRet = ConvertWebError(ex, out strError);
                 if (nRet == 0)
                     throw ex;
 
@@ -1768,7 +1908,7 @@ namespace DigitalPlatform.LibraryRestClient
             out string biblio,
             out string strError)
         {
-             strError = "";
+            strError = "";
             itemXml = "";
             biblio = "";
 
@@ -1909,7 +2049,7 @@ namespace DigitalPlatform.LibraryRestClient
             string strOldXml,
             byte[] baOldTimestamp)
         {
-            string  strError = "";
+            string strError = "";
         REDO:
             try
             {
@@ -2020,7 +2160,7 @@ namespace DigitalPlatform.LibraryRestClient
             string strBiblioType,
             string strBiblio,
             byte[] baTimestamp,
-            string strComment, 
+            string strComment,
             string strStyle)
         {
             string strError = "";
@@ -2207,7 +2347,7 @@ namespace DigitalPlatform.LibraryRestClient
                 // 未登录的情况
 
 
-                if (response.BorrowResult.Value == -1 
+                if (response.BorrowResult.Value == -1
                     && response.BorrowResult.ErrorCode == ErrorCode.NotLogin)
                 {
                     if (DoNotLogin(ref strError) == 1)
@@ -2551,8 +2691,8 @@ namespace DigitalPlatform.LibraryRestClient
             string strSearchStyle,
              string strOutputStyle,
              string strLocationFilter)//,
-            //out string strQueryXml,
-            //out string strError)
+                                      //out string strQueryXml,
+                                      //out string strError)
         {
             string strError = "";
             //strQueryXml = "";
@@ -2589,7 +2729,7 @@ namespace DigitalPlatform.LibraryRestClient
                 response = Deserialize<SearchBiblioResponse>(strResult);
 
                 // 未登录的情况
-                if (response.SearchBiblioResult.Value == -1 
+                if (response.SearchBiblioResult.Value == -1
                     && response.SearchBiblioResult.ErrorCode == ErrorCode.NotLogin)
                 {
                     if (DoNotLogin(ref strError) == 1)
@@ -2637,7 +2777,7 @@ namespace DigitalPlatform.LibraryRestClient
             string strResultSetName,
             string strSearchStyle,
              string strOutputStyle)//,
-            //out string strError)
+                                   //out string strError)
         {
             string strError = "";
 
@@ -2674,7 +2814,7 @@ namespace DigitalPlatform.LibraryRestClient
                 response = Deserialize<SearchItemResponse>(strResult);
 
                 // 未登录的情况
-                if (response.SearchItemResult.Value == -1 
+                if (response.SearchItemResult.Value == -1
                     && response.SearchItemResult.ErrorCode == ErrorCode.NotLogin)
                 {
                     if (DoNotLogin(ref strError) == 1)
@@ -2682,10 +2822,10 @@ namespace DigitalPlatform.LibraryRestClient
 
                     return response;
                 }
-                
+
                 //strError = response.SearchItemResult.ErrorInfo;
                 //// this.ErrorCode = response.SearchBiblioResult.ErrorCode;
-                
+
                 //???
                 this.ClearRedoCount();
 
@@ -2705,7 +2845,7 @@ namespace DigitalPlatform.LibraryRestClient
 
 
         // timeRange 2022/10/11 00:00~2022/11/09 24:00
-        
+
         public long SearchCharging(string patronBarcode,
     string timeRange,
     string actions,
@@ -2818,9 +2958,9 @@ namespace DigitalPlatform.LibraryRestClient
 
             if (strDbType == "item" || strDbType == "entity")
             {
-               SetEntitiesResponse ret = SetEntities(
-                    "", // strBiblioRecPath,
-                    new EntityInfo[] { entity });
+                SetEntitiesResponse ret = SetEntities(
+                     "", // strBiblioRecPath,
+                     new EntityInfo[] { entity });
 
                 errorinfos = ret.errorinfos;
                 result = ret.SetEntitiesResult;
@@ -2940,7 +3080,7 @@ namespace DigitalPlatform.LibraryRestClient
                 CookieAwareWebClient client = this.GetClient();
                 SetEntitiesRequest request = new SetEntitiesRequest();
                 request.strBiblioRecPath = strBiblioRecPath;
-                request.entityinfos=entityinfos;
+                request.entityinfos = entityinfos;
                 byte[] baData = Encoding.UTF8.GetBytes(Serialize(request));
 
 
@@ -3191,7 +3331,7 @@ namespace DigitalPlatform.LibraryRestClient
                 request.strBiblioRecPath = strBiblioRecPath;
                 request.lStart = lStart;
                 request.lCount = lCount;
-                request.strStyle = strStyle; 
+                request.strStyle = strStyle;
                 request.strLang = strLang;
                 byte[] baData = Encoding.UTF8.GetBytes(Serialize(request));
 
@@ -3811,7 +3951,7 @@ namespace DigitalPlatform.LibraryRestClient
                 string strMetadata = "";
                 string strRange = Convert.ToString(nStart) + "-" + Convert.ToString(nStart + baChunk.Length - 1);
 
-                REDO:
+            REDO:
 
                 WriteResResponse response = WriteRes(strResPath,
                     strRange,
@@ -3821,10 +3961,10 @@ namespace DigitalPlatform.LibraryRestClient
                     strStyle,
                     baInputTimestamp1);
                 if (response.WriteResResult.Value == -1)
-                {                            
+                {
                     // 间戳不匹配，自动重试
                     if (response.WriteResResult.ErrorCode == ErrorCode.TimestampMismatch
-                    && redoWhenTimestampError ==true)
+                    && redoWhenTimestampError == true)
                     {
                         baInputTimestamp1 = response.baOutputTimestamp;
                         goto REDO;
@@ -3860,15 +4000,15 @@ namespace DigitalPlatform.LibraryRestClient
                 byte[] baInputTimestamp,
                 int chunkSize,  //4096
                 bool redoWhenTimestampError)  //当时间戳不对时，是否重做。
-                //out byte[] baOutputTimestamp,
-                //out string strOutputResPath,
-                //out string strError)
+                                              //out byte[] baOutputTimestamp,
+                                              //out string strOutputResPath,
+                                              //out string strError)
         {
             //strError = "";
             //strOutputResPath = "";
             //baOutputTimestamp = null;
 
-            WriteResResponse response=null;
+            WriteResResponse response = null;
             int nStart = 0;
             int nTotalLength = baContent.Length;
             while (true)
@@ -3943,9 +4083,9 @@ namespace DigitalPlatform.LibraryRestClient
             byte[] baInputTimestamp,
             int chunkSize,  //4096
             bool redoWhenTimestampError)  //当时间戳不对时，是否重做。
-            //out byte[] baOutputTimestamp,
-            //out string strOutputPath,
-            //out string strError)
+                                          //out byte[] baOutputTimestamp,
+                                          //out string strOutputPath,
+                                          //out string strError)
         {
             //strError = "";
             //strOutputPath = "";
@@ -3974,13 +4114,13 @@ namespace DigitalPlatform.LibraryRestClient
                     string strRanges = nStart.ToString() + "-" + (nStart + nLength - 1).ToString();
 
                     // 调WriteRes
-                     response = this.WriteRes(strResPath,
-                        strRanges,
-                        lTotalLength,
-                        baContent,
-                        strMetadata,  //todo可以在最后一次再传metadata
-                        strStyle,
-                        baInputTimestamp);
+                    response = this.WriteRes(strResPath,
+                       strRanges,
+                       lTotalLength,
+                       baContent,
+                       strMetadata,  //todo可以在最后一次再传metadata
+                       strStyle,
+                       baInputTimestamp);
                     if (response.WriteResResult.Value == -1)
                     {
                         // 第一次的时间戳不匹配，根据界面设置，自动重试
@@ -4125,7 +4265,7 @@ namespace DigitalPlatform.LibraryRestClient
             if (StringUtil.IsInList("data", strStyle) != true)
                 return 0;
 
-            strResult = ByteArray.ToString(baTotal,Encoding.UTF8);
+            strResult = ByteArray.ToString(baTotal, Encoding.UTF8);
 
             return 0;
         }
@@ -4439,8 +4579,8 @@ namespace DigitalPlatform.LibraryRestClient
             string strDatabaseInfo,
             string strStyle)
         {
-            //strError = "";
-            //strOutputInfo = "";
+        //strError = "";
+        //strOutputInfo = "";
 
         REDO:
             try
@@ -4600,7 +4740,7 @@ namespace DigitalPlatform.LibraryRestClient
             }
             catch (Exception ex)
             {
-                int nRet = ConvertWebError(ex, out  strError);
+                int nRet = ConvertWebError(ex, out strError);
                 if (nRet == 0)
                     return -1;
                 goto REDO;

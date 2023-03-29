@@ -3236,6 +3236,96 @@ out string strError);
         {
 
         }
+
+        private void button_GetOperLog_Click(object sender, EventArgs e)
+        {
+            // 清空底部输出信息
+            this.ClearResultInfo();
+
+            string strFileName = this.textBox_GetOperLog_strFileName.Text;
+
+            string strIndex = textBox_GetOperLog_lIndex.Text.Trim();
+            long lIndex = 0;
+            try
+            {
+                lIndex = Convert.ToInt64(strIndex);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, "lIndex格式不合法，须为数值型。" + ex.Message);
+                return;
+            }
+
+
+            string strHint = this.textBox_GetOperLog_lHint.Text.Trim();
+            long lHint = 0;
+            try
+            {
+                lHint = Convert.ToInt64(strHint);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, "lHint格式不合法，须为数值型。" + ex.Message);
+                return;
+            }
+
+            string strStyle = this.textBox_GetOperLog_strStyle.Text;
+            string strFilter = this.textBox_GetOperLog_strFilter.Text;
+
+            string strAttachmentFragmentStart = textBox_GetOperLog_lAttachmentFragmentStart.Text.Trim();
+            long lAttachmentFragmentStart = 0;
+            try
+            {
+                lAttachmentFragmentStart = Convert.ToInt64(strAttachmentFragmentStart);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, "lAttachmentFragmentStart格式不合法，须为数值型。" + ex.Message);
+                return;
+            }
+
+            int nAttachmentFragmentLength = 0;
+            if (this.textBox_GetOperLog_nAttachmentFragmentLength.Text == "")
+            {
+                nAttachmentFragmentLength = -1;
+            }
+            else
+            {
+                try
+                {
+                    nAttachmentFragmentLength = Convert.ToInt32(this.textBox_GetOperLog_nAttachmentFragmentLength.Text);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(this, "nAttachmentFragmentLength必须为数值型。" + ex.Message);
+                }
+            }
+
+            RestChannel channel = this.GetChannel();
+            try
+            {
+                GetOperLogResponse response = channel.GetOperLog(
+                    strFileName,
+                    lIndex,
+                    lHint,
+                    strStyle,
+                    strFilter,
+                    lAttachmentFragmentStart,
+                    nAttachmentFragmentLength);
+
+                // 显示返回信息
+                this.SetResultInfo("GetOperLog()\r\n" + RestChannel.GetResultInfo(response));
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, "GetOperLog()异常:" + ex.Message);
+                return;
+            }
+            finally
+            {
+                this._channelPool.ReturnChannel(channel);
+            }
+        }
     }
 
 
