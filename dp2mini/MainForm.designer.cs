@@ -47,8 +47,9 @@
             this.toolStripButton_prep = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton_note = new System.Windows.Forms.ToolStripButton();
             this.toolStripLabel_transferStatis = new System.Windows.Forms.ToolStripLabel();
-            this.toolStripLabel_marc = new System.Windows.Forms.ToolStripLabel();
             this.toolStripButton_chargingAnalysis = new System.Windows.Forms.ToolStripButton();
+            this.toolStripLabel_marc = new System.Windows.Forms.ToolStripLabel();
+            this.生成权限工具ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip_main.SuspendLayout();
             this.statusStrip_main.SuspendLayout();
             this.toolStrip_main.SuspendLayout();
@@ -74,20 +75,20 @@
             this.toolStripMenuItem_prep,
             this.备书单管理ToolStripMenuItem});
             this.toolStripMenuItem_file.Name = "toolStripMenuItem_file";
-            this.toolStripMenuItem_file.Size = new System.Drawing.Size(137, 43);
+            this.toolStripMenuItem_file.Size = new System.Drawing.Size(123, 43);
             this.toolStripMenuItem_file.Text = "文件(&F)";
             // 
             // toolStripMenuItem_prep
             // 
             this.toolStripMenuItem_prep.Name = "toolStripMenuItem_prep";
-            this.toolStripMenuItem_prep.Size = new System.Drawing.Size(399, 54);
+            this.toolStripMenuItem_prep.Size = new System.Drawing.Size(359, 48);
             this.toolStripMenuItem_prep.Text = "预约到书查询(&S)";
             this.toolStripMenuItem_prep.Click += new System.EventHandler(this.toolStripMenuItem_prep_Click);
             // 
             // 备书单管理ToolStripMenuItem
             // 
             this.备书单管理ToolStripMenuItem.Name = "备书单管理ToolStripMenuItem";
-            this.备书单管理ToolStripMenuItem.Size = new System.Drawing.Size(399, 54);
+            this.备书单管理ToolStripMenuItem.Size = new System.Drawing.Size(359, 48);
             this.备书单管理ToolStripMenuItem.Text = "备书单管理(&N)";
             this.备书单管理ToolStripMenuItem.Click += new System.EventHandler(this.备书单管理ToolStripMenuItem_Click);
             // 
@@ -98,43 +99,44 @@
             this.UToolStripMenuItem_openUserFolder,
             this.ToolStripMenuItem_openDataFolder,
             this.ToolStripMenuItem_openProgramFolder,
-            this.巡检ToolStripMenuItem});
+            this.巡检ToolStripMenuItem,
+            this.生成权限工具ToolStripMenuItem});
             this.toolStripMenuItem_help.Name = "toolStripMenuItem_help";
-            this.toolStripMenuItem_help.Size = new System.Drawing.Size(144, 43);
+            this.toolStripMenuItem_help.Size = new System.Drawing.Size(130, 43);
             this.toolStripMenuItem_help.Text = "帮助(&H)";
             // 
             // toolStripMenuItem_setting
             // 
             this.toolStripMenuItem_setting.Name = "toolStripMenuItem_setting";
-            this.toolStripMenuItem_setting.Size = new System.Drawing.Size(435, 54);
+            this.toolStripMenuItem_setting.Size = new System.Drawing.Size(403, 48);
             this.toolStripMenuItem_setting.Text = "参数设置(&S)";
             this.toolStripMenuItem_setting.Click += new System.EventHandler(this.toolStripMenuItem_setting_Click);
             // 
             // UToolStripMenuItem_openUserFolder
             // 
             this.UToolStripMenuItem_openUserFolder.Name = "UToolStripMenuItem_openUserFolder";
-            this.UToolStripMenuItem_openUserFolder.Size = new System.Drawing.Size(435, 54);
+            this.UToolStripMenuItem_openUserFolder.Size = new System.Drawing.Size(403, 48);
             this.UToolStripMenuItem_openUserFolder.Text = "打开用户文件夹(&U)";
             this.UToolStripMenuItem_openUserFolder.Click += new System.EventHandler(this.UToolStripMenuItem_openUserFolder_Click);
             // 
             // ToolStripMenuItem_openDataFolder
             // 
             this.ToolStripMenuItem_openDataFolder.Name = "ToolStripMenuItem_openDataFolder";
-            this.ToolStripMenuItem_openDataFolder.Size = new System.Drawing.Size(435, 54);
+            this.ToolStripMenuItem_openDataFolder.Size = new System.Drawing.Size(403, 48);
             this.ToolStripMenuItem_openDataFolder.Text = "打开数据文件夹(&D)";
             this.ToolStripMenuItem_openDataFolder.Click += new System.EventHandler(this.ToolStripMenuItem_openDataFolder_Click);
             // 
             // ToolStripMenuItem_openProgramFolder
             // 
             this.ToolStripMenuItem_openProgramFolder.Name = "ToolStripMenuItem_openProgramFolder";
-            this.ToolStripMenuItem_openProgramFolder.Size = new System.Drawing.Size(435, 54);
+            this.ToolStripMenuItem_openProgramFolder.Size = new System.Drawing.Size(403, 48);
             this.ToolStripMenuItem_openProgramFolder.Text = "打开程序文件夹(&P)";
             this.ToolStripMenuItem_openProgramFolder.Click += new System.EventHandler(this.ToolStripMenuItem_openProgramFolder_Click);
             // 
             // 巡检ToolStripMenuItem
             // 
             this.巡检ToolStripMenuItem.Name = "巡检ToolStripMenuItem";
-            this.巡检ToolStripMenuItem.Size = new System.Drawing.Size(435, 54);
+            this.巡检ToolStripMenuItem.Size = new System.Drawing.Size(403, 48);
             this.巡检ToolStripMenuItem.Text = "巡检工具";
             this.巡检ToolStripMenuItem.Click += new System.EventHandler(this.巡检ToolStripMenuItem_Click);
             // 
@@ -145,11 +147,11 @@
             this.toolStripStatusLabel_message,
             this.toolStripStatusLabel_account,
             this.toolStripStatusLabel_version});
-            this.statusStrip_main.Location = new System.Drawing.Point(0, 512);
+            this.statusStrip_main.Location = new System.Drawing.Point(0, 518);
             this.statusStrip_main.Name = "statusStrip_main";
             this.statusStrip_main.Padding = new System.Windows.Forms.Padding(2, 0, 26, 0);
             this.statusStrip_main.RenderMode = System.Windows.Forms.ToolStripRenderMode.ManagerRenderMode;
-            this.statusStrip_main.Size = new System.Drawing.Size(1283, 56);
+            this.statusStrip_main.Size = new System.Drawing.Size(1283, 50);
             this.statusStrip_main.TabIndex = 3;
             this.statusStrip_main.Text = "statusStrip_main";
             // 
@@ -157,7 +159,7 @@
             // 
             this.toolStripStatusLabel_message.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Right;
             this.toolStripStatusLabel_message.Name = "toolStripStatusLabel_message";
-            this.toolStripStatusLabel_message.Size = new System.Drawing.Size(964, 43);
+            this.toolStripStatusLabel_message.Size = new System.Drawing.Size(993, 39);
             this.toolStripStatusLabel_message.Spring = true;
             this.toolStripStatusLabel_message.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -165,14 +167,14 @@
             // 
             this.toolStripStatusLabel_account.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Right;
             this.toolStripStatusLabel_account.Name = "toolStripStatusLabel_account";
-            this.toolStripStatusLabel_account.Size = new System.Drawing.Size(171, 43);
+            this.toolStripStatusLabel_account.Size = new System.Drawing.Size(154, 39);
             this.toolStripStatusLabel_account.Text = "登录账户：";
             this.toolStripStatusLabel_account.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // toolStripStatusLabel_version
             // 
             this.toolStripStatusLabel_version.Name = "toolStripStatusLabel_version";
-            this.toolStripStatusLabel_version.Size = new System.Drawing.Size(120, 43);
+            this.toolStripStatusLabel_version.Size = new System.Drawing.Size(108, 39);
             this.toolStripStatusLabel_version.Text = "version";
             // 
             // toolStrip_main
@@ -187,7 +189,7 @@
             this.toolStrip_main.Location = new System.Drawing.Point(0, 49);
             this.toolStrip_main.Name = "toolStrip_main";
             this.toolStrip_main.Padding = new System.Windows.Forms.Padding(0, 0, 4, 0);
-            this.toolStrip_main.Size = new System.Drawing.Size(1283, 50);
+            this.toolStrip_main.Size = new System.Drawing.Size(1283, 45);
             this.toolStrip_main.TabIndex = 5;
             this.toolStrip_main.Text = "toolStrip1";
             // 
@@ -197,7 +199,7 @@
             this.toolStripButton_prep.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton_prep.Image")));
             this.toolStripButton_prep.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton_prep.Name = "toolStripButton_prep";
-            this.toolStripButton_prep.Size = new System.Drawing.Size(201, 43);
+            this.toolStripButton_prep.Size = new System.Drawing.Size(181, 39);
             this.toolStripButton_prep.Text = "预约到书查询";
             this.toolStripButton_prep.Click += new System.EventHandler(this.toolStripButton_prep_Click);
             // 
@@ -207,24 +209,16 @@
             this.toolStripButton_note.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton_note.Image")));
             this.toolStripButton_note.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton_note.Name = "toolStripButton_note";
-            this.toolStripButton_note.Size = new System.Drawing.Size(171, 43);
+            this.toolStripButton_note.Size = new System.Drawing.Size(154, 39);
             this.toolStripButton_note.Text = "备书单管理";
             this.toolStripButton_note.Click += new System.EventHandler(this.toolStripButton_note_Click);
             // 
             // toolStripLabel_transferStatis
             // 
             this.toolStripLabel_transferStatis.Name = "toolStripLabel_transferStatis";
-            this.toolStripLabel_transferStatis.Size = new System.Drawing.Size(227, 43);
+            this.toolStripLabel_transferStatis.Size = new System.Drawing.Size(204, 39);
             this.toolStripLabel_transferStatis.Text = "日志查询与统计";
             this.toolStripLabel_transferStatis.Click += new System.EventHandler(this.toolStripLabel_transferStatis_Click);
-            // 
-            // toolStripLabel_marc
-            // 
-            this.toolStripLabel_marc.Name = "toolStripLabel_marc";
-            this.toolStripLabel_marc.Size = new System.Drawing.Size(227, 43);
-            this.toolStripLabel_marc.Text = "MARC文件处理";
-            this.toolStripLabel_marc.Visible = false;
-            this.toolStripLabel_marc.Click += new System.EventHandler(this.toolStripLabel_marc_Click);
             // 
             // toolStripButton_chargingAnalysis
             // 
@@ -232,13 +226,28 @@
             this.toolStripButton_chargingAnalysis.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton_chargingAnalysis.Image")));
             this.toolStripButton_chargingAnalysis.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton_chargingAnalysis.Name = "toolStripButton_chargingAnalysis";
-            this.toolStripButton_chargingAnalysis.Size = new System.Drawing.Size(141, 43);
+            this.toolStripButton_chargingAnalysis.Size = new System.Drawing.Size(127, 39);
             this.toolStripButton_chargingAnalysis.Text = "阅读分析";
             this.toolStripButton_chargingAnalysis.Click += new System.EventHandler(this.toolStripButton_chargingAnalysis_Click);
             // 
+            // toolStripLabel_marc
+            // 
+            this.toolStripLabel_marc.Name = "toolStripLabel_marc";
+            this.toolStripLabel_marc.Size = new System.Drawing.Size(204, 39);
+            this.toolStripLabel_marc.Text = "MARC文件处理";
+            this.toolStripLabel_marc.Visible = false;
+            this.toolStripLabel_marc.Click += new System.EventHandler(this.toolStripLabel_marc_Click);
+            // 
+            // 生成权限工具ToolStripMenuItem
+            // 
+            this.生成权限工具ToolStripMenuItem.Name = "生成权限工具ToolStripMenuItem";
+            this.生成权限工具ToolStripMenuItem.Size = new System.Drawing.Size(403, 48);
+            this.生成权限工具ToolStripMenuItem.Text = "权限工具";
+            this.生成权限工具ToolStripMenuItem.Click += new System.EventHandler(this.生成权限工具ToolStripMenuItem_Click);
+            // 
             // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(18F, 35F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(16F, 33F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1283, 568);
             this.Controls.Add(this.toolStrip_main);
@@ -286,6 +295,7 @@
         private System.Windows.Forms.ToolStripLabel toolStripLabel_marc;
         private System.Windows.Forms.ToolStripMenuItem 巡检ToolStripMenuItem;
         private System.Windows.Forms.ToolStripButton toolStripButton_chargingAnalysis;
+        private System.Windows.Forms.ToolStripMenuItem 生成权限工具ToolStripMenuItem;
     }
 }
 

@@ -381,7 +381,7 @@ namespace dp2mini
                             }
 
                             ws.Cell(index, 3).Value = right;
-                            ws.Cell(index, 4).Value = dangerRights[right];
+                            ws.Cell(index, 4).Value = (string)dangerRights[right];
                         }
 
                     }

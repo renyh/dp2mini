@@ -89,7 +89,7 @@ dp2Circulation 版本: dp2Circulation, Version=3.7.7278.20124, Culture=neutral, 
             XLWorkbook doc = null;
             try
             {
-                doc = new XLWorkbook(XLEventTracking.Disabled);
+                doc = new XLWorkbook();// XLEventTracking.Disabled);
                 // 如果原来文件存在，则先删除
                 File.Delete(dlg.FileName);
             }

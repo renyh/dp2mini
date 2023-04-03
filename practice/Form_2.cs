@@ -291,5 +291,10 @@ writeobject	写入对象资源	write object	2	废弃
             MessageBox.Show(this, "生成成功");
             return;
         }
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+
+        }
     }
 }

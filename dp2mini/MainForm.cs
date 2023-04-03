@@ -811,6 +811,15 @@ namespace dp2mini
         {
             EnsureChildForm<chargingAnalysisForm>(true);
         }
+
+
+        // 权限工具
+        private void 生成权限工具ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            RightsForm dlg = new RightsForm(this);
+            dlg.StartPosition = FormStartPosition.CenterScreen;
+            dlg.ShowDialog(this);
+        }
     }
 
 }
