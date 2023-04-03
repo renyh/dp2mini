@@ -162,22 +162,35 @@ namespace dp2mini
                 else
                 {
                     output += @"## " + name + "\r\n"
-                        + "### 中文说明" + "\r\n"
-                        + zh + "\r\n"
-                        + "### 英文说明" + "\r\n"
-                        + en + "\r\n"
-                        + "### 危险等级" + "\r\n"
-                        + level + "\r\n"
-                        + "### 描述信息" + "\r\n"
-                        + desc + "\r\n"
-                        + "### 应用地方" + "\r\n"
-                        + remark + "\r\n";
+                        + "**中文说明**:"+ zh + "   \r\n"
+                        + "**英文说明**:" + en + "   \r\n"
+                        + "**危险等级**:" + level + "   \r\n"
+                        + "**描述信息**:" + desc + "   \r\n"
+                        + "**应用地方**:" + remark + "   \r\n";
 
                     if (string.IsNullOrEmpty(state) == false)
                     {
-                        output += "### 状态" + "\r\n"
-                            + state + "\r\n";
+                        output += "**状态**:" + state + "   \r\n";
                     }
+
+                    /*
+                    output += @"## " + name + "\r\n"
+                        + "**中文说明**:"+ zh + "   \r\n"
+                        + "**英文说明**" + "   \r\n"
+                        + en + "   \r\n"
+                        + "**危险等级**" + "   \r\n"
+                        + level + "   \r\n"
+                        + "**描述信息**" + "   \r\n"
+                        + desc + "   \r\n"
+                        + "**应用地方**" + "   \r\n"
+                        + remark + "   \r\n";
+
+                    if (string.IsNullOrEmpty(state) == false)
+                    {
+                        output += "**状态**" + "   \r\n"
+                            + state + "   \r\n";
+                    }
+                     */
                 }
 
                 //rowIndex++;
