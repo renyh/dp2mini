@@ -337,6 +337,7 @@
             this.Controls.Add(this.button_accessAndObject);
             this.Name = "Form_auto";
             this.Text = "自动测试";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form_auto_FormClosing);
             this.ResumeLayout(false);
             this.PerformLayout();
 

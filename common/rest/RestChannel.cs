@@ -456,6 +456,8 @@ namespace DigitalPlatform.LibraryRestClient
             StringBuilder browse = new StringBuilder();
             foreach (Record record in records)
             {
+                if (record == null)
+                    continue;
                 browse.AppendLine("path:" + record.Path);
 
                 if (record.Cols != null)

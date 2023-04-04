@@ -93,7 +93,7 @@ namespace DigitalPlatform.CirculationClient
         }
 
         // 创建普通数据库的定义结点
-        static XmlNode CreateSimpleDatabaseNode(XmlDocument dom,
+         static XmlNode CreateSimpleDatabaseNode(XmlDocument dom,
     string strDatabaseName,
     string strType)
         {

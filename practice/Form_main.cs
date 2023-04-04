@@ -2588,6 +2588,13 @@ out string strError);
             // 转为数组
             paths = paths.Replace("\r\n", "\n");
             string[] pathArray=paths.Split('\n');
+            List<string> list = new List<string>();
+            foreach (string path in pathArray)
+            {
+                if (path.Trim() == "")
+                    continue;
+                list.Add(path);
+            }
 
             string strResultTypeList = this.textBox_GetBrowseRecord_strBrowseInfoStyle.Text;
 
@@ -2595,7 +2602,7 @@ out string strError);
             RestChannel channel = this.GetChannel();
             try
             {
-                GetBrowseRecordsResponse response = channel.GetBrowseRecords(pathArray,
+                GetBrowseRecordsResponse response = channel.GetBrowseRecords(list.ToArray(),
                     strResultTypeList);
 
                 // 显示返回信息
@@ -3315,6 +3322,26 @@ out string strError);
             {
                 this._channelPool.ReturnChannel(channel);
             }
+        }
+
+        private void button_getBrowseRecords_auto_Click(object sender, EventArgs e)
+        {
+            this.textBox_GetBrowseRecords_paths.Text = @"
+读者/?:<root><barcode>P002</barcode><readerType>本科生</readerType><name>小王</name><department>一班</department></root>
+
+中文图书/?:<unimarc:record xmlns:dprms=""http://dp2003.com/dprms"" xmlns:unimarc=""http://dp2003.com/UNIMARC""><unimarc:leader>????????????????????????</unimarc:leader><unimarc:datafield tag=""200"" ind1=""1"" ind2="" ""><unimarc:subfield code=""a"">大家好</unimarc:subfield><unimarc:subfield code=""e"" /><unimarc:subfield code=""f"" /><unimarc:subfield code=""g"" /></unimarc:datafield></unimarc:record>
+
+中文图书实体/?:<root _format=""xml""><parent>3</parent><location>流通库</location><price>CNY62.30</price><bookType>普通</bookType><accessNo>B123/L595</accessNo><batchNo>图书验收2022-1-26</batchNo><barcode>B003</barcode></root>
+
+读者/1:<root><barcode>P002</barcode><readerType>本科生</readerType><name>小王</name><department>一班</department></root>
+
+中文图书/1:<unimarc:record xmlns:dprms=""http://dp2003.com/dprms"" xmlns:unimarc=""http://dp2003.com/UNIMARC""><unimarc:leader>????????????????????????</unimarc:leader><unimarc:datafield tag=""200"" ind1=""1"" ind2="" ""><unimarc:subfield code=""a"">大家好</unimarc:subfield><unimarc:subfield code=""e"" /><unimarc:subfield code=""f"" /><unimarc:subfield code=""g"" /></unimarc:datafield></unimarc:record>
+
+中文图书实体/3:<root _format=""xml""><parent>3</parent><location>流通库</location><price>CNY62.30</price><bookType>普通</bookType><accessNo>B123/L595</accessNo><batchNo>图书验收2022-1-26</batchNo><barcode>B003</barcode></root>
+
+中文图书/1
+";
+            this.textBox_GetBrowseRecord_strBrowseInfoStyle.Text = "id,cols,xml";
         }
     }
 
