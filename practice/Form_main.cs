@@ -3145,16 +3145,6 @@ out string strError);
                 strNewBiblioRecPath,
                 strNewBiblio,
                 strMergeStyle);
-                //strNewBiblioRecPath,
-                //strNewBiblio)
-                //SetBiblioInfoResponse response = channel.CopyBiblioInfo(
-                //    strAction,
-                //    strBiblioRecPath,
-                //    strBiblioType,
-                //    strBiblio,
-                //    item_timestamp,
-                //    strComment,
-                //    strStyle);
 
                 // 显示返回信息
                 this.SetResultInfo("CopyBiblioInfo()\r\n" + RestChannel.GetResultInfo(response));

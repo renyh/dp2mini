@@ -615,6 +615,60 @@ bool isReader = false)
         }
 
         // 用SetBiblioInfo
+        public CopyBiblioInfoResponse CopyBiblio(UserInfo u,
+          string strAction,
+          string strBiblioRecPath,
+          string strNewBiblioRecPath,
+          string strNewBiblio,
+          string strMergeStyle,
+          bool isReader = false)
+        {
+            CopyBiblioInfoResponse response = null;
+
+            //this.displayLine("strResPath=" + strResPath);
+            //this.displayLine("提交的xml<br/>"
+            //    + HttpUtility.HtmlEncode(DomUtil.GetIndentXml(strXml))
+            //    + "<br/>");
+
+            byte[] baTimestamp = null;
+            RestChannel channel = null;
+            try
+            {
+                // 用户登录
+                channel = mainForm.GetChannelAndLogin(u.UserName, u.Password, isReader);
+
+                response = channel.CopyBiblioInfo(
+                strAction,
+                strBiblioRecPath,
+                "xml",//strBiblioType,
+                null,//strBiblio,
+                baTimestamp,
+                strNewBiblioRecPath,
+                strNewBiblio,
+                strMergeStyle);
+
+                this.displayLine("CopyBiblioInfo()\r\n"
+                    + HttpUtility.HtmlEncode(RestChannel.GetResultInfo(response)));
+
+                //// 显示返回信息
+                //this.SetResultInfo("CopyBiblioInfo()\r\n" + RestChannel.GetResultInfo(response));
+
+                return response;
+            }
+            catch (Exception ex)
+            {
+                this.displayLine(this.getRed("CopyBiblioInfo()异常\r\n"));
+                return response;
+                //throw new Exception(u.UserName + "CopyBiblioInfo()异常：" + ex.Message);
+            }
+            finally
+            {
+                if (channel != null)
+                    this.mainForm._channelPool.ReturnChannel(channel);
+            }
+        }
+
+        // 用SetBiblioInfo
         public SetBiblioInfoResponse SetBiblioInfo(UserInfo u,
             string strAction,
           string strResPath,
@@ -1251,7 +1305,7 @@ bool isReader = false)
             if (type == C_Type_reader)
                 return string.IsNullOrEmpty(dbName) == true ? this.Env_ZG_ReaderDbName+"/?" : dbName + "/?";
             else if (type == C_Type_biblio)
-                return this.Env_biblioDbName+"/?";
+                return string.IsNullOrEmpty(dbName) == true ? this.Env_biblioDbName + "/?" : dbName + "/?";
 
             else if (type == C_Type_item)
                 return this.Env_biblioDbName + "实体/?";
@@ -4192,6 +4246,7 @@ bool isReader = false)
         #region 常量
 
         public string Env_biblioDbName = "测试中文图书";
+        public string Env_biblioDbName_forCopy = "测试目标库";
 
         public string Env_ZG_LibraryCode = "";
         public string Env_A_LibraryCode = "A馆";
@@ -4343,6 +4398,18 @@ bool isReader = false)
                     // this.Progress,
                     this.Env_biblioDbName, //Env_BiblioDbName, //C_BiblioDbName,
                     "series",//"book",
+                    "unimarc",
+                    out error);
+                if (nRet == -1)
+                    goto ERROR1;
+
+                // 这个库用于测copy函数
+                displayLine("开始创建书目库：" + this.Env_biblioDbName_forCopy);
+                nRet = ManageHelper.CreateBiblioDatabase(
+                    channel,
+                    // this.Progress,
+                    this.Env_biblioDbName_forCopy,
+                    "book",
                     "unimarc",
                     out error);
                 if (nRet == -1)
@@ -4525,7 +4592,7 @@ bool isReader = false)
                 string strOutputInfo = "";
                 ManageDatabaseResponse r = channel.ManageDatabase(
                     "delete",
-                    Env_biblioDbName,
+                    Env_biblioDbName+","+Env_biblioDbName_forCopy,  // 2023/4/4 增加了一个copy的目标库
                     "",
                     "");
                 if (r.ManageDatabaseResult.Value == -1
@@ -6599,6 +6666,9 @@ bool isReader = false)
         // 头标区测试
         private void button_leader_Click(object sender, EventArgs e)
         {
+            string rights = "";
+            string access = "";
+
             // 给4种书目xml的变量赋好值：正常的头标区，24个?号，*?，无leader元素
             this._xmlCommon = this.GetXmlForHeader(this._headerCommon, "正常的头标区");
             this._xml24 = this.GetXmlForHeader(_header24, "头标区输入的24个?号");
@@ -6609,6 +6679,8 @@ bool isReader = false)
             string pathCommon = "";
             string path24 = "";
             string pathAutoChanged = "";
+
+            #region setbiblioinfo
 
             //===========
             // setbiblioinfo()
@@ -6626,9 +6698,9 @@ bool isReader = false)
                 true };
             // 帐号1，有大权限
             this.displayLine(this.getLarge("setbiblioinfo()，有权限帐号1，有大权限"));
-            string hasHeaderRight1 = "getbiblioinfo,setbiblioinfo";
-            UserInfo u1 = this.NewUser(hasHeaderRight1, "", "");
-            List<string> pathList1=this.Write4HeaderData(u1,expectHeadersForHasRights, expectSetNoErrorList);
+            rights = "getbiblioinfo,setbiblioinfo";
+            UserInfo u = this.NewUser(rights, "", "");
+            List<string> pathList1=this.Write4HeaderData(u,expectHeadersForHasRights, expectSetNoErrorList);
 
             // 取出2条路径，方便后面测试getbiblioinfo使用。
             pathCommon = pathList1[0];
@@ -6637,15 +6709,15 @@ bool isReader = false)
 
             // 帐号2，在存取定义中配置的*号,表示完整字段权限
             this.displayLine(this.getLarge("setbiblioinfo()，有权限帐号2，在存取定义中配置的*号,表示完整字段权限"));
-            string hasHeaderRight2_access = Env_biblioDbName + ":setbiblioinfo=*|getbiblioinfo=*";  //中文图书:setbiblioinfo=*|getbiblioinfo=*
-            UserInfo u2 = this.NewUser("", "", hasHeaderRight2_access);
-            List<string> pathList2=this.Write4HeaderData(u2, expectHeadersForHasRights, expectSetNoErrorList);
+            access = Env_biblioDbName + ":setbiblioinfo=*|getbiblioinfo=*";  //中文图书:setbiblioinfo=*|getbiblioinfo=*
+            u = this.NewUser("", "", access);
+            List<string> pathList2=this.Write4HeaderData(u, expectHeadersForHasRights, expectSetNoErrorList);
 
             // 帐号3，在存取定义中指定了###字段
             this.displayLine(this.getLarge("setbiblioinfo()，有权限帐号3，在存取定义中指定了###字段"));
-            string hasHeaderRight3_access = Env_biblioDbName + ":setbiblioinfo=*(###,200)|getbiblioinfo=*"; //"中文图书:setbiblioinfo=*(###,200)|getbiblioinfo=*";
-            UserInfo u3 = this.NewUser("","", hasHeaderRight3_access);
-            List<string> pathList3=this.Write4HeaderData(u3, expectHeadersForHasRights, expectSetNoErrorList);
+            access = Env_biblioDbName + ":setbiblioinfo=*(###,200)|getbiblioinfo=*"; //"中文图书:setbiblioinfo=*(###,200)|getbiblioinfo=*";
+            u = this.NewUser("","", access);
+            List<string> pathList3=this.Write4HeaderData(u, expectHeadersForHasRights, expectSetNoErrorList);
 
             // 无###权限
             List<string> expectHeadersForNoRights = new List<string> {
@@ -6661,20 +6733,356 @@ bool isReader = false)
                 true
             };
             // 中文图书:setbiblioinfo=*(200)|getbiblioinfo=*
-            string noHeaderRight = Env_biblioDbName + ":setbiblioinfo=*(200)|getbiblioinfo=*";
             this.displayLine(this.getLarge("setbiblioinfo()，无###权限帐号"));
-            UserInfo u4 = this.NewUser("", "", noHeaderRight);
-            List<string> pathList4=this.Write4HeaderData(u4, expectHeadersForNoRights,expectSetNoErrorList);
+            access = Env_biblioDbName + ":setbiblioinfo=*(200)|getbiblioinfo=*";
+            u = this.NewUser("", "", access);
+            List<string> pathList4=this.Write4HeaderData(u, expectHeadersForNoRights,expectSetNoErrorList);
 
             // 取出1条路径，方便后面测试getbiblioinfo使用。
             path24 = pathList4[0];
 
+            #endregion
+
+            #region getbiblioinfo
+
             //=========
             //getbiblioinfo()
             //有###权限（3种帐户配置）
+            rights = "getbiblioinfo,setbiblioinfo";
+            u = this.NewUser(rights, "", "");
+            this.displayLine(this.getLarge("getbiblioinfo()，有权限帐号1"));
+            bool bRet = CheckHeader(u, pathCommon, _headerCommon);
+            bRet = CheckHeader(u, path24, _header24);
+            bRet = CheckHeader(u, pathAutoChanged, _headerAutoChanged);
+
+            //==
+            access = Env_biblioDbName + ":getbiblioinfo=*";
+            u = this.NewUser("", "", access);
+            this.displayLine(this.getLarge("getbiblioinfo()，有权限帐号2"));
+            bRet = CheckHeader(u, pathCommon, _headerCommon);
+            bRet = CheckHeader(u, path24, _header24);
+            bRet = CheckHeader(u, pathAutoChanged, _headerAutoChanged);
+
+            //==
+            access = Env_biblioDbName + ":getbiblioinfo=*(###,200)";
+            u = this.NewUser("", "", access);
+            this.displayLine(this.getLarge("getbiblioinfo()，有权限帐号3"));
+            bRet = CheckHeader(u, pathCommon, _headerCommon);
+            bRet = CheckHeader(u, path24, _header24);
+            bRet = CheckHeader(u, pathAutoChanged, _headerAutoChanged);
+
+            //==
+            // 无权限
+            access = Env_biblioDbName + ":getbiblioinfo=*(200)";
+            u = this.NewUser("", "", access);
+            this.displayLine(this.getLarge("getbiblioinfo()，无###权限帐号"));
+            this.displayLine("\r\n无权限帐户，获取普通头标区的记录。");
+            bRet = CheckHeader(u, pathCommon, _header24);
+            this.displayLine("\r\n无权限帐户，获取头标区为24个?号的记录。");
+            bRet = CheckHeader(u, path24, _header24);
+            this.displayLine("\r\n无权限帐户，获取头标区为*?的记录。");
+            bRet = CheckHeader(u, pathAutoChanged, _header24);
 
 
+            #endregion
 
+            #region copybiblioinfo
+
+            #region copybiblioinfo 第一种情况：来源有###权限，目标有###权限
+
+            //===第一种帐户================
+            string appendTargetPath = this.GetAppendPath(C_Type_biblio, Env_biblioDbName_forCopy);
+            this.displayLine(this.getLarge("CopyBiblioInfo()，第一种帐户：来源有###权限，目标有###权限。"));
+            access = Env_biblioDbName + ":getbiblioinfo=*;" + Env_biblioDbName_forCopy + ":setbiblioinfo=*|getbiblioinfo=*";  //中文图书:getbiblioinfo=*;测试中文:setbiblioinfo=*
+            u = this.NewUser("", "", access);
+
+            // 源头标区正常，预期目标记录为正常的头标区
+            this.displayLine("源头标区正常，预期目标记录为正常的头标区");
+            CopyBiblioInfoResponse copyResponse = this.CopyBiblio(u, "copy", pathCommon,appendTargetPath, "", "", false);
+            string path = copyResponse.strOutputBiblioRecPath;
+
+            this.CheckHeader(u, path, _headerCommon);
+
+            //源头标区24个?,预期目标记录为*?
+            this.displayLine("源头标区24个?,预期目标记录为*?");
+            copyResponse = this.CopyBiblio(u, "copy", path24,appendTargetPath, "", "", false);
+            path = copyResponse.strOutputBiblioRecPath;
+            this.CheckHeader(u, path, _headerAutoChanged);
+
+            // 源头标区*?,预期目标记录为*?
+            this.displayLine("源头标区*?,预期目标记录为*?");
+            copyResponse = this.CopyBiblio(u, "copy", pathAutoChanged, appendTargetPath, "", "", false);
+            path = copyResponse.strOutputBiblioRecPath;
+            this.CheckHeader(u, path, _headerAutoChanged);
+
+            #endregion
+
+            #region copybiblioinfo 第二种情况：来源有###权限，目标无###权限
+
+            //==第二种帐户====
+            this.displayLine(this.getLarge("CopyBiblioInfo()，第二种帐户：来源有###权限，目标无###权限。"));
+             access = Env_biblioDbName + ":getbiblioinfo=*;" + Env_biblioDbName_forCopy + ":setbiblioinfo=*(200)|getbiblioinfo=*";  //中文图书:getbiblioinfo=*;测试中文:setbiblioinfo=*(200)
+            u = this.NewUser("", "", access);
+
+
+            //==
+            // 源头标区正常，预期目标记录为正常的头标区
+            this.displayLine("源头标区正常，因无权限，预期目标记录为24个?");
+             copyResponse = this.CopyBiblio(u, "copy", pathCommon,appendTargetPath, "", "", false);
+            if (copyResponse.CopyBiblioInfoResult.Value != -1)
+            {
+                this.displayLine(this.getRed("不符合预期。目标无###权限时，源数据有正常头标区，CopyBiblioInfo()应报权限不足"));
+                return;
+            }
+            // 用loose参数再次写入
+            this.displayLine("使用loose参数再次copy。");
+            copyResponse = this.CopyBiblio(u, "copy", pathCommon,appendTargetPath, "","loose", false);
+            if (copyResponse.CopyBiblioInfoResult.Value == -1)
+            {
+                this.displayLine(this.getRed("不符合预期。用loose参数，应能正常copy。"));
+                return;
+            }
+            if (copyResponse.CopyBiblioInfoResult.ErrorCode != ErrorCode.PartialDenied)
+            {
+                this.displayLine(this.getRed("不符合预期。错误码应为PartialDenied"));
+                return;
+            }
+            path = copyResponse.strOutputBiblioRecPath;
+            // 检查目标记录，因无权限应为24个?
+            this.CheckHeader(u, path, _header24);
+
+            //===
+            //源头标区24个?,预期目标记录为*?
+            this.displayLine("源头标区24个?,因无权限，预期目标记录为24个?，由于来源本身是24个?，所以不会有权限不足的提示，不需要用loose。");
+            copyResponse = this.CopyBiblio(u, "copy", path24, appendTargetPath, "", "", false);
+            path = copyResponse.strOutputBiblioRecPath;
+            // 检查目标记录，因无权限应为24个?
+            this.CheckHeader(u, path, _header24);
+
+            //===
+            // 源头标区*?,预期目标记录为*?
+            this.displayLine("源头标区*?,因无权限，预期目标记录为24个?");
+            copyResponse = this.CopyBiblio(u, "copy", pathAutoChanged, appendTargetPath, "", "", false);
+            if (copyResponse.CopyBiblioInfoResult.Value != -1)
+            {
+                this.displayLine(this.getRed("不符合预期。目标无###权限时，源数据为*?，CopyBiblioInfo()应报权限不足"));
+                return;
+            }
+            // 用loose参数再次写入
+            this.displayLine("使用loose参数再次copy。");
+            copyResponse = this.CopyBiblio(u, "copy", pathAutoChanged, appendTargetPath, "", "loose", false);
+            if (copyResponse.CopyBiblioInfoResult.Value == -1)
+            {
+                this.displayLine(this.getRed("不符合预期。用loose参数，应能正常copy。"));
+                return;
+            }
+            if (copyResponse.CopyBiblioInfoResult.ErrorCode != ErrorCode.PartialDenied)
+            {
+                this.displayLine(this.getRed("不符合预期。错误码应为PartialDenied"));
+                return;
+            }
+            path = copyResponse.strOutputBiblioRecPath;
+            // 检查目标记录，因无权限应为24个?
+            this.CheckHeader(u, path, _header24);
+
+            #endregion
+
+
+            #region copybiblioinfo 第三种情况：来源无###权限，目标有###权限
+
+            //==第三种帐户====
+            this.displayLine(this.getLarge("CopyBiblioInfo()，第三种情况：来源无###权限，目标有###权限。"));
+            access = Env_biblioDbName + ":getbiblioinfo=*(200,997);" + Env_biblioDbName_forCopy + ":setbiblioinfo=*|getbiblioinfo=*";  //中文图书:getbiblioinfo=*(200,997);测试中文:setbiblioinfo=*
+            u = this.NewUser("", "", access);
+
+
+            //==
+            // 源头标区正常，预期目标记录为*?
+            this.displayLine("源头标区正常，预期目标记录为*?");
+            copyResponse = this.CopyBiblio(u, "copy", pathCommon, appendTargetPath, "", "", false);
+            if (copyResponse.CopyBiblioInfoResult.Value != -1)
+            {
+                this.displayLine(this.getRed("不符合预期。来源无###权限时，源数据有正常头标区，应报权限不足"));
+                return;
+            }
+            // 用loose参数再次写入
+            this.displayLine("使用loose参数再次copy。");
+            copyResponse = this.CopyBiblio(u, "copy", pathCommon, appendTargetPath, "", "loose", false);
+            if (copyResponse.CopyBiblioInfoResult.Value == -1)
+            {
+                this.displayLine(this.getRed("不符合预期。用loose参数，应能正常copy。"));
+                return;
+            }
+            path = copyResponse.strOutputBiblioRecPath;
+            // 检查目标记录，因无权限应为24个?
+            this.CheckHeader(u, path, _headerAutoChanged);
+
+            //===
+            //源头标区24个?,预期目标记录为*?
+            this.displayLine("源头标区24个?,预期目标记录为*?，由于来源本身是24个?，所以不会有权限不足的提示，不需要用loose。");
+            copyResponse = this.CopyBiblio(u, "copy", path24, appendTargetPath, "", "", false);
+            path = copyResponse.strOutputBiblioRecPath;
+            // 检查目标记录，因无权限应为24个?
+            this.CheckHeader(u, path, _headerAutoChanged);
+
+            //===
+            // 源头标区*?,预期目标记录为*?
+            this.displayLine("源头标区*?,因无权限，预期目标记录为24个?");
+            copyResponse = this.CopyBiblio(u, "copy", pathAutoChanged, appendTargetPath, "", "", false);
+            if (copyResponse.CopyBiblioInfoResult.Value != -1)
+            {
+                this.displayLine(this.getRed("不符合预期。无目标###权限时，源数据为*?，应报权限不足"));
+                return;
+            }
+            // 用loose参数再次写入
+            this.displayLine("使用loose参数再次copy。");
+            copyResponse = this.CopyBiblio(u, "copy", pathAutoChanged, appendTargetPath, "", "loose", false);
+            if (copyResponse.CopyBiblioInfoResult.Value == -1)
+            {
+                this.displayLine(this.getRed("不符合预期。用loose参数，应能正常copy。"));
+                return;
+            }
+            path = copyResponse.strOutputBiblioRecPath;
+            // 检查目标记录，因无权限应为24个?
+            this.CheckHeader(u, path, _headerAutoChanged);
+
+        #endregion
+
+
+            #region copybiblioinfo 第四种情况：来源无###权限，目标无###权限
+        
+
+            //==第四种帐户====
+            this.displayLine(this.getLarge("CopyBiblioInfo()，第四种情况：来源无###权限，目标无###权限。"));
+            access = Env_biblioDbName + ":getbiblioinfo=*(200,997);" + Env_biblioDbName_forCopy + ":setbiblioinfo=*(200)|getbiblioinfo=*";  //中文图书:getbiblioinfo=*(200,997);测试中文:setbiblioinfo=*(200)|getbiblioinfo=*
+            u = this.NewUser("", "", access);
+
+
+            //==
+            // 源头标区正常，预期目标记录为*?
+            this.displayLine("源头标区正常，预期目标记录为24个问题");
+            copyResponse = this.CopyBiblio(u, "copy", pathCommon, appendTargetPath, "", "", false);
+            if (copyResponse.CopyBiblioInfoResult.Value != -1)
+            {
+                this.displayLine(this.getRed("不符合预期。来源无###权限时，源数据有正常头标区，应报权限不足"));
+                return;
+            }
+            // 用loose参数再次写入
+            this.displayLine("使用loose参数再次copy。");
+            copyResponse = this.CopyBiblio(u, "copy", pathCommon, appendTargetPath, "", "loose", false);
+            if (copyResponse.CopyBiblioInfoResult.Value == -1)
+            {
+                this.displayLine(this.getRed("不符合预期。用loose参数，应能正常copy。"));
+                return;
+            }
+            path = copyResponse.strOutputBiblioRecPath;
+            // 检查目标记录，因无权限应为24个?
+            this.CheckHeader(u, path, _header24);
+
+            //===
+            //源头标区24个?,预期目标记录为*?
+            this.displayLine("源头标区24个?,因无权限，预期目标记录为24个?，由于来源本身是24个?，所以读取时不会有权限不足的提示，不需要用loose。");
+            copyResponse = this.CopyBiblio(u, "copy", path24, appendTargetPath, "", "", false);
+            path = copyResponse.strOutputBiblioRecPath;
+            // 检查目标记录，因无权限应为24个?
+            this.CheckHeader(u, path, _header24);
+
+            //===
+            // 源头标区*?,预期目标记录为*?
+            this.displayLine("源头标区*?,因无权限，预期目标记录为24个?");
+            copyResponse = this.CopyBiblio(u, "copy", pathAutoChanged, appendTargetPath, "", "", false);
+            if (copyResponse.CopyBiblioInfoResult.Value != -1)
+            {
+                this.displayLine(this.getRed("不符合预期。无目标###权限时，源数据为*?，应报权限不足"));
+                return;
+            }
+            // 用loose参数再次写入
+            this.displayLine("使用loose参数再次copy。");
+            copyResponse = this.CopyBiblio(u, "copy", pathAutoChanged, appendTargetPath, "", "loose", false);
+            if (copyResponse.CopyBiblioInfoResult.Value == -1)
+            {
+                this.displayLine(this.getRed("不符合预期。用loose参数，应能正常copy。"));
+                return;
+            }
+            path = copyResponse.strOutputBiblioRecPath;
+            // 检查目标记录，因无权限应为24个?
+            this.CheckHeader(u, path, _header24);
+
+            #endregion
+
+            #region copybiblioinfo 第五种情况：来源无###权限，目标有###权限，测strNewBiblio
+
+            //==第五种情况====
+            this.displayLine(this.getLarge("CopyBiblioInfo()，第五种情况：来源无###权限，目标有###权限，测strNewBiblio"));
+            access = Env_biblioDbName + ":getbiblioinfo=*(200,997);" + Env_biblioDbName_forCopy + ":setbiblioinfo=*|getbiblioinfo=*";  //中文图书:getbiblioinfo=*(200,997);测试中文:setbiblioinfo=*
+            u = this.NewUser("", "", access);
+
+            //==
+            this.displayLine("strNewBiblio为正常头标区，预期目标记录为正常头标区");
+            copyResponse = this.CopyBiblio(u, "copy", pathCommon, appendTargetPath, this._xmlCommon, "", false);
+            if (copyResponse.CopyBiblioInfoResult.Value != -1)
+            {
+                this.displayLine(this.getRed("不符合预期。来源无###权限时，源数据有正常头标区，应报权限不足"));
+                return;
+            }
+            // 用loose参数再次写入
+            this.displayLine("使用loose参数再次copy。");
+            copyResponse = this.CopyBiblio(u, "copy", pathCommon, appendTargetPath, this._xmlCommon, "loose", false);
+            if (copyResponse.CopyBiblioInfoResult.Value == -1)
+            {
+                this.displayLine(this.getRed("不符合预期。用loose参数，应能正常copy。"));
+                return;
+            }
+            path = copyResponse.strOutputBiblioRecPath;
+            this.CheckHeader(u, path, _headerCommon);
+
+            //===
+            this.displayLine("strNewBiblio为24个?,预期目标记录为*?");
+            copyResponse = this.CopyBiblio(u, "copy", path24, appendTargetPath, _xml24, "", false);
+            path = copyResponse.strOutputBiblioRecPath;
+            this.CheckHeader(u, path, _headerAutoChanged);
+
+            //===
+            this.displayLine("strNewBiblio为*?,预期目标记录为*?");
+            copyResponse = this.CopyBiblio(u, "copy", pathAutoChanged, appendTargetPath, _xmlAutoChanged, "", false);
+            if (copyResponse.CopyBiblioInfoResult.Value != -1)
+            {
+                this.displayLine(this.getRed("不符合预期。无目标###权限时，源数据为*?，应报权限不足"));
+                return;
+            }
+            // 用loose参数再次写入
+            this.displayLine("使用loose参数再次copy。");
+            copyResponse = this.CopyBiblio(u, "copy", pathAutoChanged, appendTargetPath, _xmlAutoChanged, "loose", false);
+            if (copyResponse.CopyBiblioInfoResult.Value == -1)
+            {
+                this.displayLine(this.getRed("不符合预期。用loose参数，应能正常copy。"));
+                return;
+            }
+            path = copyResponse.strOutputBiblioRecPath;
+            this.CheckHeader(u, path, _headerAutoChanged);
+
+            //===
+            this.displayLine("strNewBiblio为无leader元素,预期目标记录为*?");
+            copyResponse = this.CopyBiblio(u, "copy", pathAutoChanged, appendTargetPath,_xmlNoHeader, "", false);
+            if (copyResponse.CopyBiblioInfoResult.Value != -1)
+            {
+                this.displayLine(this.getRed("不符合预期。无目标###权限时，源数据为*?，应报权限不足"));
+                return;
+            }
+            // 用loose参数再次写入
+            this.displayLine("使用loose参数再次copy。");
+            copyResponse = this.CopyBiblio(u, "copy", pathAutoChanged, appendTargetPath, _xmlNoHeader, "loose", false);
+            if (copyResponse.CopyBiblioInfoResult.Value == -1)
+            {
+                this.displayLine(this.getRed("不符合预期。用loose参数，应能正常copy。"));
+                return;
+            }
+            path = copyResponse.strOutputBiblioRecPath;
+            this.CheckHeader(u, path, _headerAutoChanged);
+
+            #endregion
+
+            #endregion
 
         }
 
@@ -6683,23 +7091,23 @@ bool isReader = false)
             List<string> pathList = new List<string>();
 
             // 写普通的头标区，预期完全一致
-            this.displayLine(this.getBold("第1种：写普通的头标区，预期为" + expectHeaders[0]));
+            this.displayLine(this.getBold("\r\n第1种：写普通的头标区，预期为" + expectHeaders[0]));
             string path=this.writeLeaderXml(u, this._xmlCommon, expectHeaders[0], expectSetNoErrorList[0]);
             pathList.Add(path);
 
             // 写24个?号，预期为*?
-            this.displayLine(this.getBold("第2种：写24个?号，预期为" + expectHeaders[1]));
+            this.displayLine(this.getBold("\r\n第2种：写24个?号，预期为" + expectHeaders[1]));
             path= this.writeLeaderXml(u, this._xml24, expectHeaders[1], expectSetNoErrorList[1]);
             pathList.Add(path);
 
 
             // 写*?，预期为*?
-            this.displayLine(this.getBold("第3种：写*?，预期为" + expectHeaders[2]));
+            this.displayLine(this.getBold("\r\n第3种：写*?，预期为" + expectHeaders[2]));
             path=this.writeLeaderXml(u, this._xmlAutoChanged, expectHeaders[2], expectSetNoErrorList[2]);
             pathList.Add(path);
 
             // 写无header，预期为*?
-            this.displayLine(this.getBold("第4种：写无header，预期为" + expectHeaders[3]));
+            this.displayLine(this.getBold("\r\n第4种：写无header，预期为" + expectHeaders[3]));
             path = this.writeLeaderXml(u, this._xmlNoHeader, expectHeaders[3], expectSetNoErrorList[3]);
             pathList.Add(path);
 
@@ -6717,9 +7125,14 @@ bool isReader = false)
 
             // 写xml
             SetBiblioInfoResponse setResponse = this.SetBiblioInfo(u, "new", appendPath, xml, false);
-            bool bRet = this.CheckResult(true, setResponse.SetBiblioInfoResult);  // 预期写入成功
-            if (bRet == false)  //不符合预期的话，退出不再继续。
+            if (setResponse.SetBiblioInfoResult.Value == -1)
+            {
+                this.displayLine(getRed("写入记录返回-1，不符合预期"));
                 goto END1;
+            }
+            //bool bRet = this.CheckResult(true, setResponse.SetBiblioInfoResult);  // 预期写入成功
+            //if (bRet == false)  //不符合预期的话，退出不再继续。
+            //    goto END1;
 
             // 这里要比对错误码
             if (expectSetNoError == true)
@@ -6739,41 +7152,7 @@ bool isReader = false)
 
             // 再取出来这条记录，比对写入的头标区是否与提交的一致
             outputPath = setResponse.strOutputBiblioRecPath;
-            GetBiblioInfosResponse getResponse = this.GetBiblioInfos(u, outputPath, false);
-            bRet = this.CheckResult(true, getResponse.GetBiblioInfosResult);
-            if (bRet == false)  //不符合预期的话，退出不再继续。
-                goto END1;
-            if (getResponse.results == null || getResponse.results.Length != 1)
-            {
-                this.displayLine(this.getRed("不符合预期，用GetBiblioInfos获取刚写入的记录[" + outputPath + "]，result应该等于1才对。"));
-                goto END1;
-            }
-            string okXml = getResponse.results[0];
-
-            int nRet = MarcUtil.Xml2Marc(okXml,
-                false,
-                "", // 自动识别 MARC 格式
-                out string strOutMarcSyntax,
-                out string strMARC,
-                out string strError);
-            if (nRet == -1)
-            {
-                this.displayLine(this.getRed("调Xml2Marc()将写入的xml转为marc时出错" + strError));
-                goto END1;
-            }
-
-            this.displayLine("\r\n");//加一空格，阅读起来容易些
-            MarcRecord marcRecord = new MarcRecord(strMARC);
-            string okHeader = marcRecord.Header.ToString();
-            if (okHeader != expectHeader)
-            {
-                this.displayLine(getRed("校验写入库中的头标区为[" + okHeader + "]" +
-                    ",不是预期的值[" + expectHeader + "]，不符合预期。"));
-            }
-            else
-            {
-                this.displayLine(this.getGreenBackgroud("校验写入库中的头标区与预期的值一致，符合预期。"));
-            }
+            bool bRet = CheckHeader(u, outputPath, expectHeader);
 
         END1:
 
@@ -6781,14 +7160,19 @@ bool isReader = false)
         }
 
 
+        // 检查头标区
         public bool CheckHeader(UserInfo u, string resPath,string expectHeader)
         {
             bool bRet = false;
 
+            this.displayLine("\r\n");//间隔一下
+
             GetBiblioInfosResponse getResponse = this.GetBiblioInfos(u, resPath, false);
-            bRet = this.CheckResult(true, getResponse.GetBiblioInfosResult);
-            if (bRet == false)  //不符合预期的话，退出不再继续。
+            if (getResponse.GetBiblioInfosResult.Value ==-1)
+            {
+                this.displayLine(getRed("获取记录返回-1，不符合预期"));
                 goto END1;
+            }
             if (getResponse.results == null || getResponse.results.Length != 1)
             {
                 this.displayLine(this.getRed("不符合预期，用GetBiblioInfos获取刚写入的记录[" + resPath + "]，result应该等于1才对。"));
@@ -6813,12 +7197,13 @@ bool isReader = false)
             string okHeader = marcRecord.Header.ToString();
             if (okHeader != expectHeader)
             {
-                this.displayLine(getRed("校验写入库中的头标区为[" + okHeader + "]" +
+                this.displayLine(getRed("校验库中的头标区为[" + okHeader + "]" +
                     ",不是预期的值[" + expectHeader + "]，不符合预期。"));
             }
             else
             {
-                this.displayLine(this.getGreenBackgroud("校验写入库中的头标区与预期的值一致，符合预期。"));
+                bRet = true;
+                this.displayLine(this.getGreenBackgroud("校验库中的头标区与预期的值[" + expectHeader + "]一致，符合预期。"));
             }
 
         END1:
