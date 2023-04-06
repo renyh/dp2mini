@@ -145,14 +145,14 @@ namespace dp2mini
         public void SaveSettings(SettingInfo settingInfo)
         {
 
-            if (settingInfo.IsSavePassword == false)
-                settingInfo.Password = "";
+            //if (settingInfo.IsSavePassword == false)
+            //    settingInfo.Password = "";
 
             // 登录帐号信息
             ClientInfo.Config?.Set("global", "url", settingInfo.Url);
             ClientInfo.Config?.Set("global", "userName", settingInfo.UserName);
             ClientInfo.Config?.Set("global", "password", MainForm.EncryptPassword(settingInfo.Password));
-            ClientInfo.Config?.Set("global", "isSavePassword", settingInfo.IsSavePassword.ToString());
+            //ClientInfo.Config?.Set("global", "isSavePassword", settingInfo.IsSavePassword.ToString());
 
             // 保存到配置文件
             ClientInfo.Finish();
@@ -181,9 +181,9 @@ namespace dp2mini
             info.UserName = ClientInfo.Config.Get("global", "userName", "");
             info.Password = MainForm.DecryptPasssword( ClientInfo.Config.Get("global", "password", ""));
 
-           string isSavePassword = ClientInfo.Config.Get("global", "isSavePassword", "");
-            if (string.IsNullOrEmpty(isSavePassword) ==false)
-                 info.IsSavePassword = Convert.ToBoolean(isSavePassword);
+           //string isSavePassword = ClientInfo.Config.Get("global", "isSavePassword", "");
+            //if (string.IsNullOrEmpty(isSavePassword) ==false)
+            //     info.IsSavePassword = Convert.ToBoolean(isSavePassword);
 
 
             // 未找到原因

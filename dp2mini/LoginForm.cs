@@ -64,18 +64,18 @@ namespace dp2mini
             }
         }
 
-        public bool IsSavePassword
-        {
-            get
-            {
-                return this.checkBox_savePassword.Checked;
-            }
+        //public bool IsSavePassword
+        //{
+        //    get
+        //    {
+        //        return this.checkBox_savePassword.Checked;
+        //    }
 
-            set
-            {
-                this.checkBox_savePassword.Checked = value;
-            }
-        }
+        //    set
+        //    {
+        //        this.checkBox_savePassword.Checked = value;
+        //    }
+        //}
         
 
         private void SettingForm_Load(object sender, EventArgs e)
@@ -89,7 +89,7 @@ namespace dp2mini
             LibraryUrl = info.Url;
             Username = info.UserName;
             Password = info.Password;
-            IsSavePassword = info.IsSavePassword;
+            //IsSavePassword = info.IsSavePassword;
         }
 
         /// <summary>
@@ -136,7 +136,7 @@ namespace dp2mini
                 info.Url = LibraryUrl;
                 info.UserName = Username;
                 info.Password = Password;
-                info.IsSavePassword = IsSavePassword;
+                //info.IsSavePassword = IsSavePassword;
                 this._mainFrom.SaveSettings(info);
 
                 this.DialogResult = DialogResult.OK;
