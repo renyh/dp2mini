@@ -49,6 +49,8 @@
             this.button_delEnv = new System.Windows.Forms.Button();
             this.button_deleteBiblioHHasChildren = new System.Windows.Forms.Button();
             this.button_leader = new System.Windows.Forms.Button();
+            this.button_getrecord = new System.Windows.Forms.Button();
+            this.button_GetBrowseRecords = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // button_accessAndObject
@@ -299,7 +301,7 @@
             // 
             // button_leader
             // 
-            this.button_leader.Location = new System.Drawing.Point(370, 12);
+            this.button_leader.Location = new System.Drawing.Point(345, 12);
             this.button_leader.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.button_leader.Name = "button_leader";
             this.button_leader.Size = new System.Drawing.Size(151, 52);
@@ -309,11 +311,37 @@
             this.button_leader.UseVisualStyleBackColor = true;
             this.button_leader.Click += new System.EventHandler(this.button_leader_Click);
             // 
+            // button_getrecord
+            // 
+            this.button_getrecord.Location = new System.Drawing.Point(506, 12);
+            this.button_getrecord.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.button_getrecord.Name = "button_getrecord";
+            this.button_getrecord.Size = new System.Drawing.Size(207, 52);
+            this.button_getrecord.TabIndex = 82;
+            this.button_getrecord.Tag = "";
+            this.button_getrecord.Text = "GetRecord权限";
+            this.button_getrecord.UseVisualStyleBackColor = true;
+            this.button_getrecord.Click += new System.EventHandler(this.button_getrecord_Click);
+            // 
+            // button_GetBrowseRecords
+            // 
+            this.button_GetBrowseRecords.Location = new System.Drawing.Point(723, 12);
+            this.button_GetBrowseRecords.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.button_GetBrowseRecords.Name = "button_GetBrowseRecords";
+            this.button_GetBrowseRecords.Size = new System.Drawing.Size(264, 52);
+            this.button_GetBrowseRecords.TabIndex = 83;
+            this.button_GetBrowseRecords.Tag = "";
+            this.button_GetBrowseRecords.Text = "GetBrowseRecords";
+            this.button_GetBrowseRecords.UseVisualStyleBackColor = true;
+            this.button_GetBrowseRecords.Click += new System.EventHandler(this.button_GetBrowseRecords_Click);
+            // 
             // Form_auto
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(216F, 216F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.ClientSize = new System.Drawing.Size(1528, 830);
+            this.Controls.Add(this.button_GetBrowseRecords);
+            this.Controls.Add(this.button_getrecord);
             this.Controls.Add(this.button_leader);
             this.Controls.Add(this.button_deleteBiblioHHasChildren);
             this.Controls.Add(this.label2);
@@ -365,5 +393,7 @@
         private System.Windows.Forms.Button button_delEnv;
         private System.Windows.Forms.Button button_deleteBiblioHHasChildren;
         private System.Windows.Forms.Button button_leader;
+        private System.Windows.Forms.Button button_getrecord;
+        private System.Windows.Forms.Button button_GetBrowseRecords;
     }
 }

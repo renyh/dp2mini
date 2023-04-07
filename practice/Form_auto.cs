@@ -491,13 +491,46 @@ bool isReader = false)
 
             this.displayLine("strResPath=" + strResPath);
 
+            return this.GetBrowseRecords(u,new string[] { strResPath},isReader);
+
+            //RestChannel channel = null;
+            //try
+            //{
+            //    // 用户登录
+            //    channel = mainForm.GetChannelAndLogin(u.UserName, u.Password, isReader);
+
+            //    response = channel.GetBrowseRecords(new string[] { strResPath }, "id,cols,xml");
+
+            //    this.displayLine("GetBrowseRecords()\r\n"
+            //        + HttpUtility.HtmlEncode(RestChannel.GetResultInfo(response)));
+            //    return response;
+
+            //}
+            //catch (Exception ex)
+            //{
+            //    throw new Exception(u.UserName + "GetBrowseRecords：" + ex.Message);
+            //}
+            //finally
+            //{
+            //    if (channel != null)
+            //        this.mainForm._channelPool.ReturnChannel(channel);
+            //}
+        }
+
+
+        public GetBrowseRecordsResponse GetBrowseRecords(UserInfo u,
+string[] pathList,
+bool isReader = false)
+        {
+            GetBrowseRecordsResponse response = null;
+
             RestChannel channel = null;
             try
             {
                 // 用户登录
                 channel = mainForm.GetChannelAndLogin(u.UserName, u.Password, isReader);
 
-                response = channel.GetBrowseRecords(new string[] { strResPath }, "id,cols,xml");
+                response = channel.GetBrowseRecords(pathList, "id,cols,xml");
 
                 this.displayLine("GetBrowseRecords()\r\n"
                     + HttpUtility.HtmlEncode(RestChannel.GetResultInfo(response)));
@@ -532,8 +565,8 @@ bool isReader = false)
                 return this.SetItemInfo1(u, type, "delete", strResPath, "", isReader, out string temp);
 
             }
-            else if (type == C_Type_Amerce
-            || type == C_Type_Arrived)
+            else if (type == C_Type_amerce
+            || type == C_Type_arrived)
             {
                 return this.WriteResForDel(u, strResPath, isReader).WriteResResult;
 
@@ -1314,8 +1347,8 @@ bool isReader = false)
         public const string C_Type_comment = "评注";
         public const string C_Type_issue = "期";
 
-        public const string C_Type_Amerce = "违约金";
-        public const string C_Type_Arrived = "预约到书";
+        public const string C_Type_amerce = "违约金";
+        public const string C_Type_arrived = "预约到书";
 
         public string GetAppendPath(string type, string dbName = "")
         {
@@ -1334,9 +1367,9 @@ bool isReader = false)
             else if (type == C_Type_issue)
                 return this.Env_biblioDbName + "期/?";
 
-            else if (type == C_Type_Amerce)
+            else if (type == C_Type_amerce)
                 return this.Env_amerceDbName + "/?";//"违约金/?";
-            else if (type == C_Type_Arrived)
+            else if (type == C_Type_arrived)
                 return this.Env_arrivedDbName + "/?";//"预约到书/?";
 
 
@@ -1535,11 +1568,11 @@ bool isReader = false)
                               + dprmsfile
                             + "</root>";
             }
-            else if (type == C_Type_Amerce)
+            else if (type == C_Type_amerce)
             {
                 return this.GetAmerceXml(Env_ZG_LibraryCode, "P001", "B001", Env_ZG_Location, hasFile);
             }
-            else if (type == C_Type_Arrived)
+            else if (type == C_Type_arrived)
             {
                 return this.GetArrivedXml(Env_ZG_LibraryCode, "P001", "B001", Env_ZG_Location, hasFile);  //这个读者和册也可能是不存在的，没有关系。
 
@@ -2499,9 +2532,9 @@ bool isReader = false)
                 return "getorderinfo";
             else if (type == C_Type_issue)
                 return "getissueinfo";
-            else if (type == C_Type_Amerce)
+            else if (type == C_Type_amerce)
                 return "getamerceinfo";
-            else if (type == C_Type_Arrived)
+            else if (type == C_Type_arrived)
                 return "getarrivedinfo";
             else
                 throw new Exception("GetFullRights不支持的类型");
@@ -2522,9 +2555,9 @@ bool isReader = false)
                 rights = "setorderinfo";
             else if (type == C_Type_issue)
                 rights = "setissueinfo";
-            else if (type == C_Type_Amerce)
+            else if (type == C_Type_amerce)
                 rights = "setamerceinfo";
-            else if (type == C_Type_Arrived)
+            else if (type == C_Type_arrived)
                 rights = "setarrivedinfo";
             else
                 throw new Exception("GetFullRights不支持的类型");
@@ -2550,9 +2583,9 @@ bool isReader = false)
                 rights = "setorderobject";
             else if (type == C_Type_issue)
                 rights = "setissueobject";
-            else if (type == C_Type_Amerce)
+            else if (type == C_Type_amerce)
                 rights = "setamerceobject";
-            else if (type == C_Type_Arrived)
+            else if (type == C_Type_arrived)
                 rights = "setarrivedobject";
             else
                 throw new Exception("GetFullRights不支持的类型");
@@ -2578,9 +2611,9 @@ bool isReader = false)
                 return "getorderobject";
             else if (type == C_Type_issue)
                 return "getissueobject";
-            else if (type == C_Type_Amerce)
+            else if (type == C_Type_amerce)
                 return "getamerceobject";
-            else if (type == C_Type_Arrived)
+            else if (type == C_Type_arrived)
                 return "getarrivedobject";
             else
                 throw new Exception("GetFullRights不支持的类型");
@@ -3151,19 +3184,19 @@ bool isReader = false)
 
             if (accountType == C_accountType_zgworker)
             {
-                this.CheckArrivedAmerceForZgWorker(C_Type_Arrived);
+                this.CheckArrivedAmerceForZgWorker(C_Type_arrived);
             }
             else if (accountType == C_accountType_zgreader)
             {
-                this.CheckArrivedAmerceForZgReader(C_Type_Arrived);
+                this.CheckArrivedAmerceForZgReader(C_Type_arrived);
             }
             else if (accountType == C_accountType_fgworker)
             {
-                CheckArrivedAmerceForFgWorker(C_Type_Arrived);
+                CheckArrivedAmerceForFgWorker(C_Type_arrived);
             }
             else if (accountType == C_accountType_fgreader)
             {
-                this.CheckArrivedAmerceForFgReader(C_Type_Arrived);
+                this.CheckArrivedAmerceForFgReader(C_Type_arrived);
             }
             else
                 throw new Exception("不支持的身份类型" + accountType);
@@ -3193,7 +3226,7 @@ bool isReader = false)
                 WriteResResponse writeRes = null;
 
                 // 目前此函数仅支持 预约到书 和 违约金
-                if (type != C_Type_Arrived && type != C_Type_Amerce)
+                if (type != C_Type_arrived && type != C_Type_amerce)
                     throw new Exception("CheckArrivedAmerce()不支持的类型" + type);
 
 
@@ -3278,7 +3311,7 @@ bool isReader = false)
                 WriteResResponse writeRes = null;
 
                 // 目前此函数仅支持 预约到书 和 违约金
-                if (type != C_Type_Arrived && type != C_Type_Amerce)
+                if (type != C_Type_arrived && type != C_Type_amerce)
                     throw new Exception("CheckArrivedAmerce()不支持的类型" + type);
 
 
@@ -3402,7 +3435,7 @@ bool isReader = false)
 
 
                 // 目前此函数仅支持 预约到书 和 违约金
-                if (type != C_Type_Arrived && type != C_Type_Amerce)
+                if (type != C_Type_arrived && type != C_Type_amerce)
                     throw new Exception("CheckArrivedAmerce()不支持的类型" + type);
 
 
@@ -3488,7 +3521,7 @@ bool isReader = false)
 
 
                 // 目前此函数仅支持 预约到书 和 违约金
-                if (type != C_Type_Arrived && type != C_Type_Amerce)
+                if (type != C_Type_arrived && type != C_Type_amerce)
                     throw new Exception("CheckArrivedAmerce()不支持的类型" + type);
 
 
@@ -4237,19 +4270,19 @@ bool isReader = false)
 
             if (accountType == C_accountType_zgworker)
             {
-                this.CheckArrivedAmerceForZgWorker(C_Type_Amerce);
+                this.CheckArrivedAmerceForZgWorker(C_Type_amerce);
             }
             else if (accountType == C_accountType_zgreader)
             {
-                this.CheckArrivedAmerceForZgReader(C_Type_Amerce);
+                this.CheckArrivedAmerceForZgReader(C_Type_amerce);
             }
             else if (accountType == C_accountType_fgworker)
             {
-                CheckArrivedAmerceForFgWorker(C_Type_Amerce);
+                CheckArrivedAmerceForFgWorker(C_Type_amerce);
             }
             else if (accountType == C_accountType_fgreader)
             {
-                this.CheckArrivedAmerceForFgReader(C_Type_Amerce);
+                this.CheckArrivedAmerceForFgReader(C_Type_amerce);
             }
             else
                 throw new Exception("不支持的身份类型" + accountType);
@@ -6447,9 +6480,9 @@ bool isReader = false)
 
         public string GetArrivedOrAmerceXml(string type, string libraryCode, string readerBarcode, string itemBarcode, string location)
         {
-            if (type == C_Type_Arrived)
+            if (type == C_Type_arrived)
                 return GetArrivedXml(libraryCode, readerBarcode, itemBarcode, location, true);
-            else if (type == C_Type_Amerce)
+            else if (type == C_Type_amerce)
                 return this.GetAmerceXml(libraryCode, readerBarcode, itemBarcode, location, true);
             else
                 throw new Exception("GetArrivedOrAmerceXml()不支持的类型" + type);
@@ -7297,6 +7330,125 @@ bool isReader = false)
                 if (channel != null)
                     this.mainForm._channelPool.ReturnChannel(channel);
             }
+        }
+
+        // 测试getrecord
+        private void button_getrecord_Click(object sender, EventArgs e)
+        {
+
+            this.EnableCtrls(false);
+            try
+            {
+                // 清空输出
+                ClearResult();
+
+                WriteResResponse r = null;
+
+                // 先用超级管理员创建各种类型数据
+                UserInfo s = this.mainForm.GetSupervisorAccount();
+                string biblioPath = this.WriteXml(s, this.GetAppendPath(C_Type_biblio), this.GetXml(C_Type_biblio, true)).strOutputResPath;
+                string itemPath = this.WriteXml(s, this.GetAppendPath(C_Type_item), this.GetXml(C_Type_item, true)).strOutputResPath;
+                string orderPath = this.WriteXml(s, this.GetAppendPath(C_Type_order), this.GetXml(C_Type_order, true)).strOutputResPath;
+                string issuePath = this.WriteXml(s, this.GetAppendPath(C_Type_issue), this.GetXml(C_Type_issue, true)).strOutputResPath;
+
+                string arrivedPath = this.WriteXml(s, this.GetAppendPath(C_Type_arrived), this.GetXml(C_Type_arrived, true)).strOutputResPath;
+                string amercePath = this.WriteXml(s, this.GetAppendPath(C_Type_amerce), this.GetXml(C_Type_amerce, true)).strOutputResPath;
+                string commentPath = this.WriteXml(s, this.GetAppendPath(C_Type_comment), this.GetXml(C_Type_comment, true)).strOutputResPath;
+                string readerPath = this.WriteXml(s, this.GetAppendPath(C_Type_reader), this.GetXml(C_Type_reader, true)).strOutputResPath;
+
+                // 新建一个帐户，只有getrecord权限
+                UserInfo u = NewUser("getrecord,getobject", "", "");
+                this.DoRes1(u, C_Type_biblio, biblioPath, "get", true, false, "");
+                this.DoRes1(u, C_Type_item, itemPath, "get", true, false, "");
+                this.DoRes1(u, C_Type_order, orderPath, "get", true, false, "");
+                this.DoRes1(u, C_Type_issue, issuePath, "get", true, false, "");
+
+                this.DoRes1(u, C_Type_arrived, arrivedPath, "get", true, false, "");
+                this.DoRes1(u, C_Type_amerce, amercePath, "get", true, false, "");
+                this.DoRes1(u, C_Type_comment, commentPath, "get", true, false, "");
+                this.DoRes1(u, C_Type_reader, readerPath, "get", true, false, "");
+
+            }
+            catch (Exception e1)
+            {
+                MessageBox.Show(this, "getrecord权限测试-异常:" + e1.Message);
+            }
+            finally
+            {
+                this.EnableCtrls(true);
+            }
+        }
+
+        // GetBrowseRecords 
+        private void button_GetBrowseRecords_Click(object sender, EventArgs e)
+        {
+            // 新建一个帐户，只有getrecord权限
+            UserInfo u = NewUser("getrecord", "", "");
+
+            // 先用超级管理员创建各种类型数据
+            UserInfo s = this.mainForm.GetSupervisorAccount();
+
+            this.displayLine(this.getLarge("获取书目"));
+            string biblioPath = this.WriteXml(s, this.GetAppendPath(C_Type_biblio), this.GetXml(C_Type_biblio, true)).strOutputResPath;
+            string biblioXml = @":<unimarc:record xmlns:dprms='http://dp2003.com/dprms' xmlns:unimarc='http://dp2003.com/UNIMARC'><unimarc:leader>????????????????????????</unimarc:leader><unimarc:datafield tag='200' ind1='1' ind2=' '><unimarc:subfield code='a'>大家好</unimarc:subfield><unimarc:subfield code='e' /><unimarc:subfield code='f' /><unimarc:subfield code='g' /></unimarc:datafield></unimarc:record>";
+            this.GetBrowseRecords(u, new string[] { biblioPath
+                , biblioPath + biblioXml
+                ,this.GetAppendPath(C_Type_biblio) + biblioXml});
+            //,this.GetAppendPath(C_Type_biblio) });   //不能用仅?的形态
+
+            this.displayLine(this.getLarge("获取册"));
+            string itemPath = this.WriteXml(s, this.GetAppendPath(C_Type_item), this.GetXml(C_Type_item, true)).strOutputResPath;
+            string itemXml = ":<root><parent>3</parent><location>流通库</location><price>CNY62.30</price><bookType>普通</bookType><accessNo>B123/L595</accessNo><batchNo>图书验收2022-1-26</batchNo><barcode>B003</barcode></root>";
+            this.GetBrowseRecords(u, new string[] { itemPath
+                , itemPath + itemXml
+                ,this.GetAppendPath(C_Type_item) + itemXml});
+
+            this.displayLine(this.getLarge("获取读者"));
+            string readerPath = this.WriteXml(s, this.GetAppendPath(C_Type_reader), this.GetXml(C_Type_reader, true)).strOutputResPath;
+            string readerXml = ":<root><barcode>P002</barcode><readerType>本科生</readerType><name>小王</name><department>一班</department></root>";
+            this.GetBrowseRecords(u, new string[] { readerPath
+                , readerPath + readerXml
+                ,this.GetAppendPath(C_Type_reader) + readerXml});
+
+            this.displayLine(this.getLarge("获取订购"));
+            string orderPath = this.WriteXml(s, this.GetAppendPath(C_Type_order), this.GetXml(C_Type_order, true)).strOutputResPath;
+            string orderXml = ":<root><parent>30</parent><index>1</index><catalogNo>123</catalogNo><seller>新华出版社</seller><source>本馆经费</source><range>20240101-20241231</range><issueCount>1</issueCount><copy>1</copy><price>CNY10</price><distribute>流通库:5</distribute><class>d</class><batchNo>2023-2-1</batchNo></root>";
+            this.GetBrowseRecords(u, new string[] { orderPath
+                , orderPath + orderXml
+                ,this.GetAppendPath(C_Type_order) + orderXml});
+
+            //===以下 期/预约到书/违约金/评注 不支持path:xml格式
+
+            this.displayLine(this.getWarn1("以下 期/预约到书/违约金/评注 不支持path:xml格式"));
+
+            this.displayLine(this.getLarge("获取期"));
+            string issuePath = this.WriteXml(s, this.GetAppendPath(C_Type_issue), this.GetXml(C_Type_issue, true)).strOutputResPath;
+            string issuerXml = "<root><parent>36</parent><publishTime>20240101</publishTime><issue>1</issue><orderInfo><root><parent>36</parent>\r\n<index>1</index><seller>邮局</seller><source>a</source><range>20230101-20231231</range><issueCount>12</issueCount><copy>1</copy><price>CNY20</price><distribute>阅览室:1</distribute><class>社科</class><batchNo>2023-1-26</batchNo></root></orderInfo></root>";
+            this.GetBrowseRecords(u, new string[] { issuePath
+                , issuePath + issuerXml
+                ,this.GetAppendPath(C_Type_issue) + issuerXml});
+
+            this.displayLine(this.getLarge("获取预约到书"));
+            string arrivedPath = this.WriteXml(s, this.GetAppendPath(C_Type_arrived), this.GetXml(C_Type_arrived, true)).strOutputResPath;
+            string arrivedXml = "<root><state>arrived</state><itemBarcode>B002</itemBarcode><onShelf>true</onShelf><readerBarcode>P001</readerBarcode><notifyDate>Thu, 23 Feb 2023 14:36:41 +0800</notifyDate><refID>4c267d45-dd1e-474f-8709-e9d5c084002d</refID><location>总馆图书馆</location><accessNo>I242.43/S495</accessNo></root>";
+            this.GetBrowseRecords(u, new string[] { arrivedPath
+                , arrivedPath + arrivedXml
+                ,this.GetAppendPath(C_Type_arrived) + arrivedXml});
+
+            this.displayLine(this.getLarge("获取违约金"));
+            string amercePath = this.WriteXml(s, this.GetAppendPath(C_Type_amerce), this.GetXml(C_Type_amerce, true)).strOutputResPath;
+            string amerceXml = "<root><itemBarcode>B002</itemBarcode><location>总馆图书馆</location><readerBarcode>P001</readerBarcode><state>amerced</state><id>637986612496654587-1</id><reason>超期。超 23天; 违约金因子: CNY1.0/day</reason><overduePeriod>23day</overduePeriod><price>CNY23</price><borrowDate>Thu, 21 Jul 2022 15:14:48 +0800</borrowDate><borrowPeriod>31day</borrowPeriod><borrowOperator>supervisor</borrowOperator><returnDate>Tue, 13 Sep 2022 10:20:49 +0800</returnDate><returnOperator>supervisor</returnOperator><operator>supervisor</operator><operTime>Tue, 13 Sep 2022 10:21:07 +0800</operTime></root>";
+            this.GetBrowseRecords(u, new string[] { amercePath
+                , amercePath + amerceXml
+                ,this.GetAppendPath(C_Type_amerce) + amerceXml});
+
+            this.displayLine(this.getLarge("获取评注"));
+            string commentPath = this.WriteXml(s, this.GetAppendPath(C_Type_comment), this.GetXml(C_Type_comment, true)).strOutputResPath;
+            string commentXml = "<root><parent>35</parent><title>评注标题test</title><content>一本好书62537</content></root>";
+            this.GetBrowseRecords(u, new string[] { commentPath
+                , commentPath + commentXml
+                ,this.GetAppendPath(C_Type_comment) + commentXml});
+
         }
     }
 }
