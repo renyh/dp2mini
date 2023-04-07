@@ -7450,5 +7450,13 @@ bool isReader = false)
                 ,this.GetAppendPath(C_Type_comment) + commentXml});
 
         }
+
+        // 测试CopyBiblioInfo函数
+        private void button_CopyBiblioInfo_Click(object sender, EventArgs e)
+        {
+
+        }
+
+
     }
 }
