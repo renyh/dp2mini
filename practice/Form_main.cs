@@ -20,6 +20,7 @@ using System.Xml;
 using DigitalPlatform.IO;
 using DigitalPlatform.Xml;
 using DigitalPlatform.Core;
+using System.Web;
 
 namespace practice
 {
@@ -225,6 +226,16 @@ namespace practice
                     + "UserName:" + response.strOutputUserName+"\r\n"
                 + "strRights:" + response.strRights + "\r\n"
                 + "strLibraryCode:" + response.strLibraryCode + "\r\n";
+
+
+                //u
+                string url = this.textBox_opacUrl.Text.Trim() +"/login.aspx" //"http://localhost:8081/dp2OPAC/login.aspx"
+                    +"?action=tokenlogin"
+                    +"&id=" + this.Login_textBox_userName.Text
+                    + "&redirect=searchbiblio.aspx"
+                    + "&token=" + HttpUtility.UrlEncode(GetToken(response.strRights));
+
+                this.textBox_result.Text += "\r\n\r\n" + url;
             }
             catch (Exception ex)
             {
@@ -235,6 +246,24 @@ namespace practice
             {
                 this._channelPool.ReturnChannel(channel);
             }
+        }
+
+        // 获得当前登录账户的 token 字符串
+        public static string GetToken(string rights)
+        {
+            if (string.IsNullOrEmpty(rights) == true)
+                return null;
+
+            string[] parts = rights.Split(new char[] { ',' });
+            foreach (string part in parts)
+            {
+                if (part.StartsWith("token:"))
+                {
+                    return part.Substring("token:".Length);
+                }
+            }
+
+            return null;
         }
 
         private void button_logout_Click(object sender, EventArgs e)
