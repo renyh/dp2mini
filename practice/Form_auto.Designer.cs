@@ -52,6 +52,7 @@
             this.button_getrecord = new System.Windows.Forms.Button();
             this.button_GetBrowseRecords = new System.Windows.Forms.Button();
             this.button_CopyBiblioInfo = new System.Windows.Forms.Button();
+            this.button_token = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // button_accessAndObject
@@ -329,7 +330,7 @@
             this.button_GetBrowseRecords.Location = new System.Drawing.Point(723, 12);
             this.button_GetBrowseRecords.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.button_GetBrowseRecords.Name = "button_GetBrowseRecords";
-            this.button_GetBrowseRecords.Size = new System.Drawing.Size(264, 52);
+            this.button_GetBrowseRecords.Size = new System.Drawing.Size(251, 52);
             this.button_GetBrowseRecords.TabIndex = 83;
             this.button_GetBrowseRecords.Tag = "";
             this.button_GetBrowseRecords.Text = "GetBrowseRecords";
@@ -338,21 +339,34 @@
             // 
             // button_CopyBiblioInfo
             // 
-            this.button_CopyBiblioInfo.Location = new System.Drawing.Point(997, 12);
+            this.button_CopyBiblioInfo.Location = new System.Drawing.Point(984, 14);
             this.button_CopyBiblioInfo.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.button_CopyBiblioInfo.Name = "button_CopyBiblioInfo";
-            this.button_CopyBiblioInfo.Size = new System.Drawing.Size(264, 52);
+            this.button_CopyBiblioInfo.Size = new System.Drawing.Size(230, 52);
             this.button_CopyBiblioInfo.TabIndex = 84;
             this.button_CopyBiblioInfo.Tag = "";
             this.button_CopyBiblioInfo.Text = "CopyBiblioInfo";
             this.button_CopyBiblioInfo.UseVisualStyleBackColor = true;
             this.button_CopyBiblioInfo.Click += new System.EventHandler(this.button_CopyBiblioInfo_Click);
             // 
+            // button_token
+            // 
+            this.button_token.Location = new System.Drawing.Point(1224, 14);
+            this.button_token.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.button_token.Name = "button_token";
+            this.button_token.Size = new System.Drawing.Size(101, 52);
+            this.button_token.TabIndex = 85;
+            this.button_token.Tag = "";
+            this.button_token.Text = "Token";
+            this.button_token.UseVisualStyleBackColor = true;
+            this.button_token.Click += new System.EventHandler(this.button_token_Click);
+            // 
             // Form_auto
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(216F, 216F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.ClientSize = new System.Drawing.Size(1528, 830);
+            this.Controls.Add(this.button_token);
             this.Controls.Add(this.button_CopyBiblioInfo);
             this.Controls.Add(this.button_GetBrowseRecords);
             this.Controls.Add(this.button_getrecord);
@@ -410,5 +424,6 @@
         private System.Windows.Forms.Button button_getrecord;
         private System.Windows.Forms.Button button_GetBrowseRecords;
         private System.Windows.Forms.Button button_CopyBiblioInfo;
+        private System.Windows.Forms.Button button_token;
     }
 }

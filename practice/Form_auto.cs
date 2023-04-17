@@ -18,6 +18,8 @@ using System.Threading;
 using DigitalPlatform.CirculationClient;
 using DigitalPlatform.Marc;
 using DigitalPlatform.Text;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
+using System.Data.SqlClient;
 
 namespace practice
 {
@@ -4973,49 +4975,40 @@ bool isReader = false)
         }
 
         // 创建帐号
-        public int SetUser(RestChannel channel,
-            string action,
-            string libraryCode,
-            string userName,
-            out string strError)
-        {
-            strError = "";
+    //    public int SetUser(RestChannel channel,
+    //        string action,
+    //        UserInfo u,
+    //        string libraryCode,
+    //        string userName,
+    //        string rights,
+    //        out string strError)
+    //    {
+    //        strError = "";
 
-            UserInfo user = new UserInfo();
-            user.LibraryCode = libraryCode;
-            user.UserName = userName;
-            user.Password = "1";
-            user.SetPassword = true;
-            //user.Binding = "ip:[current]";  // 自动绑定当前请求者的 IP
-            // default_capo_rights
-            //user.Rights = "getsystemparameter,getres,search,getbiblioinfo,setbiblioinfo,getreaderinfo,writeobject,getbibliosummary,listdbfroms,simulatereader,simulateworker"
-            //    + ",getiteminfo,getorderinfo,getissueinfo,getcommentinfo"
-            //    + ",borrow,return,getmsmqmessage"
-            //    + ",bindpatron,searchbiblio,getpatrontempid,resetpasswordreturnmessage,getuser,changereaderpassword,renew,reservation,getcalendar";
+    //        //UserInfo user = new UserInfo();
+    //        //user.LibraryCode = libraryCode;
+    //        //user.UserName = userName;
+    //        //user.Password = "1";
+    //        //user.SetPassword = true;
+    //        ////user.Binding = "ip:[current]";  // 自动绑定当前请求者的 IP
+    //        //// default_capo_rights
+    //        ////user.Rights = "getsystemparameter,getres,search,getbiblioinfo,setbiblioinfo,getreaderinfo,writeobject,getbibliosummary,listdbfroms,simulatereader,simulateworker"
+    //        ////    + ",getiteminfo,getorderinfo,getissueinfo,getcommentinfo"
+    //        ////    + ",borrow,return,getmsmqmessage"
+    //        ////    + ",bindpatron,searchbiblio,getpatrontempid,resetpasswordreturnmessage,getuser,changereaderpassword,renew,reservation,getcalendar";
 
 
-            user.Rights = "borrow,return,renew,lost,reservation,changereaderpassword"
-                + ",verifyreaderpassword,getbibliosummary,searchcharging"
-                + ",searchreader,getreaderinfo,setreaderinfo,changereaderstate"
-                + ",listdbfroms,searchbiblio,getbiblioinfo,searchitem,getiteminfo,setiteminfo"
-                + ",getoperlog,amerce,amercemodifyprice,amercemodifycomment,amerceundo"
-                + ",search,getrecord,getcalendar,newcalendar,changecalendar,getsystemparameter,setsystemparameter"
-                + ",urgentrecover,repairborrowinfo,getres,searchissue,getissueinfo,setissueinfo"
-                + ",searchorder,getorderinfo,setorderinfo,getcommentinfo,setcommentinfo,searchcomment"
-                + ",writeobject,writetemplate,managecache,managecomment,viewreport"
-                + ",getuser,newuser,changeuser,deleteuser";
+    //        SetUserResponse response = channel.SetUser(
+    //action,//"new",
+    //user);
+    //        if (response.SetUserResult.Value == -1 && action != "delete")
+    //        {
+    //            strError = "创建帐户时发生错误: " + response.SetUserResult.ErrorInfo;
+    //            return -1;
+    //        }
 
-            SetUserResponse response = channel.SetUser(
-    action,//"new",
-    user);
-            if (response.SetUserResult.Value == -1 && action != "delete")
-            {
-                strError = "创建代理帐户时发生错误: " + response.SetUserResult.ErrorInfo;
-                return -1;
-            }
-
-            return 0;
-        }
+    //        return 0;
+    //    }
 
         public ManageDatabaseResponse CreateReaderDb(RestChannel channel, string dbName, string libraryCode)
         {
@@ -7457,6 +7450,463 @@ bool isReader = false)
 
         }
 
+        public void ChangeUserBySupervisor(UserInfo u)
+        {
+            RestChannel channel = null;
+            try
+            {
+                // 用户登录
+                channel = mainForm.GetChannelAndLogin(this.mainForm.GetSupervisorAccount());
 
+                //先将reader权限设为空
+                SetUserResponse setUserRes = channel.SetUser("change", u);
+                GetUserResponse getuserR = channel.GetUser("", u.UserName, 0, -1);
+                UserInfo temp = getuserR.contents[0];
+                displayLine(u.UserName+"的权限改为" + temp.Rights);
+            }
+            finally
+            {
+                if (channel != null)
+                    this.mainForm._channelPool.ReturnChannel(channel);
+            }
+        }
+
+        public void CheckRights(string rights,string expectRights,bool isContain=false)
+        {
+            if (isContain == true)
+            {
+                if (rights.IndexOf(expectRights)>=0)
+                {
+                    displayLine(this.getGreenBackgroud("符合预期"));
+                }
+                else
+                    displayLine(this.getRed("不符合预期"));
+            }
+            else
+            {
+
+                if (rights == expectRights)
+                {
+                    displayLine(this.getGreenBackgroud("符合预期"));
+                }
+                else
+                    displayLine(this.getRed("不符合预期"));
+            }
+        }
+
+        private void button_token_Click(object sender, EventArgs e)
+        {
+            //创建一个读者帐户
+            UserInfo u= this.NewReaderUser(Env_ZG_ReaderDbName, Env_ZG_PatronType, "", "", out string readerBarcode, out string readerPath);
+
+
+            RestChannel channel = this.mainForm.GetChannel();
+            try
+            {
+                this.displayLine("修改reader的权限为空，方便后面观察");
+                this.ChangeUserBySupervisor(new UserInfo() { UserName = "reader", Rights = "", });
+
+
+                // 普通登录
+                /// <para>-1:   出错</para>
+                /// <para>0:    登录未成功</para>
+                /// <para>1:    登录成功</para>
+                LoginResponse response = channel.Login(u.UserName,
+                    u.Password,
+                    "type=reader,client=practice|0.01");
+                if (response.LoginResult.Value == 1)
+                {
+                    this.displayLine("普通身份登录成功。" + response.strRights);
+                    CheckRights(response.strRights, "patron");
+                }
+                else
+                    this.displayLine( "用'" + u.UserName + "'登录失败:" + response.LoginResult.ErrorInfo);
+
+
+                // 模拟方式
+                response = channel.Login(u.UserName,
+                    "supervisor,1",
+                    "simulate=true,type=reader,client=practice|0.01,");
+                if (response.LoginResult.Value == 1)
+                {
+                    this.displayLine("模拟身份登录成功。" + response.strRights);
+                    CheckRights(response.strRights, "patron");
+                }
+                else
+                    this.displayLine("用'" + u.UserName + "'登录失败:" + response.LoginResult.ErrorInfo);
+
+
+                // 获取token
+                response = channel.Login(u.UserName,
+                    "supervisor,1",
+                    "simulate=true,type=reader,client=practice|0.01,gettoken=day");
+                if (response.LoginResult.Value == 1)
+                {
+                    this.displayLine("模拟身份登录且获取token成功。" + response.strRights);
+                    CheckRights(response.strRights, "token:", true);
+                }
+                else
+                    this.displayLine("用'" + u.UserName + "'登录失败:" + response.LoginResult.ErrorInfo);
+
+
+                string token = Form_main.GetToken(response.strRights);
+                // 用token登录
+                response = channel.Login(u.UserName,
+                    "supervisor,1"+"|||"+token,
+                    "simulate=true,type=reader,client=practice|0.01");   //,gettoken=day 用token方式登录时，不能获取token
+                if (response.LoginResult.Value == 1)
+                {
+                    this.displayLine("用token登录成功。" + response.strRights);
+                    CheckRights(response.strRights, "patron");
+                }
+                else
+                    this.displayLine("用'" + u.UserName + "'登录失败:" + response.LoginResult.ErrorInfo);
+
+
+                //=====
+                // 修改了reader权限，再次登录，那么应该是新权限。
+                this.displayLine(this.getBold("\r\n修改reader权限"));
+                this.ChangeUserBySupervisor(new UserInfo() { UserName = "reader", Rights = "lost", });
+
+
+                // 普通登录
+                /// <para>-1:   出错</para>
+                /// <para>0:    登录未成功</para>
+                /// <para>1:    登录成功</para>
+                response = channel.Login(u.UserName,
+                    u.Password,
+                    "type=reader,client=practice|0.01");
+                if (response.LoginResult.Value == 1)
+                {
+                    this.displayLine("普通身份登录成功。" + response.strRights);
+                    CheckRights(response.strRights, "lost,patron");
+                }
+                else
+                    this.displayLine("用'" + u.UserName + "'登录失败:" + response.LoginResult.ErrorInfo);
+
+
+                // 用token登录
+                response = channel.Login(u.UserName,
+                    "supervisor,1" + "|||" + token,
+                    "simulate=true,type=reader,client=practice|0.01");   //,gettoken=day 用token方式登录时，不能获取token
+                if (response.LoginResult.Value == 1)
+                {
+                    this.displayLine("用token登录成功。" + response.strRights);
+                    CheckRights(response.strRights, "lost,patron");
+                }
+                else
+                    this.displayLine("用'" + u.UserName + "'登录失败:" + response.LoginResult.ErrorInfo);
+
+                //=====
+                // 修改了读者自己的权限，再次登录，那么应该是新权限。
+                // 换成supervisor登录
+                this.displayLine(this.getBold("\r\n修改读者自己的权限"));
+               GetReaderInfoResponse getReaderInfoR=  this.GetReaderInfo(this.mainForm.GetSupervisorAccount(), readerPath, false);
+                string xml=getReaderInfoR.results[0];
+                XmlDocument dom = new XmlDocument();
+                dom.LoadXml(xml);
+                DomUtil.SetElementText(dom.DocumentElement, "rights", "borrow");
+                this.WriteXml(this.mainForm.GetSupervisorAccount(), readerPath, dom.OuterXml, false);
+
+                // 普通登录
+                /// <para>-1:   出错</para>
+                /// <para>0:    登录未成功</para>
+                /// <para>1:    登录成功</para>
+                response = channel.Login(u.UserName,
+                    u.Password,
+                    "type=reader,client=practice|0.01");
+                if (response.LoginResult.Value == 1)
+                {
+                    this.displayLine("普通身份登录成功。" + response.strRights);
+                    CheckRights(response.strRights, "lost,borrow,patron");
+                }
+                else
+                    this.displayLine("用'" + u.UserName + "'登录失败:" + response.LoginResult.ErrorInfo);
+
+
+                // 用token登录
+                response = channel.Login(u.UserName,
+                    "supervisor,1" + "|||" + token,
+                    "simulate=true,type=reader,client=practice|0.01");   //,gettoken=day 用token方式登录时，不能获取token
+                if (response.LoginResult.Value == 1)
+                {
+                    this.displayLine("用token登录成功。" + response.strRights);
+                    CheckRights(response.strRights, "lost,borrow,patron");
+                }
+                else
+                    this.displayLine("用'" + u.UserName + "'登录失败:" + response.LoginResult.ErrorInfo);
+
+                //==获取year/month的token=
+
+                // 获取month token
+                response = channel.Login(u.UserName,
+                    "supervisor,1",
+                    "simulate=true,type=reader,client=practice|0.01,gettoken=month");
+                if (response.LoginResult.Value == 1)
+                {
+                    this.displayLine("获取month token成功。" + response.strRights);
+                    CheckRights(response.strRights, "token:", true);
+                }
+                else
+                    this.displayLine("用'" + u.UserName + "'登录失败:" + response.LoginResult.ErrorInfo);
+
+                string monthToken = Form_main.GetToken(response.strRights);
+                // 用month token登录
+                response = channel.Login(u.UserName,
+                    "supervisor,1" + "|||" + monthToken,
+                    "simulate=true,type=reader,client=practice|0.01");   //,gettoken=day 用token方式登录时，不能获取token
+                if (response.LoginResult.Value == 1)
+                {
+                    this.displayLine("用month token登录成功。" + response.strRights);
+                    CheckRights(response.strRights, "lost,borrow,patron");
+                }
+                else
+                    this.displayLine("用'" + u.UserName + "'登录失败:" + response.LoginResult.ErrorInfo);
+
+
+                // 获取 year token
+                response = channel.Login(u.UserName,
+                    "supervisor,1",
+                    "simulate=true,type=reader,client=practice|0.01,gettoken=year");
+                if (response.LoginResult.Value == 1)
+                {
+                    this.displayLine("获取 year token成功。" + response.strRights);
+                    CheckRights(response.strRights, "token:", true);
+                }
+                else
+                    this.displayLine("用'" + u.UserName + "'登录失败:" + response.LoginResult.ErrorInfo);
+
+                string yearToken = Form_main.GetToken(response.strRights);
+                // 用month token登录
+                response = channel.Login(u.UserName,
+                    "supervisor,1" + "|||" + yearToken,
+                    "simulate=true,type=reader,client=practice|0.01");   //,gettoken=day 用token方式登录时，不能获取token
+                if (response.LoginResult.Value == 1)
+                {
+                    this.displayLine("用year token登录成功。" + response.strRights);
+                    CheckRights(response.strRights, "lost,borrow,patron");
+                }
+                else
+                    this.displayLine("用'" + u.UserName + "'登录失败:" + response.LoginResult.ErrorInfo);
+
+
+                //普通登录不能获取token
+                response = channel.Login(u.UserName,
+                u.Password,
+                "type=reader,client=practice|0.01,gettoken=day");
+                if (response.LoginResult.Value == 1)
+                {
+                    this.displayLine(this.getRed("不符合预期，只有模拟方式，才能获取token"));
+                }
+                else
+                {
+                    this.displayLine(response.LoginResult.ErrorInfo);
+                    this.displayLine(this.getGreenBackgroud("符合预期"));
+                }
+
+                // 不能用token登录时，再获取token
+                response = channel.Login(u.UserName,
+                    "supervisor,1" + "|||" + token,
+                    "simulate=true,type=reader,client=practice|0.01,gettoken=day");   //,gettoken=day 用token方式登录时，不能获取token
+                if (response.LoginResult.Value == 1)
+                {
+                    this.displayLine(this.getRed("不符合预期，用token登录时，不能同时获取token"));
+                }
+                else
+                {
+                    this.displayLine(response.LoginResult.ErrorInfo);
+                    this.displayLine(this.getGreenBackgroud("符合预期"));
+                }
+
+
+                // 帐户登录是做了缓存了，但修改帐户和读者都会更新自动缓存，所以这里登录后的权限是最新即可。
+                // 如果想看到缓存效果，需要dp2rms配置测试，当普通方式第一次登录时，会记到缓存里，然后通过dp2rms修改了读者权限，再次登录，看到还是旧的权限，这就是缓存的效果。
+
+
+
+                //==================================
+                // 以下是测试工作人员帐户的登录。
+                this.displayLine(this.getLarge("以下是测试工作人员帐户的登录"));
+                u = this.NewUser("", "", "");
+                // 普通登录
+                response = channel.Login(u.UserName, u.Password, "type=worker,client=practice|0.01");
+                if (response.LoginResult.Value == 1)
+                {
+                    this.displayLine("工作人员普通方式登录成功。" + response.strRights);
+                    CheckRights(response.strRights, "librarian");
+                }
+                else
+                    this.displayLine("用'" + u.UserName + "'登录失败:" + response.LoginResult.ErrorInfo);
+
+
+                // 模拟方式
+                response = channel.Login(u.UserName,
+                    "supervisor,1",
+                    "simulate=true,type=worker,client=practice|0.01,");
+                if (response.LoginResult.Value == 1)
+                {
+                    this.displayLine("模拟工作人员身份登录成功。" + response.strRights);
+                    CheckRights(response.strRights, "librarian");
+                }
+                else
+                    this.displayLine("用'" + u.UserName + "'登录失败:" + response.LoginResult.ErrorInfo);
+
+
+                // 获取token
+                response = channel.Login(u.UserName,
+                    "supervisor,1",
+                    "simulate=true,type=worker,client=practice|0.01,gettoken=day");
+                if (response.LoginResult.Value == 1)
+                {
+                    this.displayLine("模拟工作人员身份登录且获取token成功。" + response.strRights);
+                    CheckRights(response.strRights, "token:", true);
+                }
+                else
+                    this.displayLine("用'" + u.UserName + "'登录失败:" + response.LoginResult.ErrorInfo);
+
+
+                 token = Form_main.GetToken(response.strRights);
+                // 用token登录
+                response = channel.Login(u.UserName,
+                    "supervisor,1" + "|||" + token,
+                    "simulate=true,type=worker,client=practice|0.01");   //,gettoken=day 用token方式登录时，不能获取token
+                if (response.LoginResult.Value == 1)
+                {
+                    this.displayLine("用token登录成功。" + response.strRights);
+                    CheckRights(response.strRights, "librarian");
+                }
+                else
+                    this.displayLine("用'" + u.UserName + "'登录失败:" + response.LoginResult.ErrorInfo);
+
+
+
+                //=====
+                // 修改了reader权限，再次登录，那么应该是新权限。
+                this.displayLine(this.getBold("\r\n修改此工作人员的权限"));
+                this.ChangeUserBySupervisor(new UserInfo() { UserName = ""+u.UserName+"", Rights = "lost", });
+
+                // 普通登录
+                response = channel.Login(u.UserName, u.Password, "type=worker,client=practice|0.01");
+                if (response.LoginResult.Value == 1)
+                {
+                    this.displayLine("工作人员普通方式登录成功。" + response.strRights);
+                    CheckRights(response.strRights, "lost,librarian");
+                }
+                else
+                    this.displayLine("用'" + u.UserName + "'登录失败:" + response.LoginResult.ErrorInfo);
+
+
+                token = Form_main.GetToken(response.strRights);
+                // 用token登录
+                response = channel.Login(u.UserName,
+                    "supervisor,1" + "|||" + token,
+                    "simulate=true,type=worker,client=practice|0.01");   //,gettoken=day 用token方式登录时，不能获取token
+                if (response.LoginResult.Value == 1)
+                {
+                    this.displayLine("用token登录成功。" + response.strRights);
+                    CheckRights(response.strRights, "lost,librarian");
+                }
+                else
+                    this.displayLine("用'" + u.UserName + "'登录失败:" + response.LoginResult.ErrorInfo);
+
+
+                //==获取year/month的token=
+
+                // 获取month token
+                response = channel.Login(u.UserName,
+                    "supervisor,1",
+                    "simulate=true,type=worker,client=practice|0.01,gettoken=month");
+                if (response.LoginResult.Value == 1)
+                {
+                    this.displayLine("获取month token成功。" + response.strRights);
+                    CheckRights(response.strRights, "token:", true);
+                }
+                else
+                    this.displayLine("用'" + u.UserName + "'登录失败:" + response.LoginResult.ErrorInfo);
+
+                 monthToken = Form_main.GetToken(response.strRights);
+                // 用month token登录
+                response = channel.Login(u.UserName,
+                    "supervisor,1" + "|||" + monthToken,
+                    "simulate=true,type=worker,client=practice|0.01");   //,gettoken=day 用token方式登录时，不能获取token
+                if (response.LoginResult.Value == 1)
+                {
+                    this.displayLine("用month token登录成功。" + response.strRights);
+                    CheckRights(response.strRights, "lost,librarian");
+                }
+                else
+                    this.displayLine("用'" + u.UserName + "'登录失败:" + response.LoginResult.ErrorInfo);
+
+
+                // 获取 year token
+                response = channel.Login(u.UserName,
+                    "supervisor,1",
+                    "simulate=true,type=worker,client=practice|0.01,gettoken=year");
+                if (response.LoginResult.Value == 1)
+                {
+                    this.displayLine("获取 year token成功。" + response.strRights);
+                    CheckRights(response.strRights, "token:", true);
+                }
+                else
+                    this.displayLine("用'" + u.UserName + "'登录失败:" + response.LoginResult.ErrorInfo);
+
+                 yearToken = Form_main.GetToken(response.strRights);
+                // 用month token登录
+                response = channel.Login(u.UserName,
+                    "supervisor,1" + "|||" + yearToken,
+                    "simulate=true,type=worker,client=practice|0.01");   //,gettoken=day 用token方式登录时，不能获取token
+                if (response.LoginResult.Value == 1)
+                {
+                    this.displayLine("用year token登录成功。" + response.strRights);
+                    CheckRights(response.strRights, "lost,librarian");
+                }
+                else
+                    this.displayLine("用'" + u.UserName + "'登录失败:" + response.LoginResult.ErrorInfo);
+
+
+
+                //普通登录不能获取token
+                response = channel.Login(u.UserName,
+                u.Password,
+                "type=worker,client=practice|0.01,gettoken=day");
+                if (response.LoginResult.Value == 1)
+                {
+                    this.displayLine(this.getRed("不符合预期，只有模拟方式，才能获取token"));
+                }
+                else
+                {
+                    this.displayLine(response.LoginResult.ErrorInfo);
+                    this.displayLine(this.getGreenBackgroud("符合预期"));
+                }
+
+                // 不能用token登录时，再获取token
+                response = channel.Login(u.UserName,
+                    "supervisor,1" + "|||" + yearToken,
+                    "simulate=true,type=worker,client=practice|0.01,gettoken=day");   //,gettoken=day 用token方式登录时，不能获取token
+                if (response.LoginResult.Value == 1)
+                {
+                    this.displayLine(this.getRed("不符合预期，用token登录时，不能同时获取token"));
+                }
+                else
+                {
+                    this.displayLine(response.LoginResult.ErrorInfo);
+                    this.displayLine(this.getGreenBackgroud("符合预期"));
+                }
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("异常：" + ex.Message);
+            }
+            finally
+            {
+                    this.mainForm._channelPool.ReturnChannel(channel);
+            }
+
+
+        }
+
+
+        
     }
 }

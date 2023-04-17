@@ -21,6 +21,7 @@ using DigitalPlatform.IO;
 using DigitalPlatform.Xml;
 using DigitalPlatform.Core;
 using System.Web;
+using System.Runtime;
 
 namespace practice
 {
@@ -315,8 +316,23 @@ namespace practice
         }
 
         public RestChannel GetChannelAndLogin(string userName,
+    string password,
+    bool isReader = false
+    )
+        {
+
+            return this.GetChannelAndLoginInternal(userName,
+                password,
+                out string rights,
+                isReader);
+        }
+
+
+            public RestChannel GetChannelAndLoginInternal(string userName,
             string password,
-            bool isReader=false)
+            out string rights,
+            bool isReader=false
+            )
         {
             string strError = "";
 
@@ -334,6 +350,7 @@ namespace practice
             LoginResponse response = channel.Login(userName,
                 password,
                 parameters);
+            rights = response.strRights;
             if (response.LoginResult.Value == 1)
             {
                 return channel;
