@@ -20,6 +20,7 @@ using DigitalPlatform.Marc;
 using DigitalPlatform.Text;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 using System.Data.SqlClient;
+using System.Security.Policy;
 
 namespace practice
 {
@@ -7552,7 +7553,7 @@ bool isReader = false)
                 string token = Form_main.GetToken(response.strRights);
                 // 用token登录
                 response = channel.Login(u.UserName,
-                    "supervisor,1"+"|||"+token,
+                    "supervisor,1"+"|||token:"+token,
                     "simulate=true,type=reader,client=practice|0.01");   //,gettoken=day 用token方式登录时，不能获取token
                 if (response.LoginResult.Value == 1)
                 {
@@ -7587,7 +7588,7 @@ bool isReader = false)
 
                 // 用token登录
                 response = channel.Login(u.UserName,
-                    "supervisor,1" + "|||" + token,
+                    "supervisor,1" + "|||token:" + token,
                     "simulate=true,type=reader,client=practice|0.01");   //,gettoken=day 用token方式登录时，不能获取token
                 if (response.LoginResult.Value == 1)
                 {
@@ -7626,7 +7627,7 @@ bool isReader = false)
 
                 // 用token登录
                 response = channel.Login(u.UserName,
-                    "supervisor,1" + "|||" + token,
+                    "supervisor,1" + "|||token:" + token,
                     "simulate=true,type=reader,client=practice|0.01");   //,gettoken=day 用token方式登录时，不能获取token
                 if (response.LoginResult.Value == 1)
                 {
@@ -7653,7 +7654,7 @@ bool isReader = false)
                 string monthToken = Form_main.GetToken(response.strRights);
                 // 用month token登录
                 response = channel.Login(u.UserName,
-                    "supervisor,1" + "|||" + monthToken,
+                    "supervisor,1" + "|||token:" + monthToken,
                     "simulate=true,type=reader,client=practice|0.01");   //,gettoken=day 用token方式登录时，不能获取token
                 if (response.LoginResult.Value == 1)
                 {
@@ -7679,7 +7680,7 @@ bool isReader = false)
                 string yearToken = Form_main.GetToken(response.strRights);
                 // 用month token登录
                 response = channel.Login(u.UserName,
-                    "supervisor,1" + "|||" + yearToken,
+                    "supervisor,1" + "|||token:" + yearToken,
                     "simulate=true,type=reader,client=practice|0.01");   //,gettoken=day 用token方式登录时，不能获取token
                 if (response.LoginResult.Value == 1)
                 {
@@ -7691,22 +7692,25 @@ bool isReader = false)
 
 
                 //普通登录不能获取token
+                // 2023/4/18 读者身份自己登录，获取一个token，后面读者可以用这个token登录OPAC。
+                // 如果读者把自己的token给了别人，相当于把自己的帐户和密码给了他人，token也只有在代理帐户模拟登录下使用，
+                // 目前只有OPAC可以用这种方法，在OPAC上，读者token和读者帐户密码是等价的，好像没什么弊端。
                 response = channel.Login(u.UserName,
                 u.Password,
                 "type=reader,client=practice|0.01,gettoken=day");
                 if (response.LoginResult.Value == 1)
                 {
-                    this.displayLine(this.getRed("不符合预期，只有模拟方式，才能获取token"));
+                    this.displayLine(this.getGreenBackgroud("符合预期"));
                 }
                 else
                 {
                     this.displayLine(response.LoginResult.ErrorInfo);
-                    this.displayLine(this.getGreenBackgroud("符合预期"));
+                    this.displayLine(this.getRed("不符合预期，目前读者登录也可以获取token"));
                 }
 
                 // 不能用token登录时，再获取token
                 response = channel.Login(u.UserName,
-                    "supervisor,1" + "|||" + token,
+                    "supervisor,1" + "|||token:" + token,
                     "simulate=true,type=reader,client=practice|0.01,gettoken=day");   //,gettoken=day 用token方式登录时，不能获取token
                 if (response.LoginResult.Value == 1)
                 {
@@ -7768,7 +7772,7 @@ bool isReader = false)
                  token = Form_main.GetToken(response.strRights);
                 // 用token登录
                 response = channel.Login(u.UserName,
-                    "supervisor,1" + "|||" + token,
+                    "supervisor,1" + "|||token:" + token,
                     "simulate=true,type=worker,client=practice|0.01");   //,gettoken=day 用token方式登录时，不能获取token
                 if (response.LoginResult.Value == 1)
                 {
@@ -7799,7 +7803,7 @@ bool isReader = false)
                 token = Form_main.GetToken(response.strRights);
                 // 用token登录
                 response = channel.Login(u.UserName,
-                    "supervisor,1" + "|||" + token,
+                    "supervisor,1" + "|||token:" + token,
                     "simulate=true,type=worker,client=practice|0.01");   //,gettoken=day 用token方式登录时，不能获取token
                 if (response.LoginResult.Value == 1)
                 {
@@ -7827,7 +7831,7 @@ bool isReader = false)
                  monthToken = Form_main.GetToken(response.strRights);
                 // 用month token登录
                 response = channel.Login(u.UserName,
-                    "supervisor,1" + "|||" + monthToken,
+                    "supervisor,1" + "|||token:" + monthToken,
                     "simulate=true,type=worker,client=practice|0.01");   //,gettoken=day 用token方式登录时，不能获取token
                 if (response.LoginResult.Value == 1)
                 {
@@ -7853,7 +7857,7 @@ bool isReader = false)
                  yearToken = Form_main.GetToken(response.strRights);
                 // 用month token登录
                 response = channel.Login(u.UserName,
-                    "supervisor,1" + "|||" + yearToken,
+                    "supervisor,1" + "|||token:" + yearToken,
                     "simulate=true,type=worker,client=practice|0.01");   //,gettoken=day 用token方式登录时，不能获取token
                 if (response.LoginResult.Value == 1)
                 {
@@ -7871,17 +7875,17 @@ bool isReader = false)
                 "type=worker,client=practice|0.01,gettoken=day");
                 if (response.LoginResult.Value == 1)
                 {
-                    this.displayLine(this.getRed("不符合预期，只有模拟方式，才能获取token"));
+                    this.displayLine(this.getGreenBackgroud("符合预期"));
                 }
                 else
                 {
                     this.displayLine(response.LoginResult.ErrorInfo);
-                    this.displayLine(this.getGreenBackgroud("符合预期"));
+                    this.displayLine(this.getRed("不符合预期，目前馆员普通登录也可以获取token"));
                 }
 
                 // 不能用token登录时，再获取token
                 response = channel.Login(u.UserName,
-                    "supervisor,1" + "|||" + yearToken,
+                    "supervisor,1" + "|||token:" + yearToken,
                     "simulate=true,type=worker,client=practice|0.01,gettoken=day");   //,gettoken=day 用token方式登录时，不能获取token
                 if (response.LoginResult.Value == 1)
                 {
@@ -7906,7 +7910,96 @@ bool isReader = false)
 
         }
 
+        private void button_resultSet_Click(object sender, EventArgs e)
+        {
+            // 准备环境：
+            // 创建一个分馆工作人员帐户
+            // 给分馆创建3条册记录
+            // 给分馆创建一个读者
+            // 为分馆读者借一册
 
-        
+            // 测试过程：用分馆帐号登录，然后调searchItem检索，注意结果集用temp，
+            // 再调getSearchResult获取结果集,第2次获取结果集的时候起始位置输入2，会报起始位置2大于总长度1
+            this.EnableCtrls(false);
+            RestChannel channel = null;
+            try
+            {
+                // 清空输出
+                ClearResult();
+
+                #region 用超级管理员身份创建环境
+
+                // 创建一个分馆工作人员
+                UserInfo uFgWorker = this.NewUser("searchitem,getiteminfo", Env_A_LibraryCode,"");
+
+                // 建建3条册记录
+                string loc = this.Env_A_LibraryCode + "/" + this.Env_A_Location;
+                string fgItemPath1 = this.CreateItemBySupervisor(loc, this.Env_A_BookType, out string itemBarcode1);
+                string fgItemPath2 = this.CreateItemBySupervisor(loc, this.Env_A_BookType, out string itemBarcode2);
+                string fgItemPath3 = this.CreateItemBySupervisor(loc, this.Env_A_BookType, out string itemBarcode3);
+
+                // 创建一个分馆读者
+                this.CreateReaderBySuperviosr(Env_A_ReaderDbName, Env_A_PatronType, "", "", out string fgReader);
+
+                // 为读者借一册
+                this.Borrow(this.mainForm.GetSupervisorAccount(), fgReader, itemBarcode3, false);
+
+                #endregion
+
+
+                //
+                channel = this.mainForm.GetChannelAndLogin(uFgWorker);
+
+                string strResultSetName = "temp";
+                // 检索
+                this.displayLine(this.getBold("检索，结果集使用的temp。"));
+                SearchItemResponse response = channel.SearchItem(Env_biblioDbName + "实体", "", -1, "",
+                    "", strResultSetName, "", "");
+                // 显示返回信息
+                this.displayLine("SearchItem()\r\n" + RestChannel.GetResultInfo(response));
+
+                // 第一次调没问题
+                this.displayLine(this.getBold("第一次调GetSearchResult应该没有问题。"));
+                GetSearchResultResponse r2 = channel.GetSearchResult(strResultSetName,
+                    2,
+                   -1,
+                    "id,cols",//,xml",
+                    "");
+                // 显示返回信息
+                this.displayLine("GetSearchResult()\r\n" + RestChannel.GetResultInfo(r2));
+                if (r2.GetSearchResultResult.Value == -1)
+                {
+                    this.displayLine(this.getRed("不符合预期"));
+                }
+
+
+                // 第二次调会有问题
+                this.displayLine(this.getBold("第二次调GetSearchResult会报错。"));
+                r2 = channel.GetSearchResult(strResultSetName,
+                    2,
+                   -1,
+                    "id,cols",
+                    "");
+                // 显示返回信息
+                this.displayLine("GetSearchResult()\r\n" + RestChannel.GetResultInfo(r2));
+                if (r2.GetSearchResultResult.Value == -1)
+                {
+                    this.displayLine(this.getRed("不符合预期，目前用temp结果集就是这个效果。以后用独立的通道彻底解决此问题。"));
+                }
+
+            }
+            catch (Exception e1)
+            {
+                MessageBox.Show(this, "读者身份获取册-异常:" + e1.Message);
+            }
+            finally
+            {
+                if (channel != null)
+                {
+                    this.mainForm._channelPool.ReturnChannel(channel);
+                }
+                this.EnableCtrls(true);
+            }
+        }
     }
 }

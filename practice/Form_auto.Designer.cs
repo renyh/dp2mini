@@ -53,6 +53,7 @@
             this.button_GetBrowseRecords = new System.Windows.Forms.Button();
             this.button_CopyBiblioInfo = new System.Windows.Forms.Button();
             this.button_token = new System.Windows.Forms.Button();
+            this.button_resultSet = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // button_accessAndObject
@@ -361,11 +362,24 @@
             this.button_token.UseVisualStyleBackColor = true;
             this.button_token.Click += new System.EventHandler(this.button_token_Click);
             // 
+            // button_resultSet
+            // 
+            this.button_resultSet.Location = new System.Drawing.Point(1335, 12);
+            this.button_resultSet.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.button_resultSet.Name = "button_resultSet";
+            this.button_resultSet.Size = new System.Drawing.Size(179, 130);
+            this.button_resultSet.TabIndex = 86;
+            this.button_resultSet.Tag = "";
+            this.button_resultSet.Text = "SearchItem-GetSearchResult内嵌检索与结果集";
+            this.button_resultSet.UseVisualStyleBackColor = true;
+            this.button_resultSet.Click += new System.EventHandler(this.button_resultSet_Click);
+            // 
             // Form_auto
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(216F, 216F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.ClientSize = new System.Drawing.Size(1528, 830);
+            this.Controls.Add(this.button_resultSet);
             this.Controls.Add(this.button_token);
             this.Controls.Add(this.button_CopyBiblioInfo);
             this.Controls.Add(this.button_GetBrowseRecords);
@@ -425,5 +439,6 @@
         private System.Windows.Forms.Button button_GetBrowseRecords;
         private System.Windows.Forms.Button button_CopyBiblioInfo;
         private System.Windows.Forms.Button button_token;
+        private System.Windows.Forms.Button button_resultSet;
     }
 }
