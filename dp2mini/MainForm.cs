@@ -59,6 +59,7 @@ namespace dp2mini
         {
             //
             ClientInfo.Initial("dp2mini");
+
             // 如果存在原来的配置文件，先删除
             string path = ClientInfo.DataDir + "\\1.0.0.0\\user.config";
             if (File.Exists(path) == true)

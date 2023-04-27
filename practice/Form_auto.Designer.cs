@@ -54,6 +54,15 @@
             this.button_CopyBiblioInfo = new System.Windows.Forms.Button();
             this.button_token = new System.Windows.Forms.Button();
             this.button_resultSet = new System.Windows.Forms.Button();
+            this.button_reader_19 = new System.Windows.Forms.Button();
+            this.button_reader_fields = new System.Windows.Forms.Button();
+            this.button_reader_saved = new System.Windows.Forms.Button();
+            this.button_reader_mask = new System.Windows.Forms.Button();
+            this.button_reader_write = new System.Windows.Forms.Button();
+            this.button_reader_wDr = new System.Windows.Forms.Button();
+            this.button_reader_delete = new System.Windows.Forms.Button();
+            this.button_importantFields = new System.Windows.Forms.Button();
+            this.button_dataFields = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // button_accessAndObject
@@ -73,10 +82,10 @@
             this.webBrowser1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.webBrowser1.Location = new System.Drawing.Point(19, 198);
+            this.webBrowser1.Location = new System.Drawing.Point(19, 262);
             this.webBrowser1.MinimumSize = new System.Drawing.Size(20, 20);
             this.webBrowser1.Name = "webBrowser1";
-            this.webBrowser1.Size = new System.Drawing.Size(1429, 599);
+            this.webBrowser1.Size = new System.Drawing.Size(1472, 535);
             this.webBrowser1.TabIndex = 62;
             // 
             // label1
@@ -99,7 +108,7 @@
             "期",
             "违约金",
             "预约到书"});
-            this.comboBox_TestRight_type.Location = new System.Drawing.Point(25, 83);
+            this.comboBox_TestRight_type.Location = new System.Drawing.Point(19, 84);
             this.comboBox_TestRight_type.Name = "comboBox_TestRight_type";
             this.comboBox_TestRight_type.Size = new System.Drawing.Size(114, 35);
             this.comboBox_TestRight_type.TabIndex = 66;
@@ -374,11 +383,128 @@
             this.button_resultSet.UseVisualStyleBackColor = true;
             this.button_resultSet.Click += new System.EventHandler(this.button_resultSet_Click);
             // 
+            // button_reader_19
+            // 
+            this.button_reader_19.Location = new System.Drawing.Point(19, 206);
+            this.button_reader_19.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.button_reader_19.Name = "button_reader_19";
+            this.button_reader_19.Size = new System.Drawing.Size(95, 50);
+            this.button_reader_19.TabIndex = 87;
+            this.button_reader_19.Tag = "";
+            this.button_reader_19.Text = "1-9级";
+            this.button_reader_19.UseVisualStyleBackColor = true;
+            this.button_reader_19.Click += new System.EventHandler(this.button_reader_19_Click);
+            // 
+            // button_reader_fields
+            // 
+            this.button_reader_fields.Location = new System.Drawing.Point(124, 206);
+            this.button_reader_fields.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.button_reader_fields.Name = "button_reader_fields";
+            this.button_reader_fields.Size = new System.Drawing.Size(141, 50);
+            this.button_reader_fields.TabIndex = 88;
+            this.button_reader_fields.Tag = "";
+            this.button_reader_fields.Text = "字段权限";
+            this.button_reader_fields.UseVisualStyleBackColor = true;
+            this.button_reader_fields.Click += new System.EventHandler(this.button_reader_fields_Click);
+            // 
+            // button_reader_saved
+            // 
+            this.button_reader_saved.Location = new System.Drawing.Point(424, 206);
+            this.button_reader_saved.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.button_reader_saved.Name = "button_reader_saved";
+            this.button_reader_saved.Size = new System.Drawing.Size(142, 50);
+            this.button_reader_saved.TabIndex = 89;
+            this.button_reader_saved.Tag = "";
+            this.button_reader_saved.Text = "保护字段";
+            this.button_reader_saved.UseVisualStyleBackColor = true;
+            this.button_reader_saved.Click += new System.EventHandler(this.button_reader_saved_Click);
+            // 
+            // button_reader_mask
+            // 
+            this.button_reader_mask.Location = new System.Drawing.Point(275, 206);
+            this.button_reader_mask.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.button_reader_mask.Name = "button_reader_mask";
+            this.button_reader_mask.Size = new System.Drawing.Size(139, 50);
+            this.button_reader_mask.TabIndex = 90;
+            this.button_reader_mask.Tag = "";
+            this.button_reader_mask.Text = "字段脱敏";
+            this.button_reader_mask.UseVisualStyleBackColor = true;
+            this.button_reader_mask.Click += new System.EventHandler(this.button_reader_mask_Click);
+            // 
+            // button_reader_write
+            // 
+            this.button_reader_write.Location = new System.Drawing.Point(576, 206);
+            this.button_reader_write.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.button_reader_write.Name = "button_reader_write";
+            this.button_reader_write.Size = new System.Drawing.Size(137, 50);
+            this.button_reader_write.TabIndex = 91;
+            this.button_reader_write.Tag = "";
+            this.button_reader_write.Text = "写字段";
+            this.button_reader_write.UseVisualStyleBackColor = true;
+            this.button_reader_write.Click += new System.EventHandler(this.button_reader_write_Click);
+            // 
+            // button_reader_wDr
+            // 
+            this.button_reader_wDr.Location = new System.Drawing.Point(723, 206);
+            this.button_reader_wDr.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.button_reader_wDr.Name = "button_reader_wDr";
+            this.button_reader_wDr.Size = new System.Drawing.Size(120, 50);
+            this.button_reader_wDr.TabIndex = 92;
+            this.button_reader_wDr.Tag = "";
+            this.button_reader_wDr.Text = "写>读";
+            this.button_reader_wDr.UseVisualStyleBackColor = true;
+            this.button_reader_wDr.Click += new System.EventHandler(this.button_reader_wDr_Click);
+            // 
+            // button_reader_delete
+            // 
+            this.button_reader_delete.Location = new System.Drawing.Point(854, 206);
+            this.button_reader_delete.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.button_reader_delete.Name = "button_reader_delete";
+            this.button_reader_delete.Size = new System.Drawing.Size(120, 50);
+            this.button_reader_delete.TabIndex = 93;
+            this.button_reader_delete.Tag = "";
+            this.button_reader_delete.Text = "删除";
+            this.button_reader_delete.UseVisualStyleBackColor = true;
+            this.button_reader_delete.Click += new System.EventHandler(this.button_reader_delete_Click);
+            // 
+            // button_importantFields
+            // 
+            this.button_importantFields.Location = new System.Drawing.Point(984, 206);
+            this.button_importantFields.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.button_importantFields.Name = "button_importantFields";
+            this.button_importantFields.Size = new System.Drawing.Size(250, 50);
+            this.button_importantFields.TabIndex = 94;
+            this.button_importantFields.Tag = "";
+            this.button_importantFields.Text = "importantFields";
+            this.button_importantFields.UseVisualStyleBackColor = true;
+            this.button_importantFields.Click += new System.EventHandler(this.button_importantFields_Click);
+            // 
+            // button_dataFields
+            // 
+            this.button_dataFields.Location = new System.Drawing.Point(1244, 206);
+            this.button_dataFields.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.button_dataFields.Name = "button_dataFields";
+            this.button_dataFields.Size = new System.Drawing.Size(213, 50);
+            this.button_dataFields.TabIndex = 95;
+            this.button_dataFields.Tag = "";
+            this.button_dataFields.Text = "dataFields";
+            this.button_dataFields.UseVisualStyleBackColor = true;
+            this.button_dataFields.Click += new System.EventHandler(this.button_dataFields_Click);
+            // 
             // Form_auto
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(216F, 216F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.ClientSize = new System.Drawing.Size(1528, 830);
+            this.Controls.Add(this.button_dataFields);
+            this.Controls.Add(this.button_importantFields);
+            this.Controls.Add(this.button_reader_delete);
+            this.Controls.Add(this.button_reader_wDr);
+            this.Controls.Add(this.button_reader_write);
+            this.Controls.Add(this.button_reader_mask);
+            this.Controls.Add(this.button_reader_saved);
+            this.Controls.Add(this.button_reader_fields);
+            this.Controls.Add(this.button_reader_19);
             this.Controls.Add(this.button_resultSet);
             this.Controls.Add(this.button_token);
             this.Controls.Add(this.button_CopyBiblioInfo);
@@ -440,5 +566,14 @@
         private System.Windows.Forms.Button button_CopyBiblioInfo;
         private System.Windows.Forms.Button button_token;
         private System.Windows.Forms.Button button_resultSet;
+        private System.Windows.Forms.Button button_reader_19;
+        private System.Windows.Forms.Button button_reader_fields;
+        private System.Windows.Forms.Button button_reader_saved;
+        private System.Windows.Forms.Button button_reader_mask;
+        private System.Windows.Forms.Button button_reader_write;
+        private System.Windows.Forms.Button button_reader_wDr;
+        private System.Windows.Forms.Button button_reader_delete;
+        private System.Windows.Forms.Button button_importantFields;
+        private System.Windows.Forms.Button button_dataFields;
     }
 }

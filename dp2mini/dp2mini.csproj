@@ -94,8 +94,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="api.txt" />
-    <Compile Include="core\PriceUtil.cs" />
-    <Content Include="core\StringUtil1.txt" />
     <Compile Include="Database\EntityDbManager.cs" />
     <Compile Include="Database\EntityDb.cs" />
     <Compile Include="MarcForm.cs">
@@ -105,7 +103,6 @@
       <DependentUpon>MarcForm.cs</DependentUpon>
     </Compile>
     <Content Include="del.txt" />
-    <Content Include="rest\DataStructure.cs.txt" />
     <Compile Include="createReport.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -145,15 +142,10 @@
     <Compile Include="Control\PrintCardDocument.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="core\ByteArray.cs" />
-    <Compile Include="core\ConfigSetting.cs" />
-    <Compile Include="core\ExceptionUtil.cs" />
-    <Compile Include="core\Range.cs" />
     <Compile Include="Database\DbManager.cs" />
     <Compile Include="Database\Note.cs" />
     <Compile Include="Database\NoteDB.cs" />
     <Compile Include="Database\ReservationItem.cs" />
-    <Compile Include="clientInfo\ClientInfo.cs" />
     <Compile Include="excel\ClosedXmlUtil.cs" />
     <Compile Include="chargingAnalysisForm.cs">
       <SubType>Form</SubType>
@@ -204,34 +196,24 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Content Include="rest\CookieAwareWebClient.txt">
-      <SubType>Component</SubType>
-    </Content>
-    <Content Include="rest\IsbnSplitter.txt" />
-    <Content Include="rest\RestChannel.txt" />
-    <Content Include="rest\RestChannelPool.txt" />
     <Compile Include="SettingForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="SettingForm.designer.cs">
       <DependentUpon>SettingForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="clientInfo\SettingInfo.cs" />
-    <Compile Include="clientInfo\SortColumns.cs" />
     <Compile Include="textForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="textForm.designer.cs">
       <DependentUpon>textForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="text\Cryptography.cs" />
     <Compile Include="TransferStatisForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="TransferStatisForm.designer.cs">
       <DependentUpon>TransferStatisForm.cs</DependentUpon>
     </Compile>
-    <Content Include="xml\DomUtil.txt" />
     <EmbeddedResource Include="MarcForm.resx">
       <DependentUpon>MarcForm.cs</DependentUpon>
     </EmbeddedResource>

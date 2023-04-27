@@ -21,6 +21,9 @@ using DigitalPlatform.Text;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 using System.Data.SqlClient;
 using System.Security.Policy;
+using DigitalPlatform.Z3950;
+using System.Xml.Linq;
+using System.Runtime.InteropServices;
 
 namespace practice
 {
@@ -347,17 +350,14 @@ namespace practice
             }
         }
 
-        // 用WriteRes写xml
+        // 借书
         public void Borrow(UserInfo u,
           string readerBarcode,
           string itemBarcode,
           bool isReader = false)
         {
-            WriteResResponse response = null;
 
             this.displayLine("为读者" + readerBarcode + "借册" + itemBarcode);
-
-
             RestChannel channel = null;
             try
             {
@@ -375,6 +375,8 @@ namespace practice
                     throw new Exception("借书失败:" + strError);
 
 
+                //channel.Reservation()
+
             }
             catch (Exception ex)
             {
@@ -387,6 +389,38 @@ namespace practice
             }
         }
 
+        // 预约
+        public void Reservation(UserInfo u,
+          string readerBarcode,
+          string itemBarcode,
+          bool isReader = false)
+        {
+
+            this.displayLine("为读者" + readerBarcode + "借册" + itemBarcode);
+            RestChannel channel = null;
+            try
+            {
+                // 用户登录
+                channel = mainForm.GetChannelAndLogin(u.UserName, u.Password, isReader);
+
+                ReservationResponse r = channel.Reservation("new",
+                    readerBarcode,
+                    itemBarcode);
+                if (r.ReservationResult.Value == -1)
+                    throw new Exception("预约失败:" + r.ReservationResult.ErrorInfo);
+
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(u.UserName + "异常：" + ex.Message);
+            }
+            finally
+            {
+                if (channel != null)
+                    this.mainForm._channelPool.ReturnChannel(channel);
+            }
+        }
 
         public void ChangeReaderPasswordBySupervisor(string readerBarcode)
         {
@@ -1603,6 +1637,7 @@ bool isReader = false)
                 + "<readerType>" + readerType + "</readerType>"
                 + "<displayName>显示名" + barcode + "</displayName>"
                 + "<preference>个性化参数" + barcode + "</preference>"
+                + "<department>2023级1班</department>"
                 + dprmsfile
                 + "</root>";
         }
@@ -5548,7 +5583,7 @@ bool isReader = false)
                 //取出第一条记录来比对 
                 if (r2.searchresults != null && r2.searchresults.Length > 0 && r2.searchresults[0].RecordBody != null)
                 {
-                    Record rec = r2.searchresults[0];
+                    DigitalPlatform.LibraryRestClient.Record rec = r2.searchresults[0];
                     if (expectSucc == true && (rec.RecordBody.Result == null || rec.RecordBody.Result.Value >= 0))
                         this.displayLine("符合预期");
                     else if (expectSucc == false && (rec.RecordBody.Result == null || rec.RecordBody.Result.Value == -1))
@@ -7956,6 +7991,8 @@ bool isReader = false)
 
             // 测试过程：用分馆帐号登录，然后调searchItem检索，注意结果集用temp，
             // 再调getSearchResult获取结果集,第2次获取结果集的时候起始位置输入2，会报起始位置2大于总长度1
+            
+            
             this.EnableCtrls(false);
             RestChannel channel = null;
             try
@@ -8034,6 +8071,529 @@ bool isReader = false)
                 {
                     this.mainForm._channelPool.ReturnChannel(channel);
                 }
+                this.EnableCtrls(true);
+            }
+        }
+
+        private void button_reader_wDr_Click(object sender, EventArgs e)
+        {
+            /* 
+            测试流程：
+            写 > 读
+            用以下4种权限示例，前3种都是写大于读，都应直接报权限不合法。
+            第4，5种写小于等于读，正常写入。
+            
+            1）setreaderinfo	报错
+            2）setreaderinfo,getreaderinfo:name	报错
+            3）setreaderinfo:name|barcode,getreaderinfo:name	报错
+            4）setreaderinfo:name|barcode|readerType,getreaderinfo:name|barcode|readerType	正确
+            5）setreaderinfo:name|barcode|readerType,getreaderinfo:name|barcode|readerType|department	正确
+
+            先新建记录，然后再读出来修改一下记录
+
+            */
+
+            this.EnableCtrls(false);
+            try
+            {
+                // 清空输出
+                ClearResult();
+
+                #region 用超级管理员身份创建环境
+
+
+                #endregion
+
+                //===先新建记录===
+
+                string path = this.GetAppendPath(C_Type_reader);
+
+                // 应失败
+                this.displayLine(this.getLarge("setreaderinfo权限，应失败"));
+                UserInfo u = this.NewUser("setreaderinfo", "", "");
+                this.DoRes1(u, C_Type_reader, path, "new", false, false, "");
+
+                // 应失败
+                this.displayLine(this.getLarge("setreaderinfo,getreaderinfo:name权限，应失败"));
+                u = this.NewUser("setreaderinfo,getreaderinfo:name", "", "");
+                this.DoRes1(u, C_Type_reader, path, "new", false, false, "");
+
+
+                // 应失败
+                this.displayLine(this.getLarge("写权限字段大于读权限字段，应失败"));
+                u = this.NewUser("setreaderinfo:name|barcode,getreaderinfo:name", "", "");
+                this.DoRes1(u, C_Type_reader, path, "new", false, false, "");
+
+                // 应成功
+                this.displayLine(this.getLarge("写权限字段等于读权限字段，应成功。注意要有读者类型字段，要不会报缺类型，而不是报缺权限。"));
+                u = this.NewUser("setreaderinfo:name|barcode|readerType,getreaderinfo:name|barcode|readerType", "", "");
+                this.DoRes1(u, C_Type_reader, path, "new", true, false, "");
+
+
+                // 应成功
+                this.displayLine(this.getLarge("写权限字段大于读权限字段，应成功。"));
+                u = this.NewUser("setreaderinfo:name|barcode|readerType,getreaderinfo:name|barcode|readerType|department", "", "");
+                this.DoRes1(u, C_Type_reader, path, "new",true, false, "");
+
+
+                //===读出来修改修改，再保存，应成功===
+                this.displayLine(this.getLarge("读出来修改修改，再保存，应成功"));
+                this.displayLine(this.getBold("权限：setreaderinfo:name|barcode|readerType,getreaderinfo:name|barcode|readerType|department"));
+
+                // 用管理员权限写一条完整的读者记录，以便检查读出的字段，要多于能写入的字段，
+                // 注意不要用前面写好的记录，因为前面写好的记录，受自己权限影响，写入的字段较少。
+                this.displayLine(this.getBold("用管理员权限写一条完整的读者记录"));
+                SetReaderInfoResponse setResponse= this.SetReaderInfo(this.mainForm.GetSupervisorAccount(),
+                    "new",path, this.GetXml(C_Type_reader,false),false);
+
+                string outputPath = setResponse.strSavedRecPath;
+
+                GetReaderInfoResponse getResponse= this.GetReaderInfo(u, outputPath, false);
+                string xml = getResponse.results[0];
+                XmlDocument dom = new XmlDocument();
+                dom.LoadXml(xml);
+                XmlNode root = dom.DocumentElement;
+                DomUtil.SetElementText(root, "name", "修改name");
+
+                string readerBarcode = DomUtil.GetElementText(root, "barcode");
+                DomUtil.SetElementText(root, "barcode", readerBarcode+"-1");
+                DomUtil.SetElementText(root, "department", "修改部门");
+
+                setResponse=  this.SetReaderInfo(u, "change", outputPath, dom.OuterXml, false);
+                if (setResponse.SetReaderInfoResult.Value == 0)
+                {
+                    this.displayLine(this.getGreenBackgroud("符合预期"));
+                }
+                else
+                    this.displayLine(this.getRed("不符合预期"));
+
+            }
+            catch (Exception e1)
+            {
+                MessageBox.Show(this, "异常:" + e1.Message);
+            }
+            finally
+            {
+                this.EnableCtrls(true);
+            }
+        }
+
+
+        //2023/4/19 注，此函数是从dp2服务器端拷过来的
+        // 获得一个 level 可以传输的读者 XML 元素名字列表
+        // 注: 名字前面有个问号的，表示元素正文在传输中要被马赛克遮盖部分字符
+        static List<string> GetNumberElementNames(string level)
+        {
+            List<string> names = new List<string>();
+
+            // 基本字段。馆代码，读者类型，证条码号，证号，参考 ID，机构代码(OI)，高级信息，借阅的册，违约金, 预约未取参数
+            names.AddRange(new string[] {
+                "libraryCode",
+                "readerType",
+                "barcode",
+                "cardNumber",
+                "refID",
+                "oi",
+                "info",
+                "borrows",
+                "overdues",
+                "reservations",
+                "outofReservations" });
+
+            // 第一级：证状态，发证日期，失效日期，姓名(除第一字以后都被马赛克)
+            names.AddRange(new string[] { "state", "createDate", "expireDate" });
+            if (level == "1")
+            {
+                names.Add("?name");
+                return names;
+            }
+            // 第二级：+ 完整姓名，姓名拼音，显示名，性别，民族，注释
+            names.AddRange(new string[] { "name", "namePinyin", "displayName", "gender", "nation", "comment" });
+            if (level == "2")
+                return names;
+            // 第三级：+ 单位，职务，地址
+            names.AddRange(new string[] { "department", "post", "address" });
+            if (level == "3")
+                return names;
+            // 第四级：+ 电话，email
+            names.AddRange(new string[] { "tel", "email" });
+            if (level == "4")
+                return names;
+            // 第五级：+ 权限，存取定义，书斋名称，好友
+            names.AddRange(new string[] { "rights", "access", "personalLibrary", "friends" });
+            if (level == "5")
+                return names;
+            // 第六级：+ 身份证号，出生日期
+            names.AddRange(new string[] { "idCardNumber", "dateOfBirth" });
+            if (level == "6")
+                return names;
+            // 第七级：+ 借阅历史，个性化参数等字段
+            names.AddRange(new string[] { "borrowHistory", "preference" });
+            if (level == "7")
+                return names;
+            // 第八级：+ 租金押金字段 
+            names.AddRange(new string[] { "hire", "foregift" });
+            if (level == "8")
+                return names;
+            // 第九级：+ 指纹，掌纹，人脸特征，对象(证照片，人脸图片等)
+            names.AddRange(new string[] { "fingerprint", "palmprint", "face", "http://dp2003.com/dprms:file" });
+            if (level == "9")
+                return names;
+
+            return names;
+        }
+
+        private void button_reader_19_Click(object sender, EventArgs e)
+        {
+            /* 
+            测试流程：
+            1）先用管理员身份创建一条完整的读者记录。
+            2）然后用1-9的权限，读取字段，观察读出来的字段是否符合预期
+             
+             */
+
+
+
+
+            this.EnableCtrls(false);
+            try
+            {
+                // 清空输出
+                ClearResult();
+
+
+                // 用超级管理员创建一条完整的读者记录
+                Random rd = new Random();
+                int temp = rd.Next(1, 999999);
+                string readerBarcode = "P" + temp.ToString().PadLeft(10, '0'); //Guid.NewGuid().ToString().ToUpper(); //
+
+                string xml = @"<root>
+  <barcode>"+ readerBarcode + @"</barcode>
+  <readerType>"+Env_ZG_PatronType+@"</readerType>
+  <name>测试读者</name>
+  <gender>男</gender>
+  <dateOfBirth>Mon, 11 Jan 1999 00:00:00 +0800</dateOfBirth>
+  <libraryCode></libraryCode>
+  <hire expireDate="""" period=""2"" />
+  <email>renyh@dp2003.com</email>
+  <department>数字平台</department>
+  <tel>123456</tel>
+  <state>停借</state>
+  <createDate>Tue, 27 Sep 2022 00:00:00 +0800</createDate>
+  <expireDate>Fri, 02 Jun 2023 00:00:00 +0800</expireDate>
+  <namePinyin>renyanhua</namePinyin>
+  <idCardNumber>1111111</idCardNumber>
+  <post>职务</post>
+  <address>苏州</address>
+  <comment>测试</comment>
+  <cardNumber>A2DSE33R23</cardNumber>
+  <personalLibrary>个人图书馆</personalLibrary>
+  <friends>好友</friends>
+  <access>无</access>
+  <displayName>显示名</displayName>
+<preference>个性化参数</preference>
+</root>
+";
+
+                //<refID>94c4ed7d-2beb-4801-996f-9ebedabe9abd</refID>
+                //  <borrows></borrows>
+                // <overdues></overdues>
+                //  <oi>CN-320506-C-XZXX</oi>
+
+                WriteResResponse result = this.WriteXml(this.mainForm.GetSupervisorAccount(), this.GetAppendPath(C_Type_reader), xml, false);
+                if (result.WriteResResult.Value == -1)
+                {
+                    this.displayLine(this.getRed("写入读者记录出错:"+result.WriteResResult.ErrorInfo));
+                    return;
+                }
+                string path = result.strOutputResPath;
+
+                // 建2条册记录
+                string loc = this.Env_ZG_LibraryCode + "/" + this.Env_ZG_Location;
+                this.CreateItemBySupervisor(loc, this.Env_ZG_BookType, out string itemBarcode1);
+                this.CreateItemBySupervisor(loc, this.Env_ZG_BookType, out string itemBarcode2);
+
+                // 为读者借一册
+                this.Borrow(this.mainForm.GetSupervisorAccount(), readerBarcode, itemBarcode1, false);
+                //预约一册
+                this.Reservation(this.mainForm.GetSupervisorAccount(),readerBarcode,itemBarcode2, false);
+                
+
+                this.CheckReaderFieldsByLevel(path, "1");
+                this.CheckReaderFieldsByLevel(path, "2");
+                this.CheckReaderFieldsByLevel(path, "3");
+
+                this.CheckReaderFieldsByLevel(path, "4");
+                this.CheckReaderFieldsByLevel(path, "5");
+                this.CheckReaderFieldsByLevel(path, "6");
+
+                this.CheckReaderFieldsByLevel(path, "7");
+                this.CheckReaderFieldsByLevel(path, "8");
+                this.CheckReaderFieldsByLevel(path, "9");
+
+            }
+            catch (Exception e1)
+            {
+                MessageBox.Show(this, "异常:" + e1.Message);
+            }
+            finally
+            {
+                this.EnableCtrls(true);
+            }
+        }
+
+        public void CheckReaderFieldsByLevel(string readerPath, string level)
+        {
+            // 先获取记录
+            UserInfo u = this.NewUser("setreaderinfo:" + level + ",getreaderinfo", "", "");
+            GetReaderInfoResponse r = this.GetReaderInfo(u, readerPath, false);
+            string xml =r.results[0];
+
+
+            // 再check字段
+            string errorFields = "";
+
+            XmlDocument dom = new XmlDocument();
+            dom.LoadXml(xml);
+            XmlNode root = dom.DocumentElement;
+            List<string> fields = GetNumberElementNames(level);
+            foreach (string one in fields)
+            {
+                string field = one;
+
+                if (one == "?name")
+                    field = "name";
+
+                //
+
+                XmlNode node = root.SelectSingleNode(field);
+                if (node == null)
+                {
+                    // 加到不符合的字段中
+                    if (string.IsNullOrEmpty(errorFields) == false)
+                        errorFields += ",";
+                    errorFields += one;
+
+                    continue;
+                }
+            }
+
+            if (string.IsNullOrEmpty(errorFields) == false)
+            {
+                this.displayLine(this.getRed("这些字段" + errorFields + "未获取到，不符合预期。"));
+            }
+            else
+            {
+                this.displayLine(this.getGreenBackgroud("符合预期，按权限级别获取到了对应字段。"));
+            }
+        }
+
+        private void button_reader_fields_Click(object sender, EventArgs e)
+        {
+            /* 
+测试流程：
+
+
+ */
+
+            this.EnableCtrls(false);
+            try
+            {
+                // 清空输出
+                ClearResult();
+
+                #region 用超级管理员身份创建环境
+
+
+                #endregion
+
+            }
+            catch (Exception e1)
+            {
+                MessageBox.Show(this, "异常:" + e1.Message);
+            }
+            finally
+            {
+                this.EnableCtrls(true);
+            }
+        }
+
+        private void button_reader_mask_Click(object sender, EventArgs e)
+        {
+            /* 
+测试流程：
+
+
+ */
+
+            this.EnableCtrls(false);
+            try
+            {
+                // 清空输出
+                ClearResult();
+
+                #region 用超级管理员身份创建环境
+
+
+                #endregion
+
+            }
+            catch (Exception e1)
+            {
+                MessageBox.Show(this, "异常:" + e1.Message);
+            }
+            finally
+            {
+                this.EnableCtrls(true);
+            }
+        }
+
+        private void button_reader_saved_Click(object sender, EventArgs e)
+        {
+            /* 
+测试流程：
+
+
+ */
+
+            this.EnableCtrls(false);
+            try
+            {
+                // 清空输出
+                ClearResult();
+
+                #region 用超级管理员身份创建环境
+
+
+                #endregion
+
+            }
+            catch (Exception e1)
+            {
+                MessageBox.Show(this, "异常:" + e1.Message);
+            }
+            finally
+            {
+                this.EnableCtrls(true);
+            }
+        }
+
+        private void button_reader_write_Click(object sender, EventArgs e)
+        {
+            /* 
+测试流程：
+
+
+ */
+
+            this.EnableCtrls(false);
+            try
+            {
+                // 清空输出
+                ClearResult();
+
+                #region 用超级管理员身份创建环境
+
+
+                #endregion
+
+            }
+            catch (Exception e1)
+            {
+                MessageBox.Show(this, "异常:" + e1.Message);
+            }
+            finally
+            {
+                this.EnableCtrls(true);
+            }
+        }
+
+        private void button_reader_delete_Click(object sender, EventArgs e)
+        {
+            /* 
+测试流程：
+
+
+ */
+
+            this.EnableCtrls(false);
+            try
+            {
+                // 清空输出
+                ClearResult();
+
+                #region 用超级管理员身份创建环境
+
+
+                #endregion
+
+            }
+            catch (Exception e1)
+            {
+                MessageBox.Show(this, "异常:" + e1.Message);
+            }
+            finally
+            {
+                this.EnableCtrls(true);
+            }
+        }
+
+        private void button_importantFields_Click(object sender, EventArgs e)
+        {
+            /* 
+测试流程：
+
+
+ */
+
+            this.EnableCtrls(false);
+            try
+            {
+                // 清空输出
+                ClearResult();
+
+                #region 用超级管理员身份创建环境
+
+
+                #endregion
+
+            }
+            catch (Exception e1)
+            {
+                MessageBox.Show(this, "异常:" + e1.Message);
+            }
+            finally
+            {
+                this.EnableCtrls(true);
+            }
+        }
+
+        private void button_dataFields_Click(object sender, EventArgs e)
+        {
+            /* 
+测试流程：
+
+
+ */
+
+            this.EnableCtrls(false);
+            try
+            {
+                // 清空输出
+                ClearResult();
+
+                #region 用超级管理员身份创建环境
+
+
+                #endregion
+
+            }
+            catch (Exception e1)
+            {
+                MessageBox.Show(this, "异常:" + e1.Message);
+            }
+            finally
+            {
                 this.EnableCtrls(true);
             }
         }

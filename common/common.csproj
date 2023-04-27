@@ -43,6 +43,7 @@
     </Reference>
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Deployment" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Web" />
     <Reference Include="System.Windows.Forms" />
@@ -55,6 +56,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="api.cs" />
+    <Compile Include="clientInfo\ClientInfo.cs" />
+    <Compile Include="clientInfo\SettingInfo.cs" />
+    <Compile Include="clientInfo\SortColumns.cs" />
     <Compile Include="core\ByteArray.cs" />
     <Compile Include="core\CompactLog.cs" />
     <Compile Include="core\ConfigSetting.cs" />
@@ -96,6 +100,7 @@
     <Compile Include="rest\ManageHelper.cs" />
     <Compile Include="rest\RestChannel.cs" />
     <Compile Include="rest\RestChannelPool.cs" />
+    <Compile Include="text\Cryptography.cs" />
     <Compile Include="xml\DomUtil.cs" />
     <Compile Include="Z3950\BerNode.cs" />
     <Compile Include="Z3950\BerTree.cs" />
