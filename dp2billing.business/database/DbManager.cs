@@ -9,29 +9,29 @@ namespace dp2mini
 {
     public class DbManager
     {
-        #region 单一实例
+        //#region 单一实例
 
-        static DbManager _instance;
-        private DbManager()
-        {
-            this.ConnectionDb();
-        }
-        private static object _lock = new object();
-        static public DbManager Instance
-        {
-            get
-            {
-                if (null == _instance)
-                {
-                    lock (_lock)  //线程安全的
-                    {
-                        _instance = new DbManager();
-                    }
-                }
-                return _instance;
-            }
-        }
-        #endregion
+        //static DbManager _instance;
+        //private DbManager()
+        //{
+        //    this.ConnectionDb();
+        //}
+        //private static object _lock = new object();
+        //static public DbManager Instance
+        //{
+        //    get
+        //    {
+        //        if (null == _instance)
+        //        {
+        //            lock (_lock)  //线程安全的
+        //            {
+        //                _instance = new DbManager();
+        //            }
+        //        }
+        //        return _instance;
+        //    }
+        //}
+        //#endregion
 
         ////声明事件
         //public event AddNoteDelegate AddNoteHandler;
@@ -40,10 +40,15 @@ namespace dp2mini
         // 数据库对象
         BillDB _dbclient = null;
 
-        // 连接数据库
-        public void ConnectionDb()
+        public DbManager(string dataDir)
         {
-            this._dbclient = new BillDB();
+            this.ConnectionDb(dataDir);
+        }
+
+        // 连接数据库
+        public void ConnectionDb(string dataDir)
+        {
+            this._dbclient = new BillDB(dataDir);
             //Create the database file at a path defined in SimpleDataStorage
             this._dbclient.Database.EnsureCreated();
             //Create the database tables defined in SimpleDataStorage

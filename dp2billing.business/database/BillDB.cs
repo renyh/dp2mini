@@ -10,12 +10,15 @@ namespace dp2mini
 {
     public class BillDB : DbContext
     {
-        public BillDB() { }
+        string _dir;
+        public BillDB(string dir) {
+        this._dir = dir;
+                }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             //Set the filename of the database to be created
-            string filePath = Application.StartupPath + "/db.sqlite";
+            string filePath = this._dir + "/db.sqlite";
             optionsBuilder.UseSqlite("Data Source="+ filePath);
         }
 

@@ -5,12 +5,15 @@ namespace dp2billing
 {
     public partial class Form1 : Form
     {
+        DbManager _dbManager;
         public Form1()
         {
-            ClientInfo.ProgramName = "dp2billing";
-            ClientInfo.MainForm = this;
 
             InitializeComponent();
+
+            this._dbManager = new DbManager(Application.StartupPath);
+
+
         }
 
         private void button_add_Click(object sender, EventArgs e)
@@ -37,7 +40,10 @@ namespace dp2billing
                 amount,
                 this.textBox_reciprocalAccount.Text.Trim());
 
-            DbManager.Instance.SetItem("add", item);
+           this._dbManager.SetItem("add", item);
+
+            MessageBox.Show(this, "Íê³É");
+
 
         }
 
@@ -63,12 +69,12 @@ namespace dp2billing
             item.Amount = amount;
             item.ReciprocalAccount = this.textBox_reciprocalAccount.Text.Trim();
 
-            DbManager.Instance.SetItem("change", item);
+            this._dbManager.SetItem("change", item);
         }
 
         private void button_delete_Click(object sender, EventArgs e)
         {
-            DbManager.Instance.SetItem("delete", new BillItem() { Id = this.textBox_id.Text.Trim() });
+            this._dbManager.SetItem("delete", new BillItem() { Id = this.textBox_id.Text.Trim() });
         }
 
         private void button_auto_Click(object sender, EventArgs e)

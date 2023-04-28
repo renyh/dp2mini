@@ -14,6 +14,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\common\common.csproj" />
+    <ProjectReference Include="..\dp2billing.business\dp2billing.business.csproj" />
   </ItemGroup>
 
 </Project>
