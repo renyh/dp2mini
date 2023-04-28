@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace dp2mini
 {
-    public class NoteDB : DbContext
+    public class BillDB : DbContext
     {
-        public NoteDB() { }
+        public BillDB() { }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -19,9 +19,7 @@ namespace dp2mini
             optionsBuilder.UseSqlite("Data Source="+ filePath);
         }
 
-        public DbSet<Note> Notes { get; set; }
-
-        public DbSet<ReservationItem> Items { get; set; }
+        public DbSet<BillItem> Items { get; set; }
 
 
 
@@ -30,25 +28,16 @@ namespace dp2mini
             base.OnModelCreating(modelBuilder);
 
             //Define the Table(s) and References to be created automatically
-            modelBuilder.Entity<Note>(b =>
+            modelBuilder.Entity<BillItem>(i =>
             {
-                b.HasKey(e => e.Id);
-                b.Property(e => e.Id).ValueGeneratedOnAdd();
-                b.ToTable("note");
+                i.HasKey(e => e.Id);
+
+                // 使用guid
+                //b.Property(e => e.Id).ValueGeneratedOnAdd();
+
+                i.ToTable("item");
             });
 
-            modelBuilder.Entity<ReservationItem>(b =>
-            {
-                b.HasKey(e => e.RecPath);
-                b.ToTable("item");
-            });
-
-
-            //modelBuilder.Entity<Entity>(b =>
-            //{
-            //    b.HasKey(e => e.path);
-            //    b.ToTable("entity");
-            //});
 
 
         }
