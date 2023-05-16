@@ -21,7 +21,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "xml2html", "xml2html\xml2ht
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "dp2billing", "dp2billing\dp2billing.csproj", "{37FBE805-4E2D-4D2B-BCDD-D7F3FA1F7165}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dp2billing.business", "dp2billing.business\dp2billing.business.csproj", "{653B5D6E-DC5A-4205-B984-067C1DAA5F16}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "dp2billing.business", "dp2billing.business\dp2billing.business.csproj", "{653B5D6E-DC5A-4205-B984-067C1DAA5F16}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "bookshelf", "bookshelf\bookshelf.csproj", "{F4D90786-F4DD-4F19-9B2D-50EE68B52147}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -69,6 +71,10 @@ Global
 		{653B5D6E-DC5A-4205-B984-067C1DAA5F16}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{653B5D6E-DC5A-4205-B984-067C1DAA5F16}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{653B5D6E-DC5A-4205-B984-067C1DAA5F16}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F4D90786-F4DD-4F19-9B2D-50EE68B52147}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F4D90786-F4DD-4F19-9B2D-50EE68B52147}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F4D90786-F4DD-4F19-9B2D-50EE68B52147}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F4D90786-F4DD-4F19-9B2D-50EE68B52147}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
