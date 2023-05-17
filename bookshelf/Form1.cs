@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Net.Http;
@@ -238,6 +239,12 @@ namespace bookshelf
             {
                 this.EnableCtrl(true);
             }
+        }
+
+        private void button_WriteRes_help_Click(object sender, EventArgs e)
+        {
+            // 密集架API 帮助文档
+            Process.Start("https://jihulab.com/DigitalPlatform/dp2doc/-/issues/106");
         }
     }
 }
