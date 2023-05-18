@@ -25,6 +25,8 @@ namespace bookshelf
             this.EnableCtrl(false);
             try
             {
+                this.textBox_result.Text = "";
+
                 // 检查输入参数
                 string serverUrl = this.textBox_serverUrl.Text.Trim();
                 if (string.IsNullOrEmpty(serverUrl))
@@ -64,7 +66,13 @@ namespace bookshelf
 
 
                     string responseBody =  response.Content.ReadAsStringAsync().Result;
-                    this.textBox_result.Text += "返回结果:" + responseBody;
+                    this.textBox_result.Text += "返回结果:" + responseBody+"\r\n";
+
+                    if (responseBody =="1")
+                        this.textBox_result.Text += "\r\n成功。";
+                    else
+                        this.textBox_result.Text += "\r\n失败。";
+
                 }
 
 
