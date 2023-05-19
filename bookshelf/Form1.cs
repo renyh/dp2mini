@@ -51,7 +51,7 @@ namespace bookshelf
                     };
                     string strquest= JsonConvert.SerializeObject(p);
 
-                    this.textBox_result.Text = "请求信息:" + strquest + "\r\n\r\n";
+                    this.textBox_result.Text = "OpenColumn请求信息:" + strquest + "\r\n\r\n";
 
 
                     HttpContent content = new StringContent(strquest);
@@ -64,11 +64,19 @@ namespace bookshelf
 
                     response.EnsureSuccessStatusCode();//用来抛异常的
 
-
+                    //===
                     string responseBody =  response.Content.ReadAsStringAsync().Result;
-                    this.textBox_result.Text += "返回结果:" + responseBody+"\r\n";
+                    this.textBox_result.Text += "返回结果:[" + responseBody+"]\r\n";
 
+                    this.textBox_result.Text += "\r\n比较==字符串1的结果";
                     if (responseBody =="1")
+                        this.textBox_result.Text += "\r\n成功。";
+                    else
+                        this.textBox_result.Text += "\r\n失败。";
+
+                    //====
+                    this.textBox_result.Text += "\r\n比较==字符串\"1\"的结果";
+                    if (responseBody == "\"1\"")
                         this.textBox_result.Text += "\r\n成功。";
                     else
                         this.textBox_result.Text += "\r\n失败。";
