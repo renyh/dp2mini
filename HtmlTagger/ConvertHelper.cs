@@ -9,6 +9,7 @@ using DigitalPlatform;
 using DigitalPlatform.Xml;
 using System.Xml;
 using System.Xml.Linq;
+using System.Web.Helpers;
 
 namespace xml2html
 {
@@ -46,6 +47,7 @@ namespace xml2html
                     XmlNode patronNode = dom.DocumentElement.SelectSingleNode("patron");
                     var barcode = DomUtil.GetElementText(patronNode, "barcode");
                     var patronName = DomUtil.GetElementText(patronNode, "name");
+                    var department = DomUtil.GetElementText(patronNode, "department");
                     var tel = DomUtil.GetElementText(patronNode, "tel");
                     var readerType = DomUtil.GetElementText(patronNode, "readerType");
                     var refID = DomUtil.GetElementText(patronNode, "refID");
@@ -75,6 +77,7 @@ namespace xml2html
 
                     getLabel("证条码号", "code", barcode);
                     getLabel("姓名", "name", patronName);
+                    getLabel("单位", "department", department);
                     getLabel("电话", "tel", tel);
                     getLabel("读者类型", "readerType", readerType);
                     getLabel("refID", "refID", refID);
@@ -264,6 +267,8 @@ namespace xml2html
                         var title = item.GetAttribute("title");
                         var accessNo = item.GetAttribute("accessNo");
                         var borrowTime = item.GetAttribute("borrowTime");
+
+
                         var returnTime = item.GetAttribute("returnTime");
 
                         var tr_BorrowHistory = HtmlTagger.Create("tr")
@@ -437,7 +442,19 @@ namespace xml2html
                 //if (XmlNode.IsNullOrEmpty(comment_node) == false)
                 if (string.IsNullOrEmpty(comment) == false)
                     remark();
+
+                /*
+                var myChart = new Chart(600,400);
+                myChart.AddTitle("Chart Title");
+                myChart.AddTitle("test");
+                myChart.AddSeries(
+                    name: "Employee",
+                    xValue: new[] { "Peter", "Andrew", "Julie", "Mary", "Dave" },
+                    yValues: new[] { "2", "6", "4", "5", "3" });
                 
+                sw.Write(myChart.Write());
+                */
+
                 //公司名称
                 void company()
                 {

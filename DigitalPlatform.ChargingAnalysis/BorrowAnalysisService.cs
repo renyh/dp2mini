@@ -467,7 +467,7 @@ namespace DigitalPlatform.ChargingAnalysis
                     if (nRet == -1)
                         goto ERROR1;
 
-                    // 输出报表
+                    // 输出xml
                     string xml = "";
                     nRet = BorrowAnalysisService.Instance.OutputReport(report,
                         "xml",
@@ -814,8 +814,6 @@ namespace DigitalPlatform.ChargingAnalysis
             try
             {
                 report.borrowedItems = new List<BorrowedItem>();
-
-
 
                 // 获取读者信息
                 string[] results = null;
@@ -1449,7 +1447,8 @@ namespace DigitalPlatform.ChargingAnalysis
             // 第一次借书时间
             if (report.borrowedItems != null && report.borrowedItems.Count > 0)
             {
-                var list = report.borrowedItems.OrderBy(x => x.BorrowDate.Time).ToList();
+                // 2023/6/1 过滤掉0001默认日期
+                var list = report.borrowedItems.Where(x => x.BorrowDate.Date.CompareTo("0001/01/01")>0).OrderBy(x => x.BorrowDate.Time).ToList();
                 firstBorrowDate = list[0].BorrowDate.Date;
                 totalBorrowedCount = list.Count.ToString();
             }

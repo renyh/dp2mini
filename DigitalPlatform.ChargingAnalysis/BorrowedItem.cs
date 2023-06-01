@@ -190,7 +190,7 @@ namespace DigitalPlatform.ChargingAnalysis
             string borrowDate = "";
             string borrowMonth = "";
             string borrowYear = "";
-            if (this.BorrowDate != null)
+            if (this.BorrowDate != null && this.BorrowDate.Year != "0001") // 2023/6/1 0001表示实际没有借书日期
             {
                 borrowTime = this.BorrowDate.Time;
                 borrowDate = this.BorrowDate.Date;

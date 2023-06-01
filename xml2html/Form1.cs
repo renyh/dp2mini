@@ -14,6 +14,8 @@ using System.Web.Mvc;
 using System.Windows.Forms;
 using System.Xml;
 using DigitalPlatform;
+//using System.Windows.Forms.
+
 
 namespace xml2html
 {
@@ -40,6 +42,10 @@ namespace xml2html
                 MessageBox.Show(this, $"转换完成。在文件 {target_filename} 中");
             }
         }
-       
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
