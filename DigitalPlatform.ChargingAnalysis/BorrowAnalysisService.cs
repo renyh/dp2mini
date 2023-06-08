@@ -1449,8 +1449,13 @@ namespace DigitalPlatform.ChargingAnalysis
             {
                 // 2023/6/1 过滤掉0001默认日期
                 var list = report.borrowedItems.Where(x => x.BorrowDate.Date.CompareTo("0001/01/01")>0).OrderBy(x => x.BorrowDate.Time).ToList();
-                firstBorrowDate = list[0].BorrowDate.Date;
-                totalBorrowedCount = list.Count.ToString();
+
+                if (list != null && list.Count > 0)
+                    firstBorrowDate = list[0].BorrowDate.Date;
+                else
+                    firstBorrowDate = "";
+
+                totalBorrowedCount = report.borrowedItems.Count.ToString();
             }
             //借阅汇总信息
             string borrowInfo = "<borrowInfo firstBorrowDate='" + firstBorrowDate + "' totalBorrowedCount='" + totalBorrowedCount + "'  timeRange='" + report.times + "'  title='" + report.commentTitle + "'/>";
