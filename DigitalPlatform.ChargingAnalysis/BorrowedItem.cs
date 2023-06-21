@@ -95,7 +95,18 @@ namespace DigitalPlatform.ChargingAnalysis
             }
             else
             {
-                this.BorrowDate = new DateItem(new DateTime());
+                // 2023/6/21 dp2libratry新版本，创建mongodb的还书记录时，新增了一个borrowDate字段，如果对应的借书记录不存在，可以使用此字段作为借书日期
+                //this.BorrowDate = new DateItem(new DateTime());
+                if (this.chargingItem.BorrowDate != null)
+                {
+                    this.BorrowTimeOriginal = this.chargingItem.BorrowDate;
+                    this.BorrowDate = new DateItem(DateTimeUtil.ParseFreeTimeString(this.BorrowTimeOriginal));
+                }
+                else
+                {
+                    // 即不存在关联的借书记录，也不存在BorrowDate(即旧版本的dp2library)
+                    this.BorrowDate = new DateItem(new DateTime());
+                }
             }
 
 

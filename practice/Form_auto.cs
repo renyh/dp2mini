@@ -7569,7 +7569,7 @@ bool isReader = false)
             UserInfo u= this.NewReaderUser(Env_ZG_ReaderDbName, Env_ZG_PatronType, "", "", out string readerBarcode, out string readerPath);
 
             this.EnableCtrls(false);
-            RestChannel channel = this.mainForm.GetChannel();
+            RestChannel channel = mainForm.GetChannelAndLogin(this.mainForm.GetSupervisorAccount());//this.mainForm.GetChannel();
             try
             {
                 // 清空输出

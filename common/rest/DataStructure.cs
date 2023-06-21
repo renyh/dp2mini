@@ -358,6 +358,10 @@ namespace DigitalPlatform.LibraryRestClient
         [DataMember]
         public string OperTime { get; set; } // 操作时间。? 格式
 
+        // 2023/6/20
+        [DataMember]
+        public string BorrowDate { get; set; } // 借阅时间(仅对还书动作有效)。? 格式
+
     }
     #endregion
 
