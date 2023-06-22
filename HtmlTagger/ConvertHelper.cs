@@ -219,6 +219,9 @@ namespace xml2html
                     foreach (XmlElement item in borrows_list)
                     {
                         var itemBarcode = item.GetAttribute("itemBarcode");
+
+
+
                         var title = item.GetAttribute("title");
                         var accessNo = item.GetAttribute("accessNo");
                         var borrowTime = item.GetAttribute("borrowTime");
@@ -264,6 +267,13 @@ namespace xml2html
                     foreach (XmlElement item in history_list)
                     {
                         var itemBarcode = item.GetAttribute("itemBarcode");
+
+                        //2023/6/22 标记出丢失的情况
+                        string action = item.GetAttribute("action");
+                        if (action == "lost")
+                            itemBarcode += "(丢失)";
+
+
                         var title = item.GetAttribute("title");
                         var accessNo = item.GetAttribute("accessNo");
                         var borrowTime = item.GetAttribute("borrowTime");

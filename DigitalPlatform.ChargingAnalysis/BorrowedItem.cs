@@ -62,6 +62,8 @@ namespace DigitalPlatform.ChargingAnalysis
             this.chargingItem = itemWrapper.Item;
             this.relatedItem = itemWrapper.RelatedItem;
 
+            this.Action=itemWrapper.Item.Action;
+
 
 
             // 从还书记录中获取信息
@@ -190,6 +192,9 @@ namespace DigitalPlatform.ChargingAnalysis
         public string ErrorInfo { get; internal set; }
         public string Location { get; internal set; }
 
+        // 动作 return 或 lost
+        public string Action { get; internal set; }
+
 
 
         // 类型，0表示在借未还的，1表示借阅历史中的。
@@ -237,6 +242,9 @@ namespace DigitalPlatform.ChargingAnalysis
                 + " accessNo='" + HttpUtility.HtmlEncode(AccessNo) + "' "
                 //+ " bigClass='" + BigClass + "' "
                 + " location='" + HttpUtility.HtmlEncode(Location) + "' "
+                
+                // 2023/6/22 增加
+                + " action='" + HttpUtility.HtmlEncode(Action) + "' "
                 + "/>";
             
 
