@@ -1258,8 +1258,6 @@ namespace dp2mini
                 }
             }
 
-
-
             //
             if (otherList.Count > 0)
             {
