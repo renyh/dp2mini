@@ -1089,6 +1089,107 @@ namespace dp2mini
             this.OutputInfo(GetInfoAddTime("==结束校验册条码,详见txt文件,用时" + this.GetSeconds(start, end) + "秒==", end));
         }
 
+
+        // return:
+        //      -1  发现错误
+        //      0   没有发现错误
+        void VerifyPrice(XmlDocument itemdom,
+            bool bModify,
+            List<string> errors,
+            ref bool bChanged)
+        {
+            if (itemdom.DocumentElement == null)
+            {
+                errors.Add("XML 记录为空");
+                return;
+            }
+
+            string strPrice = DomUtil.GetElementText(itemdom.DocumentElement, "price");
+            if (string.IsNullOrEmpty(strPrice))
+            {
+                errors.Add("价格字段内容为空");
+                return;
+            }
+            else
+            {
+                List<string> temp = VerifyPrice(strPrice);
+                if (temp.Count > 0)
+                {
+                    errors.AddRange(temp);
+                    /*
+                                        if (bModify)
+                                        {
+                                            // (全10册) 转为除法形态
+                                            string strOldPrice = strPrice;
+                                            ItemClassStatisDialog.CorrectPrice(ref strPrice);
+                                            if (strOldPrice != strPrice)
+                                            {
+                                                if (IsPriceCorrect(strPrice) == true)
+                                                {
+                                                    DomUtil.SetElementText(itemdom.DocumentElement, "price", strPrice);
+                                                    bChanged = true;
+                                                    errors.Add("^价格字符串 '" + strOldPrice + "' 被自动修改为 '" + strPrice + "'"); // ^ 开头表示修改提示，而不是错误信息
+                                                }
+                                                else
+                                                    errors.Add("*** 价格字符串 '" + strOldPrice + "' 无法被自动修改 2");
+                                            }
+                                            else
+                                                errors.Add("*** 价格字符串 '" + strOldPrice + "' 无法被自动修改 1");
+                                        }
+                    */
+                }
+
+                // TODO: 检查常见的货币前缀符号
+            }
+
+        }
+
+        static string VerifyPricePrefix(string prefix)
+        {
+            foreach (var ch in prefix)
+            {
+                if (char.IsLetter(ch) == false)
+                    return $"货币名称 '{prefix}' 中出现了非字母的字符";
+            }
+
+            return null;
+        }
+
+        public static List<string> VerifyPrice(string strPrice)
+        {
+            List<string> errors = new List<string>();
+
+            // 解析单个金额字符串。例如 CNY10.00 或 -CNY100.00/7
+            int nRet = PriceUtil.ParseSinglePrice(strPrice,
+                out CurrencyItem item,
+                out string strError);
+            if (nRet == -1)
+                errors.Add(strError);
+
+            // 2020/7/8
+            // 检查货币字符串中是否出现了字母以外的字符
+            if (string.IsNullOrEmpty(item.Postfix) == false)
+                errors.Add($"金额字符串 '{strPrice}' 中出现了后缀 '{item.Postfix}' ，这很不常见，一般意味着错误");
+
+            string error1 = VerifyPricePrefix(item.Prefix);
+            if (error1 != null)
+                errors.Add(error1);
+
+            string new_value = StringUtil.ToDBC(strPrice);
+            if (new_value.IndexOfAny(new char[] { '(', ')' }) != -1)
+            {
+                errors.Add("价格字符串中不允许出现括号 '" + strPrice + "'");
+            }
+
+            if (new_value.IndexOf(',') != -1)
+            {
+                errors.Add("价格字符串中不允许出现逗号 '" + strPrice + "'");
+            }
+
+            return errors;
+        }
+
+
         // 校验价格
         private bool CheckPrice(List<Entity> items, CancellationToken token)
         {
@@ -1097,9 +1198,108 @@ namespace dp2mini
             //空价格的
             List<string> emptyList = new List<string>();
             //高于500价格
+            //List<string> largeList1 = new List<string>();
+
+            //括号
+            //List<string> bracketList = new List<string>();
+
+            //其它
+            List<string> otherList = new List<string>();
+
+            int index = 0;
+            foreach (Entity item in items)//string line in lines)
+            {
+                // 当外部让停止时，停止循环
+                token.ThrowIfCancellationRequested();
+
+                index++;
+                this.OutputInfo("校验册价格第" + index.ToString(), false, true);
+
+                string path = item.path;
+                string price = item.price;
+                if (price == null)
+                    price = "";
+
+                Application.DoEvents();
+
+                string location = GetPureLocationString(item.location);
+                string retLine = path + "\t" + price + "\t" + location;
+
+                if (price == "")
+                {
+                    emptyList.Add(retLine);
+                    continue;
+                }
+
+                // 校验册价格
+                List<string> errros = VerifyPrice(price);
+                if (errros.Count > 0)
+                {
+                    string s = string.Join(",", errros);
+
+                    otherList.Add(retLine + "\t" +s);
+                    continue;
+                }
+
+
+            }
+
+
+
+            //输出
+            StringBuilder result = new StringBuilder();
+
+            if (emptyList.Count > 0)
+            {
+                result.AppendLine("\r\n下面是册价格为空的，有" + emptyList.Count + "条。");
+                foreach (string li in emptyList)
+                {
+                    result.AppendLine(li);
+                }
+            }
+
+
+
+            //
+            if (otherList.Count > 0)
+            {
+                result.AppendLine("\r\n下面是册价格不合规则的，有" + otherList.Count + "条。");
+                foreach (string li in otherList)
+                {
+                    result.AppendLine(li);
+                }
+            }
+
+            // 输出到界面上
+            //this.OutputInfo(result.ToString(),true,false);
+
+            // 仅输出到文件
+            this.OnlyOutput2File(result.ToString());
+
+            if (emptyList.Count == 0
+                //&& largeList.Count == 0
+                //&& bracketList.Count == 0
+                && otherList.Count == 0)
+            {
+                return true;
+            }
+            else
+                return false;
+        }
+
+        // 校验价格
+        private bool CheckPrice_old(List<Entity> items, CancellationToken token)
+        {
+            string match = "^[0-9]*([.][0-9]*)$";// this.txtMatch.Text.Trim();
+
+            //空价格的
+            List<string> emptyList = new List<string>();
+            //高于500价格
             List<string> largeList1 = new List<string>();
+
             //括号
             List<string> bracketList = new List<string>();
+
             //其它
             List<string> otherList = new List<string>();
 
