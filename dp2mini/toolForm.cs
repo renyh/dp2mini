@@ -471,23 +471,31 @@ namespace dp2mini
         {
             this.Invoke((Action)(() =>
             {
-                if (isTextBox == true)
+                try
                 {
-                    this.textBox_info.Text += info + "\r\n";
+                    if (isTextBox == true)
+                    {
+                        this.textBox_info.Text += info + "\r\n";
 
-                    this.textBox_info.Focus();//获取焦点
-                    this.textBox_info.Select(this.textBox_info.TextLength, 0);//光标定位到文本最后
-                    this.textBox_info.ScrollToCaret();//滚动到光标处
+                        this.textBox_info.Focus();//获取焦点
+                        this.textBox_info.Select(this.textBox_info.TextLength, 0);//光标定位到文本最后
+                        this.textBox_info.ScrollToCaret();//滚动到光标处
 
-                    // 写到文件
-                    this.Sw.WriteLine(info);
-                    this.Sw.Flush();
+                        // 写到文件
+                        this.Sw.WriteLine(info);
+                        this.Sw.Flush();
+                    }
+
+                    if (isState == true)
+                    {
+                        //设置父窗口状态栏参数
+                        this._mainForm.SetStatusMessage(info);
+                    }
                 }
-
-                if (isState == true)
+                catch (Exception ex)
                 {
-                    //设置父窗口状态栏参数
-                    this._mainForm.SetStatusMessage(info);
+                    MessageBox.Show(this, "异常:" + ex.Message);
+                    return;
                 }
             }
             ));
@@ -1037,13 +1045,13 @@ namespace dp2mini
                             if (lRet == 0)
                             {
                                 //仅输出到文件
-                                this.OnlyOutput2File(item.path + "\t" + item.barcode + "\t" +item.location);// + "\t" + strError);
+                                this.OnlyOutput2File(item.path + "\t" + item.barcode + "\t" +item.location+ "\t 不合法：" + strError);
                                 //this.OutputInfo(item.path + "\t" + item.barcode + "\t" + strError, true, false);
                             }
                             else if (lRet == 1)
                             {
                                 //仅输出到文件
-                                this.OnlyOutput2File(item.path + "\t" + item.barcode + "\t" +item.location);// + "\t" + "与读者证规则冲突");
+                                this.OnlyOutput2File(item.path + "\t" + item.barcode + "\t" +item.location+ "\t" + "不合法: 这看起来是一个证条码号。");
                                 //this.OutputInfo(item.path + "\t" + item.barcode + "\t" + "与读者证规则冲突", true, false);
                             }
                         }
@@ -1066,6 +1074,12 @@ namespace dp2mini
                             this.OnlyOutput2File(path);
                         }
                     }
+
+                    // 2023/1/9 增加，为了当没有异常时，让输出信息更明确一些。
+                    if (errorCount == 0 && emptyList.Count == 0)
+                    {
+                        this.OutputInfo("未发现异常的册条码。");
+                    }
                 }
                 finally
                 {
@@ -1075,18 +1089,14 @@ namespace dp2mini
             finally
             {
 
+                // 结束时间
+                DateTime end = DateTime.Now;
+                this.OutputInfo(GetInfoAddTime("==结束校验册条码,详见txt文件,用时" + this.GetSeconds(start, end) + "秒==", end));
+
+
                 EnableControls(true);
             }
 
-            // 2023/1/9 增加，为了当没有异常时，让输出信息更明确一些。
-            if (errorCount == 0 && emptyList.Count == 0)
-            {
-                this.OutputInfo("未发现异常的册条码。");
-            }
-
-            // 结束时间
-            DateTime end = DateTime.Now;
-            this.OutputInfo(GetInfoAddTime("==结束校验册条码,详见txt文件,用时" + this.GetSeconds(start, end) + "秒==", end));
         }
 
 
