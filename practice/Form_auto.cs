@@ -24,6 +24,8 @@ using System.Security.Policy;
 using DigitalPlatform.Z3950;
 using System.Xml.Linq;
 using System.Runtime.InteropServices;
+using System.Data.SqlTypes;
+using System.Runtime.Remoting.Channels;
 
 namespace practice
 {
@@ -1746,7 +1748,7 @@ bool isReader = false)
         }
 
         // 得到册记录
-        public string GetItemXml(string location, string bookType, bool hasFile, out string barcode, string parent = "")
+        public string GetItemXml(string location, string bookType, bool hasFile, out string barcode, string parent = "",string price="CNY10.00")
         {
             Random rd = new Random();
             int temp = rd.Next(1, 999999);
@@ -1765,8 +1767,11 @@ bool isReader = false)
                 + "<barcode>" + barcode + "</barcode>"
                 + "<location>" + location + "</location>"
                 + "<bookType>" + bookType + "</bookType>"
+                +"<price>"+price+"</price>"
                 + dprmsfile
-                + "</root>";
+                + "<refID>"+Guid.NewGuid().ToString()+"</refID>"
+                //+ "<volume>1</volume>"  不能直接这样加，volume是与期记录关联的。
+                + "</root>";  
         }
 
         // 供册/订购/评注使用的父亲路径
@@ -8597,5 +8602,162 @@ bool isReader = false)
                 this.EnableCtrls(true);
             }
         }
+
+        private void button_price_Click(object sender, EventArgs e)
+        {
+            this.EnableCtrls(false);
+            try
+            {
+                // 清空输出
+                ClearResult();
+
+                string allPrice = @"CNY150.00
+CNY38.00/2
+CNY45.00*2
+60.00
+A50.00
+Y10.00
+中国10.00
+CNY58.00,60
+CNY10。
+CNY10.
+CNY10()
+CNY68.00元
+CNY
+*39.00
+10*
+CNY10*
+10/
+/10
+CNY10/
+$198.00
+￥68.00
+#49.80
+CNY48.00(套)
+CNY14.00精装
+CNY15.00平装
+CNY16.00每册
+CNY17.00（平装）
+CNY18.00精装
+CNY10.00（平）
+CNY20.00(精)
+CNY21.00(上下册)
+CNY22.00(上下)
+CNY23.00(上下卷)
+CNY24.00(上下编)
+CNY25.00(两册)
+CNY26.00上下
+CNY27.00(上中下册)
+CNY28.00(上中下)
+CNY29.00(5卷)
+CNY30.00(2册)
+CNY31.00(人民币)
+CNY3人1.00
+CNY10a
+CNY10人
+空";
+
+                string strError = "";
+
+                allPrice = allPrice.Replace("\r\n", "\n");
+                string[] list = allPrice.Split('\n');
+
+
+
+                // 用管理员帐号给总馆馆藏地创建建册记录
+
+                RestChannel channel = null;
+                try
+                {
+                    // 用户登录
+                    channel = mainForm.GetChannelAndLogin(this.mainForm.GetSupervisorAccount());
+
+                    //先创建数据库
+                    string strDbName = "测试价格库";
+                    // 删除书目库
+                    displayLine("开始删除测试书目库 ...");
+                    ManageDatabaseResponse r = channel.ManageDatabase(
+                        "delete",
+                        strDbName, 
+                        "",
+                        "");
+                    if (r.ManageDatabaseResult.Value == -1
+                        && r.ManageDatabaseResult.ErrorCode != ErrorCode.NotFound)
+                    {
+                        goto ERROR1;
+                    }
+
+                    int nRet = ManageHelper.CreateBiblioDatabase(
+                        channel,
+                        strDbName,
+                        "book",
+                        "unimarc",
+                        out strError);
+                    if (nRet == -1)
+                        goto ERROR1;
+
+                    // 创建一条书目
+                    string strResPath = strDbName + "/?";
+                    WriteResResponse response1 = this.WriteXml(this.mainForm.GetSupervisorAccount(),
+                        strResPath,
+                         this.GetXml(C_Type_biblio, false));
+                    if (response1.WriteResResult.Value == -1)
+                        goto ERROR1;
+                    string strBiblioPath = response1.strOutputResPath;
+
+
+                    string newItemPath = strDbName + "实体/?";
+
+                    foreach (string price in list)
+                    {
+                        string xml = this.GetItemXml("流通库", "普通", false,
+                            out string itemBarcode, this.GetBiblioParent(strBiblioPath), price);
+
+                        LibraryServerResult response = channel.SetItemInfo("item",
+                            "new",
+                            newItemPath,
+                            xml,
+                            null,
+                            "force",
+                            out string strOutputRecPath,
+                            out byte[] baOutputTimestamp);
+                        if (response.Value == -1)
+                        {
+                            MessageBox.Show(this, "出错:" + response.ErrorInfo);
+                            return;
+                        }
+                    }
+
+                    MessageBox.Show(this, "创建带价格的册记录完成");
+                    return;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(this, "异常：" + ex.Message);
+                    return;
+                }
+                finally
+                {
+                    if (channel != null)
+                        this.mainForm._channelPool.ReturnChannel(channel);
+                }
+
+ERROR1:
+                MessageBox.Show(this, strError);
+                return;
+            }
+            catch (Exception e1)
+            {
+                MessageBox.Show(this, "创建册价格异常:" + e1.Message);
+                return;
+            }
+            finally
+            {
+                this.EnableCtrls(true);
+            }
+        }
+
+
+
     }
 }

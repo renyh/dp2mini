@@ -2933,6 +2933,7 @@ int nAttachmentFragmentLength)
 
             var entity = new EntityInfo();
             entity.Action = strAction;
+            entity.Style= strStyle;
             if (strAction == "delete")
             {
                 entity.OldRecPath = strResPath;

@@ -63,6 +63,7 @@
             this.button_reader_delete = new System.Windows.Forms.Button();
             this.button_importantFields = new System.Windows.Forms.Button();
             this.button_dataFields = new System.Windows.Forms.Button();
+            this.button_price = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // button_accessAndObject
@@ -491,11 +492,25 @@
             this.button_dataFields.UseVisualStyleBackColor = true;
             this.button_dataFields.Click += new System.EventHandler(this.button_dataFields_Click);
             // 
+            // button_price
+            // 
+            this.button_price.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.button_price.Location = new System.Drawing.Point(1335, 148);
+            this.button_price.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.button_price.Name = "button_price";
+            this.button_price.Size = new System.Drawing.Size(156, 52);
+            this.button_price.TabIndex = 96;
+            this.button_price.Tag = "";
+            this.button_price.Text = "创建册价格";
+            this.button_price.UseVisualStyleBackColor = false;
+            this.button_price.Click += new System.EventHandler(this.button_price_Click);
+            // 
             // Form_auto
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(216F, 216F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.ClientSize = new System.Drawing.Size(1528, 830);
+            this.Controls.Add(this.button_price);
             this.Controls.Add(this.button_dataFields);
             this.Controls.Add(this.button_importantFields);
             this.Controls.Add(this.button_reader_delete);
@@ -575,5 +590,6 @@
         private System.Windows.Forms.Button button_reader_delete;
         private System.Windows.Forms.Button button_importantFields;
         private System.Windows.Forms.Button button_dataFields;
+        private System.Windows.Forms.Button button_price;
     }
 }
