@@ -25,6 +25,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "dp2billing.business", "dp2b
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "bookshelf", "bookshelf\bookshelf.csproj", "{F4D90786-F4DD-4F19-9B2D-50EE68B52147}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTestPrice", "UnitTestPrice\UnitTestPrice.csproj", "{96B2F54F-5919-4E44-B866-CC9228BC317C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -75,6 +77,10 @@ Global
 		{F4D90786-F4DD-4F19-9B2D-50EE68B52147}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F4D90786-F4DD-4F19-9B2D-50EE68B52147}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F4D90786-F4DD-4F19-9B2D-50EE68B52147}.Release|Any CPU.Build.0 = Release|Any CPU
+		{96B2F54F-5919-4E44-B866-CC9228BC317C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{96B2F54F-5919-4E44-B866-CC9228BC317C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{96B2F54F-5919-4E44-B866-CC9228BC317C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{96B2F54F-5919-4E44-B866-CC9228BC317C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

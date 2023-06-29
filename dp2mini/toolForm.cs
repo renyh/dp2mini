@@ -24,6 +24,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using DigitalPlatform.Text;
 using ClosedXML.Excel;
+using common;
 
 namespace dp2mini
 {
@@ -1100,104 +1101,6 @@ namespace dp2mini
         }
 
 
-        // return:
-        //      -1  发现错误
-        //      0   没有发现错误
-        void VerifyPrice(XmlDocument itemdom,
-            bool bModify,
-            List<string> errors,
-            ref bool bChanged)
-        {
-            if (itemdom.DocumentElement == null)
-            {
-                errors.Add("XML 记录为空");
-                return;
-            }
-
-            string strPrice = DomUtil.GetElementText(itemdom.DocumentElement, "price");
-            if (string.IsNullOrEmpty(strPrice))
-            {
-                errors.Add("价格字段内容为空");
-                return;
-            }
-            else
-            {
-                List<string> temp = VerifyPrice(strPrice);
-                if (temp.Count > 0)
-                {
-                    errors.AddRange(temp);
-                    /*
-                                        if (bModify)
-                                        {
-                                            // (全10册) 转为除法形态
-                                            string strOldPrice = strPrice;
-                                            ItemClassStatisDialog.CorrectPrice(ref strPrice);
-                                            if (strOldPrice != strPrice)
-                                            {
-                                                if (IsPriceCorrect(strPrice) == true)
-                                                {
-                                                    DomUtil.SetElementText(itemdom.DocumentElement, "price", strPrice);
-                                                    bChanged = true;
-                                                    errors.Add("^价格字符串 '" + strOldPrice + "' 被自动修改为 '" + strPrice + "'"); // ^ 开头表示修改提示，而不是错误信息
-                                                }
-                                                else
-                                                    errors.Add("*** 价格字符串 '" + strOldPrice + "' 无法被自动修改 2");
-                                            }
-                                            else
-                                                errors.Add("*** 价格字符串 '" + strOldPrice + "' 无法被自动修改 1");
-                                        }
-                    */
-                }
-
-                // TODO: 检查常见的货币前缀符号
-            }
-
-        }
-
-        static string VerifyPricePrefix(string prefix)
-        {
-            foreach (var ch in prefix)
-            {
-                if (char.IsLetter(ch) == false)
-                    return $"货币名称 '{prefix}' 中出现了非字母的字符";
-            }
-
-            return null;
-        }
-
-        public static List<string> VerifyPrice(string strPrice)
-        {
-            List<string> errors = new List<string>();
-
-            // 解析单个金额字符串。例如 CNY10.00 或 -CNY100.00/7
-            int nRet = PriceUtil.ParseSinglePrice(strPrice,
-                out CurrencyItem item,
-                out string strError);
-            if (nRet == -1)
-                errors.Add(strError);
-
-            // 2020/7/8
-            // 检查货币字符串中是否出现了字母以外的字符
-            if (string.IsNullOrEmpty(item.Postfix) == false)
-                errors.Add($"金额字符串 '{strPrice}' 中出现了后缀 '{item.Postfix}' ，这很不常见，一般意味着错误");
-
-            string error1 = VerifyPricePrefix(item.Prefix);
-            if (error1 != null)
-                errors.Add(error1);
-
-            string new_value = StringUtil.ToDBC(strPrice);
-            if (new_value.IndexOfAny(new char[] { '(', ')' }) != -1)
-            {
-                errors.Add("价格字符串中不允许出现括号 '" + strPrice + "'");
-            }
-
-            if (new_value.IndexOf(',') != -1)
-            {
-                errors.Add("价格字符串中不允许出现逗号 '" + strPrice + "'");
-            }
-
-            return errors;
-        }
 
 
         // 校验价格
@@ -1242,7 +1145,7 @@ namespace dp2mini
                 }
 
                 // 校验册价格
-                List<string> errros = VerifyPrice(price);
+                List<string> errros = VerifyItem.VerifyPrice(price);
                 if (errros.Count > 0)
                 {
                     string s = string.Join(",", errros);
