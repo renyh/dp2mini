@@ -342,6 +342,8 @@ namespace dp2mini
             // <operator>supervisor</operator><operTime>Wed, 07 Apr 2021 12:26:49 +0800</operTime><clientAddress via=\"net.pipe://localhost/dp2library/xe\">localhost</clientAddress>
             //<version>1.08</version>"
             string xml = logItem.Xml;
+            if (string.IsNullOrEmpty(xml) == true)
+                return 0;
             XmlDocument dom = new XmlDocument();
             dom.LoadXml(xml);
             XmlNode root = dom.DocumentElement;

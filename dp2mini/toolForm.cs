@@ -1776,8 +1776,245 @@ namespace dp2mini
 
         #region 检查索取号
 
-        // 检查索取号
+        // 根据排架，校验索取号
+        // 0 不校验
+        // -1 出错
+        // 1 成功
+        private int VerifyAccessNo(string accessNo, 
+            paijianCfg paijia,
+            out string error)
+        {
+            error = "";
+
+            // 未定义排架不校验
+            if (paijia == null)
+            {
+                error = "未定义排架";
+                return 0;
+            }
+
+            // 未定义类号，不校验
+            if (string.IsNullOrEmpty(paijia.classType) == true)
+            {
+                error = "排架的分类为空";
+                return 0;
+            }
+
+            // 目前只检查中图法的排架，其它不检查
+            if (paijia.classType != "中图法")
+            {
+                error = "不支持的排架分类["+paijia.classType+"]";
+                return 0;
+            }
+
+            // 如果定义排架，但索取号为空，认为不合适。
+            if (string.IsNullOrEmpty(accessNo) == true)
+            {
+                error = "索取号为空";
+                return -1;
+            }
+
+
+            // 取出左右部分
+            string left = accessNo;
+            string right = "";
+
+            int nTemp = accessNo.IndexOf('/');
+            if (nTemp != -1)
+            {
+                left = accessNo.Substring(0, nTemp);
+                right = accessNo.Substring(nTemp + 1);
+            }
+
+            // 检查左侧第一位是否为字母
+            string firstLeft = left.Substring(0, 1);
+            if (StringUtil.Between(firstLeft, "A", "Z") == false)
+            {
+                error = "分类号的第一个字符必须是字母。";
+                return -1;
+            }
+
+            // 检查分类号前后是否有空白
+            string left1 = left.Trim();
+            if (left1 != left)
+            {
+                error = "分类号前后不能有空白。";
+                return -1;
+            }
+
+            // 如果没有区分号，则不再检查右半部分，直接返回通过
+            if (string.IsNullOrEmpty(paijia.qufenhaoType) == true
+                || paijia.qufenhaoType == "<无>")
+            {
+                return 1;
+            }
+
+
+
+            string right1 = right.Trim();
+            if (right1 != right)
+            {
+                error = "区分号前后不能有空白。";
+                return -1;
+            }
+
+            // 种次号的情况
+            if (paijia.qufenhaoType == "种次号")
+            {
+                if (string.IsNullOrEmpty(right) == true)
+                {
+                    error = "种次号为空。";
+                    return -1;
+                }
+
+                try
+                {
+                    double d = Convert.ToDouble(right);
+                    return 1;  //返回通
+                }
+                catch
+                {
+                    // 如果存在这些特殊符号，取特殊符号之前的部分
+                    nTemp = right.IndexOf(":");
+                    if (nTemp == -1)
+                        nTemp = right.IndexOf("：");
+                    if (nTemp == -1)
+                        nTemp = right.IndexOf("=");
+                    if (nTemp == -1)
+                        nTemp = right.IndexOf(";");
+                    if (nTemp == -1)
+                        nTemp = right.IndexOf("；");
+                    if (nTemp > 0)
+                    {
+                        string strFirst = right.Substring(0, nTemp);
+                        try
+                        {
+                            int n = Convert.ToInt32(strFirst);
+                            return 1;
+                        }
+                        catch
+                        {
+                            error = "种次号[" + right + "]不合法。";
+                            return -1;
+                        }
+                    }
+                }//
+
+                error = "种次号[" + right + "]不合法。";
+                return -1;
+
+            }// end种次号
+            else if (paijia.qufenhaoType == "GCAT"
+                || paijia.qufenhaoType == "GCAT,Cutter-Sanborn Three-Figure"
+                || paijia.qufenhaoType == "Cutter-Sanborn Three-Figure,GCAT") // 著者号
+            {
+                string firstRight = right.Substring(0, 1);
+                if (StringUtil.Between(firstRight, "A", "Z") == true
+                    && right.Length == 4)
+                {
+                    return 1;
+                }
+
+                error = "著者号[" + right + "]不合法。";
+                return -1;
+            }// end 著者号
+
+
+            error = "不能识别的区分号[" + paijia.qufenhaoType + "]";
+            return 0;
+        }
+
+
         private bool CheckAccessNo(List<Entity> items, CancellationToken token)
+        {
+
+
+
+            // 目前不校验的数据
+            List<string> noVerifyList = new List<string>();
+
+            // 成功的
+            List<string> okList = new List<string>();
+
+            // 出错的
+            List<string> errorList = new List<string>();
+
+            int index = 0;
+            foreach (Entity item in items)//string line in lines)
+            {
+                // 当外部让停止时，停止循环
+                token.ThrowIfCancellationRequested();
+
+                index++;
+                this.OutputInfo("校验索取号第" + index.ToString(), false, true);
+
+                //if (line == "")
+                //    continue;
+
+                string path = item.path;
+                string accessNo = item.accessNo;
+                if (accessNo == null)
+                    accessNo = "";
+
+                string location = GetPureLocationString(item.location);
+
+
+                // 得到排架体系
+                paijianCfg paijia = this.GetPaiJiaForLoc(location);
+
+                // 根据排架，校验索取号
+                // 0 不校验
+                // -1 出错
+                // 1 成功
+                int nRet = VerifyAccessNo(accessNo, 
+                    paijia, 
+                    out string error);
+
+                // 把输出信息准备好
+                string retLine = path + "\t" + accessNo + "\t" + location + "\t" + error;
+
+                if (nRet == -1)
+                    errorList.Add(retLine);
+                else if (nRet == 0)
+                    noVerifyList.Add(retLine);
+                else if (nRet==1)
+                    okList.Add(retLine);
+            }
+
+
+            StringBuilder result = new StringBuilder();
+            // 不合法的
+            if (errorList.Count > 0)
+            {
+                result.AppendLine("\r\n以下索取号不合法，共" + errorList.Count + "条。");
+                foreach (string li in errorList)
+                {
+                    result.AppendLine(li);
+                }
+            }
+
+            //有斜，但左或右没值
+            if (noVerifyList.Count > 0)
+            {
+                result.AppendLine("\r\n以下索取号未参与校验，共" + noVerifyList.Count + "条。");
+                foreach (string li in noVerifyList)
+                {
+                    result.AppendLine(li);
+                }
+            }
+
+
+            // 整体输出，仅输出到文件
+            this.OnlyOutput2File(result.ToString());
+
+            if (errorList.Count > 0)
+                return false;
+            else
+                return true;
+        }
+
+        // 检查索取号
+        private bool CheckAccessNo_old(List<Entity> items, CancellationToken token)
         {
 
             //空索取号的
@@ -1853,7 +2090,7 @@ namespace dp2mini
                     continue;
                 }
 
-                // 左侧不是字母的
+                // 检查左侧第一位是不是字母
                 string firstLeft = left.Substring(0, 1);
                 if (StringUtil.Between(firstLeft, "A", "Z") == false)
                 {
@@ -3041,6 +3278,84 @@ namespace dp2mini
             }
         }
 
+
+        public List<paijianCfg> _paijias = null;
+        public List<paijianCfg> GetPaiJia()
+        {
+            if (this._paijias == null)
+            {
+                // 调服务器接口
+                string strValue = this.GetSystemParameter("circulation", "callNumber");
+
+                // 已配置了排系体系的馆藏地
+                List<string> paijiaLocs = new List<string>();
+
+                string xml = "<root>" + strValue + "</root>";
+                XmlDocument dom = new XmlDocument();
+                dom.LoadXml(xml);
+
+                this._paijias = new List<paijianCfg>();
+                XmlNodeList list = dom.DocumentElement.SelectNodes("group");
+                foreach (XmlNode node in list)
+                {
+                    paijianCfg paijia = new paijianCfg(node);
+                    this._paijias.Add(paijia);
+                }
+            }
+
+            return this._paijias;
+        }
+
+        // 根据馆藏地得到排架体系
+        public paijianCfg GetPaiJiaForLoc(string location)
+        {
+            foreach (paijianCfg paijia in this.GetPaiJia())
+            {
+                foreach (string loc in paijia.locs)
+                {
+                    if (loc == location) 
+                        return paijia;
+                }
+            }
+
+            return null;
+        }
+
+        public class paijianCfg
+        {
+            /*
+<group name="著者号排架" classType="中图法" qufenhaoType="GCAT" zhongcihaodb="" callNumberStyle="索取类号+区分号">
+<location name="星洲学校/图书馆" />
+<location name="星洲学校/阅览室" />
+<location name="星洲学校/班级书架" /><location name="星洲学校/走廊" /><location name="流通库" /></group><group name="种" classType="中图法" qufenhaoType="种次号" zhongcihaodb="" callNumberStyle=""><location name="第三中学/一年级" /><location name="第三中学/大阅读室" /><location name="第三中学/图书馆" />
+</group>
+ */
+            public paijianCfg(XmlNode node)
+            {
+                this.name = DomUtil.GetAttr(node, "name");
+                this.classType = DomUtil.GetAttr(node, "classType");
+                this.qufenhaoType = DomUtil.GetAttr(node, "qufenhaoType");
+                this.callNumberStyle = DomUtil.GetAttr(node, "callNumberStyle");
+
+                this.locs = new List<string>();
+                XmlNodeList locs = node.SelectNodes("location");
+                foreach (XmlNode loc in locs)
+                {
+                    string locName = DomUtil.GetAttr(loc, "name");
+
+                    this.locs.Add(locName);
+                }
+            }
+
+            public string name;
+            public string classType;
+            public string qufenhaoType;
+            public string callNumberStyle;
+
+
+            public List<string> locs = new List<string>();
+        }
+
         // 检查排架体系
         private void button_paijia_Click(object sender, EventArgs e)
         {
@@ -3055,39 +3370,58 @@ namespace dp2mini
                 DateTime start = DateTime.Now;
                 this.OutputInfo(GetInfoAddTime("==开始检查排架体系==", start));
 
-                // 调服务器接口
-                string strValue = this.GetSystemParameter("circulation", "callNumber");
+                //// 调服务器接口
+                //string strValue = this.GetSystemParameter("circulation", "callNumber");
 
-                // 已配置了排系体系的馆藏地
+                //// 已配置了排系体系的馆藏地
                 List<string> paijiaLocs = new List<string>();
-                /*
-                <group name="著者号排架" classType="中图法" qufenhaoType="GCAT" zhongcihaodb="" callNumberStyle="索取类号+区分号">
-                <location name="星洲学校/图书馆" />
-                <location name="星洲学校/阅览室" />
-                <location name="星洲学校/班级书架" /><location name="星洲学校/走廊" /><location name="流通库" /></group><group name="种" classType="中图法" qufenhaoType="种次号" zhongcihaodb="" callNumberStyle=""><location name="第三中学/一年级" /><location name="第三中学/大阅读室" /><location name="第三中学/图书馆" />
-                </group>
-                 */
-                string xml = "<root>" + strValue + "</root>";
-                XmlDocument dom = new XmlDocument();
-                dom.LoadXml(xml);
-                XmlNodeList list = dom.DocumentElement.SelectNodes("group");
-                foreach (XmlNode node in list)
+                foreach (paijianCfg paijia in this.GetPaiJia())
                 {
-                    string name = DomUtil.GetAttr(node, "name");
-                    string classType = DomUtil.GetAttr(node, "classType");
-                    string qufenhaoType = DomUtil.GetAttr(node, "qufenhaoType");
-
-                    this.OutputInfo("\r\n排架体系:" + qufenhaoType + "  类号=" + classType + "  区分号=" + qufenhaoType,
+                    this.OutputInfo("\r\n排架体系:" + paijia.name
+                        + "  类号=" + paijia.classType
+                        + "  区分号=" + paijia.qufenhaoType
+                        + " callNumberStyle=" + paijia.callNumberStyle,
                         true, false);
 
-                    XmlNodeList locs = node.SelectNodes("location");
-                    foreach (XmlNode loc in locs)
+                    foreach (string loc in paijia.locs)
                     {
-                        string locName = DomUtil.GetAttr(loc, "name");
-                        this.OutputInfo(locName, true, false);
-                        paijiaLocs.Add(locName);
+                        this.OutputInfo(loc, true, false);
+                        paijiaLocs.Add(loc);
                     }
                 }
+
+                ///*
+                //<group name="著者号排架" classType="中图法" qufenhaoType="GCAT" zhongcihaodb="" callNumberStyle="索取类号+区分号">
+                //<location name="星洲学校/图书馆" />
+                //<location name="星洲学校/阅览室" />
+                //<location name="星洲学校/班级书架" /><location name="星洲学校/走廊" /><location name="流通库" /></group><group name="种" classType="中图法" qufenhaoType="种次号" zhongcihaodb="" callNumberStyle=""><location name="第三中学/一年级" /><location name="第三中学/大阅读室" /><location name="第三中学/图书馆" />
+                //</group>
+                // */
+                //string xml = "<root>" + strValue + "</root>";
+                //XmlDocument dom = new XmlDocument();
+                //dom.LoadXml(xml);
+
+                //XmlNodeList list = this.GetPaiJiaDom().DocumentElement.SelectNodes("group");
+                //foreach (XmlNode node in list)
+                //{
+
+                //    paijianCfg paijia = new paijianCfg(node);
+
+                //    this.OutputInfo("\r\n排架体系:" + paijia.name 
+                //        + "  类号=" + paijia.classType 
+                //        + "  区分号=" + paijia.qufenhaoType 
+                //        + " callNumberStyle="+ paijia.callNumberStyle,
+                //        true, false);
+
+                //    XmlNodeList locs = node.SelectNodes("location");
+                //    foreach (XmlNode loc in locs)
+                //    {
+                //        string locName = DomUtil.GetAttr(loc, "name");
+
+                //        this.OutputInfo(locName, true, false);
+                //        paijiaLocs.Add(locName);
+                //    }
+                //}
 
 
                 // 把配置的馆藏地列出来，看看哪些没有定义排架

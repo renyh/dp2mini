@@ -11,6 +11,11 @@ namespace UnitTestPrice
     public class UnitTest1
     {
 
+        /*
+         * 
+         * 
+         * 
+         */
 
 
 
@@ -76,6 +81,7 @@ CNY10+20	N	N
 CNY10-5	N	N	
 CNY+10	N	N	
 CNY-5	N	N	
+CNY10+CNY20	N	N	
 ";
             CheckPrices(prices);
         }
@@ -114,6 +120,7 @@ CNY10(2	N	Y	CNY10
 CNY)3	N	N	
 CNY10（）1	N	Y	CNY101
 11()1	N	Y	111
+11(中)2	N	N	
 10;1	N	N	
 ";
             CheckPrices(prices);
@@ -129,6 +136,7 @@ CNY3人1.00	N	N
 CNY10a	N	N	
 CNY10人	N	N	
 CNY48.00(套)	N	N	
+CNY48.00(中国)	N	N	
 CNY31.00(人民币)	N	Y	人民币31.00
 USD20.00(人民币)	N	N	
 USD20.00(美元）	N	N	
