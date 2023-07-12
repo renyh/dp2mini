@@ -1863,7 +1863,7 @@ namespace dp2mini
             {
                 if (string.IsNullOrEmpty(right) == true)
                 {
-                    error = "种次号为空。";
+                    error = "区分号部分为空(种次号)。";
                     return -1;
                 }
 
@@ -1908,6 +1908,12 @@ namespace dp2mini
                 || paijia.qufenhaoType == "GCAT,Cutter-Sanborn Three-Figure"
                 || paijia.qufenhaoType == "Cutter-Sanborn Three-Figure,GCAT") // 著者号
             {
+                if (string.IsNullOrEmpty(right) == true)
+                {
+                    error = "区分号部分为空(著者号)。";
+                    return -1;
+                }
+
                 string firstRight = right.Substring(0, 1);
                 if (StringUtil.Between(firstRight, "A", "Z") == true
                     && right.Length == 4)
