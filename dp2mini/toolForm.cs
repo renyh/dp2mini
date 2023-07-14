@@ -1858,6 +1858,13 @@ namespace dp2mini
                 return -1;
             }
 
+            // 如果有第三部分，把第三部分截出来
+            int x=right.IndexOf("/");
+            if (x >= 0)
+            { 
+                right = right.Substring(0, x);
+            }
+
             // 种次号的情况
             if (paijia.qufenhaoType == "种次号")
             {
