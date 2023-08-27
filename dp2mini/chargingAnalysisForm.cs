@@ -13,6 +13,12 @@ using DigitalPlatform.CirculationClient;
 using xml2html;
 using System.Deployment.Application;
 using Ionic.Zip;
+using DocumentFormat.OpenXml.InkML;
+using ClosedXML.Excel;
+using DigitalPlatform.dp2.Statis;
+using DocumentFormat.OpenXml.Drawing.Charts;
+using DocumentFormat.OpenXml.Spreadsheet;
+using System.Security.Policy;
 
 namespace dp2mini
 {
@@ -655,6 +661,190 @@ namespace dp2mini
         }
 
         #endregion
+
+        private void button_toExcel_Click(object sender, EventArgs e)
+        {
+            string strDir = this.textBox_outputDir.Text.Trim();
+            if (string.IsNullOrEmpty(strDir))
+            {
+                MessageBox.Show(this, "请选择报表所在的目录");
+                return;
+            }
+
+            //if (this.listView_files.SelectedItems.Count ==0) {
+            //    MessageBox.Show(this, "请选择要合并导出的行");
+            //    return;
+            //}
+
+
+            DirectoryInfo dir= new DirectoryInfo(strDir);
+
+            string excelFile = dir + "\\total.xlsx";
+
+
+            // 创建excel对象
+            XLWorkbook doc = null;
+            try
+            {
+                doc = new XLWorkbook();// XLEventTracking.Disabled);
+                // 如果原来文件存在，则先删除
+                File.Delete(excelFile);
+            }
+            catch (Exception ex)
+            {
+                string error= ExceptionUtil.GetAutoText(ex);
+                MessageBox.Show(this, "导出excel出错"+ error);
+                return;
+            }
+
+
+            //创建一个sheet
+            IXLWorksheet sheet = null;
+            sheet = doc.Worksheets.Add("借阅汇总");//"表格");
+            // 设置第一行的列头信息
+
+                 sheet.Cell(1, 1).SetValue("借阅者编号");
+             sheet.Cell(1, 2).SetValue("借阅者姓名");
+             sheet.Cell(1, 3).SetValue("读者类型");
+            sheet.Cell(1, 4).SetValue("借阅人员类别码");
+            sheet.Cell(1, 5).SetValue("班级");
+
+            sheet.Cell(1, 6).SetValue("图书编号");
+            sheet.Cell(1, 7).SetValue("借阅日期");
+            sheet.Cell(1,8).SetValue("借期");
+            sheet.Cell(1, 9).SetValue("预计归还日期");
+            sheet.Cell(1,10).SetValue("实际归还日期");
+
+            int nRowIndex = 2;
+
+
+
+
+            // 找到所有的xml文件
+            FileInfo[] files = dir.GetFiles("*.xml");
+            MessageBox.Show("找到" + files.Length + "个xml文件");
+            foreach (FileInfo file in files)
+            // foreach(ListViewItem item in this.listView_files.SelectedItems)
+            {
+
+                //string fileName = strDir+"\\"+item.Text + ".xml";
+
+                string fileName = file.FullName;
+
+                XmlDocument dom = new XmlDocument();
+                dom.Load(fileName);
+                XmlNode root = dom.DocumentElement;
+
+                /*
+  <borrows count="1">
+    <borrowItem itemBarcode="B002" title="杜诗详注 [专著] / (唐)杜甫撰 ; (清)仇兆鳌注" borrowTime="2023-08-27 17:22:16" returnTime="" period="31day" accessNo="I222.742/D818" location="流通库" action="" />
+  </borrows>
+  <borrowHistory count="2">
+    <borrowItem itemBarcode="B003" title="杜诗详注 [专著] / (唐)杜甫撰 ; (清)仇兆鳌注" borrowTime="2023-08-27 16:22:19" returnTime="2023-08-27 16:22:26" period="31day" accessNo="I222.742/D818" location="流通库" action="return" />
+    <borrowItem itemBarcode="B002" title="杜诗详注 [专著] / (唐)杜甫撰 ; (清)仇兆鳌注" borrowTime="2023-08-27 16:22:17" returnTime="2023-08-27 16:22:25" period="31day" accessNo="I222.742/D818" location="流通库" action="return" />
+  </borrowHistory>
+                 */
+
+                XmlNodeList list = root.SelectNodes("//borrowItem");
+                if (list == null || list.Count == 0)
+                    continue;
+
+                // 先把读者基本信息取出来
+                /*
+    <barcode>P101</barcode>
+    <readerType>本科生</readerType>
+    <name>姓名101</name>
+    <gender>男</gender>
+    <department>2022级1班</department>
+                 */
+
+                string patronBarcode = DomUtil.GetElementText(root, "patron/barcode");
+                string readerType = DomUtil.GetElementText(root, "patron/readerType");
+
+                string readerTypeCode = "2";
+                if (readerType != "学生")
+                    readerTypeCode = "1";
+                string name = DomUtil.GetElementText(root, "patron/name");
+                string gender = DomUtil.GetElementText(root, "patron/gender");
+                string department = DomUtil.GetElementText(root, "patron/department");
+
+                foreach (XmlNode node in list)
+                {
+                    string itemBarcode = DomUtil.GetAttr(node, "itemBarcode");
+                    //borrowTime
+                    string borrowTime = DomUtil.GetAttr(node, "borrowTime");
+
+
+                    //period
+                    string period = DomUtil.GetAttr(node, "period");
+
+                    // 根据借期算出应还日期
+                    string strday = period;
+                    string endDate = "";
+                    int nIndex = period.IndexOf("day");
+                    if (nIndex != -1)
+                    {
+                        strday = period.Substring(0, nIndex);
+                    }
+                    int day = 0;
+                    try
+                    {
+                        day = Convert.ToInt32(strday);
+                    }
+                    catch (Exception ex) { }
+
+                    DateTime startDate = DateTime.Parse(borrowTime);
+                    endDate = startDate.AddDays(day).ToString("yyyy-MM-dd HH:mm:ss");
+
+
+                    //returnTime
+                    string returnTime = DomUtil.GetAttr(node, "returnTime");
+
+
+                    sheet.Cell(nRowIndex, 1).SetValue(patronBarcode);
+                    sheet.Cell(nRowIndex, 2).SetValue(name);
+                    sheet.Cell(nRowIndex, 3).SetValue(readerType);
+                    sheet.Cell(nRowIndex, 4).SetValue(readerTypeCode);
+                    sheet.Cell(nRowIndex, 5).SetValue(department);
+
+                    sheet.Cell(nRowIndex, 6).SetValue(itemBarcode);
+                    sheet.Cell(nRowIndex, 7).SetValue(borrowTime);
+                    sheet.Cell(nRowIndex, 8).SetValue(period);
+                    sheet.Cell(nRowIndex, 9).SetValue(endDate);
+                    sheet.Cell(nRowIndex, 10).SetValue(returnTime);
+
+                    nRowIndex++;
+
+                }
+
+            }
+
+
+            // 保存excel文件
+            doc.SaveAs(excelFile);
+            doc.Dispose();
+
+            // 自动打开excel文件
+            try
+            {
+                System.Diagnostics.Process.Start(excelFile);
+            }
+            catch
+            {
+
+            }
+        }
+
+        private void 复制证条码号ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string text = "";
+            foreach (ListViewItem item in this.listView_files.SelectedItems)
+            {
+                text += item.Text + "\r\n";
+            }
+
+            Clipboard.SetDataObject(text);//复制内容到粘贴板
+        }
     }
 
 

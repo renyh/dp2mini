@@ -139,7 +139,7 @@ namespace DigitalPlatform.ChargingAnalysis
             // this.BorrowDay = day.ToString("yyyy/MM/dd");//
             // this.BorrowTime = day.ToString("yyyy-MM-dd HH:mm:ss"); //转换成统计的格式，方便排序
 
-            string strPeriod = DomUtil.GetAttr(borrowNode, "borrowPeriod");
+            this.BorrowPeriod = DomUtil.GetAttr(borrowNode, "borrowPeriod");
 
             // 从还书记录中获取信息
             //this.ReturnTime = this.chargingItem.OperTime;
@@ -238,6 +238,8 @@ namespace DigitalPlatform.ChargingAnalysis
                 //+ " returnDate='" + returnDate + "' "
                 //+ " returnMonth='" + returnMonth + "' "
                 //+ " returnYear='" + returnYear + "' "
+
+                + " period='" + BorrowPeriod+"' "
 
                 + " accessNo='" + HttpUtility.HtmlEncode(AccessNo) + "' "
                 //+ " bigClass='" + BigClass + "' "
