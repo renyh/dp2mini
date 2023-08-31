@@ -723,6 +723,8 @@ namespace dp2mini
             // 找到所有的xml文件
             FileInfo[] files = dir.GetFiles("*.xml");
             MessageBox.Show("找到" + files.Length + "个xml文件");
+
+
             foreach (FileInfo file in files)
             // foreach(ListViewItem item in this.listView_files.SelectedItems)
             {
