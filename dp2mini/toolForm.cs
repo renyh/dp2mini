@@ -1583,7 +1583,7 @@ namespace dp2mini
         {
             get
             {
-                return this.Dir + "/" + this._mainForm.LibraryName + "-巡检结果.xlsx";
+                return this.Dir + "\\" + this._mainForm.LibraryName + "-巡检结果.xlsx";
                 //return this.Dir + "/巡检结果.xlsx"; 
             }
         }
@@ -1612,8 +1612,8 @@ namespace dp2mini
             range = ws.Range(1, 1, rowCount, colCount);
             range.Style.Font.SetFontName("微软雅黑");
             range.Style.Font.SetFontSize(8);
-            ws.Columns().AdjustToContents();  // Adjust column width
-            ws.Rows().AdjustToContents();     // Adjust row heights
+            //ws.Columns().AdjustToContents();  // Adjust column width
+            //ws.Rows().AdjustToContents();     // Adjust row heights
             range.Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
             range.Style.Border.InsideBorder = XLBorderStyleValues.Thin;
         }
