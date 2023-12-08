@@ -1827,7 +1827,9 @@ namespace dp2mini
             }
 
             // 检查左侧第一位是否为字母
-            string firstLeft = left.Substring(0, 1);
+            string firstLeft = "";
+            if(left.Length>0)
+                firstLeft=left.Substring(0, 1);
             if (StringUtil.Between(firstLeft, "A", "Z") == false)
             {
                 error = "分类号的第一个字符必须是字母。";
@@ -1979,9 +1981,19 @@ namespace dp2mini
                 // 0 不校验
                 // -1 出错
                 // 1 成功
-                int nRet = VerifyAccessNo(accessNo, 
-                    paijia, 
-                    out string error);
+                int nRet = 0;
+                string error = "";
+                try
+                {
+                    nRet = VerifyAccessNo(accessNo,
+                        paijia,
+                        out error);
+                }
+                catch (Exception ex)
+                {
+                    nRet = -1;
+                    error = ex.Message;
+                }
 
                 // 把输出信息准备好
                 string retLine = path + "\t" + accessNo + "\t" + location + "\t" + error;
