@@ -22,6 +22,8 @@ using ClosedXML.Excel;
 using static System.Windows.Forms.ListView;
 using DigitalPlatform.dp2.Statis;
 using System.Linq;
+using DocumentFormat.OpenXml.InkML;
+using DigitalPlatform.Text;
 
 namespace dp2mini
 {
@@ -53,6 +55,9 @@ namespace dp2mini
             this._mainForm = this.MdiParent as MainForm;
         }
 
+
+        string _libraryCode = "";
+
         /// <summary>
         /// 检索预约到书记录
         /// </summary>
@@ -63,6 +68,8 @@ namespace dp2mini
             //时间范围
             string startDate = this.dateTimePicker_start.Value.ToString("yyyyMMdd");
             string endDate = this.dateTimePicker_end.Value.ToString("yyyyMMdd");
+
+            this._libraryCode = this.textBox_librarycode.Text.Trim();
 
 
             // 每次开头都重新 new 一个。这样避免受到上次遗留的 _cancel 对象的状态影响
@@ -238,6 +245,7 @@ namespace dp2mini
                     readerName = key.readerName,
                     dept = key.dept,
                     Items = new List<BorrowLogItem>(item_list)
+                    
                 }).OrderByDescending(o=>o.Items.Count).OrderBy(o => o.location).ToList();
 
 
@@ -246,10 +254,21 @@ namespace dp2mini
                 ListViewItem viewItem = new ListViewItem(group.location, 0);
                 this.listView_borrowStatis.Items.Add(viewItem);
 
+                string temp = "";
+                List<string> pList = new List<string>();
+                foreach (BorrowLogItem item in group.Items)
+                {
+                    //temp += item.price + ";";
+                    pList.Add(item.price);
+                }
+                string price=PriceUtil.TotalPrice(pList);
+
                 viewItem.SubItems.Add(group.readerBarcode);
                 viewItem.SubItems.Add(group.readerName);
                 viewItem.SubItems.Add(group.dept);
                 viewItem.SubItems.Add(group.Items.Count.ToString());
+
+                viewItem.SubItems.Add(price);
             }
 
             //if (this._borrowItems.Count > 0)
@@ -351,6 +370,11 @@ namespace dp2mini
             // 取出馆代码
             string libraryCode = DomUtil.GetElementInnerText(root, "libraryCode");
 
+            // 如果输入了馆代码，则进行过滤
+            if (string.IsNullOrEmpty(this._libraryCode) == false &&   libraryCode.IndexOf(this._libraryCode) ==-1)
+                return 0;
+
+
             // 操作类型 operation/action
             string operation = DomUtil.GetElementText(root, "operation");
             string action = DomUtil.GetElementText(root, "action");
@@ -413,6 +437,7 @@ namespace dp2mini
                     viewItem.SubItems.Add("");
                     viewItem.SubItems.Add("");
                     viewItem.SubItems.Add("");
+                    viewItem.SubItems.Add("");
                 }
                 else
                 {
@@ -425,6 +450,10 @@ namespace dp2mini
                     viewItem.SubItems.Add(borrowLog.readerName);
                     viewItem.SubItems.Add(borrowLog.dept);
                     viewItem.SubItems.Add(borrowLog.itemBarcode);
+
+                    viewItem.SubItems.Add(borrowLog.price);
+
+                    //borrowLog.pri
 
                     // 根据类型判断，加到对应的内存集中
                     if (operation == "borrow")
@@ -828,6 +857,11 @@ namespace dp2mini
                // string strPublishTime = DomUtil.GetElementInnerText(item_dom.DocumentElement, "publishTime");
                 borrowLog.location = DomUtil.GetElementInnerText(item_dom.DocumentElement, "location");
                 //string strShelfNo = DomUtil.GetElementInnerText(item_dom.DocumentElement, "shelftNo");
+
+                //2024/1/3 取出price
+                borrowLog.price = DomUtil.GetElementInnerText(item_dom.DocumentElement, "price");
+
+
             }
 
 
@@ -1023,6 +1057,9 @@ namespace dp2mini
 
         // 馆藏地
         public string location { get; set; }
+
+        // 2024/1/3 取出价格
+        public string price { get; set; }
 
 
     }

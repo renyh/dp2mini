@@ -142,6 +142,12 @@
             this.columnHeader59 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader60 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader61 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.label4 = new System.Windows.Forms.Label();
+            this.textBox_librarycode = new System.Windows.Forms.TextBox();
+            this.columnHeader_price = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader5_price = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader57 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader62 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -159,10 +165,10 @@
             // button_search
             // 
             this.button_search.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button_search.Location = new System.Drawing.Point(541, 6);
-            this.button_search.Margin = new System.Windows.Forms.Padding(4);
+            this.button_search.Location = new System.Drawing.Point(842, 9);
+            this.button_search.Margin = new System.Windows.Forms.Padding(6);
             this.button_search.Name = "button_search";
-            this.button_search.Size = new System.Drawing.Size(83, 34);
+            this.button_search.Size = new System.Drawing.Size(129, 51);
             this.button_search.TabIndex = 2;
             this.button_search.Text = "查询";
             this.button_search.UseVisualStyleBackColor = true;
@@ -172,20 +178,20 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label1.Location = new System.Drawing.Point(11, 13);
-            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label1.Location = new System.Drawing.Point(17, 20);
+            this.label1.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(115, 21);
+            this.label1.Size = new System.Drawing.Size(175, 33);
             this.label1.TabIndex = 0;
             this.label1.Text = "日期范围：";
             // 
             // button_stop
             // 
             this.button_stop.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button_stop.Location = new System.Drawing.Point(628, 6);
-            this.button_stop.Margin = new System.Windows.Forms.Padding(4);
+            this.button_stop.Location = new System.Drawing.Point(977, 9);
+            this.button_stop.Margin = new System.Windows.Forms.Padding(6);
             this.button_stop.Name = "button_stop";
-            this.button_stop.Size = new System.Drawing.Size(73, 34);
+            this.button_stop.Size = new System.Drawing.Size(114, 51);
             this.button_stop.TabIndex = 3;
             this.button_stop.Text = "停止";
             this.button_stop.UseVisualStyleBackColor = true;
@@ -193,28 +199,28 @@
             // 
             // dateTimePicker_start
             // 
-            this.dateTimePicker_start.Location = new System.Drawing.Point(143, 9);
-            this.dateTimePicker_start.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            this.dateTimePicker_start.Location = new System.Drawing.Point(222, 14);
+            this.dateTimePicker_start.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.dateTimePicker_start.Name = "dateTimePicker_start";
-            this.dateTimePicker_start.Size = new System.Drawing.Size(178, 28);
+            this.dateTimePicker_start.Size = new System.Drawing.Size(275, 38);
             this.dateTimePicker_start.TabIndex = 4;
             // 
             // dateTimePicker_end
             // 
-            this.dateTimePicker_end.Location = new System.Drawing.Point(360, 9);
-            this.dateTimePicker_end.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            this.dateTimePicker_end.Location = new System.Drawing.Point(560, 14);
+            this.dateTimePicker_end.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.dateTimePicker_end.Name = "dateTimePicker_end";
-            this.dateTimePicker_end.Size = new System.Drawing.Size(175, 28);
+            this.dateTimePicker_end.Size = new System.Drawing.Size(270, 38);
             this.dateTimePicker_end.TabIndex = 6;
             // 
             // label2
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label2.Location = new System.Drawing.Point(327, 13);
-            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label2.Location = new System.Drawing.Point(509, 20);
+            this.label2.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(31, 21);
+            this.label2.Size = new System.Drawing.Size(47, 33);
             this.label2.TabIndex = 7;
             this.label2.Text = "至";
             // 
@@ -222,10 +228,10 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label3.Location = new System.Drawing.Point(106, 13);
-            this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label3.Location = new System.Drawing.Point(165, 20);
+            this.label3.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(31, 21);
+            this.label3.Size = new System.Drawing.Size(47, 33);
             this.label3.TabIndex = 8;
             this.label3.Text = "从";
             // 
@@ -243,9 +249,9 @@
             this.listView_results.GridLines = true;
             this.listView_results.HideSelection = false;
             this.listView_results.Location = new System.Drawing.Point(0, 0);
-            this.listView_results.Margin = new System.Windows.Forms.Padding(4);
+            this.listView_results.Margin = new System.Windows.Forms.Padding(6);
             this.listView_results.Name = "listView_results";
-            this.listView_results.Size = new System.Drawing.Size(782, 397);
+            this.listView_results.Size = new System.Drawing.Size(1216, 596);
             this.listView_results.TabIndex = 12;
             this.listView_results.UseCompatibleStateImageBehavior = false;
             this.listView_results.View = System.Windows.Forms.View.Details;
@@ -295,10 +301,10 @@
             "最近 31 天",
             "最近 365 天",
             "最近 10 年"});
-            this.comboBox_quickSetFilenames.Location = new System.Drawing.Point(200, 46);
-            this.comboBox_quickSetFilenames.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
+            this.comboBox_quickSetFilenames.Location = new System.Drawing.Point(311, 69);
+            this.comboBox_quickSetFilenames.Margin = new System.Windows.Forms.Padding(8, 6, 8, 6);
             this.comboBox_quickSetFilenames.Name = "comboBox_quickSetFilenames";
-            this.comboBox_quickSetFilenames.Size = new System.Drawing.Size(122, 29);
+            this.comboBox_quickSetFilenames.Size = new System.Drawing.Size(188, 41);
             this.comboBox_quickSetFilenames.TabIndex = 14;
             this.comboBox_quickSetFilenames.SelectedIndexChanged += new System.EventHandler(this.comboBox_quickSetFilenames_SelectedIndexChanged);
             // 
@@ -306,10 +312,10 @@
             // 
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label6.Location = new System.Drawing.Point(14, 50);
-            this.label6.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label6.Location = new System.Drawing.Point(22, 75);
+            this.label6.Margin = new System.Windows.Forms.Padding(8, 0, 8, 0);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(189, 21);
+            this.label6.Size = new System.Drawing.Size(287, 33);
             this.label6.TabIndex = 13;
             this.label6.Text = "快速设定时间范围:";
             // 
@@ -541,10 +547,10 @@
             // button_toExcel
             // 
             this.button_toExcel.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button_toExcel.Location = new System.Drawing.Point(709, 6);
-            this.button_toExcel.Margin = new System.Windows.Forms.Padding(4);
+            this.button_toExcel.Location = new System.Drawing.Point(1103, 9);
+            this.button_toExcel.Margin = new System.Windows.Forms.Padding(6);
             this.button_toExcel.Name = "button_toExcel";
-            this.button_toExcel.Size = new System.Drawing.Size(160, 34);
+            this.button_toExcel.Size = new System.Drawing.Size(249, 51);
             this.button_toExcel.TabIndex = 15;
             this.button_toExcel.Text = "导出Excel";
             this.button_toExcel.UseVisualStyleBackColor = true;
@@ -555,7 +561,8 @@
             this.splitContainer1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.splitContainer1.Location = new System.Drawing.Point(6, 6);
+            this.splitContainer1.Location = new System.Drawing.Point(9, 9);
+            this.splitContainer1.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.splitContainer1.Name = "splitContainer1";
             // 
             // splitContainer1.Panel1
@@ -565,8 +572,9 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.textBox_xml);
-            this.splitContainer1.Size = new System.Drawing.Size(1178, 397);
-            this.splitContainer1.SplitterDistance = 782;
+            this.splitContainer1.Size = new System.Drawing.Size(1832, 596);
+            this.splitContainer1.SplitterDistance = 1216;
+            this.splitContainer1.SplitterWidth = 6;
             this.splitContainer1.TabIndex = 16;
             // 
             // textBox_xml
@@ -574,12 +582,13 @@
             this.textBox_xml.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox_xml.Location = new System.Drawing.Point(3, 5);
+            this.textBox_xml.Location = new System.Drawing.Point(5, 8);
+            this.textBox_xml.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.textBox_xml.Multiline = true;
             this.textBox_xml.Name = "textBox_xml";
             this.textBox_xml.ReadOnly = true;
             this.textBox_xml.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.textBox_xml.Size = new System.Drawing.Size(386, 388);
+            this.textBox_xml.Size = new System.Drawing.Size(596, 580);
             this.textBox_xml.TabIndex = 0;
             // 
             // tabControl_table
@@ -594,20 +603,22 @@
             this.tabControl_table.Controls.Add(this.tabPage_return);
             this.tabControl_table.Controls.Add(this.tabPage_returnStatis);
             this.tabControl_table.Controls.Add(this.tabPage_borrowAndReturn);
-            this.tabControl_table.Location = new System.Drawing.Point(18, 87);
+            this.tabControl_table.Location = new System.Drawing.Point(28, 130);
+            this.tabControl_table.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.tabControl_table.Name = "tabControl_table";
             this.tabControl_table.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.tabControl_table.SelectedIndex = 0;
-            this.tabControl_table.Size = new System.Drawing.Size(1198, 441);
+            this.tabControl_table.Size = new System.Drawing.Size(1864, 662);
             this.tabControl_table.TabIndex = 17;
             // 
             // tabPage_all
             // 
             this.tabPage_all.Controls.Add(this.splitContainer1);
-            this.tabPage_all.Location = new System.Drawing.Point(4, 4);
+            this.tabPage_all.Location = new System.Drawing.Point(10, 10);
+            this.tabPage_all.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.tabPage_all.Name = "tabPage_all";
-            this.tabPage_all.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage_all.Size = new System.Drawing.Size(1190, 409);
+            this.tabPage_all.Padding = new System.Windows.Forms.Padding(5, 4, 5, 4);
+            this.tabPage_all.Size = new System.Drawing.Size(1844, 606);
             this.tabPage_all.TabIndex = 0;
             this.tabPage_all.Text = "日志总表";
             this.tabPage_all.UseVisualStyleBackColor = true;
@@ -615,10 +626,11 @@
             // tabPage_borrow
             // 
             this.tabPage_borrow.Controls.Add(this.listView_log_borrow);
-            this.tabPage_borrow.Location = new System.Drawing.Point(4, 4);
+            this.tabPage_borrow.Location = new System.Drawing.Point(10, 10);
+            this.tabPage_borrow.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.tabPage_borrow.Name = "tabPage_borrow";
-            this.tabPage_borrow.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage_borrow.Size = new System.Drawing.Size(1190, 409);
+            this.tabPage_borrow.Padding = new System.Windows.Forms.Padding(5, 4, 5, 4);
+            this.tabPage_borrow.Size = new System.Drawing.Size(1844, 606);
             this.tabPage_borrow.TabIndex = 1;
             this.tabPage_borrow.Text = "借书日志";
             this.tabPage_borrow.UseVisualStyleBackColor = true;
@@ -637,15 +649,16 @@
             this.columnHeader_borrow_name,
             this.columnHeader_borrow_dept,
             this.columnHeader_borrow_barcode,
+            this.columnHeader_price,
             this.columnHeader_borrow_opretor,
             this.columnHeader_borrow_opretime});
             this.listView_log_borrow.FullRowSelect = true;
             this.listView_log_borrow.GridLines = true;
             this.listView_log_borrow.HideSelection = false;
-            this.listView_log_borrow.Location = new System.Drawing.Point(7, 10);
-            this.listView_log_borrow.Margin = new System.Windows.Forms.Padding(4);
+            this.listView_log_borrow.Location = new System.Drawing.Point(11, 15);
+            this.listView_log_borrow.Margin = new System.Windows.Forms.Padding(6);
             this.listView_log_borrow.Name = "listView_log_borrow";
-            this.listView_log_borrow.Size = new System.Drawing.Size(1176, 389);
+            this.listView_log_borrow.Size = new System.Drawing.Size(1827, 582);
             this.listView_log_borrow.TabIndex = 13;
             this.listView_log_borrow.UseCompatibleStateImageBehavior = false;
             this.listView_log_borrow.View = System.Windows.Forms.View.Details;
@@ -703,9 +716,10 @@
             // tabPage_borrowStatis
             // 
             this.tabPage_borrowStatis.Controls.Add(this.listView_borrowStatis);
-            this.tabPage_borrowStatis.Location = new System.Drawing.Point(4, 4);
+            this.tabPage_borrowStatis.Location = new System.Drawing.Point(10, 10);
+            this.tabPage_borrowStatis.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.tabPage_borrowStatis.Name = "tabPage_borrowStatis";
-            this.tabPage_borrowStatis.Size = new System.Drawing.Size(1190, 409);
+            this.tabPage_borrowStatis.Size = new System.Drawing.Size(1844, 606);
             this.tabPage_borrowStatis.TabIndex = 2;
             this.tabPage_borrowStatis.Text = "借书统计";
             this.tabPage_borrowStatis.UseVisualStyleBackColor = true;
@@ -720,15 +734,16 @@
             this.columnHeader38,
             this.columnHeader46,
             this.columnHeader54,
-            this.columnHeader47});
+            this.columnHeader47,
+            this.columnHeader57});
             this.listView_borrowStatis.ContextMenuStrip = this.contextMenuStrip_statis;
             this.listView_borrowStatis.FullRowSelect = true;
             this.listView_borrowStatis.GridLines = true;
             this.listView_borrowStatis.HideSelection = false;
-            this.listView_borrowStatis.Location = new System.Drawing.Point(4, 4);
-            this.listView_borrowStatis.Margin = new System.Windows.Forms.Padding(4);
+            this.listView_borrowStatis.Location = new System.Drawing.Point(6, 6);
+            this.listView_borrowStatis.Margin = new System.Windows.Forms.Padding(6);
             this.listView_borrowStatis.Name = "listView_borrowStatis";
-            this.listView_borrowStatis.Size = new System.Drawing.Size(1182, 401);
+            this.listView_borrowStatis.Size = new System.Drawing.Size(1836, 600);
             this.listView_borrowStatis.TabIndex = 14;
             this.listView_borrowStatis.UseCompatibleStateImageBehavior = false;
             this.listView_borrowStatis.View = System.Windows.Forms.View.Details;
@@ -766,28 +781,29 @@
             this.全选ToolStripMenuItem,
             this.ToolStripMenuItem_huizong});
             this.contextMenuStrip_statis.Name = "contextMenuStrip_statis";
-            this.contextMenuStrip_statis.Size = new System.Drawing.Size(171, 64);
+            this.contextMenuStrip_statis.Size = new System.Drawing.Size(226, 88);
             // 
             // 全选ToolStripMenuItem
             // 
             this.全选ToolStripMenuItem.Name = "全选ToolStripMenuItem";
-            this.全选ToolStripMenuItem.Size = new System.Drawing.Size(170, 30);
+            this.全选ToolStripMenuItem.Size = new System.Drawing.Size(225, 42);
             this.全选ToolStripMenuItem.Text = "全选";
             this.全选ToolStripMenuItem.Click += new System.EventHandler(this.全选ToolStripMenuItem_Click);
             // 
             // ToolStripMenuItem_huizong
             // 
             this.ToolStripMenuItem_huizong.Name = "ToolStripMenuItem_huizong";
-            this.ToolStripMenuItem_huizong.Size = new System.Drawing.Size(170, 30);
+            this.ToolStripMenuItem_huizong.Size = new System.Drawing.Size(225, 42);
             this.ToolStripMenuItem_huizong.Text = "汇总选中项";
             this.ToolStripMenuItem_huizong.Click += new System.EventHandler(this.ToolStripMenuItem_huizong_Click);
             // 
             // tabPage_return
             // 
             this.tabPage_return.Controls.Add(this.listView_return);
-            this.tabPage_return.Location = new System.Drawing.Point(4, 4);
+            this.tabPage_return.Location = new System.Drawing.Point(10, 10);
+            this.tabPage_return.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.tabPage_return.Name = "tabPage_return";
-            this.tabPage_return.Size = new System.Drawing.Size(1190, 409);
+            this.tabPage_return.Size = new System.Drawing.Size(1844, 606);
             this.tabPage_return.TabIndex = 3;
             this.tabPage_return.Text = "还书日志";
             this.tabPage_return.UseVisualStyleBackColor = true;
@@ -806,15 +822,16 @@
             this.columnHeader44,
             this.columnHeader55,
             this.columnHeader45,
+            this.columnHeader5_price,
             this.columnHeader48,
             this.columnHeader49});
             this.listView_return.FullRowSelect = true;
             this.listView_return.GridLines = true;
             this.listView_return.HideSelection = false;
-            this.listView_return.Location = new System.Drawing.Point(7, 10);
-            this.listView_return.Margin = new System.Windows.Forms.Padding(4);
+            this.listView_return.Location = new System.Drawing.Point(11, 15);
+            this.listView_return.Margin = new System.Windows.Forms.Padding(6);
             this.listView_return.Name = "listView_return";
-            this.listView_return.Size = new System.Drawing.Size(1176, 389);
+            this.listView_return.Size = new System.Drawing.Size(1827, 582);
             this.listView_return.TabIndex = 14;
             this.listView_return.UseCompatibleStateImageBehavior = false;
             this.listView_return.View = System.Windows.Forms.View.Details;
@@ -872,9 +889,10 @@
             // tabPage_returnStatis
             // 
             this.tabPage_returnStatis.Controls.Add(this.listView_returnStatis);
-            this.tabPage_returnStatis.Location = new System.Drawing.Point(4, 4);
+            this.tabPage_returnStatis.Location = new System.Drawing.Point(10, 10);
+            this.tabPage_returnStatis.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.tabPage_returnStatis.Name = "tabPage_returnStatis";
-            this.tabPage_returnStatis.Size = new System.Drawing.Size(1190, 409);
+            this.tabPage_returnStatis.Size = new System.Drawing.Size(1844, 606);
             this.tabPage_returnStatis.TabIndex = 4;
             this.tabPage_returnStatis.Text = "还书统计";
             this.tabPage_returnStatis.UseVisualStyleBackColor = true;
@@ -889,15 +907,16 @@
             this.columnHeader51,
             this.columnHeader52,
             this.columnHeader56,
-            this.columnHeader53});
+            this.columnHeader53,
+            this.columnHeader62});
             this.listView_returnStatis.ContextMenuStrip = this.contextMenuStrip_statis;
             this.listView_returnStatis.FullRowSelect = true;
             this.listView_returnStatis.GridLines = true;
             this.listView_returnStatis.HideSelection = false;
-            this.listView_returnStatis.Location = new System.Drawing.Point(4, 4);
-            this.listView_returnStatis.Margin = new System.Windows.Forms.Padding(4);
+            this.listView_returnStatis.Location = new System.Drawing.Point(6, 6);
+            this.listView_returnStatis.Margin = new System.Windows.Forms.Padding(6);
             this.listView_returnStatis.Name = "listView_returnStatis";
-            this.listView_returnStatis.Size = new System.Drawing.Size(1182, 401);
+            this.listView_returnStatis.Size = new System.Drawing.Size(1836, 600);
             this.listView_returnStatis.TabIndex = 15;
             this.listView_returnStatis.UseCompatibleStateImageBehavior = false;
             this.listView_returnStatis.View = System.Windows.Forms.View.Details;
@@ -930,9 +949,10 @@
             // tabPage_borrowAndReturn
             // 
             this.tabPage_borrowAndReturn.Controls.Add(this.listView_borrowAndReurn_statis);
-            this.tabPage_borrowAndReturn.Location = new System.Drawing.Point(4, 4);
+            this.tabPage_borrowAndReturn.Location = new System.Drawing.Point(10, 10);
+            this.tabPage_borrowAndReturn.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.tabPage_borrowAndReturn.Name = "tabPage_borrowAndReturn";
-            this.tabPage_borrowAndReturn.Size = new System.Drawing.Size(1190, 409);
+            this.tabPage_borrowAndReturn.Size = new System.Drawing.Size(1844, 606);
             this.tabPage_borrowAndReturn.TabIndex = 5;
             this.tabPage_borrowAndReturn.Text = "借还统计";
             this.tabPage_borrowAndReturn.UseVisualStyleBackColor = true;
@@ -951,10 +971,10 @@
             this.listView_borrowAndReurn_statis.FullRowSelect = true;
             this.listView_borrowAndReurn_statis.GridLines = true;
             this.listView_borrowAndReurn_statis.HideSelection = false;
-            this.listView_borrowAndReurn_statis.Location = new System.Drawing.Point(4, 4);
-            this.listView_borrowAndReurn_statis.Margin = new System.Windows.Forms.Padding(4);
+            this.listView_borrowAndReurn_statis.Location = new System.Drawing.Point(6, 6);
+            this.listView_borrowAndReurn_statis.Margin = new System.Windows.Forms.Padding(6);
             this.listView_borrowAndReurn_statis.Name = "listView_borrowAndReurn_statis";
-            this.listView_borrowAndReurn_statis.Size = new System.Drawing.Size(1182, 401);
+            this.listView_borrowAndReurn_statis.Size = new System.Drawing.Size(1836, 600);
             this.listView_borrowAndReurn_statis.TabIndex = 16;
             this.listView_borrowAndReurn_statis.UseCompatibleStateImageBehavior = false;
             this.listView_borrowAndReurn_statis.View = System.Windows.Forms.View.Details;
@@ -980,11 +1000,51 @@
             this.columnHeader61.Text = "借还数量";
             this.columnHeader61.Width = 210;
             // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label4.Location = new System.Drawing.Point(554, 77);
+            this.label4.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(143, 33);
+            this.label4.TabIndex = 18;
+            this.label4.Text = "馆代码：";
+            // 
+            // textBox_librarycode
+            // 
+            this.textBox_librarycode.Location = new System.Drawing.Point(685, 75);
+            this.textBox_librarycode.Name = "textBox_librarycode";
+            this.textBox_librarycode.Size = new System.Drawing.Size(406, 38);
+            this.textBox_librarycode.TabIndex = 19;
+            // 
+            // columnHeader_price
+            // 
+            this.columnHeader_price.Text = "价格";
+            this.columnHeader_price.Width = 137;
+            // 
+            // columnHeader5_price
+            // 
+            this.columnHeader5_price.Text = "价格";
+            this.columnHeader5_price.Width = 98;
+            // 
+            // columnHeader57
+            // 
+            this.columnHeader57.Text = "总价";
+            this.columnHeader57.Width = 166;
+            // 
+            // columnHeader62
+            // 
+            this.columnHeader62.Text = "总价";
+            this.columnHeader62.Width = 96;
+            // 
             // TransferStatisForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(14F, 27F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1228, 540);
+            this.ClientSize = new System.Drawing.Size(1910, 810);
+            this.Controls.Add(this.textBox_librarycode);
+            this.Controls.Add(this.label4);
             this.Controls.Add(this.tabControl_table);
             this.Controls.Add(this.button_toExcel);
             this.Controls.Add(this.comboBox_quickSetFilenames);
@@ -996,7 +1056,7 @@
             this.Controls.Add(this.button_search);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.label2);
-            this.Margin = new System.Windows.Forms.Padding(4);
+            this.Margin = new System.Windows.Forms.Padding(6);
             this.Name = "TransferStatisForm";
             this.Text = "日志查询与统计";
             this.Load += new System.EventHandler(this.PrepForm_Load);
@@ -1132,5 +1192,11 @@
         private System.Windows.Forms.ColumnHeader columnHeader59;
         private System.Windows.Forms.ColumnHeader columnHeader60;
         private System.Windows.Forms.ColumnHeader columnHeader61;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.TextBox textBox_librarycode;
+        private System.Windows.Forms.ColumnHeader columnHeader_price;
+        private System.Windows.Forms.ColumnHeader columnHeader5_price;
+        private System.Windows.Forms.ColumnHeader columnHeader57;
+        private System.Windows.Forms.ColumnHeader columnHeader62;
     }
 }
