@@ -371,8 +371,20 @@ namespace dp2mini
             string libraryCode = DomUtil.GetElementInnerText(root, "libraryCode");
 
             // 如果输入了馆代码，则进行过滤
-            if (string.IsNullOrEmpty(this._libraryCode) == false &&   libraryCode.IndexOf(this._libraryCode) ==-1)
-                return 0;
+            if (string.IsNullOrEmpty(this._libraryCode) == false)
+            {
+                // 总馆的过滤掉
+                if (string.IsNullOrEmpty(libraryCode) == true)
+                    return 0;
+
+                // 不匹配的过滤掉
+                if (libraryCode.IndexOf(this._libraryCode) == -1)
+                    return 0;
+            }
+
+            //// 如果输入了馆代码，则进行过滤
+            //if (string.IsNullOrEmpty(this._libraryCode) == false &&   libraryCode.IndexOf(this._libraryCode) ==-1)
+            //    return 0;
 
 
             // 操作类型 operation/action
