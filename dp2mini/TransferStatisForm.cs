@@ -195,6 +195,9 @@ namespace dp2mini
                     // 借书统计
                     this.StatisBorrow();
 
+                    //2024/1/9 按证条码统计
+                    this.StatisBorrowByBarcode();
+
                     // 还书统计
                     this.StatisReturn();
 
@@ -266,6 +269,84 @@ namespace dp2mini
                 viewItem.SubItems.Add(group.readerBarcode);
                 viewItem.SubItems.Add(group.readerName);
                 viewItem.SubItems.Add(group.dept);
+                viewItem.SubItems.Add(group.Items.Count.ToString());
+
+                viewItem.SubItems.Add(price);
+            }
+
+            //if (this._borrowItems.Count > 0)
+            //{
+            //    // 按证条码号排序
+            //    SortCol(this.listView_borrowStatis, this.SortColumns_borrowStatis, 3);
+
+            //    SortCol(this.listView_borrowStatis, this.SortColumns_borrowStatis, 0);
+            //}
+        }
+
+        // 对借书日志按证条码号聚合
+        public void StatisBorrowByBarcode()
+        {
+            // 让用户选择需要统计的范围。根据批次号、目标位置来进行选择
+            var list = this._borrowItems.GroupBy(
+                x => new {  x.readerBarcode },
+                (key, item_list) => new BorrowGroup
+                {
+                    //location = key.location,
+                    readerBarcode = key.readerBarcode,
+                    //readerName = key.readerName,
+                    //dept = key.dept,
+                    Items = new List<BorrowLogItem>(item_list)
+
+                }).OrderByDescending(o => o.Items.Count).OrderBy(o => o.location).ToList();
+
+
+            foreach (BorrowGroup group in list)
+            {
+                ListViewItem viewItem = new ListViewItem(group.readerBarcode, 0);
+                this.listView_borrowByBarcode.Items.Add(viewItem);
+
+                string temp = "";
+                List<string> pList = new List<string>();
+                foreach (BorrowLogItem item in group.Items)
+                {
+                    //temp += item.price + ";";
+                    pList.Add(item.price);
+                }
+                string price = PriceUtil.TotalPrice(pList);
+
+                string patronName = "";
+                string dept = "";
+
+                if (group.Items != null && group.Items.Count > 0)
+                {
+                    patronName = group.Items[0].readerName;
+                    dept= group.Items[0].dept;
+                    string borrowDate = group.Items[0].borrowDate;
+
+                    foreach (BorrowLogItem item in group.Items)
+                    {
+                        
+                        if (borrowDate!=null && item.borrowDate!=null )
+                        {
+                            DateTime old = DateTimeUtil.ParseFreeTimeString(borrowDate);
+                            DateTime new1 = DateTimeUtil.ParseFreeTimeString(item.borrowDate);
+
+                            if (new1.CompareTo(old) > 0)
+                            {
+                                borrowDate = item.borrowDate;
+                                patronName = item.readerName;
+                                dept = item.dept;
+                            }
+                        }
+                    }
+
+                }
+
+
+
+                //viewItem.SubItems.Add(group.readerBarcode);
+                viewItem.SubItems.Add(patronName);
+                viewItem.SubItems.Add(dept);
                 viewItem.SubItems.Add(group.Items.Count.ToString());
 
                 viewItem.SubItems.Add(price);
@@ -525,6 +606,7 @@ namespace dp2mini
             // 清空借书列表
             this.listView_log_borrow.Items.Clear();
             this.listView_borrowStatis.Items.Clear();
+            this.listView_borrowByBarcode.Items.Clear();
             // 清空借书记录内存表
             _borrowItems.Clear();
 
@@ -813,8 +895,11 @@ namespace dp2mini
             borrowLog.readerBarcode = DomUtil.GetElementText(root, "readerBarcode");
             borrowLog.itemBarcode = DomUtil.GetElementText(root, "itemBarcode");
 
-            string strBorrowDate = GetRfc1123DisplayString(DomUtil.GetElementText(root, "borrowDate"));
-            string strBorrowPeriod = DomUtil.GetElementText(root, "borrowPeriod");
+            //string strBorrowDate = GetRfc1123DisplayString(DomUtil.GetElementText(root, "borrowDate"));
+            //string strBorrowPeriod = DomUtil.GetElementText(root, "borrowPeriod");
+
+            borrowLog.borrowDate = GetRfc1123DisplayString(DomUtil.GetElementText(root, "borrowDate"));
+            borrowLog.borrowPeriod = DomUtil.GetElementText(root, "borrowPeriod");
 
             XmlNode node = null;
 
@@ -929,6 +1014,7 @@ namespace dp2mini
         SortColumns SortColumns_borrowStatis = new SortColumns();
         SortColumns SortColumns_return = new SortColumns();
         SortColumns SortColumns_returnStatis = new SortColumns();
+        SortColumns SortColumns_borrowStatisByBarcode = new SortColumns();
 
         SortColumns SortColumns_borrowAndReturnStatis = new SortColumns();
 
@@ -1038,7 +1124,11 @@ namespace dp2mini
 
         }
 
-
+        private void listView_borrowByBarcode_ColumnClick(object sender, ColumnClickEventArgs e)
+        {
+            int nClickColumn = e.Column;
+            SortCol(this.listView_borrowByBarcode, SortColumns_borrowStatisByBarcode, nClickColumn);
+        }
     }
 
     public class BorrowLogItem
