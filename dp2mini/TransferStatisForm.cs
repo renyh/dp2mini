@@ -782,6 +782,8 @@ namespace dp2mini
                         temp = this.listView_returnStatis;
                     else if (tabName == "借还统计")
                         temp = this.listView_borrowAndReurn_statis;
+                    else if (tabName == "借书统计(按证条码）")
+                        temp = this.listView_borrowByBarcode;
                     else
                         continue;  // 不认识的表
 
