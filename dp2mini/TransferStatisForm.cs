@@ -1,4 +1,7 @@
-﻿using System;
+﻿//2024/1/23 测试有新版本，点取消，下次再启动还是否会提示新版本
+//2024/1/23 测试2
+
+using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
@@ -782,7 +785,7 @@ namespace dp2mini
                         temp = this.listView_returnStatis;
                     else if (tabName == "借还统计")
                         temp = this.listView_borrowAndReurn_statis;
-                    else if (tabName == "借书统计(按证条码）")
+                    else if (tabName == "借书统计(按证条码）")  
                         temp = this.listView_borrowByBarcode;
                     else
                         continue;  // 不认识的表
