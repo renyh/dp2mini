@@ -382,6 +382,23 @@
             this.自动测试1ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.自动测试2ToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.tabPage_GetSystemParameter = new System.Windows.Forms.TabPage();
+            this.button1 = new System.Windows.Forms.Button();
+            this.button_SystemParameter = new System.Windows.Forms.Button();
+            this.label124 = new System.Windows.Forms.Label();
+            this.textBox_SystemParameter_strCategory = new System.Windows.Forms.TextBox();
+            this.label125 = new System.Windows.Forms.Label();
+            this.textBox_SystemParameter_strName = new System.Windows.Forms.TextBox();
+            this.tabPage_ManageDatabase = new System.Windows.Forms.TabPage();
+            this.tabPage_setCalendar = new System.Windows.Forms.TabPage();
+            this.tabPage_getCalendar = new System.Windows.Forms.TabPage();
+            this.button_ManageDatabase = new System.Windows.Forms.Button();
+            this.textBox_ManageDatabase_strDatabaseInfo = new System.Windows.Forms.TextBox();
+            this.textBox_ManageDatabase_strDatabaseName = new System.Windows.Forms.TextBox();
+            this.textBox_ManageDatabase_strAction = new System.Windows.Forms.TextBox();
+            this.label127 = new System.Windows.Forms.Label();
+            this.label128 = new System.Windows.Forms.Label();
+            this.label129 = new System.Windows.Forms.Label();
             this.tabPage_SearchBiblio.SuspendLayout();
             this.tabPage_Server.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -416,6 +433,8 @@
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
+            this.tabPage_GetSystemParameter.SuspendLayout();
+            this.tabPage_ManageDatabase.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabPage_SearchBiblio
@@ -978,6 +997,10 @@
             this.tabControl1.Controls.Add(this.tabPage_GetBiblioInfo);
             this.tabControl1.Controls.Add(this.tabPage_ChangeReaderPassword);
             this.tabControl1.Controls.Add(this.tabPage_GetOperLog);
+            this.tabControl1.Controls.Add(this.tabPage_GetSystemParameter);
+            this.tabControl1.Controls.Add(this.tabPage_ManageDatabase);
+            this.tabControl1.Controls.Add(this.tabPage_getCalendar);
+            this.tabControl1.Controls.Add(this.tabPage_setCalendar);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
@@ -4303,6 +4326,184 @@
             this.splitContainer1.SplitterDistance = 728;
             this.splitContainer1.TabIndex = 21;
             // 
+            // tabPage_GetSystemParameter
+            // 
+            this.tabPage_GetSystemParameter.Controls.Add(this.button1);
+            this.tabPage_GetSystemParameter.Controls.Add(this.button_SystemParameter);
+            this.tabPage_GetSystemParameter.Controls.Add(this.label124);
+            this.tabPage_GetSystemParameter.Controls.Add(this.textBox_SystemParameter_strCategory);
+            this.tabPage_GetSystemParameter.Controls.Add(this.label125);
+            this.tabPage_GetSystemParameter.Controls.Add(this.textBox_SystemParameter_strName);
+            this.tabPage_GetSystemParameter.Location = new System.Drawing.Point(10, 46);
+            this.tabPage_GetSystemParameter.Name = "tabPage_GetSystemParameter";
+            this.tabPage_GetSystemParameter.Size = new System.Drawing.Size(1313, 672);
+            this.tabPage_GetSystemParameter.TabIndex = 27;
+            this.tabPage_GetSystemParameter.Text = "GetSystemParameter";
+            this.tabPage_GetSystemParameter.UseVisualStyleBackColor = true;
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(1, 1);
+            this.button1.Margin = new System.Windows.Forms.Padding(4);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(52, 117);
+            this.button1.TabIndex = 64;
+            this.button1.Text = "帮助";
+            this.button1.UseVisualStyleBackColor = true;
+            // 
+            // button_SystemParameter
+            // 
+            this.button_SystemParameter.Location = new System.Drawing.Point(298, 206);
+            this.button_SystemParameter.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
+            this.button_SystemParameter.Name = "button_SystemParameter";
+            this.button_SystemParameter.Size = new System.Drawing.Size(374, 56);
+            this.button_SystemParameter.TabIndex = 63;
+            this.button_SystemParameter.Tag = "";
+            this.button_SystemParameter.Text = "GetSystemParameter";
+            this.button_SystemParameter.UseVisualStyleBackColor = true;
+            this.button_SystemParameter.Click += new System.EventHandler(this.button_SystemParameter_Click);
+            // 
+            // label124
+            // 
+            this.label124.AutoSize = true;
+            this.label124.Location = new System.Drawing.Point(121, 65);
+            this.label124.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label124.Name = "label124";
+            this.label124.Size = new System.Drawing.Size(166, 27);
+            this.label124.TabIndex = 62;
+            this.label124.Text = "strCategory";
+            // 
+            // textBox_SystemParameter_strCategory
+            // 
+            this.textBox_SystemParameter_strCategory.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBox_SystemParameter_strCategory.Location = new System.Drawing.Point(298, 60);
+            this.textBox_SystemParameter_strCategory.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
+            this.textBox_SystemParameter_strCategory.Name = "textBox_SystemParameter_strCategory";
+            this.textBox_SystemParameter_strCategory.Size = new System.Drawing.Size(974, 38);
+            this.textBox_SystemParameter_strCategory.TabIndex = 61;
+            // 
+            // label125
+            // 
+            this.label125.AutoSize = true;
+            this.label125.Location = new System.Drawing.Point(121, 146);
+            this.label125.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label125.Name = "label125";
+            this.label125.Size = new System.Drawing.Size(110, 27);
+            this.label125.TabIndex = 60;
+            this.label125.Text = "strName";
+            // 
+            // textBox_SystemParameter_strName
+            // 
+            this.textBox_SystemParameter_strName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBox_SystemParameter_strName.Location = new System.Drawing.Point(298, 128);
+            this.textBox_SystemParameter_strName.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
+            this.textBox_SystemParameter_strName.Name = "textBox_SystemParameter_strName";
+            this.textBox_SystemParameter_strName.Size = new System.Drawing.Size(974, 38);
+            this.textBox_SystemParameter_strName.TabIndex = 59;
+            // 
+            // tabPage_ManageDatabase
+            // 
+            this.tabPage_ManageDatabase.Controls.Add(this.button_ManageDatabase);
+            this.tabPage_ManageDatabase.Controls.Add(this.textBox_ManageDatabase_strDatabaseInfo);
+            this.tabPage_ManageDatabase.Controls.Add(this.textBox_ManageDatabase_strDatabaseName);
+            this.tabPage_ManageDatabase.Controls.Add(this.textBox_ManageDatabase_strAction);
+            this.tabPage_ManageDatabase.Controls.Add(this.label127);
+            this.tabPage_ManageDatabase.Controls.Add(this.label128);
+            this.tabPage_ManageDatabase.Controls.Add(this.label129);
+            this.tabPage_ManageDatabase.Location = new System.Drawing.Point(10, 46);
+            this.tabPage_ManageDatabase.Name = "tabPage_ManageDatabase";
+            this.tabPage_ManageDatabase.Size = new System.Drawing.Size(1313, 672);
+            this.tabPage_ManageDatabase.TabIndex = 28;
+            this.tabPage_ManageDatabase.Text = "ManageDatabase";
+            this.tabPage_ManageDatabase.UseVisualStyleBackColor = true;
+            // 
+            // tabPage_setCalendar
+            // 
+            this.tabPage_setCalendar.Location = new System.Drawing.Point(10, 46);
+            this.tabPage_setCalendar.Name = "tabPage_setCalendar";
+            this.tabPage_setCalendar.Size = new System.Drawing.Size(1313, 672);
+            this.tabPage_setCalendar.TabIndex = 29;
+            this.tabPage_setCalendar.Text = "setCalendar";
+            this.tabPage_setCalendar.UseVisualStyleBackColor = true;
+            // 
+            // tabPage_getCalendar
+            // 
+            this.tabPage_getCalendar.Location = new System.Drawing.Point(10, 46);
+            this.tabPage_getCalendar.Name = "tabPage_getCalendar";
+            this.tabPage_getCalendar.Size = new System.Drawing.Size(1313, 672);
+            this.tabPage_getCalendar.TabIndex = 30;
+            this.tabPage_getCalendar.Text = "getCalendar";
+            this.tabPage_getCalendar.UseVisualStyleBackColor = true;
+            // 
+            // button_ManageDatabase
+            // 
+            this.button_ManageDatabase.Location = new System.Drawing.Point(387, 472);
+            this.button_ManageDatabase.Margin = new System.Windows.Forms.Padding(5);
+            this.button_ManageDatabase.Name = "button_ManageDatabase";
+            this.button_ManageDatabase.Size = new System.Drawing.Size(262, 83);
+            this.button_ManageDatabase.TabIndex = 23;
+            this.button_ManageDatabase.Text = "ManageDatabase";
+            this.button_ManageDatabase.UseVisualStyleBackColor = true;
+            this.button_ManageDatabase.Click += new System.EventHandler(this.button_ManageDatabase_Click);
+            // 
+            // textBox_ManageDatabase_strDatabaseInfo
+            // 
+            this.textBox_ManageDatabase_strDatabaseInfo.Location = new System.Drawing.Point(387, 199);
+            this.textBox_ManageDatabase_strDatabaseInfo.Margin = new System.Windows.Forms.Padding(5);
+            this.textBox_ManageDatabase_strDatabaseInfo.Multiline = true;
+            this.textBox_ManageDatabase_strDatabaseInfo.Name = "textBox_ManageDatabase_strDatabaseInfo";
+            this.textBox_ManageDatabase_strDatabaseInfo.Size = new System.Drawing.Size(630, 207);
+            this.textBox_ManageDatabase_strDatabaseInfo.TabIndex = 22;
+            // 
+            // textBox_ManageDatabase_strDatabaseName
+            // 
+            this.textBox_ManageDatabase_strDatabaseName.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.textBox_ManageDatabase_strDatabaseName.Location = new System.Drawing.Point(387, 109);
+            this.textBox_ManageDatabase_strDatabaseName.Margin = new System.Windows.Forms.Padding(5);
+            this.textBox_ManageDatabase_strDatabaseName.Name = "textBox_ManageDatabase_strDatabaseName";
+            this.textBox_ManageDatabase_strDatabaseName.Size = new System.Drawing.Size(638, 38);
+            this.textBox_ManageDatabase_strDatabaseName.TabIndex = 21;
+            // 
+            // textBox_ManageDatabase_strAction
+            // 
+            this.textBox_ManageDatabase_strAction.Location = new System.Drawing.Point(386, 37);
+            this.textBox_ManageDatabase_strAction.Margin = new System.Windows.Forms.Padding(5);
+            this.textBox_ManageDatabase_strAction.Name = "textBox_ManageDatabase_strAction";
+            this.textBox_ManageDatabase_strAction.Size = new System.Drawing.Size(639, 38);
+            this.textBox_ManageDatabase_strAction.TabIndex = 20;
+            // 
+            // label127
+            // 
+            this.label127.AutoSize = true;
+            this.label127.Location = new System.Drawing.Point(92, 199);
+            this.label127.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label127.Name = "label127";
+            this.label127.Size = new System.Drawing.Size(222, 27);
+            this.label127.TabIndex = 19;
+            this.label127.Text = "strDatabaseInfo";
+            // 
+            // label128
+            // 
+            this.label128.AutoSize = true;
+            this.label128.Location = new System.Drawing.Point(92, 127);
+            this.label128.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label128.Name = "label128";
+            this.label128.Size = new System.Drawing.Size(222, 27);
+            this.label128.TabIndex = 18;
+            this.label128.Text = "strDatabaseName";
+            // 
+            // label129
+            // 
+            this.label129.AutoSize = true;
+            this.label129.Location = new System.Drawing.Point(92, 55);
+            this.label129.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label129.Name = "label129";
+            this.label129.Size = new System.Drawing.Size(138, 27);
+            this.label129.TabIndex = 17;
+            this.label129.Text = "strAction";
+            // 
             // Form_main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(216F, 216F);
@@ -4380,6 +4581,10 @@
             this.splitContainer1.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
+            this.tabPage_GetSystemParameter.ResumeLayout(false);
+            this.tabPage_GetSystemParameter.PerformLayout();
+            this.tabPage_ManageDatabase.ResumeLayout(false);
+            this.tabPage_ManageDatabase.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -4740,6 +4945,23 @@
         private System.Windows.Forms.Button button_getBrowseRecords_auto;
         private System.Windows.Forms.TextBox textBox_opacUrl;
         private System.Windows.Forms.Label label117;
+        private System.Windows.Forms.TabPage tabPage_GetSystemParameter;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button button_SystemParameter;
+        private System.Windows.Forms.Label label124;
+        private System.Windows.Forms.TextBox textBox_SystemParameter_strCategory;
+        private System.Windows.Forms.Label label125;
+        private System.Windows.Forms.TextBox textBox_SystemParameter_strName;
+        private System.Windows.Forms.TabPage tabPage_ManageDatabase;
+        private System.Windows.Forms.TabPage tabPage_getCalendar;
+        private System.Windows.Forms.TabPage tabPage_setCalendar;
+        private System.Windows.Forms.Button button_ManageDatabase;
+        private System.Windows.Forms.TextBox textBox_ManageDatabase_strDatabaseInfo;
+        private System.Windows.Forms.TextBox textBox_ManageDatabase_strDatabaseName;
+        private System.Windows.Forms.TextBox textBox_ManageDatabase_strAction;
+        private System.Windows.Forms.Label label127;
+        private System.Windows.Forms.Label label128;
+        private System.Windows.Forms.Label label129;
     }
 }
 

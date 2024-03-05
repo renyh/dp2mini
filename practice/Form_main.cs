@@ -3389,6 +3389,66 @@ out string strError);
 ";
             this.textBox_GetBrowseRecord_strBrowseInfoStyle.Text = "id,cols,xml";
         }
+
+        private void button_SystemParameter_Click(object sender, EventArgs e)
+        {
+            // 清空底部输出信息
+            this.ClearResultInfo();
+
+            // 输入参数
+            //strCategory
+            string strCategory = this.textBox_SystemParameter_strCategory.Text.Trim();
+            //strName
+            string strName = this.textBox_SystemParameter_strName.Text.Trim();
+
+
+            RestChannel channel = this.GetChannel();
+            try
+            {
+                GetSystemParameterResponse response = channel.GetSystemParameter(strCategory, strName);
+
+                // 显示返回信息
+                this.SetResultInfo("GetSystemParameter()\r\n" + RestChannel.GetResultInfo(response));
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, "GetSystemParameter()异常：" + ex.Message);
+                return;
+            }
+            finally
+            {
+                this._channelPool.ReturnChannel(channel);
+            }
+        }
+
+        private void button_ManageDatabase_Click(object sender, EventArgs e)
+        {
+            //清空底部输出信息
+            this.ClearResultInfo();
+
+            string strAction = this.textBox_ManageDatabase_strAction.Text.Trim();
+            string strDatabaseName = this.textBox_ManageDatabase_strDatabaseName.Text.Trim();
+            string strDatabaseInfo = this.textBox_ManageDatabase_strDatabaseInfo.Text.Trim();
+
+            RestChannel channel = this.GetChannel();
+            try
+            {
+                ManageDatabaseResponse response = channel.ManageDatabase(strAction,
+                    strDatabaseName,
+                    strDatabaseInfo,
+                    "");
+                this.SetResultInfo(RestChannel.GetResultInfo(response));
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, "ManageDatabase()异常：" + ex.Message);
+                return;
+            }
+            finally
+            {
+                this._channelPool.ReturnChannel(channel);
+            }
+        }
     }
 
 
