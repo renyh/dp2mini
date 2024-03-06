@@ -389,6 +389,36 @@ namespace DigitalPlatform.LibraryRestClient
                     + "attachment_data:" + ByteArray.GetHexTimeStampString(r.attachment_data) + "\r\n"
                     + "lAttachmentTotalLength:" + r.lAttachmentTotalLength + "\r\n";
             }
+            else if (o is GetCalendarResponse)
+            {
+                GetCalendarResponse r = (GetCalendarResponse)o;
+                string info = GetServerResultInfo(r.GetCalendarResult) + "\r\n";
+
+
+
+                if (r.contents != null)
+                {
+                    foreach (CalenderInfo u in r.contents)
+                    {
+                        info += "Name:" + u.Name + "\r\n"
+                         + "Range:" + u.Range + "\r\n"
+                         + "Content:" + u.Content + "\r\n"
+                         + "Comment:" + u.Comment + "\r\n";
+                        //+ "====\r\n";
+                    }
+                }
+
+                return info;
+            }
+            else if (o is SetCalendarResponse)
+            {
+                SetCalendarResponse r = (SetCalendarResponse)o;
+                string info = GetServerResultInfo(r.SetCalendarResult) + "\r\n";
+
+              
+
+                return info;
+            }
 
             /*
     public class GetOperLogResponse
@@ -4751,6 +4781,52 @@ int nAttachmentFragmentLength)
 
         }
 
+
+        public SetCalendarResponse SetCalendar(
+// DigitalPlatform.Stop stop,
+string strAction,
+CalenderInfo info)
+        {
+            string strError = "";
+
+
+        REDO:
+            try
+            {
+
+                CookieAwareWebClient client = this.GetClient();
+
+                SetCalendarRequest request = new SetCalendarRequest()
+                {
+                    strAction = strAction,
+                    info = info
+                };
+
+                byte[] baData = Encoding.UTF8.GetBytes(Serialize(request));
+                byte[] result = client.UploadData(GetRestfulApiUrl("SetCalendar"),
+                        "POST",
+                        baData);
+
+                string strResult = Encoding.UTF8.GetString(result);
+                SetCalendarResponse response = Deserialize<SetCalendarResponse>(strResult);
+                if (response.SetCalendarResult.Value == -1
+    && response.SetCalendarResult.ErrorCode == ErrorCode.NotLogin)
+                {
+                    if (DoNotLogin(ref strError) == 1)
+                        goto REDO;
+                }
+
+                return response;
+            }
+            catch (Exception ex)
+            {
+                int nRet = ConvertWebError(ex, out strError);
+                if (nRet == 0)
+                    return null;
+                goto REDO;
+            }
+
+        }
 
         #endregion
 

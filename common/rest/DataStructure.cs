@@ -2155,7 +2155,7 @@ LibraryServerResult.ErrorInfo		出错信息
         public LibraryServerResult GetCalendarResult { get; set; }
 
         [DataMember]
-        public CalenderInfo contents { get; set; }
+        public CalenderInfo[] contents { get; set; }
     }
 
 

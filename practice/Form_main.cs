@@ -3449,6 +3449,86 @@ out string strError);
                 this._channelPool.ReturnChannel(channel);
             }
         }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            // 清空底部输出信息
+            this.ClearResultInfo();
+
+            // 输入参数
+            //strCategory
+            string calendarName = this.textBox_getCalendar_calendarName.Text.Trim();
+            RestChannel channel = this.GetChannel();
+            try
+            {
+                GetCalendarResponse response = channel.GetCalendar(
+                    "get",
+                    calendarName,
+                    0,
+                    -1);
+
+
+                // 显示返回信息
+                this.SetResultInfo("GetCalendar()\r\n" + RestChannel.GetResultInfo(response));
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, "GetSystemParameter()异常：" + ex.Message);
+                return;
+            }
+            finally
+            {
+                this._channelPool.ReturnChannel(channel);
+            }
+        }
+
+        private void button_setCalendar_Click(object sender, EventArgs e)
+        {
+            /*
+
+             */
+
+
+            // 清空底部输出信息
+            this.ClearResultInfo();
+
+            // 输入参数
+            //strCategory
+            string calendarName = this.textBox_getCalendar_calendarName.Text.Trim();
+            RestChannel channel = this.GetChannel();
+            try
+            {
+
+                CalenderInfo cInfo = new CalenderInfo();
+                cInfo.Name = this.textBox_setCalendar_name.Text.Trim();
+                cInfo.Range = this.textBox_setCalendar_range.Text.Trim();//"20220101-20241231";
+                cInfo.Comment = this.textBox_setCalendar_content.Text.Trim();
+                cInfo.Content = this.textBox_setCalendar_comment.Text.Trim();
+
+                SetCalendarResponse response = channel.SetCalendar(
+                   this.textBox_setCalendar_action.Text.Trim(),
+                   cInfo);
+
+                //GetCalendarResponse response = channel.GetCalendar(
+                //    "get",
+                //    calendarName,
+                //    0,
+                //    -1);
+
+
+                // 显示返回信息
+                this.SetResultInfo("SetCalendar()\r\n" + RestChannel.GetResultInfo(response));
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, "SetCalendarResponse()异常：" + ex.Message);
+                return;
+            }
+            finally
+            {
+                this._channelPool.ReturnChannel(channel);
+            }
+        }
     }
 
 
