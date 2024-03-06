@@ -389,16 +389,6 @@
             this.label128 = new System.Windows.Forms.Label();
             this.label129 = new System.Windows.Forms.Label();
             this.tabPage_getCalendar = new System.Windows.Forms.TabPage();
-            this.tabPage_setCalendar = new System.Windows.Forms.TabPage();
-            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.文件ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.通用练习题ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.z3950ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.处理MARC字段ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.功能ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.自动测试1ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.自动测试2ToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.button2 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.textBox_getCalendar_lcount = new System.Windows.Forms.TextBox();
@@ -407,6 +397,7 @@
             this.textBox_getCalendar_calendarName = new System.Windows.Forms.TextBox();
             this.label133 = new System.Windows.Forms.Label();
             this.label134 = new System.Windows.Forms.Label();
+            this.tabPage_setCalendar = new System.Windows.Forms.TabPage();
             this.button_setCalendar = new System.Windows.Forms.Button();
             this.textBox_setCalendar_action = new System.Windows.Forms.TextBox();
             this.label130 = new System.Windows.Forms.Label();
@@ -420,6 +411,15 @@
             this.textBox_setCalendar_name = new System.Windows.Forms.TextBox();
             this.label136 = new System.Windows.Forms.Label();
             this.label137 = new System.Windows.Forms.Label();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.文件ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.通用练习题ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.z3950ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.处理MARC字段ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.功能ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.自动测试1ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.自动测试2ToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.tabPage_SearchBiblio.SuspendLayout();
             this.tabPage_Server.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -453,12 +453,12 @@
             this.tabPage_ManageDatabase.SuspendLayout();
             this.tabPage_getCalendar.SuspendLayout();
             this.tabPage_setCalendar.SuspendLayout();
+            this.groupBox4.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
-            this.groupBox4.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabPage_SearchBiblio
@@ -4434,113 +4434,6 @@
             this.tabPage_getCalendar.Text = "getCalendar";
             this.tabPage_getCalendar.UseVisualStyleBackColor = true;
             // 
-            // tabPage_setCalendar
-            // 
-            this.tabPage_setCalendar.Controls.Add(this.button_setCalendar);
-            this.tabPage_setCalendar.Controls.Add(this.textBox_setCalendar_action);
-            this.tabPage_setCalendar.Controls.Add(this.label130);
-            this.tabPage_setCalendar.Controls.Add(this.button5);
-            this.tabPage_setCalendar.Controls.Add(this.groupBox4);
-            this.tabPage_setCalendar.Location = new System.Drawing.Point(10, 46);
-            this.tabPage_setCalendar.Name = "tabPage_setCalendar";
-            this.tabPage_setCalendar.Size = new System.Drawing.Size(1313, 672);
-            this.tabPage_setCalendar.TabIndex = 29;
-            this.tabPage_setCalendar.Text = "setCalendar";
-            this.tabPage_setCalendar.UseVisualStyleBackColor = true;
-            // 
-            // menuStrip1
-            // 
-            this.menuStrip1.GripMargin = new System.Windows.Forms.Padding(2, 2, 0, 2);
-            this.menuStrip1.ImageScalingSize = new System.Drawing.Size(24, 24);
-            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.文件ToolStripMenuItem,
-            this.功能ToolStripMenuItem});
-            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
-            this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Padding = new System.Windows.Forms.Padding(9, 3, 0, 3);
-            this.menuStrip1.Size = new System.Drawing.Size(1347, 45);
-            this.menuStrip1.TabIndex = 8;
-            this.menuStrip1.Text = "menuStrip1";
-            // 
-            // 文件ToolStripMenuItem
-            // 
-            this.文件ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.通用练习题ToolStripMenuItem,
-            this.z3950ToolStripMenuItem,
-            this.处理MARC字段ToolStripMenuItem});
-            this.文件ToolStripMenuItem.Name = "文件ToolStripMenuItem";
-            this.文件ToolStripMenuItem.Size = new System.Drawing.Size(91, 39);
-            this.文件ToolStripMenuItem.Text = "文件";
-            // 
-            // 通用练习题ToolStripMenuItem
-            // 
-            this.通用练习题ToolStripMenuItem.Name = "通用练习题ToolStripMenuItem";
-            this.通用练习题ToolStripMenuItem.Size = new System.Drawing.Size(352, 48);
-            this.通用练习题ToolStripMenuItem.Text = "通用练习题";
-            this.通用练习题ToolStripMenuItem.Click += new System.EventHandler(this.通用练习题ToolStripMenuItem_Click);
-            // 
-            // z3950ToolStripMenuItem
-            // 
-            this.z3950ToolStripMenuItem.Name = "z3950ToolStripMenuItem";
-            this.z3950ToolStripMenuItem.Size = new System.Drawing.Size(352, 48);
-            this.z3950ToolStripMenuItem.Text = "Z39.50";
-            this.z3950ToolStripMenuItem.Click += new System.EventHandler(this.z3950ToolStripMenuItem_Click);
-            // 
-            // 处理MARC字段ToolStripMenuItem
-            // 
-            this.处理MARC字段ToolStripMenuItem.Name = "处理MARC字段ToolStripMenuItem";
-            this.处理MARC字段ToolStripMenuItem.Size = new System.Drawing.Size(352, 48);
-            this.处理MARC字段ToolStripMenuItem.Text = "处理MARC字段";
-            this.处理MARC字段ToolStripMenuItem.Click += new System.EventHandler(this.处理MARC字段ToolStripMenuItem_Click);
-            // 
-            // 功能ToolStripMenuItem
-            // 
-            this.功能ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.自动测试1ToolStripMenuItem,
-            this.自动测试2ToolStripMenuItem1});
-            this.功能ToolStripMenuItem.Name = "功能ToolStripMenuItem";
-            this.功能ToolStripMenuItem.Size = new System.Drawing.Size(145, 39);
-            this.功能ToolStripMenuItem.Text = "自动测试";
-            this.功能ToolStripMenuItem.Click += new System.EventHandler(this.功能ToolStripMenuItem_Click);
-            // 
-            // 自动测试1ToolStripMenuItem
-            // 
-            this.自动测试1ToolStripMenuItem.Name = "自动测试1ToolStripMenuItem";
-            this.自动测试1ToolStripMenuItem.Size = new System.Drawing.Size(287, 48);
-            this.自动测试1ToolStripMenuItem.Text = "自动测试1";
-            this.自动测试1ToolStripMenuItem.Click += new System.EventHandler(this.自动测试1ToolStripMenuItem_Click);
-            // 
-            // 自动测试2ToolStripMenuItem1
-            // 
-            this.自动测试2ToolStripMenuItem1.Name = "自动测试2ToolStripMenuItem1";
-            this.自动测试2ToolStripMenuItem1.Size = new System.Drawing.Size(287, 48);
-            this.自动测试2ToolStripMenuItem1.Text = "自动测试2";
-            this.自动测试2ToolStripMenuItem1.Click += new System.EventHandler(this.自动测试2ToolStripMenuItem1_Click);
-            // 
-            // splitContainer1
-            // 
-            this.splitContainer1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.splitContainer1.Location = new System.Drawing.Point(0, 45);
-            this.splitContainer1.Name = "splitContainer1";
-            this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
-            // 
-            // splitContainer1.Panel1
-            // 
-            this.splitContainer1.Panel1.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
-            this.splitContainer1.Panel1.Controls.Add(this.tabControl1);
-            this.splitContainer1.Panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.splitContainer1_Panel1_Paint);
-            // 
-            // splitContainer1.Panel2
-            // 
-            this.splitContainer1.Panel2.BackColor = System.Drawing.SystemColors.Info;
-            this.splitContainer1.Panel2.Controls.Add(this.textBox_result);
-            this.splitContainer1.Panel2.Paint += new System.Windows.Forms.PaintEventHandler(this.splitContainer1_Panel2_Paint);
-            this.splitContainer1.Size = new System.Drawing.Size(1333, 838);
-            this.splitContainer1.SplitterDistance = 728;
-            this.splitContainer1.TabIndex = 21;
-            // 
             // button2
             // 
             this.button2.Location = new System.Drawing.Point(0, 1);
@@ -4615,6 +4508,20 @@
             this.label134.Size = new System.Drawing.Size(180, 27);
             this.label134.TabIndex = 67;
             this.label134.Text = "calendarName";
+            // 
+            // tabPage_setCalendar
+            // 
+            this.tabPage_setCalendar.Controls.Add(this.button_setCalendar);
+            this.tabPage_setCalendar.Controls.Add(this.textBox_setCalendar_action);
+            this.tabPage_setCalendar.Controls.Add(this.label130);
+            this.tabPage_setCalendar.Controls.Add(this.button5);
+            this.tabPage_setCalendar.Controls.Add(this.groupBox4);
+            this.tabPage_setCalendar.Location = new System.Drawing.Point(10, 46);
+            this.tabPage_setCalendar.Name = "tabPage_setCalendar";
+            this.tabPage_setCalendar.Size = new System.Drawing.Size(1313, 672);
+            this.tabPage_setCalendar.TabIndex = 29;
+            this.tabPage_setCalendar.Text = "setCalendar";
+            this.tabPage_setCalendar.UseVisualStyleBackColor = true;
             // 
             // button_setCalendar
             // 
@@ -4717,7 +4624,6 @@
             this.textBox_setCalendar_range.Name = "textBox_setCalendar_range";
             this.textBox_setCalendar_range.Size = new System.Drawing.Size(382, 38);
             this.textBox_setCalendar_range.TabIndex = 20;
-            this.textBox_setCalendar_range.UseSystemPasswordChar = true;
             // 
             // textBox_setCalendar_name
             // 
@@ -4746,6 +4652,99 @@
             this.label137.Size = new System.Drawing.Size(68, 27);
             this.label137.TabIndex = 19;
             this.label137.Text = "Name";
+            // 
+            // menuStrip1
+            // 
+            this.menuStrip1.GripMargin = new System.Windows.Forms.Padding(2, 2, 0, 2);
+            this.menuStrip1.ImageScalingSize = new System.Drawing.Size(24, 24);
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.文件ToolStripMenuItem,
+            this.功能ToolStripMenuItem});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Padding = new System.Windows.Forms.Padding(9, 3, 0, 3);
+            this.menuStrip1.Size = new System.Drawing.Size(1347, 45);
+            this.menuStrip1.TabIndex = 8;
+            this.menuStrip1.Text = "menuStrip1";
+            // 
+            // 文件ToolStripMenuItem
+            // 
+            this.文件ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.通用练习题ToolStripMenuItem,
+            this.z3950ToolStripMenuItem,
+            this.处理MARC字段ToolStripMenuItem});
+            this.文件ToolStripMenuItem.Name = "文件ToolStripMenuItem";
+            this.文件ToolStripMenuItem.Size = new System.Drawing.Size(91, 39);
+            this.文件ToolStripMenuItem.Text = "文件";
+            // 
+            // 通用练习题ToolStripMenuItem
+            // 
+            this.通用练习题ToolStripMenuItem.Name = "通用练习题ToolStripMenuItem";
+            this.通用练习题ToolStripMenuItem.Size = new System.Drawing.Size(352, 48);
+            this.通用练习题ToolStripMenuItem.Text = "通用练习题";
+            this.通用练习题ToolStripMenuItem.Click += new System.EventHandler(this.通用练习题ToolStripMenuItem_Click);
+            // 
+            // z3950ToolStripMenuItem
+            // 
+            this.z3950ToolStripMenuItem.Name = "z3950ToolStripMenuItem";
+            this.z3950ToolStripMenuItem.Size = new System.Drawing.Size(352, 48);
+            this.z3950ToolStripMenuItem.Text = "Z39.50";
+            this.z3950ToolStripMenuItem.Click += new System.EventHandler(this.z3950ToolStripMenuItem_Click);
+            // 
+            // 处理MARC字段ToolStripMenuItem
+            // 
+            this.处理MARC字段ToolStripMenuItem.Name = "处理MARC字段ToolStripMenuItem";
+            this.处理MARC字段ToolStripMenuItem.Size = new System.Drawing.Size(352, 48);
+            this.处理MARC字段ToolStripMenuItem.Text = "处理MARC字段";
+            this.处理MARC字段ToolStripMenuItem.Click += new System.EventHandler(this.处理MARC字段ToolStripMenuItem_Click);
+            // 
+            // 功能ToolStripMenuItem
+            // 
+            this.功能ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.自动测试1ToolStripMenuItem,
+            this.自动测试2ToolStripMenuItem1});
+            this.功能ToolStripMenuItem.Name = "功能ToolStripMenuItem";
+            this.功能ToolStripMenuItem.Size = new System.Drawing.Size(145, 39);
+            this.功能ToolStripMenuItem.Text = "自动测试";
+            this.功能ToolStripMenuItem.Click += new System.EventHandler(this.功能ToolStripMenuItem_Click);
+            // 
+            // 自动测试1ToolStripMenuItem
+            // 
+            this.自动测试1ToolStripMenuItem.Name = "自动测试1ToolStripMenuItem";
+            this.自动测试1ToolStripMenuItem.Size = new System.Drawing.Size(287, 48);
+            this.自动测试1ToolStripMenuItem.Text = "自动测试1";
+            this.自动测试1ToolStripMenuItem.Click += new System.EventHandler(this.自动测试1ToolStripMenuItem_Click);
+            // 
+            // 自动测试2ToolStripMenuItem1
+            // 
+            this.自动测试2ToolStripMenuItem1.Name = "自动测试2ToolStripMenuItem1";
+            this.自动测试2ToolStripMenuItem1.Size = new System.Drawing.Size(287, 48);
+            this.自动测试2ToolStripMenuItem1.Text = "自动测试2";
+            this.自动测试2ToolStripMenuItem1.Click += new System.EventHandler(this.自动测试2ToolStripMenuItem1_Click);
+            // 
+            // splitContainer1
+            // 
+            this.splitContainer1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.splitContainer1.Location = new System.Drawing.Point(0, 45);
+            this.splitContainer1.Name = "splitContainer1";
+            this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitContainer1.Panel1
+            // 
+            this.splitContainer1.Panel1.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
+            this.splitContainer1.Panel1.Controls.Add(this.tabControl1);
+            this.splitContainer1.Panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.splitContainer1_Panel1_Paint);
+            // 
+            // splitContainer1.Panel2
+            // 
+            this.splitContainer1.Panel2.BackColor = System.Drawing.SystemColors.Info;
+            this.splitContainer1.Panel2.Controls.Add(this.textBox_result);
+            this.splitContainer1.Panel2.Paint += new System.Windows.Forms.PaintEventHandler(this.splitContainer1_Panel2_Paint);
+            this.splitContainer1.Size = new System.Drawing.Size(1333, 838);
+            this.splitContainer1.SplitterDistance = 728;
+            this.splitContainer1.TabIndex = 21;
             // 
             // Form_main
             // 
@@ -4825,6 +4824,8 @@
             this.tabPage_getCalendar.PerformLayout();
             this.tabPage_setCalendar.ResumeLayout(false);
             this.tabPage_setCalendar.PerformLayout();
+            this.groupBox4.ResumeLayout(false);
+            this.groupBox4.PerformLayout();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.splitContainer1.Panel1.ResumeLayout(false);
@@ -4832,8 +4833,6 @@
             this.splitContainer1.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
-            this.groupBox4.ResumeLayout(false);
-            this.groupBox4.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
