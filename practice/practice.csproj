@@ -81,6 +81,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="LogRecoverStart.cs" />
     <Compile Include="Form_2.cs">
       <SubType>Form</SubType>
     </Compile>

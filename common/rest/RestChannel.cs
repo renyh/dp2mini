@@ -417,8 +417,20 @@ namespace DigitalPlatform.LibraryRestClient
 
               
 
-                return info;
+                return info;  //
             }
+            else if (o is BatchTaskResponse)
+            {
+                BatchTaskResponse r = (BatchTaskResponse)o;
+                string info = GetServerResultInfo(r.BatchTaskResult) + "\r\n";
+
+                info += "ResultText="+r.resultInfo.ResultText;
+
+
+
+                return info;  //BatchTaskResponse
+            }
+
 
             /*
     public class GetOperLogResponse
@@ -4829,6 +4841,108 @@ CalenderInfo info)
         }
 
         #endregion
+
+
+        // 批处理任务
+        /// <summary>
+        /// 批处理任务
+        /// </summary>
+        /// <param name="stop"></param>
+        /// <param name="strName">批处理任务名</param>
+        /// <param name="strAction">动作参数</param>
+        /// <param name="info">任务信息</param>
+        /// <param name="resultInfo">返回任务信息</param>
+        /// <param name="strError">返回出错信息</param>
+        /// <returns>
+        ///// <para>-1:   出错</para>
+        ///// <para>0 或 1:    成功</para>
+        ///// </returns>
+        //public long BatchTask1(
+        //    DigitalPlatform.Stop stop,
+        //    string strName,
+        //    string strAction,
+        //    BatchTaskInfo info,
+        //    out BatchTaskInfo resultInfo,
+        //    out string strError)
+        //{
+        //    strError = "";
+        //    resultInfo = null;
+
+        //REDO:
+        //    try
+        //    {
+        //        IAsyncResult soapresult = this.ws.BeginBatchTask(
+        //            strName,
+        //            strAction,
+        //            info,
+        //            null,
+        //            null);
+
+        //        WaitComplete(soapresult);
+
+        //        if (this.m_ws == null)
+        //        {
+        //            strError = "用户中断";
+        //            this.ErrorCode = localhost.ErrorCode.RequestCanceled;
+        //            return -1;
+        //        }
+
+        //        LibraryServerResult result = this.ws.EndBatchTask(
+        //            out resultInfo,
+        //            soapresult);
+        //        if (result.Value == -1 && result.ErrorCode == ErrorCode.NotLogin)
+        //        {
+        //            if (DoNotLogin(ref strError) == 1)
+        //                goto REDO;
+        //            return -1;
+        //        }
+        //        strError = result.ErrorInfo;
+        //        this.ErrorCode = result.ErrorCode;
+        //        this.ClearRedoCount();
+        //        return result.Value;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        int nRet = ConvertWebError(ex, out strError);
+        //        if (nRet == 0)
+        //            return -1;
+        //        goto REDO;
+        //    }
+        //}
+
+
+        public BatchTaskResponse BatchTask(string strName,
+            string strAction,
+            BatchTaskInfo info)
+        {
+        REDO:
+
+            CookieAwareWebClient client = this.GetClient();
+
+
+            BatchTaskRequest request = new BatchTaskRequest()
+            {
+                strName = strName,
+                strAction = strAction,
+                info = info
+            };
+            byte[] baData = Encoding.UTF8.GetBytes(Serialize(request));
+            byte[] result = client.UploadData(GetRestfulApiUrl("BatchTask"),
+                "POST",
+                baData);
+
+            string strResult = Encoding.UTF8.GetString(result);
+            BatchTaskResponse response = Deserialize<BatchTaskResponse>(strResult);
+            if (response.BatchTaskResult.Value == -1
+                && response.BatchTaskResult.ErrorCode == ErrorCode.NotLogin)
+            {
+                string strError = "";
+                if (DoNotLogin(ref strError) == 1)
+                    goto REDO;
+            }
+
+            return response;
+        }
 
     }
 

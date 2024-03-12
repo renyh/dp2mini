@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Runtime.Serialization;
+using DigitalPlatform.Text;
+using DigitalPlatform.Xml;
+using System.Collections;
 
 namespace DigitalPlatform.LibraryRestClient
 {
@@ -2197,5 +2200,144 @@ LibraryServerResult.ErrorInfo		出错信息
         public string Comment { get; set; }
         [DataMember]
         public string Content { get; set; }
+    }
+
+
+    #region Search
+
+    [DataContract]
+    public class BatchTaskRequest
+    {
+        [DataMember]
+        public string strName { get; set; }
+
+        [DataMember]
+        public string strAction { get; set; }
+
+        [DataMember]
+        public BatchTaskInfo info { get; set; }
+    }
+
+    [DataContract]
+    public class BatchTaskResponse
+    {
+        [DataMember]
+        public LibraryServerResult BatchTaskResult { get; set; }
+
+
+        [DataMember]
+        public BatchTaskInfo resultInfo { get; set; }
+
+    }
+
+    #endregion
+
+    [DataContract(Namespace = "http://dp2003.com/dp2library/")]
+    public class BatchTaskStartInfo
+    {
+        // 启动、停止一般参数
+        [DataMember]
+        public string Param = "";   // 格式一般为XML
+
+        // 专门参数
+        [DataMember]
+        public string BreakPoint = ""; // 断点  格式为 序号@文件名
+        [DataMember]
+        public string Start = ""; // 起点  格式为 序号@文件名
+        [DataMember]
+        public string Count = ""; // 个数 纯数字
+
+        // 207/8/19
+        [DataMember]
+        public bool WaitForBegin { get; set; }  // [in] 在启动的时候，是否等待到 Begin 阶段完成？
+        [DataMember]
+        public string OutputParam { get; set; }  // [out] 启动到 Begin 阶段完成后，返回给前端的信息。比如，实际使用的文件名
+
+        public override string ToString()
+        {
+            Hashtable table = new Hashtable();
+            if (string.IsNullOrEmpty(this.Param) == false)
+                table["Param"] = this.Param;
+            if (string.IsNullOrEmpty(this.BreakPoint) == false)
+                table["BreakPoint"] = this.BreakPoint;
+            if (string.IsNullOrEmpty(this.Start) == false)
+                table["Start"] = this.Start;
+            if (string.IsNullOrEmpty(this.Count) == false)
+                table["Count"] = this.Count;
+
+            if (this.WaitForBegin == true)
+                table["WaitForBegin"] = "true"; // 注：参数缺省表示 false
+            if (string.IsNullOrEmpty(this.OutputParam) == false)
+                table["OutputParam"] = this.OutputParam;
+
+            return StringUtil.BuildParameterString(table, ',', ':');
+        }
+
+        public static BatchTaskStartInfo FromString(string strText)
+        {
+            BatchTaskStartInfo info = new BatchTaskStartInfo();
+            Hashtable table = StringUtil.ParseParameters(strText, ',', ':');
+            info.Param = (string)table["Param"];
+            info.BreakPoint = (string)table["BreakPoint"];
+            info.Start = (string)table["Start"];
+            info.Count = (string)table["Count"];
+
+            info.WaitForBegin = DomUtil.IsBooleanTrue((string)table["WaitForBegin"], false);
+            info.OutputParam = (string)table["OutputParam"];
+            return info;
+        }
+    }
+
+    // 批处理任务信息
+    [DataContract(Namespace = "http://dp2003.com/dp2library/")]
+    public class BatchTaskInfo
+    {
+        // 名字
+        [DataMember]
+        public string Name = "";
+
+        // 状态
+        [DataMember]
+        public string State = "";
+
+        // 当前进度
+        [DataMember]
+        public string ProgressText = "";
+
+        // 输出结果
+        [DataMember]
+        public int MaxResultBytes = 0;
+        [DataMember]
+        public byte[] ResultText = null;
+        [DataMember]
+        public long ResultOffset = 0;   // 本次获得到ResultText达的末尾点
+        [DataMember]
+        public long ResultTotalLength = 0;  // 整个结果文件的长度
+
+        [DataMember]
+        public BatchTaskStartInfo StartInfo = null;
+
+        [DataMember]
+        public long ResultVersion = 0;  // 信息文件版本
+
+        public string Dump()
+        {
+            StringBuilder text = new StringBuilder();
+            if (this.Name != null)
+                text.Append("Name=" + this.Name + "\r\n");
+            if (this.State != null)
+                text.Append("State=" + this.State + "\r\n");
+            if (this.ProgressText != null)
+                text.Append("ProgressText=" + this.ProgressText + "\r\n");
+            text.Append("MaxResultBytes=" + this.MaxResultBytes + "\r\n");
+            text.Append("ResultText=" + ByteArray.GetHexTimeStampString(this.ResultText) + "\r\n");
+            text.Append("ResultOffset=" + this.ResultOffset + "\r\n");
+            text.Append("ResultTotalLength=" + this.ResultTotalLength + "\r\n");
+            if (this.StartInfo != null)
+                text.Append("StartInfo=" + this.StartInfo.ToString() + "\r\n");
+            text.Append("ResultVersion=" + this.ResultVersion + "\r\n");
+
+            return text.ToString();
+        }
     }
 }

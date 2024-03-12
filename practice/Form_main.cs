@@ -22,6 +22,8 @@ using DigitalPlatform.Xml;
 using DigitalPlatform.Core;
 using System.Web;
 using System.Runtime;
+using DigitalPlatform.Text;
+using System.Data.SqlClient;
 
 namespace practice
 {
@@ -3528,6 +3530,134 @@ out string strError);
             {
                 this._channelPool.ReturnChannel(channel);
             }
+        }
+
+        private void button_OK_Click(object sender, EventArgs e)
+        {
+            // 清空底部输出信息
+            this.ClearResultInfo();
+
+            BatchTaskStartInfo startInfo = new BatchTaskStartInfo();
+            if (this.comboBox_recoverLevel.Visible == true
+               && this.comboBox_recoverLevel.Text == "")
+            {
+                MessageBox.Show(this, "尚未指定 恢复级别");
+                return;
+            }
+
+            string strDirectory = this.textBox_logDirectory.Text;
+            string strFile = this.textBox_startFileName.Text;
+
+            //C:\1
+            
+
+            // 仅一个文件，创建一个临时文件夹，把此文件拷进去。
+            if (this.checkBox_task_onlyone.Checked == true)
+            {
+                string temp = strDirectory + "\\temp";
+                // 如果已存在，先删除
+                if (Directory.Exists(temp) == true)
+                {
+                    Directory.Delete(temp,true);
+                }
+                // 创建临时目录
+                if (Directory.Exists(temp) == false)
+                {
+                    Directory.CreateDirectory(temp);
+                }
+
+                string source = strDirectory + "\\" + strFile;
+                string target = temp + "\\" + strFile;
+
+                File.Copy(source, target, true);
+
+                // 把当前目录换成临时目录
+                strDirectory = temp;
+            }
+
+            try
+            {
+                startInfo.Start = LogRecoverStart.Build(strFile,
+                    this.textBox_startIndex.Text);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, ex.Message);
+                return;
+            }
+
+
+
+            string strError = "";
+
+
+
+            // 通用启动参数
+            string strRecoverLevel = "";
+
+            if (this.comboBox_recoverLevel.Visible == true)
+            {
+                strRecoverLevel = this.comboBox_recoverLevel.Text;
+                int nRet = strRecoverLevel.IndexOf('(');
+                if (nRet != -1)
+                    strRecoverLevel = strRecoverLevel.Substring(0, nRet).Trim();
+            }
+
+            startInfo.Param = LogRecoverParam.Build(
+strDirectory,
+strRecoverLevel,
+this.checkBox_clearBefore.Checked,
+this.checkBox_continueWhenError.Checked,
+"");
+
+            RestChannel channel = this.GetChannel();
+            try
+            {
+
+
+                BatchTaskInfo param = new BatchTaskInfo();
+                param.StartInfo = startInfo;
+
+                BatchTaskInfo resultInfo = null;
+
+                // return:
+                //      -1  出错
+                //      0   启动成功
+                //      1   调用前任务已经处于执行状态，本次调用激活了这个任务
+                BatchTaskResponse response = channel.BatchTask(
+                    "日志恢复",//strTaskName,
+                    "start",
+                param);
+                //if (lRet == -1 || lRet == 1)
+                //    goto ERROR1;
+
+                //if (resultInfo != null)
+                //{
+                //    Global.WriteHtml(this.webBrowser_info,
+                //        GetResultText(resultInfo.ResultText));
+                //    ScrollToEnd();
+                //}
+
+
+                // 显示返回信息
+                this.SetResultInfo("BatchTask()\r\n" + RestChannel.GetResultInfo(response));
+
+                //MessageBox.Show(this, "任务已启动");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, "BatchTask()异常：" + ex.Message);
+                return;
+            }
+            finally
+            {
+                this._channelPool.ReturnChannel(channel);
+            }
+
+
+
+
+
         }
     }
 

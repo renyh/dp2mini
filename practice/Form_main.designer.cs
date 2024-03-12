@@ -77,6 +77,21 @@
             this.button_login = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tabPage_task = new System.Windows.Forms.TabPage();
+            this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.checkBox_task_onlyone = new System.Windows.Forms.CheckBox();
+            this.label139 = new System.Windows.Forms.Label();
+            this.textBox_startIndex = new System.Windows.Forms.TextBox();
+            this.label140 = new System.Windows.Forms.Label();
+            this.textBox_startFileName = new System.Windows.Forms.TextBox();
+            this.label138 = new System.Windows.Forms.Label();
+            this.textBox_logDirectory = new System.Windows.Forms.TextBox();
+            this.label142 = new System.Windows.Forms.Label();
+            this.checkBox_continueWhenError = new System.Windows.Forms.CheckBox();
+            this.button_OK = new System.Windows.Forms.Button();
+            this.checkBox_clearBefore = new System.Windows.Forms.CheckBox();
+            this.comboBox_recoverLevel = new System.Windows.Forms.ComboBox();
+            this.label_recoverLevel = new System.Windows.Forms.Label();
             this.tabPage_WriteRes = new System.Windows.Forms.TabPage();
             this.checkBox_WriteRes_baContent = new System.Windows.Forms.CheckBox();
             this.button_WriteRes_createMetadata = new System.Windows.Forms.Button();
@@ -425,6 +440,8 @@
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.tabControl1.SuspendLayout();
+            this.tabPage_task.SuspendLayout();
+            this.groupBox5.SuspendLayout();
             this.tabPage_WriteRes.SuspendLayout();
             this.tabPage_GetRes.SuspendLayout();
             this.tabPage_GetRecord.SuspendLayout();
@@ -715,7 +732,7 @@
             this.textBox_result.Multiline = true;
             this.textBox_result.Name = "textBox_result";
             this.textBox_result.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.textBox_result.Size = new System.Drawing.Size(1333, 106);
+            this.textBox_result.Size = new System.Drawing.Size(1080, 106);
             this.textBox_result.TabIndex = 20;
             // 
             // tabPage_Server
@@ -997,6 +1014,7 @@
             // tabControl1
             // 
             this.tabControl1.Controls.Add(this.tabPage_Server);
+            this.tabControl1.Controls.Add(this.tabPage_task);
             this.tabControl1.Controls.Add(this.tabPage_WriteRes);
             this.tabControl1.Controls.Add(this.tabPage_GetRes);
             this.tabControl1.Controls.Add(this.tabPage_GetRecord);
@@ -1030,8 +1048,182 @@
             this.tabControl1.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(1333, 728);
+            this.tabControl1.Size = new System.Drawing.Size(1080, 728);
             this.tabControl1.TabIndex = 6;
+            // 
+            // tabPage_task
+            // 
+            this.tabPage_task.Controls.Add(this.groupBox5);
+            this.tabPage_task.Controls.Add(this.textBox_logDirectory);
+            this.tabPage_task.Controls.Add(this.label142);
+            this.tabPage_task.Controls.Add(this.checkBox_continueWhenError);
+            this.tabPage_task.Controls.Add(this.button_OK);
+            this.tabPage_task.Controls.Add(this.checkBox_clearBefore);
+            this.tabPage_task.Controls.Add(this.comboBox_recoverLevel);
+            this.tabPage_task.Controls.Add(this.label_recoverLevel);
+            this.tabPage_task.Location = new System.Drawing.Point(10, 46);
+            this.tabPage_task.Name = "tabPage_task";
+            this.tabPage_task.Size = new System.Drawing.Size(1060, 672);
+            this.tabPage_task.TabIndex = 31;
+            this.tabPage_task.Text = "批处理";
+            this.tabPage_task.UseVisualStyleBackColor = true;
+            // 
+            // groupBox5
+            // 
+            this.groupBox5.Controls.Add(this.checkBox_task_onlyone);
+            this.groupBox5.Controls.Add(this.label139);
+            this.groupBox5.Controls.Add(this.textBox_startIndex);
+            this.groupBox5.Controls.Add(this.label140);
+            this.groupBox5.Controls.Add(this.textBox_startFileName);
+            this.groupBox5.Controls.Add(this.label138);
+            this.groupBox5.Location = new System.Drawing.Point(50, 97);
+            this.groupBox5.Margin = new System.Windows.Forms.Padding(5);
+            this.groupBox5.Name = "groupBox5";
+            this.groupBox5.Padding = new System.Windows.Forms.Padding(5);
+            this.groupBox5.Size = new System.Drawing.Size(901, 252);
+            this.groupBox5.TabIndex = 10;
+            this.groupBox5.TabStop = false;
+            this.groupBox5.Text = " 起点 ";
+            // 
+            // checkBox_task_onlyone
+            // 
+            this.checkBox_task_onlyone.AutoSize = true;
+            this.checkBox_task_onlyone.Checked = true;
+            this.checkBox_task_onlyone.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBox_task_onlyone.Location = new System.Drawing.Point(687, 76);
+            this.checkBox_task_onlyone.Margin = new System.Windows.Forms.Padding(5);
+            this.checkBox_task_onlyone.Name = "checkBox_task_onlyone";
+            this.checkBox_task_onlyone.Size = new System.Drawing.Size(166, 31);
+            this.checkBox_task_onlyone.TabIndex = 15;
+            this.checkBox_task_onlyone.Text = "仅1个文件";
+            this.checkBox_task_onlyone.UseVisualStyleBackColor = true;
+            // 
+            // label139
+            // 
+            this.label139.AutoSize = true;
+            this.label139.Location = new System.Drawing.Point(246, 125);
+            this.label139.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label139.Name = "label139";
+            this.label139.Size = new System.Drawing.Size(358, 27);
+            this.label139.TabIndex = 2;
+            this.label139.Text = "(注: 格式为 yyyymmdd.log)";
+            // 
+            // textBox_startIndex
+            // 
+            this.textBox_startIndex.Location = new System.Drawing.Point(251, 180);
+            this.textBox_startIndex.Margin = new System.Windows.Forms.Padding(5);
+            this.textBox_startIndex.Name = "textBox_startIndex";
+            this.textBox_startIndex.Size = new System.Drawing.Size(186, 38);
+            this.textBox_startIndex.TabIndex = 4;
+            this.textBox_startIndex.Text = "0";
+            // 
+            // label140
+            // 
+            this.label140.AutoSize = true;
+            this.label140.Location = new System.Drawing.Point(22, 187);
+            this.label140.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label140.Name = "label140";
+            this.label140.Size = new System.Drawing.Size(176, 27);
+            this.label140.TabIndex = 3;
+            this.label140.Text = "记录序号(&I):";
+            // 
+            // textBox_startFileName
+            // 
+            this.textBox_startFileName.Location = new System.Drawing.Point(251, 69);
+            this.textBox_startFileName.Margin = new System.Windows.Forms.Padding(5);
+            this.textBox_startFileName.Name = "textBox_startFileName";
+            this.textBox_startFileName.Size = new System.Drawing.Size(395, 38);
+            this.textBox_startFileName.TabIndex = 1;
+            // 
+            // label138
+            // 
+            this.label138.AutoSize = true;
+            this.label138.Location = new System.Drawing.Point(22, 77);
+            this.label138.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label138.Name = "label138";
+            this.label138.Size = new System.Drawing.Size(203, 27);
+            this.label138.TabIndex = 0;
+            this.label138.Text = "日志文件名(&F):";
+            // 
+            // textBox_logDirectory
+            // 
+            this.textBox_logDirectory.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBox_logDirectory.Location = new System.Drawing.Point(286, 25);
+            this.textBox_logDirectory.Margin = new System.Windows.Forms.Padding(5);
+            this.textBox_logDirectory.Name = "textBox_logDirectory";
+            this.textBox_logDirectory.Size = new System.Drawing.Size(740, 38);
+            this.textBox_logDirectory.TabIndex = 18;
+            this.textBox_logDirectory.Text = "c:\\1";
+            // 
+            // label142
+            // 
+            this.label142.AutoSize = true;
+            this.label142.Location = new System.Drawing.Point(45, 29);
+            this.label142.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label142.Name = "label142";
+            this.label142.Size = new System.Drawing.Size(230, 27);
+            this.label142.TabIndex = 17;
+            this.label142.Text = "日志文件目录(&D):";
+            // 
+            // checkBox_continueWhenError
+            // 
+            this.checkBox_continueWhenError.AutoSize = true;
+            this.checkBox_continueWhenError.Location = new System.Drawing.Point(52, 523);
+            this.checkBox_continueWhenError.Margin = new System.Windows.Forms.Padding(5);
+            this.checkBox_continueWhenError.Name = "checkBox_continueWhenError";
+            this.checkBox_continueWhenError.Size = new System.Drawing.Size(302, 31);
+            this.checkBox_continueWhenError.TabIndex = 14;
+            this.checkBox_continueWhenError.Text = "出错后继续批处理(&T)";
+            this.checkBox_continueWhenError.UseVisualStyleBackColor = true;
+            // 
+            // button_OK
+            // 
+            this.button_OK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.button_OK.Location = new System.Drawing.Point(596, 565);
+            this.button_OK.Margin = new System.Windows.Forms.Padding(5);
+            this.button_OK.Name = "button_OK";
+            this.button_OK.Size = new System.Drawing.Size(355, 49);
+            this.button_OK.TabIndex = 15;
+            this.button_OK.Text = "确定";
+            this.button_OK.UseVisualStyleBackColor = true;
+            this.button_OK.Click += new System.EventHandler(this.button_OK_Click);
+            // 
+            // checkBox_clearBefore
+            // 
+            this.checkBox_clearBefore.AutoSize = true;
+            this.checkBox_clearBefore.Location = new System.Drawing.Point(52, 480);
+            this.checkBox_clearBefore.Margin = new System.Windows.Forms.Padding(5);
+            this.checkBox_clearBefore.Name = "checkBox_clearBefore";
+            this.checkBox_clearBefore.Size = new System.Drawing.Size(424, 31);
+            this.checkBox_clearBefore.TabIndex = 13;
+            this.checkBox_clearBefore.Text = "恢复前 清除全部数据库记录(&C)";
+            this.checkBox_clearBefore.UseVisualStyleBackColor = true;
+            // 
+            // comboBox_recoverLevel
+            // 
+            this.comboBox_recoverLevel.FormattingEnabled = true;
+            this.comboBox_recoverLevel.Items.AddRange(new object[] {
+            "Logic(逻辑)",
+            "LogicAndSnapshot(逻辑+快照)",
+            "Snapshot(快照)",
+            "Robust(容错)"});
+            this.comboBox_recoverLevel.Location = new System.Drawing.Point(290, 392);
+            this.comboBox_recoverLevel.Margin = new System.Windows.Forms.Padding(5);
+            this.comboBox_recoverLevel.Name = "comboBox_recoverLevel";
+            this.comboBox_recoverLevel.Size = new System.Drawing.Size(415, 35);
+            this.comboBox_recoverLevel.TabIndex = 12;
+            this.comboBox_recoverLevel.Text = "Snapshot(快照)";
+            // 
+            // label_recoverLevel
+            // 
+            this.label_recoverLevel.AutoSize = true;
+            this.label_recoverLevel.Location = new System.Drawing.Point(47, 398);
+            this.label_recoverLevel.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label_recoverLevel.Name = "label_recoverLevel";
+            this.label_recoverLevel.Size = new System.Drawing.Size(176, 27);
+            this.label_recoverLevel.TabIndex = 11;
+            this.label_recoverLevel.Text = "恢复级别(&L):";
             // 
             // tabPage_WriteRes
             // 
@@ -4663,7 +4855,7 @@
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Padding = new System.Windows.Forms.Padding(9, 3, 0, 3);
-            this.menuStrip1.Size = new System.Drawing.Size(1347, 45);
+            this.menuStrip1.Size = new System.Drawing.Size(1094, 45);
             this.menuStrip1.TabIndex = 8;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -4742,7 +4934,7 @@
             this.splitContainer1.Panel2.BackColor = System.Drawing.SystemColors.Info;
             this.splitContainer1.Panel2.Controls.Add(this.textBox_result);
             this.splitContainer1.Panel2.Paint += new System.Windows.Forms.PaintEventHandler(this.splitContainer1_Panel2_Paint);
-            this.splitContainer1.Size = new System.Drawing.Size(1333, 838);
+            this.splitContainer1.Size = new System.Drawing.Size(1080, 838);
             this.splitContainer1.SplitterDistance = 728;
             this.splitContainer1.TabIndex = 21;
             // 
@@ -4751,7 +4943,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(216F, 216F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.AutoScroll = true;
-            this.ClientSize = new System.Drawing.Size(1347, 897);
+            this.ClientSize = new System.Drawing.Size(1094, 897);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.menuStrip1);
             this.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
@@ -4768,6 +4960,10 @@
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.tabControl1.ResumeLayout(false);
+            this.tabPage_task.ResumeLayout(false);
+            this.tabPage_task.PerformLayout();
+            this.groupBox5.ResumeLayout(false);
+            this.groupBox5.PerformLayout();
             this.tabPage_WriteRes.ResumeLayout(false);
             this.tabPage_WriteRes.PerformLayout();
             this.tabPage_GetRes.ResumeLayout(false);
@@ -5231,6 +5427,21 @@
         private System.Windows.Forms.TextBox textBox_setCalendar_name;
         private System.Windows.Forms.Label label136;
         private System.Windows.Forms.Label label137;
+        private System.Windows.Forms.TabPage tabPage_task;
+        private System.Windows.Forms.GroupBox groupBox5;
+        private System.Windows.Forms.Label label139;
+        private System.Windows.Forms.TextBox textBox_startIndex;
+        private System.Windows.Forms.Label label140;
+        private System.Windows.Forms.TextBox textBox_startFileName;
+        private System.Windows.Forms.Label label138;
+        private System.Windows.Forms.TextBox textBox_logDirectory;
+        private System.Windows.Forms.Label label142;
+        private System.Windows.Forms.CheckBox checkBox_continueWhenError;
+        private System.Windows.Forms.Button button_OK;
+        private System.Windows.Forms.CheckBox checkBox_clearBefore;
+        private System.Windows.Forms.ComboBox comboBox_recoverLevel;
+        private System.Windows.Forms.Label label_recoverLevel;
+        private System.Windows.Forms.CheckBox checkBox_task_onlyone;
     }
 }
 
