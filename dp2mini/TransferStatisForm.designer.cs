@@ -146,15 +146,19 @@
             this.columnHeader59 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader60 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader61 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.tabPage_borrowByReaderBarcode = new System.Windows.Forms.TabPage();
             this.listView_borrowByBarcode = new System.Windows.Forms.ListView();
             this.columnHeader64 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader65 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader66 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader67 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader68 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.tabPage_borrowReturnByItemBarcode = new System.Windows.Forms.TabPage();
             this.label4 = new System.Windows.Forms.Label();
             this.textBox_librarycode = new System.Windows.Forms.TextBox();
+            this.listView_borrowAndReturnItemBarcode = new System.Windows.Forms.ListView();
+            this.columnHeader63 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader71 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -167,7 +171,8 @@
             this.tabPage_return.SuspendLayout();
             this.tabPage_returnStatis.SuspendLayout();
             this.tabPage_borrowAndReturn.SuspendLayout();
-            this.tabPage1.SuspendLayout();
+            this.tabPage_borrowByReaderBarcode.SuspendLayout();
+            this.tabPage_borrowReturnByItemBarcode.SuspendLayout();
             this.SuspendLayout();
             // 
             // button_search
@@ -596,7 +601,7 @@
             this.textBox_xml.Name = "textBox_xml";
             this.textBox_xml.ReadOnly = true;
             this.textBox_xml.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.textBox_xml.Size = new System.Drawing.Size(592, 580);
+            this.textBox_xml.Size = new System.Drawing.Size(588, 580);
             this.textBox_xml.TabIndex = 0;
             // 
             // tabControl_table
@@ -611,7 +616,8 @@
             this.tabControl_table.Controls.Add(this.tabPage_return);
             this.tabControl_table.Controls.Add(this.tabPage_returnStatis);
             this.tabControl_table.Controls.Add(this.tabPage_borrowAndReturn);
-            this.tabControl_table.Controls.Add(this.tabPage1);
+            this.tabControl_table.Controls.Add(this.tabPage_borrowByReaderBarcode);
+            this.tabControl_table.Controls.Add(this.tabPage_borrowReturnByItemBarcode);
             this.tabControl_table.Location = new System.Drawing.Point(28, 130);
             this.tabControl_table.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.tabControl_table.Name = "tabControl_table";
@@ -735,7 +741,7 @@
             this.tabPage_borrowStatis.Name = "tabPage_borrowStatis";
             this.tabPage_borrowStatis.Size = new System.Drawing.Size(1844, 606);
             this.tabPage_borrowStatis.TabIndex = 2;
-            this.tabPage_borrowStatis.Text = "借书统计";
+            this.tabPage_borrowStatis.Text = "借书统计(馆藏地+证条码+姓名+部门)";
             this.tabPage_borrowStatis.UseVisualStyleBackColor = true;
             // 
             // listView_borrowStatis
@@ -918,7 +924,7 @@
             this.tabPage_returnStatis.Name = "tabPage_returnStatis";
             this.tabPage_returnStatis.Size = new System.Drawing.Size(1844, 606);
             this.tabPage_returnStatis.TabIndex = 4;
-            this.tabPage_returnStatis.Text = "还书统计";
+            this.tabPage_returnStatis.Text = "还书统计(馆藏地+证条码+姓名+部门)";
             this.tabPage_returnStatis.UseVisualStyleBackColor = true;
             // 
             // listView_returnStatis
@@ -983,7 +989,7 @@
             this.tabPage_borrowAndReturn.Name = "tabPage_borrowAndReturn";
             this.tabPage_borrowAndReturn.Size = new System.Drawing.Size(1844, 606);
             this.tabPage_borrowAndReturn.TabIndex = 5;
-            this.tabPage_borrowAndReturn.Text = "借还统计";
+            this.tabPage_borrowAndReturn.Text = "借还统计(证条码+姓名+部门)";
             this.tabPage_borrowAndReturn.UseVisualStyleBackColor = true;
             // 
             // listView_borrowAndReurn_statis
@@ -1029,15 +1035,15 @@
             this.columnHeader61.Text = "借还数量";
             this.columnHeader61.Width = 210;
             // 
-            // tabPage1
+            // tabPage_borrowByReaderBarcode
             // 
-            this.tabPage1.Controls.Add(this.listView_borrowByBarcode);
-            this.tabPage1.Location = new System.Drawing.Point(10, 10);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Size = new System.Drawing.Size(1844, 606);
-            this.tabPage1.TabIndex = 6;
-            this.tabPage1.Text = "借书统计(按证条码）";
-            this.tabPage1.UseVisualStyleBackColor = true;
+            this.tabPage_borrowByReaderBarcode.Controls.Add(this.listView_borrowByBarcode);
+            this.tabPage_borrowByReaderBarcode.Location = new System.Drawing.Point(10, 10);
+            this.tabPage_borrowByReaderBarcode.Name = "tabPage_borrowByReaderBarcode";
+            this.tabPage_borrowByReaderBarcode.Size = new System.Drawing.Size(1844, 606);
+            this.tabPage_borrowByReaderBarcode.TabIndex = 6;
+            this.tabPage_borrowByReaderBarcode.Text = "借书统计(证条码)";
+            this.tabPage_borrowByReaderBarcode.UseVisualStyleBackColor = true;
             // 
             // listView_borrowByBarcode
             // 
@@ -1088,6 +1094,16 @@
             this.columnHeader68.Text = "总价";
             this.columnHeader68.Width = 166;
             // 
+            // tabPage_borrowReturnByItemBarcode
+            // 
+            this.tabPage_borrowReturnByItemBarcode.Controls.Add(this.listView_borrowAndReturnItemBarcode);
+            this.tabPage_borrowReturnByItemBarcode.Location = new System.Drawing.Point(10, 10);
+            this.tabPage_borrowReturnByItemBarcode.Name = "tabPage_borrowReturnByItemBarcode";
+            this.tabPage_borrowReturnByItemBarcode.Size = new System.Drawing.Size(1844, 606);
+            this.tabPage_borrowReturnByItemBarcode.TabIndex = 7;
+            this.tabPage_borrowReturnByItemBarcode.Text = "借还统计(册条码)";
+            this.tabPage_borrowReturnByItemBarcode.UseVisualStyleBackColor = true;
+            // 
             // label4
             // 
             this.label4.AutoSize = true;
@@ -1105,6 +1121,35 @@
             this.textBox_librarycode.Name = "textBox_librarycode";
             this.textBox_librarycode.Size = new System.Drawing.Size(406, 38);
             this.textBox_librarycode.TabIndex = 19;
+            // 
+            // listView_borrowAndReturnItemBarcode
+            // 
+            this.listView_borrowAndReturnItemBarcode.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader63,
+            this.columnHeader71});
+            this.listView_borrowAndReturnItemBarcode.ContextMenuStrip = this.contextMenuStrip_statis;
+            this.listView_borrowAndReturnItemBarcode.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.listView_borrowAndReturnItemBarcode.FullRowSelect = true;
+            this.listView_borrowAndReturnItemBarcode.GridLines = true;
+            this.listView_borrowAndReturnItemBarcode.HideSelection = false;
+            this.listView_borrowAndReturnItemBarcode.Location = new System.Drawing.Point(0, 0);
+            this.listView_borrowAndReturnItemBarcode.Margin = new System.Windows.Forms.Padding(6);
+            this.listView_borrowAndReturnItemBarcode.Name = "listView_borrowAndReturnItemBarcode";
+            this.listView_borrowAndReturnItemBarcode.Size = new System.Drawing.Size(1844, 606);
+            this.listView_borrowAndReturnItemBarcode.TabIndex = 17;
+            this.listView_borrowAndReturnItemBarcode.UseCompatibleStateImageBehavior = false;
+            this.listView_borrowAndReturnItemBarcode.View = System.Windows.Forms.View.Details;
+            this.listView_borrowAndReturnItemBarcode.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.listView_borrowAndReturnItemBarcode_ColumnClick);
+            // 
+            // columnHeader63
+            // 
+            this.columnHeader63.Text = "册条码";
+            this.columnHeader63.Width = 229;
+            // 
+            // columnHeader71
+            // 
+            this.columnHeader71.Text = "借还数量";
+            this.columnHeader71.Width = 210;
             // 
             // TransferStatisForm
             // 
@@ -1141,7 +1186,8 @@
             this.tabPage_return.ResumeLayout(false);
             this.tabPage_returnStatis.ResumeLayout(false);
             this.tabPage_borrowAndReturn.ResumeLayout(false);
-            this.tabPage1.ResumeLayout(false);
+            this.tabPage_borrowByReaderBarcode.ResumeLayout(false);
+            this.tabPage_borrowReturnByItemBarcode.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1267,12 +1313,16 @@
         private System.Windows.Forms.ColumnHeader columnHeader5_price;
         private System.Windows.Forms.ColumnHeader columnHeader57;
         private System.Windows.Forms.ColumnHeader columnHeader62;
-        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.TabPage tabPage_borrowByReaderBarcode;
         private System.Windows.Forms.ListView listView_borrowByBarcode;
         private System.Windows.Forms.ColumnHeader columnHeader64;
         private System.Windows.Forms.ColumnHeader columnHeader65;
         private System.Windows.Forms.ColumnHeader columnHeader66;
         private System.Windows.Forms.ColumnHeader columnHeader67;
         private System.Windows.Forms.ColumnHeader columnHeader68;
+        private System.Windows.Forms.TabPage tabPage_borrowReturnByItemBarcode;
+        private System.Windows.Forms.ListView listView_borrowAndReturnItemBarcode;
+        private System.Windows.Forms.ColumnHeader columnHeader63;
+        private System.Windows.Forms.ColumnHeader columnHeader71;
     }
 }

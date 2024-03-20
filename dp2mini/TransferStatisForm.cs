@@ -207,6 +207,9 @@ namespace dp2mini
                     // 借还统计
                     this.StatisBorrowAndReturn();
 
+                    // 借还统计
+                    this.StatisBorrowAndReturnByItemBarcode();
+
                 }
 ));
 
@@ -422,6 +425,31 @@ namespace dp2mini
             }
         }
 
+
+        // 根据册条码号 对借书和还书日志进行聚合
+        public void StatisBorrowAndReturnByItemBarcode()
+        {
+            listView_borrowAndReturnItemBarcode.Items.Clear();
+
+            // 让用户选择需要统计的范围。根据批次号、目标位置来进行选择
+            var list = this._borrowAndReturnItems.GroupBy(
+                x => new { x.itemBarcode},
+                (key, item_list) => new BorrowGroup
+                {
+                    itemBarcode = key.itemBarcode,
+
+                    Items = new List<BorrowLogItem>(item_list)
+                }).OrderByDescending(o => o.Items.Count).ToList();
+
+
+            foreach (BorrowGroup group in list)
+            {
+                ListViewItem viewItem = new ListViewItem(group.itemBarcode, 0);
+                this.listView_borrowAndReturnItemBarcode.Items.Add(viewItem);
+
+                viewItem.SubItems.Add(group.Items.Count.ToString());
+            }
+        }
 
 
         // 日志记录hastable,方便点一条，在右侧看到详细信息
@@ -777,16 +805,18 @@ namespace dp2mini
                         temp = this.listView_results;
                     else if (tabName == "借书日志")
                         temp = this.listView_log_borrow;
-                    else if (tabName == "借书统计")
+                    else if (tabName == "借书统计(馆藏地+证条码+姓名+部门)")
                         temp = this.listView_borrowStatis;
                     else if (tabName == "还书日志")
                         temp = this.listView_return;
-                    else if (tabName == "还书统计")
+                    else if (tabName == "还书统计(馆藏地+证条码+姓名+部门)")
                         temp = this.listView_returnStatis;
-                    else if (tabName == "借还统计")
+                    else if (tabName == "借还统计(证条码+姓名+部门)")
                         temp = this.listView_borrowAndReurn_statis;
-                    else if (tabName == "借书统计(按证条码）")  
+                    else if (tabName == "借书统计(证条码)")  
                         temp = this.listView_borrowByBarcode;
+                    else if (tabName == "借还统计(册条码)")
+                        temp = this.listView_borrowAndReturnItemBarcode;
                     else
                         continue;  // 不认识的表
 
@@ -1022,6 +1052,7 @@ namespace dp2mini
         SortColumns SortColumns_borrowStatisByBarcode = new SortColumns();
 
         SortColumns SortColumns_borrowAndReturnStatis = new SortColumns();
+        SortColumns SortColumns_borrowAndReturnItemBarcode = new SortColumns();
 
         public static void SortCol(ListView myListView, SortColumns sortCol, int nClickColumn)
         {
@@ -1134,6 +1165,12 @@ namespace dp2mini
             int nClickColumn = e.Column;
             SortCol(this.listView_borrowByBarcode, SortColumns_borrowStatisByBarcode, nClickColumn);
         }
+
+        private void listView_borrowAndReturnItemBarcode_ColumnClick(object sender, ColumnClickEventArgs e)
+        {
+            int nClickColumn = e.Column;
+            SortCol(this.listView_borrowAndReturnItemBarcode, SortColumns_borrowAndReturnItemBarcode, nClickColumn);
+        }
     }
 
     public class BorrowLogItem
@@ -1186,6 +1223,9 @@ namespace dp2mini
 
 
         public int count{ get; set; }
+
+        // 2024/03/20 增加 册条码号
+        public string itemBarcode { get; set; }
     }
 
     public class LocationGroup
