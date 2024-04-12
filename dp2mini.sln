@@ -27,6 +27,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "bookshelf", "bookshelf\book
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTestPrice", "UnitTestPrice\UnitTestPrice.csproj", "{96B2F54F-5919-4E44-B866-CC9228BC317C}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "opeLogTool", "opeLogTool\opeLogTool.csproj", "{1DB5A9E5-4801-42CF-8DAB-BB2C39615D79}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -81,6 +83,10 @@ Global
 		{96B2F54F-5919-4E44-B866-CC9228BC317C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{96B2F54F-5919-4E44-B866-CC9228BC317C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{96B2F54F-5919-4E44-B866-CC9228BC317C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1DB5A9E5-4801-42CF-8DAB-BB2C39615D79}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1DB5A9E5-4801-42CF-8DAB-BB2C39615D79}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1DB5A9E5-4801-42CF-8DAB-BB2C39615D79}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1DB5A9E5-4801-42CF-8DAB-BB2C39615D79}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
