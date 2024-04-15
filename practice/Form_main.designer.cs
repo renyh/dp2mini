@@ -435,6 +435,23 @@
             this.自动测试1ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.自动测试2ToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.tabPage_RepairBorrowInfo = new System.Windows.Forms.TabPage();
+            this.button4 = new System.Windows.Forms.Button();
+            this.label141 = new System.Windows.Forms.Label();
+            this.textBox__RepairBorrowInfo_strComment = new System.Windows.Forms.TextBox();
+            this.label143 = new System.Windows.Forms.Label();
+            this.textBox_RepairBorrowInfo_nStart = new System.Windows.Forms.TextBox();
+            this.label144 = new System.Windows.Forms.Label();
+            this.textBox_RepairBorrowInfo_strConfirmItemRecPath = new System.Windows.Forms.TextBox();
+            this.label145 = new System.Windows.Forms.Label();
+            this.label146 = new System.Windows.Forms.Label();
+            this.textBox_RepairBorrowInfo_strItemBarcode = new System.Windows.Forms.TextBox();
+            this.label147 = new System.Windows.Forms.Label();
+            this.textBox_RepairBorrowInfo_strAction = new System.Windows.Forms.TextBox();
+            this.label148 = new System.Windows.Forms.Label();
+            this.textBox_RepairBorrowInfo_strReaderBarcode = new System.Windows.Forms.TextBox();
+            this.button_RepairBorrowInfo = new System.Windows.Forms.Button();
+            this.textBox_RepairBorrowInfo_nCount = new System.Windows.Forms.TextBox();
             this.tabPage_SearchBiblio.SuspendLayout();
             this.tabPage_Server.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -476,6 +493,7 @@
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
+            this.tabPage_RepairBorrowInfo.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabPage_SearchBiblio
@@ -1015,6 +1033,7 @@
             // 
             this.tabControl1.Controls.Add(this.tabPage_Server);
             this.tabControl1.Controls.Add(this.tabPage_task);
+            this.tabControl1.Controls.Add(this.tabPage_RepairBorrowInfo);
             this.tabControl1.Controls.Add(this.tabPage_WriteRes);
             this.tabControl1.Controls.Add(this.tabPage_GetRes);
             this.tabControl1.Controls.Add(this.tabPage_GetRecord);
@@ -4855,7 +4874,7 @@
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Padding = new System.Windows.Forms.Padding(9, 3, 0, 3);
-            this.menuStrip1.Size = new System.Drawing.Size(1094, 45);
+            this.menuStrip1.Size = new System.Drawing.Size(1094, 54);
             this.menuStrip1.TabIndex = 8;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -4866,7 +4885,7 @@
             this.z3950ToolStripMenuItem,
             this.处理MARC字段ToolStripMenuItem});
             this.文件ToolStripMenuItem.Name = "文件ToolStripMenuItem";
-            this.文件ToolStripMenuItem.Size = new System.Drawing.Size(91, 39);
+            this.文件ToolStripMenuItem.Size = new System.Drawing.Size(91, 48);
             this.文件ToolStripMenuItem.Text = "文件";
             // 
             // 通用练习题ToolStripMenuItem
@@ -4896,7 +4915,7 @@
             this.自动测试1ToolStripMenuItem,
             this.自动测试2ToolStripMenuItem1});
             this.功能ToolStripMenuItem.Name = "功能ToolStripMenuItem";
-            this.功能ToolStripMenuItem.Size = new System.Drawing.Size(145, 39);
+            this.功能ToolStripMenuItem.Size = new System.Drawing.Size(145, 48);
             this.功能ToolStripMenuItem.Text = "自动测试";
             this.功能ToolStripMenuItem.Click += new System.EventHandler(this.功能ToolStripMenuItem_Click);
             // 
@@ -4937,6 +4956,193 @@
             this.splitContainer1.Size = new System.Drawing.Size(1080, 838);
             this.splitContainer1.SplitterDistance = 728;
             this.splitContainer1.TabIndex = 21;
+            // 
+            // tabPage_RepairBorrowInfo
+            // 
+            this.tabPage_RepairBorrowInfo.Controls.Add(this.textBox_RepairBorrowInfo_nCount);
+            this.tabPage_RepairBorrowInfo.Controls.Add(this.button4);
+            this.tabPage_RepairBorrowInfo.Controls.Add(this.label141);
+            this.tabPage_RepairBorrowInfo.Controls.Add(this.textBox__RepairBorrowInfo_strComment);
+            this.tabPage_RepairBorrowInfo.Controls.Add(this.label143);
+            this.tabPage_RepairBorrowInfo.Controls.Add(this.textBox_RepairBorrowInfo_nStart);
+            this.tabPage_RepairBorrowInfo.Controls.Add(this.label144);
+            this.tabPage_RepairBorrowInfo.Controls.Add(this.textBox_RepairBorrowInfo_strConfirmItemRecPath);
+            this.tabPage_RepairBorrowInfo.Controls.Add(this.label145);
+            this.tabPage_RepairBorrowInfo.Controls.Add(this.label146);
+            this.tabPage_RepairBorrowInfo.Controls.Add(this.textBox_RepairBorrowInfo_strItemBarcode);
+            this.tabPage_RepairBorrowInfo.Controls.Add(this.label147);
+            this.tabPage_RepairBorrowInfo.Controls.Add(this.textBox_RepairBorrowInfo_strAction);
+            this.tabPage_RepairBorrowInfo.Controls.Add(this.label148);
+            this.tabPage_RepairBorrowInfo.Controls.Add(this.textBox_RepairBorrowInfo_strReaderBarcode);
+            this.tabPage_RepairBorrowInfo.Controls.Add(this.button_RepairBorrowInfo);
+            this.tabPage_RepairBorrowInfo.Location = new System.Drawing.Point(10, 46);
+            this.tabPage_RepairBorrowInfo.Name = "tabPage_RepairBorrowInfo";
+            this.tabPage_RepairBorrowInfo.Size = new System.Drawing.Size(1060, 672);
+            this.tabPage_RepairBorrowInfo.TabIndex = 32;
+            this.tabPage_RepairBorrowInfo.Text = "RepairBorrowInfo";
+            this.tabPage_RepairBorrowInfo.UseVisualStyleBackColor = true;
+            // 
+            // button4
+            // 
+            this.button4.Location = new System.Drawing.Point(1, 2);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(54, 117);
+            this.button4.TabIndex = 72;
+            this.button4.Text = "帮助";
+            this.button4.UseVisualStyleBackColor = true;
+            // 
+            // label141
+            // 
+            this.label141.AutoSize = true;
+            this.label141.Location = new System.Drawing.Point(154, 272);
+            this.label141.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label141.Name = "label141";
+            this.label141.Size = new System.Drawing.Size(152, 27);
+            this.label141.TabIndex = 71;
+            this.label141.Text = "strComment";
+            // 
+            // textBox__RepairBorrowInfo_strComment
+            // 
+            this.textBox__RepairBorrowInfo_strComment.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBox__RepairBorrowInfo_strComment.Location = new System.Drawing.Point(317, 272);
+            this.textBox__RepairBorrowInfo_strComment.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.textBox__RepairBorrowInfo_strComment.Name = "textBox__RepairBorrowInfo_strComment";
+            this.textBox__RepairBorrowInfo_strComment.Size = new System.Drawing.Size(682, 38);
+            this.textBox__RepairBorrowInfo_strComment.TabIndex = 70;
+            // 
+            // label143
+            // 
+            this.label143.AutoSize = true;
+            this.label143.Location = new System.Drawing.Point(210, 344);
+            this.label143.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label143.Name = "label143";
+            this.label143.Size = new System.Drawing.Size(96, 27);
+            this.label143.TabIndex = 69;
+            this.label143.Text = "nStart";
+            // 
+            // textBox_RepairBorrowInfo_nStart
+            // 
+            this.textBox_RepairBorrowInfo_nStart.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBox_RepairBorrowInfo_nStart.Location = new System.Drawing.Point(316, 344);
+            this.textBox_RepairBorrowInfo_nStart.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.textBox_RepairBorrowInfo_nStart.Name = "textBox_RepairBorrowInfo_nStart";
+            this.textBox_RepairBorrowInfo_nStart.Size = new System.Drawing.Size(682, 38);
+            this.textBox_RepairBorrowInfo_nStart.TabIndex = 68;
+            // 
+            // label144
+            // 
+            this.label144.AutoSize = true;
+            this.label144.Location = new System.Drawing.Point(4, 222);
+            this.label144.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label144.Name = "label144";
+            this.label144.Size = new System.Drawing.Size(306, 27);
+            this.label144.TabIndex = 67;
+            this.label144.Text = "strConfirmItemRecPath";
+            // 
+            // textBox_RepairBorrowInfo_strConfirmItemRecPath
+            // 
+            this.textBox_RepairBorrowInfo_strConfirmItemRecPath.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBox_RepairBorrowInfo_strConfirmItemRecPath.Location = new System.Drawing.Point(316, 211);
+            this.textBox_RepairBorrowInfo_strConfirmItemRecPath.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.textBox_RepairBorrowInfo_strConfirmItemRecPath.Name = "textBox_RepairBorrowInfo_strConfirmItemRecPath";
+            this.textBox_RepairBorrowInfo_strConfirmItemRecPath.Size = new System.Drawing.Size(682, 38);
+            this.textBox_RepairBorrowInfo_strConfirmItemRecPath.TabIndex = 66;
+            // 
+            // label145
+            // 
+            this.label145.AutoSize = true;
+            this.label145.Location = new System.Drawing.Point(210, 395);
+            this.label145.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label145.Name = "label145";
+            this.label145.Size = new System.Drawing.Size(96, 27);
+            this.label145.TabIndex = 65;
+            this.label145.Text = "nCount";
+            // 
+            // label146
+            // 
+            this.label146.AutoSize = true;
+            this.label146.Location = new System.Drawing.Point(98, 172);
+            this.label146.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label146.Name = "label146";
+            this.label146.Size = new System.Drawing.Size(208, 27);
+            this.label146.TabIndex = 63;
+            this.label146.Text = "strItemBarcode";
+            // 
+            // textBox_RepairBorrowInfo_strItemBarcode
+            // 
+            this.textBox_RepairBorrowInfo_strItemBarcode.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBox_RepairBorrowInfo_strItemBarcode.Location = new System.Drawing.Point(316, 161);
+            this.textBox_RepairBorrowInfo_strItemBarcode.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.textBox_RepairBorrowInfo_strItemBarcode.Name = "textBox_RepairBorrowInfo_strItemBarcode";
+            this.textBox_RepairBorrowInfo_strItemBarcode.Size = new System.Drawing.Size(682, 38);
+            this.textBox_RepairBorrowInfo_strItemBarcode.TabIndex = 62;
+            // 
+            // label147
+            // 
+            this.label147.AutoSize = true;
+            this.label147.Location = new System.Drawing.Point(168, 44);
+            this.label147.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label147.Name = "label147";
+            this.label147.Size = new System.Drawing.Size(138, 27);
+            this.label147.TabIndex = 61;
+            this.label147.Text = "strAction";
+            // 
+            // textBox_RepairBorrowInfo_strAction
+            // 
+            this.textBox_RepairBorrowInfo_strAction.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBox_RepairBorrowInfo_strAction.Location = new System.Drawing.Point(316, 41);
+            this.textBox_RepairBorrowInfo_strAction.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.textBox_RepairBorrowInfo_strAction.Name = "textBox_RepairBorrowInfo_strAction";
+            this.textBox_RepairBorrowInfo_strAction.Size = new System.Drawing.Size(682, 38);
+            this.textBox_RepairBorrowInfo_strAction.TabIndex = 60;
+            // 
+            // label148
+            // 
+            this.label148.AutoSize = true;
+            this.label148.Location = new System.Drawing.Point(74, 113);
+            this.label148.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label148.Name = "label148";
+            this.label148.Size = new System.Drawing.Size(236, 27);
+            this.label148.TabIndex = 59;
+            this.label148.Text = "strReaderBarcode";
+            // 
+            // textBox_RepairBorrowInfo_strReaderBarcode
+            // 
+            this.textBox_RepairBorrowInfo_strReaderBarcode.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBox_RepairBorrowInfo_strReaderBarcode.Location = new System.Drawing.Point(316, 110);
+            this.textBox_RepairBorrowInfo_strReaderBarcode.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.textBox_RepairBorrowInfo_strReaderBarcode.Name = "textBox_RepairBorrowInfo_strReaderBarcode";
+            this.textBox_RepairBorrowInfo_strReaderBarcode.Size = new System.Drawing.Size(682, 38);
+            this.textBox_RepairBorrowInfo_strReaderBarcode.TabIndex = 58;
+            // 
+            // button_RepairBorrowInfo
+            // 
+            this.button_RepairBorrowInfo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.button_RepairBorrowInfo.Location = new System.Drawing.Point(317, 482);
+            this.button_RepairBorrowInfo.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.button_RepairBorrowInfo.Name = "button_RepairBorrowInfo";
+            this.button_RepairBorrowInfo.Size = new System.Drawing.Size(315, 57);
+            this.button_RepairBorrowInfo.TabIndex = 57;
+            this.button_RepairBorrowInfo.Tag = "";
+            this.button_RepairBorrowInfo.Text = "RepairBorrowInfo";
+            this.button_RepairBorrowInfo.UseVisualStyleBackColor = true;
+            this.button_RepairBorrowInfo.Click += new System.EventHandler(this.button_RepairBorrowInfo_Click);
+            // 
+            // textBox_RepairBorrowInfo_nCount
+            // 
+            this.textBox_RepairBorrowInfo_nCount.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBox_RepairBorrowInfo_nCount.Location = new System.Drawing.Point(317, 407);
+            this.textBox_RepairBorrowInfo_nCount.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.textBox_RepairBorrowInfo_nCount.Name = "textBox_RepairBorrowInfo_nCount";
+            this.textBox_RepairBorrowInfo_nCount.Size = new System.Drawing.Size(682, 38);
+            this.textBox_RepairBorrowInfo_nCount.TabIndex = 73;
             // 
             // Form_main
             // 
@@ -5029,6 +5235,8 @@
             this.splitContainer1.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
+            this.tabPage_RepairBorrowInfo.ResumeLayout(false);
+            this.tabPage_RepairBorrowInfo.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -5442,6 +5650,23 @@
         private System.Windows.Forms.ComboBox comboBox_recoverLevel;
         private System.Windows.Forms.Label label_recoverLevel;
         private System.Windows.Forms.CheckBox checkBox_task_onlyone;
+        private System.Windows.Forms.TabPage tabPage_RepairBorrowInfo;
+        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Label label141;
+        private System.Windows.Forms.TextBox textBox__RepairBorrowInfo_strComment;
+        private System.Windows.Forms.Label label143;
+        private System.Windows.Forms.TextBox textBox_RepairBorrowInfo_nStart;
+        private System.Windows.Forms.Label label144;
+        private System.Windows.Forms.TextBox textBox_RepairBorrowInfo_strConfirmItemRecPath;
+        private System.Windows.Forms.Label label145;
+        private System.Windows.Forms.Label label146;
+        private System.Windows.Forms.TextBox textBox_RepairBorrowInfo_strItemBarcode;
+        private System.Windows.Forms.Label label147;
+        private System.Windows.Forms.TextBox textBox_RepairBorrowInfo_strAction;
+        private System.Windows.Forms.Label label148;
+        private System.Windows.Forms.TextBox textBox_RepairBorrowInfo_strReaderBarcode;
+        private System.Windows.Forms.Button button_RepairBorrowInfo;
+        private System.Windows.Forms.TextBox textBox_RepairBorrowInfo_nCount;
     }
 }
 

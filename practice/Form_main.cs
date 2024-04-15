@@ -3659,6 +3659,69 @@ this.checkBox_continueWhenError.Checked,
 
 
         }
+
+        private void button_RepairBorrowInfo_Click(object sender, EventArgs e)
+        {
+
+            // 清空底部输出信息
+            this.ClearResultInfo();
+
+            // 输入参数
+            string strAction = this.textBox_RepairBorrowInfo_strAction.Text.Trim();
+            string strReaderBarcode = this.textBox_RepairBorrowInfo_strReaderBarcode.Text.Trim();
+            string strItemBarcode = this.textBox_RepairBorrowInfo_strItemBarcode.Text.Trim();
+            string strConfirmItemRecPath = this.textBox_RepairBorrowInfo_strConfirmItemRecPath.Text.Trim();
+            int nStart = 0; //
+            string strStart= this.textBox_RepairBorrowInfo_nStart.Text.Trim();
+            if (string.IsNullOrEmpty(strStart) == false)
+            {
+                try
+                {
+                    nStart = Convert.ToInt32(strStart);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(this, "strStart不合法，必须是数字");
+                    return;
+                }
+            }
+            int nCount = -1; //this.textBox_RepairBorrowInfo_strAction.Text.Trim();
+            string strCount= this.textBox_RepairBorrowInfo_nCount.Text.Trim();
+            if (string.IsNullOrEmpty(strCount) == false)
+            {
+                try
+                {
+                    nCount = Convert.ToInt32(strCount);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(this, "strCount不合法，必须是数字");
+                    return;
+                }
+            }
+            RestChannel channel = this.GetChannel();
+            try
+            {
+                RepairBorrowInfoResponse response = channel.RepairBorrowInfo(strAction,
+                    strReaderBarcode,
+                    strItemBarcode,
+                    strConfirmItemRecPath,
+                    nStart,
+                    nCount);
+
+                // 显示返回信息
+                this.SetResultInfo("RepairBorrowInfo()\r\n" + RestChannel.GetResultInfo(response));
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, "RepairBorrowInfo()异常：" + ex.Message);
+                return;
+            }
+            finally
+            {
+                this._channelPool.ReturnChannel(channel);
+            }
+        }
     }
 
 

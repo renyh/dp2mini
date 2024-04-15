@@ -15,6 +15,7 @@ using DigitalPlatform;
 //using DigitalPlatform.Script;
 using DigitalPlatform.Text;
 using DigitalPlatform.Xml;
+using System.Linq;
 
 namespace DigitalPlatform.LibraryRestClient
 {
@@ -102,6 +103,9 @@ namespace DigitalPlatform.LibraryRestClient
             GetVersionResponse response = Deserialize<GetVersionResponse>(strResult);
             return response;
         }
+
+
+
 
 
         public static string GetResultInfo(object o)
@@ -429,6 +433,26 @@ namespace DigitalPlatform.LibraryRestClient
 
 
                 return info;  //BatchTaskResponse
+            }
+            else if (o is RepairBorrowInfoResponse)
+            {
+                RepairBorrowInfoResponse r = (RepairBorrowInfoResponse)o;
+                string info = GetServerResultInfo(r.RepairBorrowInfoResult) + "\r\n";
+
+                info += "nProcessedBorrowItems=" + r.nProcessedBorrowItems.ToString() + "\r\n"
+                    + "nTotalBorrowItems=" + r.nTotalBorrowItems.ToString() + "\r\n"
+                    + "strOutputReaderBarcode=" + r.strOutputReaderBarcode.ToString() + "\r\n";
+
+                if (r.aDupPath !=null &&  r.aDupPath.Length > 0)
+                {
+                    info += "aDupPath=" + r.aDupPath.Length.ToString() + "\r\n";
+                }
+
+
+
+
+                return info;  //BatchTaskResponse
+
             }
 
 
@@ -1017,6 +1041,58 @@ namespace DigitalPlatform.LibraryRestClient
             return response;
         }
 
+
+        public RepairBorrowInfoResponse RepairBorrowInfo(
+string strAction,
+string strReaderBarcode,
+string strItemBarcode,
+string strConfirmItemRecPath,
+int nStart,   // 2008/10/27
+int nCount)
+        {
+        REDO:
+            CookieAwareWebClient client = this.GetClient();
+
+            // 设置接口参数
+            RepairBorrowInfoRequest request = new RepairBorrowInfoRequest();
+            request.strAction = strAction;
+            request.strReaderBarcode = strReaderBarcode;
+            request.strItemBarcode = strItemBarcode;
+            request.strConfirmItemRecPath = strConfirmItemRecPath;
+            request.nStart = nStart;
+            request.nCount = nCount;
+
+
+
+            // 将参数序列号，转成二进制
+            byte[] baData = Encoding.UTF8.GetBytes(Serialize(request));
+
+            // 调接口
+            byte[] result = client.UploadData(this.GetRestfulApiUrl("RepairBorrowInfo"),
+                                                "POST",
+                                                baData);
+            string strResult = Encoding.UTF8.GetString(result);
+
+            // 返回值序列号为对象
+            RepairBorrowInfoResponse response = Deserialize<RepairBorrowInfoResponse>(strResult);
+
+            // 未登录时，按需登录
+            if (response.RepairBorrowInfoResult.Value == -1
+                && response.RepairBorrowInfoResult.ErrorCode == ErrorCode.NotLogin)
+            {
+                string strError = "";
+                if (DoNotLogin(ref strError) == 1)
+                    goto REDO;
+
+                // 把按需登录的错误信息包括进去
+                if (string.IsNullOrEmpty(strError) == false)
+                {
+                    response.RepairBorrowInfoResult.ErrorInfo += "\r\n" + strError;
+                }
+            }
+
+            return response;
+        }
 
         /// <summary>
         /// 获取书目信息

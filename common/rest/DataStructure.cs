@@ -1280,9 +1280,54 @@ LibraryServerResult.ErrorInfo		出错信息
         public string strBiblio { get; set; }
     }
 
+
+    [DataContract]
+    public class RepairBorrowInfoRequest
+    {
+
+        [DataMember]
+        public string strAction { get; set; }
+
+        [DataMember]
+        public string strReaderBarcode { get; set; }
+
+        [DataMember]
+        public string strItemBarcode { get; set; }
+
+        [DataMember]
+        public string strConfirmItemRecPath { get; set; }
+
+        [DataMember]
+        public int nStart { get; set; }
+
+        [DataMember]
+        public int nCount { get; set; }
+    }
+
+
+    [DataContract]
+    public class RepairBorrowInfoResponse
+    {
+        [DataMember]
+        public LibraryServerResult RepairBorrowInfoResult { get; set; }
+
+        [DataMember]
+        public int nProcessedBorrowItems { get; set; }
+
+        [DataMember]
+        public int nTotalBorrowItems { get; set; }
+
+
+        [DataMember]
+        public string strOutputReaderBarcode { get; set; }
+
+        [DataMember]
+        public string[] aDupPath { get; set; }
+    }
+
     #endregion
 
-    
+
     #region GetBiblioInfos  2022/10新增
 
 
