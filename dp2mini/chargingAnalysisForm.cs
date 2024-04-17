@@ -601,63 +601,70 @@ namespace dp2mini
             }
 
 
-            if (this.listView_files.SelectedItems.Count > 1)
+
+            FolderBrowserDialog dlg = new FolderBrowserDialog();
+            dlg.SelectedPath = this.textBox_outputDir.Text;
+            DialogResult result = dlg.ShowDialog();
+
+            // todo记住上次选择的目录
+
+            if (result != DialogResult.OK || string.IsNullOrEmpty(dlg.SelectedPath) == true)
             {
-                MessageBox.Show(this, "您选择了多条读者，请选择一个读者另存。");
+                //MessageBox.Show(this, "取消");
                 return;
             }
 
-            ListViewItem viewItem = this.listView_files.SelectedItems[0];
+            string dir = dlg.SelectedPath;
 
-            // 用于拼文件名
-            string barcode = viewItem.SubItems[0].Text;
-            string name = viewItem.SubItems[1].Text;
-            string tempFileName = barcode + "_" + name + ".html";
 
-            // 源文件
-            string htmlFile = viewItem.SubItems[8].Text;
-            if (htmlFile == "")
+            //if (this.listView_files.SelectedItems.Count > 1)
+            //{
+            //    MessageBox.Show(this, "您选择了多条读者，请选择一个读者另存。");
+            //    return;
+            //}
+
+            foreach (ListViewItem viewItem in this.listView_files.SelectedItems)
             {
-                MessageBox.Show(this, "该读者还未转成html报表。");
-                return;
+
+                //ListViewItem viewItem = this.listView_files.SelectedItems[0];
+
+                // 用于拼文件名
+                string barcode = viewItem.SubItems[0].Text;
+                string name = viewItem.SubItems[1].Text;
+                string tempFileName = barcode + "_" + name + ".html";
+
+                // 源文件
+                string htmlFile = viewItem.SubItems[8].Text;
+                if (htmlFile == "")
+                {
+                    MessageBox.Show(this, "读者name还未转成html报表，无法导出");
+                    return;
+                }
+
+
+                FileInfo fileInfo = new FileInfo(htmlFile);
+
+                string targetFileName = dir + "\\" + fileInfo.Name;//  htmlFile;
+
+                string html = "";
+                using (StreamReader reader = new StreamReader(htmlFile))//, Encoding.UTF8))
+                {
+                    html = reader.ReadToEnd().Trim();
+                }
+
+                // StreamWriter当文件不存在时，会自动创建一个新文件。
+                using (StreamWriter writer = new StreamWriter(targetFileName, false, Encoding.UTF8))
+                {
+                    // 写到打印文件
+                    writer.Write(html);
+                }
+
             }
 
-            //把html保存到文件
-            //询问文件名
-            SaveFileDialog dlg = new SaveFileDialog
-            {
-                Title = "请指定读者报表文件名",
-                CreatePrompt = false,
-                OverwritePrompt = true,
-                FileName = tempFileName,
-
-                //InitialDirectory = Environment.CurrentDirectory,
-                Filter = "html文档 (*.html)|*.html|All files (*.*)|*.*",
-
-                RestoreDirectory = true
-            };
-
-            // 如果在询问文件名对话框，点了取消，退不处理，返回0，
-            if (dlg.ShowDialog() != DialogResult.OK)
-                return;
-
-            string targetFileName = dlg.FileName;
-
-            string html = "";
-            using (StreamReader reader = new StreamReader(htmlFile))//, Encoding.UTF8))
-            {
-                html = reader.ReadToEnd().Trim();
-            }
-
-            // StreamWriter当文件不存在时，会自动创建一个新文件。
-            using (StreamWriter writer = new StreamWriter(targetFileName, false, Encoding.UTF8))
-            {
-                // 写到打印文件
-                writer.Write(html);
-            }
+            MessageBox.Show(this, "导出完成");
 
             // 打开文件
-            Process.Start(targetFileName);
+            //Process.Start(targetFileName);
         }
 
         #endregion
