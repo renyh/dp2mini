@@ -88,7 +88,7 @@ namespace dp2mini
                 }
             }
 
-        
+
 
 
 
@@ -136,8 +136,8 @@ namespace dp2mini
             DialogResult result = dlg.ShowDialog();
 
             // todo记住上次选择的目录
-            
-            if (result != DialogResult.OK || string.IsNullOrEmpty(dlg.SelectedPath)==true)
+
+            if (result != DialogResult.OK || string.IsNullOrEmpty(dlg.SelectedPath) == true)
             {
                 //MessageBox.Show(this, "取消");
                 return;
@@ -207,7 +207,7 @@ namespace dp2mini
                     string comment = DomUtil.GetElementText(root, "comment");
 
                     string timeInfo = "";
-                    XmlNode commentNode=root.SelectSingleNode("comment");
+                    XmlNode commentNode = root.SelectSingleNode("comment");
                     if (commentNode != null)
                     {
                         string startTime = DomUtil.GetAttr(commentNode, "startTime");
@@ -367,7 +367,7 @@ namespace dp2mini
             if (this.listView_files.SelectedItems.Count == 0)
                 return;
 
-            
+
             // 结束时间
             DateTime endTime = DateTime.Now;
 
@@ -396,7 +396,7 @@ namespace dp2mini
                 // 评语中可以带着宏变量
                 //<comment>{patronName}，您在校期间读了{borrowCount}书。读万卷书，行万里路。</comment>
                 string patronName = item.SubItems[1].Text;
-                string borrowCount=item.SubItems[3].Text;
+                string borrowCount = item.SubItems[3].Text;
                 thisComment = thisComment.Replace("{patronName}", patronName);
                 thisComment = thisComment.Replace("{borrowCount}", borrowCount);
 
@@ -412,9 +412,9 @@ namespace dp2mini
 
 
                 XmlNode commentNode = root.SelectSingleNode("comment");
-                DomUtil.SetAttr(commentNode, "startTime",strStartTime);
-                DomUtil.SetAttr(commentNode, "endTime",strEndTime );
-                DomUtil.SetAttr(commentNode, "usedSeconds",strUsedSeconds );
+                DomUtil.SetAttr(commentNode, "startTime", strStartTime);
+                DomUtil.SetAttr(commentNode, "endTime", strEndTime);
+                DomUtil.SetAttr(commentNode, "usedSeconds", strUsedSeconds);
 
 
 
@@ -459,7 +459,7 @@ namespace dp2mini
             // 也同时保存一下评语,感觉直接保存，这样太快太自动了，还是让用户点一下提交评语为好。
             // this.SaveComment(comment);
         }
-        
+
         // 评语开始时间
         DateTime _startTime = DateTime.MinValue;
         private void textBox_comment_Enter(object sender, EventArgs e)
@@ -526,7 +526,7 @@ namespace dp2mini
             ColumnSortStyle sortStyle = ColumnSortStyle.LeftAlign;
 
             // 第3列借阅量，第4列排名，这两名是数值排序
-            if (nClickColumn == 3 || nClickColumn==4)
+            if (nClickColumn == 3 || nClickColumn == 4)
                 sortStyle = ColumnSortStyle.RightAlign;
 
             sortCol.SetFirstColumn(nClickColumn,
@@ -677,7 +677,7 @@ namespace dp2mini
             //}
 
 
-            DirectoryInfo dir= new DirectoryInfo(strDir);
+            DirectoryInfo dir = new DirectoryInfo(strDir);
 
             string excelFile = dir + "\\total.xlsx";
 
@@ -692,8 +692,8 @@ namespace dp2mini
             }
             catch (Exception ex)
             {
-                string error= ExceptionUtil.GetAutoText(ex);
-                MessageBox.Show(this, "导出excel出错"+ error);
+                string error = ExceptionUtil.GetAutoText(ex);
+                MessageBox.Show(this, "导出excel出错" + error);
                 return;
             }
 
@@ -701,19 +701,19 @@ namespace dp2mini
             //创建一个sheet
             IXLWorksheet sheet = null;
             sheet = doc.Worksheets.Add("借阅汇总");//"表格");
-            // 设置第一行的列头信息
+                                               // 设置第一行的列头信息
 
-                 sheet.Cell(1, 1).SetValue("借阅者编号");
-             sheet.Cell(1, 2).SetValue("借阅者姓名");
-             sheet.Cell(1, 3).SetValue("读者类型");
+            sheet.Cell(1, 1).SetValue("借阅者编号");
+            sheet.Cell(1, 2).SetValue("借阅者姓名");
+            sheet.Cell(1, 3).SetValue("读者类型");
             sheet.Cell(1, 4).SetValue("借阅人员类别码");
             sheet.Cell(1, 5).SetValue("班级");
 
             sheet.Cell(1, 6).SetValue("图书编号");
             sheet.Cell(1, 7).SetValue("借阅日期");
-            sheet.Cell(1,8).SetValue("借期");
+            sheet.Cell(1, 8).SetValue("借期");
             sheet.Cell(1, 9).SetValue("预计归还日期");
-            sheet.Cell(1,10).SetValue("实际归还日期");
+            sheet.Cell(1, 10).SetValue("实际归还日期");
 
             int nRowIndex = 2;
 
@@ -847,7 +847,103 @@ namespace dp2mini
 
             Clipboard.SetDataObject(text);//复制内容到粘贴板
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+
+            if (this.listView_files.SelectedItems.Count == 0)
+            {
+                MessageBox.Show(this, "尚未选中需要导出的事项。");
+                return;
+            }
+
+            string strDir = this.textBox_outputDir.Text.Trim();
+            if (string.IsNullOrEmpty(strDir))
+            {
+                MessageBox.Show(this, "请选择报表所在的目录");
+                return;
+            }
+
+            //if (this.listView_files.SelectedItems.Count ==0) {
+            //    MessageBox.Show(this, "请选择要合并导出的行");
+            //    return;
+            //}
+
+
+            DirectoryInfo dir = new DirectoryInfo(strDir);
+
+            string excelFile = dir + "\\列表.xlsx";
+
+
+            // 创建excel对象
+            XLWorkbook doc = null;
+            try
+            {
+                doc = new XLWorkbook();// XLEventTracking.Disabled);
+                // 如果原来文件存在，则先删除
+                File.Delete(excelFile);
+            }
+            catch (Exception ex)
+            {
+                string error = ExceptionUtil.GetAutoText(ex);
+                MessageBox.Show(this, "导出列表出错" + error);
+                return;
+            }
+
+
+            //创建一个sheet
+            IXLWorksheet sheet = null;
+            sheet = doc.Worksheets.Add("借阅量排名");//"表格");
+
+
+
+
+            // 设置第一行的列头信息
+
+            sheet.Cell(1, 1).SetValue("证条码号");
+            sheet.Cell(1, 2).SetValue("姓名");
+            sheet.Cell(1, 3).SetValue("班级");
+            sheet.Cell(1, 4).SetValue("借书数量");
+            sheet.Cell(1, 5).SetValue("排名");
+
+            sheet.Cell(1, 6).SetValue("称号");
+            sheet.Cell(1, 7).SetValue("备注");
+
+            int nRowIndex = 2;
+
+
+            foreach (ListViewItem item in this.listView_files.SelectedItems)
+            {
+
+                sheet.Cell(nRowIndex, 1).SetValue(item.SubItems[0].Text);
+                sheet.Cell(nRowIndex, 2).SetValue(item.SubItems[1].Text);
+                sheet.Cell(nRowIndex, 3).SetValue(item.SubItems[2].Text);
+                sheet.Cell(nRowIndex, 4).SetValue(item.SubItems[3].Text);
+                sheet.Cell(nRowIndex, 5).SetValue(item.SubItems[4].Text);
+
+                sheet.Cell(nRowIndex, 6).SetValue(item.SubItems[5].Text);
+                sheet.Cell(nRowIndex, 7).SetValue(item.SubItems[6].Text);
+
+
+                nRowIndex++;
+
+            }
+
+            // 保存excel文件
+            doc.SaveAs(excelFile);
+            doc.Dispose();
+
+            // 自动打开excel文件
+            try
+            {
+                System.Diagnostics.Process.Start(excelFile);
+            }
+            catch
+            {
+
+            }
+        }
+
+
     }
-
-
 }

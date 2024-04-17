@@ -101,6 +101,7 @@
             this.comboBox_comment = new System.Windows.Forms.ComboBox();
             this.button_createReport = new System.Windows.Forms.Button();
             this.webBrowser1 = new System.Windows.Forms.WebBrowser();
+            this.button1 = new System.Windows.Forms.Button();
             this.contextMenuStrip_list.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -361,7 +362,7 @@
             this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("宋体", 10.66667F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label6.Location = new System.Drawing.Point(20, 95);
+            this.label6.Location = new System.Drawing.Point(20, 441);
             this.label6.Margin = new System.Windows.Forms.Padding(7, 0, 7, 0);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(180, 33);
@@ -373,10 +374,10 @@
             this.textBox_comment.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.textBox_comment.Font = new System.Drawing.Font("宋体", 10.66667F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.textBox_comment.Location = new System.Drawing.Point(24, 146);
+            this.textBox_comment.Location = new System.Drawing.Point(24, 492);
             this.textBox_comment.Multiline = true;
             this.textBox_comment.Name = "textBox_comment";
-            this.textBox_comment.Size = new System.Drawing.Size(0, 90);
+            this.textBox_comment.Size = new System.Drawing.Size(555, 90);
             this.textBox_comment.TabIndex = 26;
             this.textBox_comment.Enter += new System.EventHandler(this.textBox_comment_Enter);
             // 
@@ -385,7 +386,7 @@
             this.button_setComment.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.button_setComment.AutoSize = true;
             this.button_setComment.Font = new System.Drawing.Font("宋体", 10.66667F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button_setComment.Location = new System.Drawing.Point(23, 246);
+            this.button_setComment.Location = new System.Drawing.Point(23, 592);
             this.button_setComment.Margin = new System.Windows.Forms.Padding(7, 6, 7, 6);
             this.button_setComment.Name = "button_setComment";
             this.button_setComment.Size = new System.Drawing.Size(185, 55);
@@ -449,7 +450,7 @@
             this.listView_files.HideSelection = false;
             this.listView_files.Location = new System.Drawing.Point(23, 84);
             this.listView_files.Name = "listView_files";
-            this.listView_files.Size = new System.Drawing.Size(0, 0);
+            this.listView_files.Size = new System.Drawing.Size(555, 354);
             this.listView_files.TabIndex = 36;
             this.listView_files.UseCompatibleStateImageBehavior = false;
             this.listView_files.View = System.Windows.Forms.View.Details;
@@ -516,6 +517,7 @@
             // 
             // splitContainer1.Panel1
             // 
+            this.splitContainer1.Panel1.Controls.Add(this.button1);
             this.splitContainer1.Panel1.Controls.Add(this.button_toExcel);
             this.splitContainer1.Panel1.Controls.Add(this.button_saveCommentTemplate);
             this.splitContainer1.Panel1.Controls.Add(this.label1);
@@ -534,8 +536,8 @@
             // 
             this.splitContainer1.Panel2.BackColor = System.Drawing.SystemColors.Info;
             this.splitContainer1.Panel2.Controls.Add(this.webBrowser1);
-            this.splitContainer1.Size = new System.Drawing.Size(694, 311);
-            this.splitContainer1.SplitterDistance = 391;
+            this.splitContainer1.Size = new System.Drawing.Size(1488, 1043);
+            this.splitContainer1.SplitterDistance = 743;
             this.splitContainer1.TabIndex = 37;
             // 
             // button_toExcel
@@ -555,7 +557,7 @@
             this.button_saveCommentTemplate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.button_saveCommentTemplate.AutoSize = true;
             this.button_saveCommentTemplate.Font = new System.Drawing.Font("宋体", 10.66667F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button_saveCommentTemplate.Location = new System.Drawing.Point(636, 246);
+            this.button_saveCommentTemplate.Location = new System.Drawing.Point(636, 592);
             this.button_saveCommentTemplate.Margin = new System.Windows.Forms.Padding(7, 6, 7, 6);
             this.button_saveCommentTemplate.Name = "button_saveCommentTemplate";
             this.button_saveCommentTemplate.Size = new System.Drawing.Size(308, 55);
@@ -568,7 +570,7 @@
             // 
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label1.Font = new System.Drawing.Font("楷体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label1.Location = new System.Drawing.Point(212, 251);
+            this.label1.Location = new System.Drawing.Point(212, 597);
             this.label1.Margin = new System.Windows.Forms.Padding(7, 0, 7, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(410, 65);
@@ -580,7 +582,7 @@
             this.comboBox_comment.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.comboBox_comment.Font = new System.Drawing.Font("宋体", 10.66667F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.comboBox_comment.FormattingEnabled = true;
-            this.comboBox_comment.Location = new System.Drawing.Point(180, 92);
+            this.comboBox_comment.Location = new System.Drawing.Point(180, 438);
             this.comboBox_comment.Name = "comboBox_comment";
             this.comboBox_comment.Size = new System.Drawing.Size(693, 41);
             this.comboBox_comment.TabIndex = 38;
@@ -604,14 +606,28 @@
             this.webBrowser1.Location = new System.Drawing.Point(0, 0);
             this.webBrowser1.MinimumSize = new System.Drawing.Size(19, 18);
             this.webBrowser1.Name = "webBrowser1";
-            this.webBrowser1.Size = new System.Drawing.Size(299, 311);
+            this.webBrowser1.Size = new System.Drawing.Size(741, 1043);
             this.webBrowser1.TabIndex = 0;
+            // 
+            // button1
+            // 
+            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.button1.AutoSize = true;
+            this.button1.Font = new System.Drawing.Font("宋体", 10.66667F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.button1.Location = new System.Drawing.Point(26, 659);
+            this.button1.Margin = new System.Windows.Forms.Padding(7, 6, 7, 6);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(285, 55);
+            this.button1.TabIndex = 41;
+            this.button1.Text = "导出列表到excel";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // chargingAnalysisForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(216F, 216F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
-            this.ClientSize = new System.Drawing.Size(735, 362);
+            this.ClientSize = new System.Drawing.Size(1529, 1094);
             this.Controls.Add(this.splitContainer1);
             this.Margin = new System.Windows.Forms.Padding(7, 6, 7, 6);
             this.Name = "chargingAnalysisForm";
@@ -700,5 +716,6 @@
         private System.Windows.Forms.Button button_saveCommentTemplate;
         private System.Windows.Forms.Button button_toExcel;
         private System.Windows.Forms.ToolStripMenuItem 复制证条码号ToolStripMenuItem;
+        private System.Windows.Forms.Button button1;
     }
 }
