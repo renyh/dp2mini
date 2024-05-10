@@ -2020,8 +2020,6 @@ LibraryServerResult.ErrorInfo		出错信息
 
         [DataMember]
         public string[] ids { get; set; }
-
-
     }
 
     [DataContract]
@@ -2031,6 +2029,86 @@ LibraryServerResult.ErrorInfo		出错信息
         public LibraryServerResult SettlementResult { get; set; }
 
     }
+
+
+
+    /*
+     * 
+     *         LibraryServerResult Hire(
+                    string strAction,
+                    string strReaderBarcode,
+                    out string strOutputReaderXml,
+                    out string strOutputID);
+     */
+
+    // 创建租金交费请求
+    // parameters:
+    //      strAction    hire
+    //      strReaderBarcode    读者证条码号，或者 "@refID:xxx" 形态
+    //      strOutputReaderXml 返回修改后的读者记录
+    //      strOutputID 返回本次创建的交费请求的 ID
+    // return:
+    //      result.Value    -1 错误 其他 本次的累计量
+    public class HireRequest
+    {
+        [DataMember]
+        public string strAction { get; set; }
+
+        [DataMember]
+        public string strReaderBarcode { get; set; }
+    }
+
+    [DataContract]
+    public class HireResponse
+    {
+        [DataMember]
+        public LibraryServerResult HireResult { get; set; }
+
+        [DataMember]
+        public string strOutputReaderXml { get; set; }
+
+        [DataMember]
+        public string strOutputID { get; set; }
+    }
+
+    /*
+    LibraryServerResult Foregift(
+            string strAction,
+            string strReaderBarcode,
+            out string strOutputReaderXml,
+            out string strOutputID);
+
+        // 创建押金交费请求
+        // parameters:
+        //      strAction   值为foregift return之一
+        //      strReaderBarcode    读者证条码号，或者 "@refID:xxx" 形态
+        //      strOutputReaderXml 返回修改后的读者记录
+        //      strOutputID 返回本次创建的交费请求的 ID
+        // return:
+        //      result.Value    -1 错误 其他 本次的累计量
+    */
+    public class ForegiftRequest
+    {
+        [DataMember]
+        public string strAction { get; set; }
+
+        [DataMember]
+        public string strReaderBarcode { get; set; }
+    }
+
+    [DataContract]
+    public class ForegiftResponse
+    {
+        [DataMember]
+        public LibraryServerResult ForegiftResult { get; set; }
+
+        [DataMember]
+        public string strOutputReaderXml { get; set; }
+
+        [DataMember]
+        public string strOutputID { get; set; }
+    }
+
 
     #endregion
 

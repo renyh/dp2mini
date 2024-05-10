@@ -282,6 +282,24 @@ namespace DigitalPlatform.LibraryRestClient
 
                 return GetServerResultInfo(r.SettlementResult);
             }
+            else if (o is HireResponse)
+            {
+                HireResponse r = (HireResponse)o;
+
+                return GetServerResultInfo(r.HireResult) + "\r\n"
+                + "strOutputReaderXml=" + r.strOutputReaderXml+"\r\n"
+                + "strOutputID=" + r.strOutputID + "\r\n"
+                ;
+            }
+            else if (o is ForegiftResponse)
+            {
+                ForegiftResponse r = (ForegiftResponse)o;
+
+                return GetServerResultInfo(r.ForegiftResult) + "\r\n"
+                + "strOutputReaderXml=" + r.strOutputReaderXml + "\r\n"
+                + "strOutputID=" + r.strOutputID + "\r\n"
+                ;
+            }
             else if (o is GetBrowseRecordsResponse)
             {
                 GetBrowseRecordsResponse r = (GetBrowseRecordsResponse)o;
@@ -3733,7 +3751,7 @@ int nAttachmentFragmentLength)
             }
         }
 
-        // 获得浏览列
+        // 结算
         public SettlementResponse Settlement(string strAction,
             string[] ids)
         {
@@ -3760,6 +3778,103 @@ int nAttachmentFragmentLength)
                 string strResult = Encoding.UTF8.GetString(result);
                 response = Deserialize<SettlementResponse>(strResult);
                 if (response.SettlementResult.Value == -1 && response.SettlementResult.ErrorCode == ErrorCode.NotLogin)
+                {
+                    if (DoNotLogin(ref strError) == 1)
+                        goto REDO;
+
+                    return response;
+                }
+
+
+                this.ClearRedoCount();  //???
+                return response;//.GetBrowseRecordsResult.Value;
+            }
+            catch (Exception ex)
+            {
+                int nRet = ConvertWebError(ex, out strError);
+                if (nRet == 0)
+                    return response;
+
+                goto REDO;
+            }
+        }
+
+
+        // 租金
+        public HireResponse Hire(string strAction,
+            string strReaderBarcode)
+        {
+            string strError = "";
+
+            HireResponse response = null;
+
+        REDO:
+            try
+            {
+                CookieAwareWebClient client = this.GetClient();
+
+
+                HireRequest request = new HireRequest();
+                request.strAction = strAction;
+                request.strReaderBarcode = strReaderBarcode;
+
+                byte[] baData = Encoding.UTF8.GetBytes(Serialize(request));
+                string strRequest = Encoding.UTF8.GetString(baData);
+                byte[] result = client.UploadData(this.GetRestfulApiUrl("Hire"),
+                                "POST",
+                                 baData);
+
+                string strResult = Encoding.UTF8.GetString(result);
+                response = Deserialize<HireResponse>(strResult);
+                if (response.HireResult.Value == -1 && response.HireResult.ErrorCode == ErrorCode.NotLogin)
+                {
+                    if (DoNotLogin(ref strError) == 1)
+                        goto REDO;
+
+                    return response;
+                }
+
+
+                this.ClearRedoCount();  //???
+                return response;//.GetBrowseRecordsResult.Value;
+            }
+            catch (Exception ex)
+            {
+                int nRet = ConvertWebError(ex, out strError);
+                if (nRet == 0)
+                    return response;
+
+                goto REDO;
+            }
+        }
+
+
+        public ForegiftResponse Foregift(string strAction,
+    string strReaderBarcode)
+        {
+            string strError = "";
+
+            ForegiftResponse response = null;
+
+        REDO:
+            try
+            {
+                CookieAwareWebClient client = this.GetClient();
+
+
+                ForegiftRequest request = new ForegiftRequest();
+                request.strAction = strAction;
+                request.strReaderBarcode = strReaderBarcode;
+
+                byte[] baData = Encoding.UTF8.GetBytes(Serialize(request));
+                string strRequest = Encoding.UTF8.GetString(baData);
+                byte[] result = client.UploadData(this.GetRestfulApiUrl("Foregift"),
+                                "POST",
+                                 baData);
+
+                string strResult = Encoding.UTF8.GetString(result);
+                response = Deserialize<ForegiftResponse>(strResult);
+                if (response.ForegiftResult.Value == -1 && response.ForegiftResult.ErrorCode == ErrorCode.NotLogin)
                 {
                     if (DoNotLogin(ref strError) == 1)
                         goto REDO;

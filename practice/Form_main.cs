@@ -1999,8 +1999,6 @@ out string strError);
         }
 
 
-
-
         // 分块写入对象
         private void button_writeObjectByChunk_Click(object sender, EventArgs e)
         {
@@ -3715,6 +3713,86 @@ this.checkBox_continueWhenError.Checked,
             catch (Exception ex)
             {
                 MessageBox.Show(this, "RepairBorrowInfo()异常：" + ex.Message);
+                return;
+            }
+            finally
+            {
+                this._channelPool.ReturnChannel(channel);
+            }
+        }
+
+        private void button_foregift_Click(object sender, EventArgs e)
+        {
+            // 清空底部输出信息
+            this.ClearResultInfo();
+
+            string strAction = this.textBox_foregift_action.Text.Trim();
+            if (string.IsNullOrEmpty(strAction) == true)
+            {
+                MessageBox.Show(this, "strAction参数不能为空。");
+                return;
+            }
+
+            string readerBarcode = this.textBox_foregift_readerBarcode.Text.Trim();
+            if (string.IsNullOrEmpty(readerBarcode) == true)
+            {
+                MessageBox.Show(this, "readerBarcode参数不能为空。");
+                return;
+            }
+
+            RestChannel channel = this.GetChannel();
+            try
+            {
+                ForegiftResponse response = channel.Foregift(strAction,
+                    readerBarcode);
+
+                // 显示返回信息
+                this.SetResultInfo("foregift()\r\n" + RestChannel.GetResultInfo(response));
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, "foregift()异常：" + ex.Message);
+                return;
+            }
+            finally
+            {
+                this._channelPool.ReturnChannel(channel);
+            }
+        }
+
+        private void button_hire_Click(object sender, EventArgs e)
+        {
+            // 清空底部输出信息
+            this.ClearResultInfo();
+
+            string strAction = this.textBox_hire_action.Text.Trim();
+            if (string.IsNullOrEmpty(strAction) == true)
+            {
+                MessageBox.Show(this, "strAction参数不能为空。");
+                return;
+            }
+
+            string readerBarcode = this.textBox_hire_readerBarcode.Text.Trim();
+            if (string.IsNullOrEmpty(readerBarcode) == true)
+            {
+                MessageBox.Show(this, "readerBarcode参数不能为空。");
+                return;
+            }
+
+            RestChannel channel = this.GetChannel();
+            try
+            {
+                HireResponse response = channel.Hire(strAction,
+                    readerBarcode);
+
+                // 显示返回信息
+                this.SetResultInfo("Hire()\r\n" + RestChannel.GetResultInfo(response));
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, "Hire()异常：" + ex.Message);
                 return;
             }
             finally

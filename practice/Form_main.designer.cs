@@ -452,6 +452,20 @@
             this.自动测试1ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.自动测试2ToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.tabPage_hire = new System.Windows.Forms.TabPage();
+            this.tabPage_Foregift = new System.Windows.Forms.TabPage();
+            this.button_hire_help = new System.Windows.Forms.Button();
+            this.button_hire = new System.Windows.Forms.Button();
+            this.textBox_hire_readerBarcode = new System.Windows.Forms.TextBox();
+            this.textBox_hire_action = new System.Windows.Forms.TextBox();
+            this.label149 = new System.Windows.Forms.Label();
+            this.label150 = new System.Windows.Forms.Label();
+            this.button6 = new System.Windows.Forms.Button();
+            this.button_foregift = new System.Windows.Forms.Button();
+            this.textBox_foregift_readerBarcode = new System.Windows.Forms.TextBox();
+            this.textBox_foregift_action = new System.Windows.Forms.TextBox();
+            this.label151 = new System.Windows.Forms.Label();
+            this.label152 = new System.Windows.Forms.Label();
             this.tabPage_SearchBiblio.SuspendLayout();
             this.tabPage_Server.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -494,6 +508,8 @@
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
+            this.tabPage_hire.SuspendLayout();
+            this.tabPage_Foregift.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabPage_SearchBiblio
@@ -1035,6 +1051,9 @@
             this.tabControl1.Controls.Add(this.tabPage_task);
             this.tabControl1.Controls.Add(this.tabPage_RepairBorrowInfo);
             this.tabControl1.Controls.Add(this.tabPage_WriteRes);
+            this.tabControl1.Controls.Add(this.tabPage_hire);
+            this.tabControl1.Controls.Add(this.tabPage_Foregift);
+            this.tabControl1.Controls.Add(this.tabPage_Settlement);
             this.tabControl1.Controls.Add(this.tabPage_GetRes);
             this.tabControl1.Controls.Add(this.tabPage_GetRecord);
             this.tabControl1.Controls.Add(this.tabPage_SetBiblioInfo);
@@ -1051,7 +1070,6 @@
             this.tabControl1.Controls.Add(this.tabPage_Search);
             this.tabControl1.Controls.Add(this.tabPage_GetSearchResult);
             this.tabControl1.Controls.Add(this.tabPage_GetBrowseRecords);
-            this.tabControl1.Controls.Add(this.tabPage_Settlement);
             this.tabControl1.Controls.Add(this.tabPage_Reservation);
             this.tabControl1.Controls.Add(this.tabPage_SetUser);
             this.tabControl1.Controls.Add(this.tabPage_SearchCharging);
@@ -5143,6 +5161,152 @@
             this.splitContainer1.SplitterDistance = 728;
             this.splitContainer1.TabIndex = 21;
             // 
+            // tabPage_hire
+            // 
+            this.tabPage_hire.Controls.Add(this.button_hire_help);
+            this.tabPage_hire.Controls.Add(this.button_hire);
+            this.tabPage_hire.Controls.Add(this.textBox_hire_readerBarcode);
+            this.tabPage_hire.Controls.Add(this.textBox_hire_action);
+            this.tabPage_hire.Controls.Add(this.label149);
+            this.tabPage_hire.Controls.Add(this.label150);
+            this.tabPage_hire.Location = new System.Drawing.Point(10, 46);
+            this.tabPage_hire.Name = "tabPage_hire";
+            this.tabPage_hire.Size = new System.Drawing.Size(1060, 672);
+            this.tabPage_hire.TabIndex = 33;
+            this.tabPage_hire.Text = "Hire";
+            this.tabPage_hire.UseVisualStyleBackColor = true;
+            // 
+            // tabPage_Foregift
+            // 
+            this.tabPage_Foregift.Controls.Add(this.button6);
+            this.tabPage_Foregift.Controls.Add(this.button_foregift);
+            this.tabPage_Foregift.Controls.Add(this.textBox_foregift_readerBarcode);
+            this.tabPage_Foregift.Controls.Add(this.textBox_foregift_action);
+            this.tabPage_Foregift.Controls.Add(this.label151);
+            this.tabPage_Foregift.Controls.Add(this.label152);
+            this.tabPage_Foregift.Location = new System.Drawing.Point(10, 46);
+            this.tabPage_Foregift.Name = "tabPage_Foregift";
+            this.tabPage_Foregift.Size = new System.Drawing.Size(1060, 672);
+            this.tabPage_Foregift.TabIndex = 34;
+            this.tabPage_Foregift.Text = "Foregift";
+            this.tabPage_Foregift.UseVisualStyleBackColor = true;
+            // 
+            // button_hire_help
+            // 
+            this.button_hire_help.Location = new System.Drawing.Point(2, 3);
+            this.button_hire_help.Name = "button_hire_help";
+            this.button_hire_help.Size = new System.Drawing.Size(54, 117);
+            this.button_hire_help.TabIndex = 63;
+            this.button_hire_help.Text = "帮助";
+            this.button_hire_help.UseVisualStyleBackColor = true;
+            // 
+            // button_hire
+            // 
+            this.button_hire.Location = new System.Drawing.Point(329, 229);
+            this.button_hire.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.button_hire.Name = "button_hire";
+            this.button_hire.Size = new System.Drawing.Size(276, 62);
+            this.button_hire.TabIndex = 62;
+            this.button_hire.Tag = "";
+            this.button_hire.Text = "hire";
+            this.button_hire.UseVisualStyleBackColor = true;
+            this.button_hire.Click += new System.EventHandler(this.button_hire_Click);
+            // 
+            // textBox_hire_readerBarcode
+            // 
+            this.textBox_hire_readerBarcode.Location = new System.Drawing.Point(329, 116);
+            this.textBox_hire_readerBarcode.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.textBox_hire_readerBarcode.Multiline = true;
+            this.textBox_hire_readerBarcode.Name = "textBox_hire_readerBarcode";
+            this.textBox_hire_readerBarcode.Size = new System.Drawing.Size(583, 73);
+            this.textBox_hire_readerBarcode.TabIndex = 60;
+            // 
+            // textBox_hire_action
+            // 
+            this.textBox_hire_action.Location = new System.Drawing.Point(329, 45);
+            this.textBox_hire_action.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.textBox_hire_action.Name = "textBox_hire_action";
+            this.textBox_hire_action.Size = new System.Drawing.Size(583, 38);
+            this.textBox_hire_action.TabIndex = 58;
+            // 
+            // label149
+            // 
+            this.label149.AutoSize = true;
+            this.label149.Location = new System.Drawing.Point(83, 119);
+            this.label149.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label149.Name = "label149";
+            this.label149.Size = new System.Drawing.Size(236, 27);
+            this.label149.TabIndex = 61;
+            this.label149.Text = "strReaderBarcode";
+            // 
+            // label150
+            // 
+            this.label150.AutoSize = true;
+            this.label150.Location = new System.Drawing.Point(114, 48);
+            this.label150.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label150.Name = "label150";
+            this.label150.Size = new System.Drawing.Size(138, 27);
+            this.label150.TabIndex = 59;
+            this.label150.Text = "strAction";
+            // 
+            // button6
+            // 
+            this.button6.Location = new System.Drawing.Point(2, 0);
+            this.button6.Name = "button6";
+            this.button6.Size = new System.Drawing.Size(54, 117);
+            this.button6.TabIndex = 69;
+            this.button6.Text = "帮助";
+            this.button6.UseVisualStyleBackColor = true;
+            // 
+            // button_foregift
+            // 
+            this.button_foregift.Location = new System.Drawing.Point(329, 226);
+            this.button_foregift.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.button_foregift.Name = "button_foregift";
+            this.button_foregift.Size = new System.Drawing.Size(276, 62);
+            this.button_foregift.TabIndex = 68;
+            this.button_foregift.Tag = "";
+            this.button_foregift.Text = "foregift";
+            this.button_foregift.UseVisualStyleBackColor = true;
+            this.button_foregift.Click += new System.EventHandler(this.button_foregift_Click);
+            // 
+            // textBox_foregift_readerBarcode
+            // 
+            this.textBox_foregift_readerBarcode.Location = new System.Drawing.Point(329, 113);
+            this.textBox_foregift_readerBarcode.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.textBox_foregift_readerBarcode.Multiline = true;
+            this.textBox_foregift_readerBarcode.Name = "textBox_foregift_readerBarcode";
+            this.textBox_foregift_readerBarcode.Size = new System.Drawing.Size(583, 73);
+            this.textBox_foregift_readerBarcode.TabIndex = 66;
+            // 
+            // textBox_foregift_action
+            // 
+            this.textBox_foregift_action.Location = new System.Drawing.Point(329, 42);
+            this.textBox_foregift_action.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.textBox_foregift_action.Name = "textBox_foregift_action";
+            this.textBox_foregift_action.Size = new System.Drawing.Size(583, 38);
+            this.textBox_foregift_action.TabIndex = 64;
+            // 
+            // label151
+            // 
+            this.label151.AutoSize = true;
+            this.label151.Location = new System.Drawing.Point(83, 116);
+            this.label151.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label151.Name = "label151";
+            this.label151.Size = new System.Drawing.Size(236, 27);
+            this.label151.TabIndex = 67;
+            this.label151.Text = "strReaderBarcode";
+            // 
+            // label152
+            // 
+            this.label152.AutoSize = true;
+            this.label152.Location = new System.Drawing.Point(114, 45);
+            this.label152.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label152.Name = "label152";
+            this.label152.Size = new System.Drawing.Size(138, 27);
+            this.label152.TabIndex = 65;
+            this.label152.Text = "strAction";
+            // 
             // Form_main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(216F, 216F);
@@ -5236,6 +5400,10 @@
             this.splitContainer1.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
+            this.tabPage_hire.ResumeLayout(false);
+            this.tabPage_hire.PerformLayout();
+            this.tabPage_Foregift.ResumeLayout(false);
+            this.tabPage_Foregift.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -5666,6 +5834,20 @@
         private System.Windows.Forms.TextBox textBox_RepairBorrowInfo_strReaderBarcode;
         private System.Windows.Forms.Button button_RepairBorrowInfo;
         private System.Windows.Forms.TextBox textBox_RepairBorrowInfo_nCount;
+        private System.Windows.Forms.TabPage tabPage_hire;
+        private System.Windows.Forms.TabPage tabPage_Foregift;
+        private System.Windows.Forms.Button button_hire_help;
+        private System.Windows.Forms.Button button_hire;
+        private System.Windows.Forms.TextBox textBox_hire_readerBarcode;
+        private System.Windows.Forms.TextBox textBox_hire_action;
+        private System.Windows.Forms.Label label149;
+        private System.Windows.Forms.Label label150;
+        private System.Windows.Forms.Button button6;
+        private System.Windows.Forms.Button button_foregift;
+        private System.Windows.Forms.TextBox textBox_foregift_readerBarcode;
+        private System.Windows.Forms.TextBox textBox_foregift_action;
+        private System.Windows.Forms.Label label151;
+        private System.Windows.Forms.Label label152;
     }
 }
 
