@@ -3085,8 +3085,8 @@ int nAttachmentFragmentLength)
             // 时间戳
             if (strAction == "change" || strAction == "delete")
                 entity.OldTimestamp = baTimestamp;
-            else
-                entity.NewTimestamp = baTimestamp;
+            //else
+            //    entity.NewTimestamp = baTimestamp;  //2024/5/13 听开发老师讲，new时，也是把时间戳传到OldTimestamp参数。
 
             /*
             if (strAction == "change")
