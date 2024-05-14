@@ -3027,14 +3027,16 @@ out string strError);
 
             string strDbType=this.textBox_SetItemInfo_strDbType.Text.Trim();
             string strAction = this.textBox_SetItemInfo_strAction.Text;
-            string strResPath = this.textBox_SetItemInfo_strResPath.Text;
-            if (string.IsNullOrEmpty(strResPath) == true)
-            {
-                MessageBox.Show(this, "strResPath参数不能为空");
-                return;
-            }
+            string newRecPath = this.textBox_SetItemInfo_NewRecPath.Text;
+            //if (string.IsNullOrEmpty(newResPath) == true)
+            //{
+            //    MessageBox.Show(this, "strResPath参数不能为空");
+            //    return;
+            //}
+            string oldRecPath=this.textBox_SetItemInfo_OldRecPath.Text;
 
-            string strXml = this.textBox_SetItemInfo_strXml.Text;
+            string newRecord = this.textBox_SetItemInfo_NewRecord.Text;
+            string oldRecord= this.textBox_SetItemInfo_OldRecord.Text;
             string strStyle = this.textBox_SetItemInfo_strStyle.Text;
 
             string strTimestamp = this.textBox_SetItemInfo_baTimestamp.Text;
@@ -3045,8 +3047,10 @@ out string strError);
             {
                 LibraryServerResult response = channel.SetItemInfo(strDbType,
                     strAction,
-                    strResPath,
-                    strXml,
+                    newRecPath,
+                    newRecord,
+                    oldRecPath,
+                    oldRecord,
                     baTimestamp,
                     strStyle,
                     out string strOutputRecPath,

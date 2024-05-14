@@ -134,6 +134,27 @@
             this.textBox_WriteRes_baContent = new System.Windows.Forms.TextBox();
             this.label59 = new System.Windows.Forms.Label();
             this.textBox_WriteRes_strResPath = new System.Windows.Forms.TextBox();
+            this.tabPage_hire = new System.Windows.Forms.TabPage();
+            this.button_hire_help = new System.Windows.Forms.Button();
+            this.button_hire = new System.Windows.Forms.Button();
+            this.textBox_hire_readerBarcode = new System.Windows.Forms.TextBox();
+            this.textBox_hire_action = new System.Windows.Forms.TextBox();
+            this.label149 = new System.Windows.Forms.Label();
+            this.label150 = new System.Windows.Forms.Label();
+            this.tabPage_Foregift = new System.Windows.Forms.TabPage();
+            this.button6 = new System.Windows.Forms.Button();
+            this.button_foregift = new System.Windows.Forms.Button();
+            this.textBox_foregift_readerBarcode = new System.Windows.Forms.TextBox();
+            this.textBox_foregift_action = new System.Windows.Forms.TextBox();
+            this.label151 = new System.Windows.Forms.Label();
+            this.label152 = new System.Windows.Forms.Label();
+            this.tabPage_Settlement = new System.Windows.Forms.TabPage();
+            this.button_help_settlement = new System.Windows.Forms.Button();
+            this.button_Settlement = new System.Windows.Forms.Button();
+            this.textBox_Settlement_ids = new System.Windows.Forms.TextBox();
+            this.textBox_Settlement_strAction = new System.Windows.Forms.TextBox();
+            this.label93 = new System.Windows.Forms.Label();
+            this.label94 = new System.Windows.Forms.Label();
             this.tabPage_GetRes = new System.Windows.Forms.TabPage();
             this.label51 = new System.Windows.Forms.Label();
             this.checkBox_saveRes2File = new System.Windows.Forms.CheckBox();
@@ -227,11 +248,11 @@
             this.label101 = new System.Windows.Forms.Label();
             this.textBox_SetItemInfo_baTimestamp = new System.Windows.Forms.TextBox();
             this.label102 = new System.Windows.Forms.Label();
-            this.textBox_SetItemInfo_strXml = new System.Windows.Forms.TextBox();
+            this.textBox_SetItemInfo_NewRecord = new System.Windows.Forms.TextBox();
             this.label103 = new System.Windows.Forms.Label();
             this.textBox_SetItemInfo_strAction = new System.Windows.Forms.TextBox();
             this.label104 = new System.Windows.Forms.Label();
-            this.textBox_SetItemInfo_strResPath = new System.Windows.Forms.TextBox();
+            this.textBox_SetItemInfo_NewRecPath = new System.Windows.Forms.TextBox();
             this.button_SetItemInfo = new System.Windows.Forms.Button();
             this.tabPage_GetItemInfo = new System.Windows.Forms.TabPage();
             this.textBox_GetItemInfo_strBiblioType = new System.Windows.Forms.TextBox();
@@ -329,13 +350,6 @@
             this.label68 = new System.Windows.Forms.Label();
             this.textBox_GetBrowseRecords_paths = new System.Windows.Forms.TextBox();
             this.label71 = new System.Windows.Forms.Label();
-            this.tabPage_Settlement = new System.Windows.Forms.TabPage();
-            this.button_help_settlement = new System.Windows.Forms.Button();
-            this.button_Settlement = new System.Windows.Forms.Button();
-            this.textBox_Settlement_ids = new System.Windows.Forms.TextBox();
-            this.textBox_Settlement_strAction = new System.Windows.Forms.TextBox();
-            this.label93 = new System.Windows.Forms.Label();
-            this.label94 = new System.Windows.Forms.Label();
             this.tabPage_Reservation = new System.Windows.Forms.TabPage();
             this.comboBox_Reservation_strFunction = new System.Windows.Forms.ComboBox();
             this.textBox_Reservation_strItemBarcodeList = new System.Windows.Forms.TextBox();
@@ -452,20 +466,10 @@
             this.自动测试1ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.自动测试2ToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.tabPage_hire = new System.Windows.Forms.TabPage();
-            this.tabPage_Foregift = new System.Windows.Forms.TabPage();
-            this.button_hire_help = new System.Windows.Forms.Button();
-            this.button_hire = new System.Windows.Forms.Button();
-            this.textBox_hire_readerBarcode = new System.Windows.Forms.TextBox();
-            this.textBox_hire_action = new System.Windows.Forms.TextBox();
-            this.label149 = new System.Windows.Forms.Label();
-            this.label150 = new System.Windows.Forms.Label();
-            this.button6 = new System.Windows.Forms.Button();
-            this.button_foregift = new System.Windows.Forms.Button();
-            this.textBox_foregift_readerBarcode = new System.Windows.Forms.TextBox();
-            this.textBox_foregift_action = new System.Windows.Forms.TextBox();
-            this.label151 = new System.Windows.Forms.Label();
-            this.label152 = new System.Windows.Forms.Label();
+            this.label153 = new System.Windows.Forms.Label();
+            this.textBox_SetItemInfo_OldRecord = new System.Windows.Forms.TextBox();
+            this.label154 = new System.Windows.Forms.Label();
+            this.textBox_SetItemInfo_OldRecPath = new System.Windows.Forms.TextBox();
             this.tabPage_SearchBiblio.SuspendLayout();
             this.tabPage_Server.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -475,6 +479,9 @@
             this.groupBox5.SuspendLayout();
             this.tabPage_RepairBorrowInfo.SuspendLayout();
             this.tabPage_WriteRes.SuspendLayout();
+            this.tabPage_hire.SuspendLayout();
+            this.tabPage_Foregift.SuspendLayout();
+            this.tabPage_Settlement.SuspendLayout();
             this.tabPage_GetRes.SuspendLayout();
             this.tabPage_GetRecord.SuspendLayout();
             this.tabPage_SetBiblioInfo.SuspendLayout();
@@ -490,7 +497,6 @@
             this.tabPage_Search.SuspendLayout();
             this.tabPage_GetSearchResult.SuspendLayout();
             this.tabPage_GetBrowseRecords.SuspendLayout();
-            this.tabPage_Settlement.SuspendLayout();
             this.tabPage_Reservation.SuspendLayout();
             this.tabPage_SetUser.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -508,8 +514,6 @@
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
-            this.tabPage_hire.SuspendLayout();
-            this.tabPage_Foregift.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabPage_SearchBiblio
@@ -1749,6 +1753,226 @@
             this.textBox_WriteRes_strResPath.Size = new System.Drawing.Size(492, 38);
             this.textBox_WriteRes_strResPath.TabIndex = 7;
             // 
+            // tabPage_hire
+            // 
+            this.tabPage_hire.Controls.Add(this.button_hire_help);
+            this.tabPage_hire.Controls.Add(this.button_hire);
+            this.tabPage_hire.Controls.Add(this.textBox_hire_readerBarcode);
+            this.tabPage_hire.Controls.Add(this.textBox_hire_action);
+            this.tabPage_hire.Controls.Add(this.label149);
+            this.tabPage_hire.Controls.Add(this.label150);
+            this.tabPage_hire.Location = new System.Drawing.Point(10, 46);
+            this.tabPage_hire.Name = "tabPage_hire";
+            this.tabPage_hire.Size = new System.Drawing.Size(1060, 672);
+            this.tabPage_hire.TabIndex = 33;
+            this.tabPage_hire.Text = "Hire";
+            this.tabPage_hire.UseVisualStyleBackColor = true;
+            // 
+            // button_hire_help
+            // 
+            this.button_hire_help.Location = new System.Drawing.Point(2, 3);
+            this.button_hire_help.Name = "button_hire_help";
+            this.button_hire_help.Size = new System.Drawing.Size(54, 117);
+            this.button_hire_help.TabIndex = 63;
+            this.button_hire_help.Text = "帮助";
+            this.button_hire_help.UseVisualStyleBackColor = true;
+            // 
+            // button_hire
+            // 
+            this.button_hire.Location = new System.Drawing.Point(329, 229);
+            this.button_hire.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.button_hire.Name = "button_hire";
+            this.button_hire.Size = new System.Drawing.Size(276, 62);
+            this.button_hire.TabIndex = 62;
+            this.button_hire.Tag = "";
+            this.button_hire.Text = "hire";
+            this.button_hire.UseVisualStyleBackColor = true;
+            this.button_hire.Click += new System.EventHandler(this.button_hire_Click);
+            // 
+            // textBox_hire_readerBarcode
+            // 
+            this.textBox_hire_readerBarcode.Location = new System.Drawing.Point(329, 116);
+            this.textBox_hire_readerBarcode.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.textBox_hire_readerBarcode.Multiline = true;
+            this.textBox_hire_readerBarcode.Name = "textBox_hire_readerBarcode";
+            this.textBox_hire_readerBarcode.Size = new System.Drawing.Size(583, 73);
+            this.textBox_hire_readerBarcode.TabIndex = 60;
+            // 
+            // textBox_hire_action
+            // 
+            this.textBox_hire_action.Location = new System.Drawing.Point(329, 45);
+            this.textBox_hire_action.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.textBox_hire_action.Name = "textBox_hire_action";
+            this.textBox_hire_action.Size = new System.Drawing.Size(583, 38);
+            this.textBox_hire_action.TabIndex = 58;
+            // 
+            // label149
+            // 
+            this.label149.AutoSize = true;
+            this.label149.Location = new System.Drawing.Point(83, 119);
+            this.label149.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label149.Name = "label149";
+            this.label149.Size = new System.Drawing.Size(236, 27);
+            this.label149.TabIndex = 61;
+            this.label149.Text = "strReaderBarcode";
+            // 
+            // label150
+            // 
+            this.label150.AutoSize = true;
+            this.label150.Location = new System.Drawing.Point(114, 48);
+            this.label150.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label150.Name = "label150";
+            this.label150.Size = new System.Drawing.Size(138, 27);
+            this.label150.TabIndex = 59;
+            this.label150.Text = "strAction";
+            // 
+            // tabPage_Foregift
+            // 
+            this.tabPage_Foregift.Controls.Add(this.button6);
+            this.tabPage_Foregift.Controls.Add(this.button_foregift);
+            this.tabPage_Foregift.Controls.Add(this.textBox_foregift_readerBarcode);
+            this.tabPage_Foregift.Controls.Add(this.textBox_foregift_action);
+            this.tabPage_Foregift.Controls.Add(this.label151);
+            this.tabPage_Foregift.Controls.Add(this.label152);
+            this.tabPage_Foregift.Location = new System.Drawing.Point(10, 46);
+            this.tabPage_Foregift.Name = "tabPage_Foregift";
+            this.tabPage_Foregift.Size = new System.Drawing.Size(1060, 672);
+            this.tabPage_Foregift.TabIndex = 34;
+            this.tabPage_Foregift.Text = "Foregift";
+            this.tabPage_Foregift.UseVisualStyleBackColor = true;
+            // 
+            // button6
+            // 
+            this.button6.Location = new System.Drawing.Point(2, 0);
+            this.button6.Name = "button6";
+            this.button6.Size = new System.Drawing.Size(54, 117);
+            this.button6.TabIndex = 69;
+            this.button6.Text = "帮助";
+            this.button6.UseVisualStyleBackColor = true;
+            // 
+            // button_foregift
+            // 
+            this.button_foregift.Location = new System.Drawing.Point(329, 226);
+            this.button_foregift.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.button_foregift.Name = "button_foregift";
+            this.button_foregift.Size = new System.Drawing.Size(276, 62);
+            this.button_foregift.TabIndex = 68;
+            this.button_foregift.Tag = "";
+            this.button_foregift.Text = "foregift";
+            this.button_foregift.UseVisualStyleBackColor = true;
+            this.button_foregift.Click += new System.EventHandler(this.button_foregift_Click);
+            // 
+            // textBox_foregift_readerBarcode
+            // 
+            this.textBox_foregift_readerBarcode.Location = new System.Drawing.Point(329, 113);
+            this.textBox_foregift_readerBarcode.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.textBox_foregift_readerBarcode.Multiline = true;
+            this.textBox_foregift_readerBarcode.Name = "textBox_foregift_readerBarcode";
+            this.textBox_foregift_readerBarcode.Size = new System.Drawing.Size(583, 73);
+            this.textBox_foregift_readerBarcode.TabIndex = 66;
+            // 
+            // textBox_foregift_action
+            // 
+            this.textBox_foregift_action.Location = new System.Drawing.Point(329, 42);
+            this.textBox_foregift_action.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.textBox_foregift_action.Name = "textBox_foregift_action";
+            this.textBox_foregift_action.Size = new System.Drawing.Size(583, 38);
+            this.textBox_foregift_action.TabIndex = 64;
+            // 
+            // label151
+            // 
+            this.label151.AutoSize = true;
+            this.label151.Location = new System.Drawing.Point(83, 116);
+            this.label151.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label151.Name = "label151";
+            this.label151.Size = new System.Drawing.Size(236, 27);
+            this.label151.TabIndex = 67;
+            this.label151.Text = "strReaderBarcode";
+            // 
+            // label152
+            // 
+            this.label152.AutoSize = true;
+            this.label152.Location = new System.Drawing.Point(114, 45);
+            this.label152.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label152.Name = "label152";
+            this.label152.Size = new System.Drawing.Size(138, 27);
+            this.label152.TabIndex = 65;
+            this.label152.Text = "strAction";
+            // 
+            // tabPage_Settlement
+            // 
+            this.tabPage_Settlement.Controls.Add(this.button_help_settlement);
+            this.tabPage_Settlement.Controls.Add(this.button_Settlement);
+            this.tabPage_Settlement.Controls.Add(this.textBox_Settlement_ids);
+            this.tabPage_Settlement.Controls.Add(this.textBox_Settlement_strAction);
+            this.tabPage_Settlement.Controls.Add(this.label93);
+            this.tabPage_Settlement.Controls.Add(this.label94);
+            this.tabPage_Settlement.Location = new System.Drawing.Point(10, 46);
+            this.tabPage_Settlement.Name = "tabPage_Settlement";
+            this.tabPage_Settlement.Size = new System.Drawing.Size(1060, 672);
+            this.tabPage_Settlement.TabIndex = 21;
+            this.tabPage_Settlement.Text = "Settlement";
+            this.tabPage_Settlement.UseVisualStyleBackColor = true;
+            // 
+            // button_help_settlement
+            // 
+            this.button_help_settlement.Location = new System.Drawing.Point(0, 0);
+            this.button_help_settlement.Name = "button_help_settlement";
+            this.button_help_settlement.Size = new System.Drawing.Size(54, 117);
+            this.button_help_settlement.TabIndex = 57;
+            this.button_help_settlement.Text = "帮助";
+            this.button_help_settlement.UseVisualStyleBackColor = true;
+            this.button_help_settlement.Click += new System.EventHandler(this.button_help_settlement_Click);
+            // 
+            // button_Settlement
+            // 
+            this.button_Settlement.Location = new System.Drawing.Point(260, 238);
+            this.button_Settlement.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.button_Settlement.Name = "button_Settlement";
+            this.button_Settlement.Size = new System.Drawing.Size(276, 62);
+            this.button_Settlement.TabIndex = 51;
+            this.button_Settlement.Tag = "";
+            this.button_Settlement.Text = "GetBiblioInfo";
+            this.button_Settlement.UseVisualStyleBackColor = true;
+            this.button_Settlement.Click += new System.EventHandler(this.button_Settlement_Click);
+            // 
+            // textBox_Settlement_ids
+            // 
+            this.textBox_Settlement_ids.Location = new System.Drawing.Point(260, 116);
+            this.textBox_Settlement_ids.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.textBox_Settlement_ids.Multiline = true;
+            this.textBox_Settlement_ids.Name = "textBox_Settlement_ids";
+            this.textBox_Settlement_ids.Size = new System.Drawing.Size(583, 73);
+            this.textBox_Settlement_ids.TabIndex = 49;
+            // 
+            // textBox_Settlement_strAction
+            // 
+            this.textBox_Settlement_strAction.Location = new System.Drawing.Point(260, 45);
+            this.textBox_Settlement_strAction.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.textBox_Settlement_strAction.Name = "textBox_Settlement_strAction";
+            this.textBox_Settlement_strAction.Size = new System.Drawing.Size(583, 38);
+            this.textBox_Settlement_strAction.TabIndex = 47;
+            // 
+            // label93
+            // 
+            this.label93.AutoSize = true;
+            this.label93.Location = new System.Drawing.Point(154, 112);
+            this.label93.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label93.Name = "label93";
+            this.label93.Size = new System.Drawing.Size(54, 27);
+            this.label93.TabIndex = 50;
+            this.label93.Text = "ids";
+            // 
+            // label94
+            // 
+            this.label94.AutoSize = true;
+            this.label94.Location = new System.Drawing.Point(112, 45);
+            this.label94.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label94.Name = "label94";
+            this.label94.Size = new System.Drawing.Size(138, 27);
+            this.label94.TabIndex = 48;
+            this.label94.Text = "strAction";
+            // 
             // tabPage_GetRes
             // 
             this.tabPage_GetRes.Controls.Add(this.label51);
@@ -2668,6 +2892,10 @@
             // 
             // tabPage_SetItemInfo
             // 
+            this.tabPage_SetItemInfo.Controls.Add(this.label153);
+            this.tabPage_SetItemInfo.Controls.Add(this.textBox_SetItemInfo_OldRecord);
+            this.tabPage_SetItemInfo.Controls.Add(this.label154);
+            this.tabPage_SetItemInfo.Controls.Add(this.textBox_SetItemInfo_OldRecPath);
             this.tabPage_SetItemInfo.Controls.Add(this.label115);
             this.tabPage_SetItemInfo.Controls.Add(this.textBox_SetItemInfo_strDbType);
             this.tabPage_SetItemInfo.Controls.Add(this.button_help_SetItemInfo);
@@ -2676,11 +2904,11 @@
             this.tabPage_SetItemInfo.Controls.Add(this.label101);
             this.tabPage_SetItemInfo.Controls.Add(this.textBox_SetItemInfo_baTimestamp);
             this.tabPage_SetItemInfo.Controls.Add(this.label102);
-            this.tabPage_SetItemInfo.Controls.Add(this.textBox_SetItemInfo_strXml);
+            this.tabPage_SetItemInfo.Controls.Add(this.textBox_SetItemInfo_NewRecord);
             this.tabPage_SetItemInfo.Controls.Add(this.label103);
             this.tabPage_SetItemInfo.Controls.Add(this.textBox_SetItemInfo_strAction);
             this.tabPage_SetItemInfo.Controls.Add(this.label104);
-            this.tabPage_SetItemInfo.Controls.Add(this.textBox_SetItemInfo_strResPath);
+            this.tabPage_SetItemInfo.Controls.Add(this.textBox_SetItemInfo_NewRecPath);
             this.tabPage_SetItemInfo.Controls.Add(this.button_SetItemInfo);
             this.tabPage_SetItemInfo.Location = new System.Drawing.Point(10, 46);
             this.tabPage_SetItemInfo.Name = "tabPage_SetItemInfo";
@@ -2722,7 +2950,7 @@
             // label100
             // 
             this.label100.AutoSize = true;
-            this.label100.Location = new System.Drawing.Point(100, 546);
+            this.label100.Location = new System.Drawing.Point(100, 406);
             this.label100.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.label100.Name = "label100";
             this.label100.Size = new System.Drawing.Size(124, 27);
@@ -2733,7 +2961,7 @@
             // 
             this.textBox_SetItemInfo_strStyle.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox_SetItemInfo_strStyle.Location = new System.Drawing.Point(233, 543);
+            this.textBox_SetItemInfo_strStyle.Location = new System.Drawing.Point(233, 403);
             this.textBox_SetItemInfo_strStyle.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.textBox_SetItemInfo_strStyle.Name = "textBox_SetItemInfo_strStyle";
             this.textBox_SetItemInfo_strStyle.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
@@ -2743,7 +2971,7 @@
             // label101
             // 
             this.label101.AutoSize = true;
-            this.label101.Location = new System.Drawing.Point(58, 496);
+            this.label101.Location = new System.Drawing.Point(15, 355);
             this.label101.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.label101.Name = "label101";
             this.label101.Size = new System.Drawing.Size(208, 27);
@@ -2754,7 +2982,7 @@
             // 
             this.textBox_SetItemInfo_baTimestamp.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox_SetItemInfo_baTimestamp.Location = new System.Drawing.Point(233, 492);
+            this.textBox_SetItemInfo_baTimestamp.Location = new System.Drawing.Point(233, 352);
             this.textBox_SetItemInfo_baTimestamp.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.textBox_SetItemInfo_baTimestamp.Name = "textBox_SetItemInfo_baTimestamp";
             this.textBox_SetItemInfo_baTimestamp.Size = new System.Drawing.Size(741, 38);
@@ -2763,24 +2991,24 @@
             // label102
             // 
             this.label102.AutoSize = true;
-            this.label102.Location = new System.Drawing.Point(129, 186);
+            this.label102.Location = new System.Drawing.Point(86, 187);
             this.label102.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.label102.Name = "label102";
-            this.label102.Size = new System.Drawing.Size(96, 27);
+            this.label102.Size = new System.Drawing.Size(138, 27);
             this.label102.TabIndex = 78;
-            this.label102.Text = "strXml";
+            this.label102.Text = "NewRecord";
             // 
-            // textBox_SetItemInfo_strXml
+            // textBox_SetItemInfo_NewRecord
             // 
-            this.textBox_SetItemInfo_strXml.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.textBox_SetItemInfo_NewRecord.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox_SetItemInfo_strXml.Location = new System.Drawing.Point(233, 184);
-            this.textBox_SetItemInfo_strXml.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
-            this.textBox_SetItemInfo_strXml.Multiline = true;
-            this.textBox_SetItemInfo_strXml.Name = "textBox_SetItemInfo_strXml";
-            this.textBox_SetItemInfo_strXml.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBox_SetItemInfo_strXml.Size = new System.Drawing.Size(741, 283);
-            this.textBox_SetItemInfo_strXml.TabIndex = 77;
+            this.textBox_SetItemInfo_NewRecord.Location = new System.Drawing.Point(233, 184);
+            this.textBox_SetItemInfo_NewRecord.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.textBox_SetItemInfo_NewRecord.Multiline = true;
+            this.textBox_SetItemInfo_NewRecord.Name = "textBox_SetItemInfo_NewRecord";
+            this.textBox_SetItemInfo_NewRecord.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.textBox_SetItemInfo_NewRecord.Size = new System.Drawing.Size(741, 162);
+            this.textBox_SetItemInfo_NewRecord.TabIndex = 77;
             // 
             // label103
             // 
@@ -2810,21 +3038,21 @@
             this.label104.Name = "label104";
             this.label104.Size = new System.Drawing.Size(152, 27);
             this.label104.TabIndex = 74;
-            this.label104.Text = "strResPath";
+            this.label104.Text = "NewRecPath";
             // 
-            // textBox_SetItemInfo_strResPath
+            // textBox_SetItemInfo_NewRecPath
             // 
-            this.textBox_SetItemInfo_strResPath.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.textBox_SetItemInfo_NewRecPath.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox_SetItemInfo_strResPath.Location = new System.Drawing.Point(233, 132);
-            this.textBox_SetItemInfo_strResPath.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
-            this.textBox_SetItemInfo_strResPath.Name = "textBox_SetItemInfo_strResPath";
-            this.textBox_SetItemInfo_strResPath.Size = new System.Drawing.Size(741, 38);
-            this.textBox_SetItemInfo_strResPath.TabIndex = 73;
+            this.textBox_SetItemInfo_NewRecPath.Location = new System.Drawing.Point(233, 132);
+            this.textBox_SetItemInfo_NewRecPath.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.textBox_SetItemInfo_NewRecPath.Name = "textBox_SetItemInfo_NewRecPath";
+            this.textBox_SetItemInfo_NewRecPath.Size = new System.Drawing.Size(741, 38);
+            this.textBox_SetItemInfo_NewRecPath.TabIndex = 73;
             // 
             // button_SetItemInfo
             // 
-            this.button_SetItemInfo.Location = new System.Drawing.Point(233, 608);
+            this.button_SetItemInfo.Location = new System.Drawing.Point(233, 596);
             this.button_SetItemInfo.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.button_SetItemInfo.Name = "button_SetItemInfo";
             this.button_SetItemInfo.Size = new System.Drawing.Size(222, 57);
@@ -3867,80 +4095,6 @@
             this.label71.TabIndex = 67;
             this.label71.Text = "paths\r\n(每条路径一行)";
             this.label71.TextAlign = System.Drawing.ContentAlignment.TopRight;
-            // 
-            // tabPage_Settlement
-            // 
-            this.tabPage_Settlement.Controls.Add(this.button_help_settlement);
-            this.tabPage_Settlement.Controls.Add(this.button_Settlement);
-            this.tabPage_Settlement.Controls.Add(this.textBox_Settlement_ids);
-            this.tabPage_Settlement.Controls.Add(this.textBox_Settlement_strAction);
-            this.tabPage_Settlement.Controls.Add(this.label93);
-            this.tabPage_Settlement.Controls.Add(this.label94);
-            this.tabPage_Settlement.Location = new System.Drawing.Point(10, 46);
-            this.tabPage_Settlement.Name = "tabPage_Settlement";
-            this.tabPage_Settlement.Size = new System.Drawing.Size(1060, 672);
-            this.tabPage_Settlement.TabIndex = 21;
-            this.tabPage_Settlement.Text = "Settlement";
-            this.tabPage_Settlement.UseVisualStyleBackColor = true;
-            // 
-            // button_help_settlement
-            // 
-            this.button_help_settlement.Location = new System.Drawing.Point(0, 0);
-            this.button_help_settlement.Name = "button_help_settlement";
-            this.button_help_settlement.Size = new System.Drawing.Size(54, 117);
-            this.button_help_settlement.TabIndex = 57;
-            this.button_help_settlement.Text = "帮助";
-            this.button_help_settlement.UseVisualStyleBackColor = true;
-            this.button_help_settlement.Click += new System.EventHandler(this.button_help_settlement_Click);
-            // 
-            // button_Settlement
-            // 
-            this.button_Settlement.Location = new System.Drawing.Point(260, 238);
-            this.button_Settlement.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
-            this.button_Settlement.Name = "button_Settlement";
-            this.button_Settlement.Size = new System.Drawing.Size(276, 62);
-            this.button_Settlement.TabIndex = 51;
-            this.button_Settlement.Tag = "";
-            this.button_Settlement.Text = "GetBiblioInfo";
-            this.button_Settlement.UseVisualStyleBackColor = true;
-            this.button_Settlement.Click += new System.EventHandler(this.button_Settlement_Click);
-            // 
-            // textBox_Settlement_ids
-            // 
-            this.textBox_Settlement_ids.Location = new System.Drawing.Point(260, 116);
-            this.textBox_Settlement_ids.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
-            this.textBox_Settlement_ids.Multiline = true;
-            this.textBox_Settlement_ids.Name = "textBox_Settlement_ids";
-            this.textBox_Settlement_ids.Size = new System.Drawing.Size(583, 73);
-            this.textBox_Settlement_ids.TabIndex = 49;
-            // 
-            // textBox_Settlement_strAction
-            // 
-            this.textBox_Settlement_strAction.Location = new System.Drawing.Point(260, 45);
-            this.textBox_Settlement_strAction.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
-            this.textBox_Settlement_strAction.Name = "textBox_Settlement_strAction";
-            this.textBox_Settlement_strAction.Size = new System.Drawing.Size(583, 38);
-            this.textBox_Settlement_strAction.TabIndex = 47;
-            // 
-            // label93
-            // 
-            this.label93.AutoSize = true;
-            this.label93.Location = new System.Drawing.Point(154, 112);
-            this.label93.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
-            this.label93.Name = "label93";
-            this.label93.Size = new System.Drawing.Size(54, 27);
-            this.label93.TabIndex = 50;
-            this.label93.Text = "ids";
-            // 
-            // label94
-            // 
-            this.label94.AutoSize = true;
-            this.label94.Location = new System.Drawing.Point(112, 45);
-            this.label94.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
-            this.label94.Name = "label94";
-            this.label94.Size = new System.Drawing.Size(138, 27);
-            this.label94.TabIndex = 48;
-            this.label94.Text = "strAction";
             // 
             // tabPage_Reservation
             // 
@@ -5161,151 +5315,47 @@
             this.splitContainer1.SplitterDistance = 728;
             this.splitContainer1.TabIndex = 21;
             // 
-            // tabPage_hire
+            // label153
             // 
-            this.tabPage_hire.Controls.Add(this.button_hire_help);
-            this.tabPage_hire.Controls.Add(this.button_hire);
-            this.tabPage_hire.Controls.Add(this.textBox_hire_readerBarcode);
-            this.tabPage_hire.Controls.Add(this.textBox_hire_action);
-            this.tabPage_hire.Controls.Add(this.label149);
-            this.tabPage_hire.Controls.Add(this.label150);
-            this.tabPage_hire.Location = new System.Drawing.Point(10, 46);
-            this.tabPage_hire.Name = "tabPage_hire";
-            this.tabPage_hire.Size = new System.Drawing.Size(1060, 672);
-            this.tabPage_hire.TabIndex = 33;
-            this.tabPage_hire.Text = "Hire";
-            this.tabPage_hire.UseVisualStyleBackColor = true;
+            this.label153.AutoSize = true;
+            this.label153.Location = new System.Drawing.Point(86, 506);
+            this.label153.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label153.Name = "label153";
+            this.label153.Size = new System.Drawing.Size(138, 27);
+            this.label153.TabIndex = 89;
+            this.label153.Text = "OldRecord";
             // 
-            // tabPage_Foregift
+            // textBox_SetItemInfo_OldRecord
             // 
-            this.tabPage_Foregift.Controls.Add(this.button6);
-            this.tabPage_Foregift.Controls.Add(this.button_foregift);
-            this.tabPage_Foregift.Controls.Add(this.textBox_foregift_readerBarcode);
-            this.tabPage_Foregift.Controls.Add(this.textBox_foregift_action);
-            this.tabPage_Foregift.Controls.Add(this.label151);
-            this.tabPage_Foregift.Controls.Add(this.label152);
-            this.tabPage_Foregift.Location = new System.Drawing.Point(10, 46);
-            this.tabPage_Foregift.Name = "tabPage_Foregift";
-            this.tabPage_Foregift.Size = new System.Drawing.Size(1060, 672);
-            this.tabPage_Foregift.TabIndex = 34;
-            this.tabPage_Foregift.Text = "Foregift";
-            this.tabPage_Foregift.UseVisualStyleBackColor = true;
+            this.textBox_SetItemInfo_OldRecord.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBox_SetItemInfo_OldRecord.Location = new System.Drawing.Point(233, 503);
+            this.textBox_SetItemInfo_OldRecord.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.textBox_SetItemInfo_OldRecord.Multiline = true;
+            this.textBox_SetItemInfo_OldRecord.Name = "textBox_SetItemInfo_OldRecord";
+            this.textBox_SetItemInfo_OldRecord.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.textBox_SetItemInfo_OldRecord.Size = new System.Drawing.Size(741, 87);
+            this.textBox_SetItemInfo_OldRecord.TabIndex = 88;
             // 
-            // button_hire_help
+            // label154
             // 
-            this.button_hire_help.Location = new System.Drawing.Point(2, 3);
-            this.button_hire_help.Name = "button_hire_help";
-            this.button_hire_help.Size = new System.Drawing.Size(54, 117);
-            this.button_hire_help.TabIndex = 63;
-            this.button_hire_help.Text = "帮助";
-            this.button_hire_help.UseVisualStyleBackColor = true;
+            this.label154.AutoSize = true;
+            this.label154.Location = new System.Drawing.Point(72, 451);
+            this.label154.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label154.Name = "label154";
+            this.label154.Size = new System.Drawing.Size(152, 27);
+            this.label154.TabIndex = 87;
+            this.label154.Text = "OldRecPath";
             // 
-            // button_hire
+            // textBox_SetItemInfo_OldRecPath
             // 
-            this.button_hire.Location = new System.Drawing.Point(329, 229);
-            this.button_hire.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
-            this.button_hire.Name = "button_hire";
-            this.button_hire.Size = new System.Drawing.Size(276, 62);
-            this.button_hire.TabIndex = 62;
-            this.button_hire.Tag = "";
-            this.button_hire.Text = "hire";
-            this.button_hire.UseVisualStyleBackColor = true;
-            this.button_hire.Click += new System.EventHandler(this.button_hire_Click);
-            // 
-            // textBox_hire_readerBarcode
-            // 
-            this.textBox_hire_readerBarcode.Location = new System.Drawing.Point(329, 116);
-            this.textBox_hire_readerBarcode.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
-            this.textBox_hire_readerBarcode.Multiline = true;
-            this.textBox_hire_readerBarcode.Name = "textBox_hire_readerBarcode";
-            this.textBox_hire_readerBarcode.Size = new System.Drawing.Size(583, 73);
-            this.textBox_hire_readerBarcode.TabIndex = 60;
-            // 
-            // textBox_hire_action
-            // 
-            this.textBox_hire_action.Location = new System.Drawing.Point(329, 45);
-            this.textBox_hire_action.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
-            this.textBox_hire_action.Name = "textBox_hire_action";
-            this.textBox_hire_action.Size = new System.Drawing.Size(583, 38);
-            this.textBox_hire_action.TabIndex = 58;
-            // 
-            // label149
-            // 
-            this.label149.AutoSize = true;
-            this.label149.Location = new System.Drawing.Point(83, 119);
-            this.label149.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
-            this.label149.Name = "label149";
-            this.label149.Size = new System.Drawing.Size(236, 27);
-            this.label149.TabIndex = 61;
-            this.label149.Text = "strReaderBarcode";
-            // 
-            // label150
-            // 
-            this.label150.AutoSize = true;
-            this.label150.Location = new System.Drawing.Point(114, 48);
-            this.label150.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
-            this.label150.Name = "label150";
-            this.label150.Size = new System.Drawing.Size(138, 27);
-            this.label150.TabIndex = 59;
-            this.label150.Text = "strAction";
-            // 
-            // button6
-            // 
-            this.button6.Location = new System.Drawing.Point(2, 0);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(54, 117);
-            this.button6.TabIndex = 69;
-            this.button6.Text = "帮助";
-            this.button6.UseVisualStyleBackColor = true;
-            // 
-            // button_foregift
-            // 
-            this.button_foregift.Location = new System.Drawing.Point(329, 226);
-            this.button_foregift.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
-            this.button_foregift.Name = "button_foregift";
-            this.button_foregift.Size = new System.Drawing.Size(276, 62);
-            this.button_foregift.TabIndex = 68;
-            this.button_foregift.Tag = "";
-            this.button_foregift.Text = "foregift";
-            this.button_foregift.UseVisualStyleBackColor = true;
-            this.button_foregift.Click += new System.EventHandler(this.button_foregift_Click);
-            // 
-            // textBox_foregift_readerBarcode
-            // 
-            this.textBox_foregift_readerBarcode.Location = new System.Drawing.Point(329, 113);
-            this.textBox_foregift_readerBarcode.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
-            this.textBox_foregift_readerBarcode.Multiline = true;
-            this.textBox_foregift_readerBarcode.Name = "textBox_foregift_readerBarcode";
-            this.textBox_foregift_readerBarcode.Size = new System.Drawing.Size(583, 73);
-            this.textBox_foregift_readerBarcode.TabIndex = 66;
-            // 
-            // textBox_foregift_action
-            // 
-            this.textBox_foregift_action.Location = new System.Drawing.Point(329, 42);
-            this.textBox_foregift_action.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
-            this.textBox_foregift_action.Name = "textBox_foregift_action";
-            this.textBox_foregift_action.Size = new System.Drawing.Size(583, 38);
-            this.textBox_foregift_action.TabIndex = 64;
-            // 
-            // label151
-            // 
-            this.label151.AutoSize = true;
-            this.label151.Location = new System.Drawing.Point(83, 116);
-            this.label151.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
-            this.label151.Name = "label151";
-            this.label151.Size = new System.Drawing.Size(236, 27);
-            this.label151.TabIndex = 67;
-            this.label151.Text = "strReaderBarcode";
-            // 
-            // label152
-            // 
-            this.label152.AutoSize = true;
-            this.label152.Location = new System.Drawing.Point(114, 45);
-            this.label152.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
-            this.label152.Name = "label152";
-            this.label152.Size = new System.Drawing.Size(138, 27);
-            this.label152.TabIndex = 65;
-            this.label152.Text = "strAction";
+            this.textBox_SetItemInfo_OldRecPath.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBox_SetItemInfo_OldRecPath.Location = new System.Drawing.Point(233, 451);
+            this.textBox_SetItemInfo_OldRecPath.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.textBox_SetItemInfo_OldRecPath.Name = "textBox_SetItemInfo_OldRecPath";
+            this.textBox_SetItemInfo_OldRecPath.Size = new System.Drawing.Size(741, 38);
+            this.textBox_SetItemInfo_OldRecPath.TabIndex = 86;
             // 
             // Form_main
             // 
@@ -5337,6 +5387,12 @@
             this.tabPage_RepairBorrowInfo.PerformLayout();
             this.tabPage_WriteRes.ResumeLayout(false);
             this.tabPage_WriteRes.PerformLayout();
+            this.tabPage_hire.ResumeLayout(false);
+            this.tabPage_hire.PerformLayout();
+            this.tabPage_Foregift.ResumeLayout(false);
+            this.tabPage_Foregift.PerformLayout();
+            this.tabPage_Settlement.ResumeLayout(false);
+            this.tabPage_Settlement.PerformLayout();
             this.tabPage_GetRes.ResumeLayout(false);
             this.tabPage_GetRes.PerformLayout();
             this.tabPage_GetRecord.ResumeLayout(false);
@@ -5367,8 +5423,6 @@
             this.tabPage_GetSearchResult.PerformLayout();
             this.tabPage_GetBrowseRecords.ResumeLayout(false);
             this.tabPage_GetBrowseRecords.PerformLayout();
-            this.tabPage_Settlement.ResumeLayout(false);
-            this.tabPage_Settlement.PerformLayout();
             this.tabPage_Reservation.ResumeLayout(false);
             this.tabPage_Reservation.PerformLayout();
             this.tabPage_SetUser.ResumeLayout(false);
@@ -5400,10 +5454,6 @@
             this.splitContainer1.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
-            this.tabPage_hire.ResumeLayout(false);
-            this.tabPage_hire.PerformLayout();
-            this.tabPage_Foregift.ResumeLayout(false);
-            this.tabPage_Foregift.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -5704,11 +5754,11 @@
         private System.Windows.Forms.Label label101;
         private System.Windows.Forms.TextBox textBox_SetItemInfo_baTimestamp;
         private System.Windows.Forms.Label label102;
-        private System.Windows.Forms.TextBox textBox_SetItemInfo_strXml;
+        private System.Windows.Forms.TextBox textBox_SetItemInfo_NewRecord;
         private System.Windows.Forms.Label label103;
         private System.Windows.Forms.TextBox textBox_SetItemInfo_strAction;
         private System.Windows.Forms.Label label104;
-        private System.Windows.Forms.TextBox textBox_SetItemInfo_strResPath;
+        private System.Windows.Forms.TextBox textBox_SetItemInfo_NewRecPath;
         private System.Windows.Forms.Button button_SetItemInfo;
         private System.Windows.Forms.TabPage tabPage_ChangeReaderPassword;
         private System.Windows.Forms.TextBox textBox_ChangeReaderPassword_strReaderNewPassword;
@@ -5848,6 +5898,10 @@
         private System.Windows.Forms.TextBox textBox_foregift_action;
         private System.Windows.Forms.Label label151;
         private System.Windows.Forms.Label label152;
+        private System.Windows.Forms.Label label153;
+        private System.Windows.Forms.TextBox textBox_SetItemInfo_OldRecord;
+        private System.Windows.Forms.Label label154;
+        private System.Windows.Forms.TextBox textBox_SetItemInfo_OldRecPath;
     }
 }
 

@@ -3053,8 +3053,10 @@ int nAttachmentFragmentLength)
         public LibraryServerResult SetItemInfo(
                  string strDbType,
                 string strAction,
-                string strResPath,
-                string strXml,
+                string newRecPath,
+                string newRecord,
+                string oldRecPath,
+                string oldRecord,
                 byte[] baTimestamp,
                 string strStyle,
                 out string strOutputRecPath,
@@ -3070,21 +3072,26 @@ int nAttachmentFragmentLength)
             var entity = new EntityInfo();
             entity.Action = strAction;
             entity.Style= strStyle;
-            if (strAction == "delete")
-            {
-                entity.OldRecPath = strResPath;
-            }
-            else
-            {
-                entity.NewRecPath = strResPath;
-            }
+            //if (strAction == "delete")
+            //{
+            //    entity.OldRecPath = strResPath;
+            //}
+            //else
+            //{
+            //    entity.NewRecPath = strResPath;
+            //}
+            entity.OldRecPath=oldRecPath;
+            entity.NewRecPath = newRecPath;
+
 
             // xml记录体
-            entity.NewRecord = strXml;
+            //entity.NewRecord = strXml;
+            entity.OldRecord = oldRecord;
+            entity.NewRecord = newRecord;
 
             // 时间戳
             //if (strAction == "change" || strAction == "delete")
-                entity.OldTimestamp = baTimestamp;
+            entity.OldTimestamp = baTimestamp;
             //else
             //    entity.NewTimestamp = baTimestamp;  //2024/5/13 听开发老师讲，new时，也是把时间戳传到OldTimestamp参数。
 
