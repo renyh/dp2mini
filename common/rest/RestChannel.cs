@@ -226,6 +226,13 @@ namespace DigitalPlatform.LibraryRestClient
                     + "strSavedXml:" + r.strSavedXml + "\r\n"
                     + "strExistingXml:" + r.strExistingXml + "\r\n";
             }
+            else if (o is MoveReaderInfoResponse)
+            {
+                MoveReaderInfoResponse r = (MoveReaderInfoResponse)o;
+
+                return GetServerResultInfo(r.MoveReaderInfoResult) + "\r\n"
+                    + "target_timestamp:" + ByteArray.GetHexTimeStampString(r.target_timestamp) + "\r\n";
+            }
             else if (o is GetReaderInfoResponse)
             {
                 GetReaderInfoResponse r = (GetReaderInfoResponse)o;
@@ -2235,6 +2242,56 @@ int nAttachmentFragmentLength)
 
         }
 
+        // 移动读者
+        public MoveReaderInfoResponse MoveReaderInfo(
+            string strSourceRecPath,
+            string strTargetRecPath)
+        {
+            string strError = "";
+        REDO:
+            try
+            {
+                CookieAwareWebClient client = this.GetClient();
+
+
+                MoveReaderInfoRequest request = new MoveReaderInfoRequest();
+                request.strSourceRecPath = strSourceRecPath;
+                request.strTargetRecPath = strTargetRecPath;
+                byte[] baData = Encoding.UTF8.GetBytes(Serialize(request));
+                byte[] result = client.UploadData(this.GetRestfulApiUrl("movereaderinfo"),
+                    "POST",
+                    baData);
+
+                string strResult = Encoding.UTF8.GetString(result);
+
+                MoveReaderInfoResponse response = Deserialize<MoveReaderInfoResponse>(strResult);
+                if (response.MoveReaderInfoResult != null)
+                {
+                    if (response.MoveReaderInfoResult.Value == -1
+                        && response.MoveReaderInfoResult.ErrorCode == ErrorCode.NotLogin)
+                    {
+                        if (DoNotLogin(ref strError) == 1)
+                            goto REDO;
+
+                        return response;
+                    }
+
+                }
+                this.ClearRedoCount();
+
+                return response;
+            }
+            catch (Exception ex)
+            {
+                int nRet = ConvertWebError(ex, out strError);
+                if (nRet == 0)
+                    throw ex;
+
+                goto REDO;
+            }
+
+        }
+
         /*
         // 写册/订购/评注/期 记录
         public SetItemInfoResponse SetItemInfo(
@@ -3234,6 +3291,7 @@ int nAttachmentFragmentLength)
                 byte[] result = client.UploadData(this.GetRestfulApiUrl("SetEntities"),
                                 "POST",
                                  baData);
+
 
                 string strResult = Encoding.UTF8.GetString(result);
                 response = Deserialize<SetEntitiesResponse>(strResult);

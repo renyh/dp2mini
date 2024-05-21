@@ -619,6 +619,30 @@ LibraryServerResult.ErrorInfo		出错信息
         //public ErrorCodeValue kernel_errorcode { get; set; }
     }
 
+    //LibraryServerResult MoveReaderInfo(
+    //string strSourceRecPath,
+    //ref string strTargetRecPath,
+    //out byte[] target_timestamp);
+
+    [DataContract]
+    public class MoveReaderInfoRequest
+    {
+        [DataMember]
+        public string strSourceRecPath { get; set; }
+        [DataMember]
+        public string strTargetRecPath { get; set; }
+    }
+
+    [DataContract]
+    public class MoveReaderInfoResponse
+    {
+        [DataMember]
+        public LibraryServerResult MoveReaderInfoResult { get; set; }
+
+        [DataMember]
+        public byte[] target_timestamp { get; set; }
+    }
+
     #endregion
 
     #region SetReaderInfo

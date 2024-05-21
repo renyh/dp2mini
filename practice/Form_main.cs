@@ -3804,6 +3804,46 @@ this.checkBox_continueWhenError.Checked,
                 this._channelPool.ReturnChannel(channel);
             }
         }
+
+        private void button_moveReaderInfo_Click(object sender, EventArgs e)
+        {
+            // 清空底部输出信息
+            this.ClearResultInfo();
+
+            string strSourceRecPath = this.textBox_moveReaderInfo_strSourceRecPath.Text.Trim();
+            if (string.IsNullOrEmpty(strSourceRecPath) == true)
+            {
+                MessageBox.Show(this, "strSourceRecPath参数不能为空。");
+                return;
+            }
+
+            string strTargetRecPath = this.textBox_moveReaderInfo_strTargetRecPath.Text.Trim();
+            if (string.IsNullOrEmpty(strTargetRecPath) == true)
+            {
+                MessageBox.Show(this, "strTargetRecPath参数不能为空。");
+                return;
+            }
+
+            RestChannel channel = this.GetChannel();
+            try
+            {
+                MoveReaderInfoResponse response = channel.MoveReaderInfo(strSourceRecPath,
+                    strTargetRecPath);
+
+                // 显示返回信息
+                this.SetResultInfo("MoveReaderInfo()\r\n" + RestChannel.GetResultInfo(response));
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, "MoveReaderInfo()异常：" + ex.Message);
+                return;
+            }
+            finally
+            {
+                this._channelPool.ReturnChannel(channel);
+            }
+        }
     }
 
 
