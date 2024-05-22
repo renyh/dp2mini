@@ -233,6 +233,13 @@ namespace DigitalPlatform.LibraryRestClient
                 return GetServerResultInfo(r.MoveReaderInfoResult) + "\r\n"
                     + "target_timestamp:" + ByteArray.GetHexTimeStampString(r.target_timestamp) + "\r\n";
             }
+            else if (o is VerifyBarcodeResponse)
+            {
+                VerifyBarcodeResponse r = (VerifyBarcodeResponse)o;
+
+                return GetServerResultInfo(r.VerifyBarcodeResult) + "\r\n"
+                    + "strOutputBarcode:" + r.strOutputBarcode+ "\r\n";
+            }
             else if (o is GetReaderInfoResponse)
             {
                 GetReaderInfoResponse r = (GetReaderInfoResponse)o;
@@ -1167,7 +1174,57 @@ int nCount)
             return response;
         }
 
+        // 移动读者
+        public VerifyBarcodeResponse VerifyBarcode(
+            string strAction,
+            string strLibraryCode,
+            string strBarcode)
+        {
+            string strError = "";
+        REDO:
+            try
+            {
+                CookieAwareWebClient client = this.GetClient();
 
+
+                VerifyBarcodeRequest request = new VerifyBarcodeRequest();
+                request.strAction = strAction;
+                request.strLibraryCode = strLibraryCode;
+                request.strBarcode = strBarcode;
+                byte[] baData = Encoding.UTF8.GetBytes(Serialize(request));
+                byte[] result = client.UploadData(this.GetRestfulApiUrl("VerifyBarcode"),
+                    "POST",
+                    baData);
+
+                string strResult = Encoding.UTF8.GetString(result);
+
+                VerifyBarcodeResponse response = Deserialize<VerifyBarcodeResponse>(strResult);
+                if (response.VerifyBarcodeResult != null)
+                {
+                    if (response.VerifyBarcodeResult.Value == -1
+                        && response.VerifyBarcodeResult.ErrorCode == ErrorCode.NotLogin)
+                    {
+                        if (DoNotLogin(ref strError) == 1)
+                            goto REDO;
+
+                        return response;
+                    }
+
+                }
+                this.ClearRedoCount();
+
+                return response;
+            }
+            catch (Exception ex)
+            {
+                int nRet = ConvertWebError(ex, out strError);
+                if (nRet == 0)
+                    throw ex;
+
+                goto REDO;
+            }
+
+        }
 
 
         // 校验barcode

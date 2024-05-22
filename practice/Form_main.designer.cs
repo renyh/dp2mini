@@ -239,6 +239,13 @@
             this.textBox_GetReaderInfo_strBarcode = new System.Windows.Forms.TextBox();
             this.label25 = new System.Windows.Forms.Label();
             this.label61 = new System.Windows.Forms.Label();
+            this.tabPage_MoveReaderInfo = new System.Windows.Forms.TabPage();
+            this.button7 = new System.Windows.Forms.Button();
+            this.button_moveReaderInfo = new System.Windows.Forms.Button();
+            this.textBox_moveReaderInfo_strTargetRecPath = new System.Windows.Forms.TextBox();
+            this.textBox_moveReaderInfo_strSourceRecPath = new System.Windows.Forms.TextBox();
+            this.label155 = new System.Windows.Forms.Label();
+            this.label156 = new System.Windows.Forms.Label();
             this.tabPage_SetItemInfo = new System.Windows.Forms.TabPage();
             this.label153 = new System.Windows.Forms.Label();
             this.textBox_SetItemInfo_OldRecord = new System.Windows.Forms.TextBox();
@@ -470,13 +477,15 @@
             this.自动测试1ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.自动测试2ToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.tabPage_MoveReaderInfo = new System.Windows.Forms.TabPage();
-            this.button7 = new System.Windows.Forms.Button();
-            this.button_moveReaderInfo = new System.Windows.Forms.Button();
-            this.textBox_moveReaderInfo_strTargetRecPath = new System.Windows.Forms.TextBox();
-            this.textBox_moveReaderInfo_strSourceRecPath = new System.Windows.Forms.TextBox();
-            this.label155 = new System.Windows.Forms.Label();
-            this.label156 = new System.Windows.Forms.Label();
+            this.tabPage_VerifyBarcode = new System.Windows.Forms.TabPage();
+            this.button8 = new System.Windows.Forms.Button();
+            this.button_verifyBarcode = new System.Windows.Forms.Button();
+            this.textBox_verifyBarcode_libraryCode = new System.Windows.Forms.TextBox();
+            this.textBox_verifyBarcode_strAction = new System.Windows.Forms.TextBox();
+            this.label157 = new System.Windows.Forms.Label();
+            this.label158 = new System.Windows.Forms.Label();
+            this.textBox_verifyBarcode_strBarcode = new System.Windows.Forms.TextBox();
+            this.label159 = new System.Windows.Forms.Label();
             this.tabPage_SearchBiblio.SuspendLayout();
             this.tabPage_Server.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -496,6 +505,7 @@
             this.tabPage_GetBiblioInfos.SuspendLayout();
             this.tabPage_SetReaderInfo.SuspendLayout();
             this.tabPage_GetReaderInfo.SuspendLayout();
+            this.tabPage_MoveReaderInfo.SuspendLayout();
             this.tabPage_SetItemInfo.SuspendLayout();
             this.tabPage_GetItemInfo.SuspendLayout();
             this.tabPage_GetEntities.SuspendLayout();
@@ -521,7 +531,7 @@
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
-            this.tabPage_MoveReaderInfo.SuspendLayout();
+            this.tabPage_VerifyBarcode.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabPage_SearchBiblio
@@ -1063,6 +1073,7 @@
             this.tabControl1.Controls.Add(this.tabPage_task);
             this.tabControl1.Controls.Add(this.tabPage_RepairBorrowInfo);
             this.tabControl1.Controls.Add(this.tabPage_WriteRes);
+            this.tabControl1.Controls.Add(this.tabPage_VerifyBarcode);
             this.tabControl1.Controls.Add(this.tabPage_hire);
             this.tabControl1.Controls.Add(this.tabPage_Foregift);
             this.tabControl1.Controls.Add(this.tabPage_Settlement);
@@ -2898,6 +2909,78 @@
             this.label61.Size = new System.Drawing.Size(152, 27);
             this.label61.TabIndex = 59;
             this.label61.Text = "strBarcode";
+            // 
+            // tabPage_MoveReaderInfo
+            // 
+            this.tabPage_MoveReaderInfo.Controls.Add(this.button7);
+            this.tabPage_MoveReaderInfo.Controls.Add(this.button_moveReaderInfo);
+            this.tabPage_MoveReaderInfo.Controls.Add(this.textBox_moveReaderInfo_strTargetRecPath);
+            this.tabPage_MoveReaderInfo.Controls.Add(this.textBox_moveReaderInfo_strSourceRecPath);
+            this.tabPage_MoveReaderInfo.Controls.Add(this.label155);
+            this.tabPage_MoveReaderInfo.Controls.Add(this.label156);
+            this.tabPage_MoveReaderInfo.Location = new System.Drawing.Point(10, 46);
+            this.tabPage_MoveReaderInfo.Name = "tabPage_MoveReaderInfo";
+            this.tabPage_MoveReaderInfo.Size = new System.Drawing.Size(1060, 672);
+            this.tabPage_MoveReaderInfo.TabIndex = 35;
+            this.tabPage_MoveReaderInfo.Text = "MoveReaderInfo";
+            this.tabPage_MoveReaderInfo.UseVisualStyleBackColor = true;
+            // 
+            // button7
+            // 
+            this.button7.Location = new System.Drawing.Point(1, -1);
+            this.button7.Name = "button7";
+            this.button7.Size = new System.Drawing.Size(54, 117);
+            this.button7.TabIndex = 69;
+            this.button7.Text = "帮助";
+            this.button7.UseVisualStyleBackColor = true;
+            // 
+            // button_moveReaderInfo
+            // 
+            this.button_moveReaderInfo.Location = new System.Drawing.Point(324, 168);
+            this.button_moveReaderInfo.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.button_moveReaderInfo.Name = "button_moveReaderInfo";
+            this.button_moveReaderInfo.Size = new System.Drawing.Size(276, 62);
+            this.button_moveReaderInfo.TabIndex = 68;
+            this.button_moveReaderInfo.Tag = "";
+            this.button_moveReaderInfo.Text = "MoveReaderInfo";
+            this.button_moveReaderInfo.UseVisualStyleBackColor = true;
+            this.button_moveReaderInfo.Click += new System.EventHandler(this.button_moveReaderInfo_Click);
+            // 
+            // textBox_moveReaderInfo_strTargetRecPath
+            // 
+            this.textBox_moveReaderInfo_strTargetRecPath.Location = new System.Drawing.Point(324, 107);
+            this.textBox_moveReaderInfo_strTargetRecPath.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.textBox_moveReaderInfo_strTargetRecPath.Name = "textBox_moveReaderInfo_strTargetRecPath";
+            this.textBox_moveReaderInfo_strTargetRecPath.Size = new System.Drawing.Size(724, 38);
+            this.textBox_moveReaderInfo_strTargetRecPath.TabIndex = 66;
+            // 
+            // textBox_moveReaderInfo_strSourceRecPath
+            // 
+            this.textBox_moveReaderInfo_strSourceRecPath.Location = new System.Drawing.Point(324, 42);
+            this.textBox_moveReaderInfo_strSourceRecPath.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.textBox_moveReaderInfo_strSourceRecPath.Name = "textBox_moveReaderInfo_strSourceRecPath";
+            this.textBox_moveReaderInfo_strSourceRecPath.Size = new System.Drawing.Size(724, 38);
+            this.textBox_moveReaderInfo_strSourceRecPath.TabIndex = 64;
+            // 
+            // label155
+            // 
+            this.label155.AutoSize = true;
+            this.label155.Location = new System.Drawing.Point(78, 110);
+            this.label155.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label155.Name = "label155";
+            this.label155.Size = new System.Drawing.Size(236, 27);
+            this.label155.TabIndex = 67;
+            this.label155.Text = "strTargetRecPath";
+            // 
+            // label156
+            // 
+            this.label156.AutoSize = true;
+            this.label156.Location = new System.Drawing.Point(78, 42);
+            this.label156.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label156.Name = "label156";
+            this.label156.Size = new System.Drawing.Size(236, 27);
+            this.label156.TabIndex = 65;
+            this.label156.Text = "strSourceRecPath";
             // 
             // tabPage_SetItemInfo
             // 
@@ -5366,77 +5449,97 @@
             this.splitContainer1.SplitterDistance = 728;
             this.splitContainer1.TabIndex = 21;
             // 
-            // tabPage_MoveReaderInfo
+            // tabPage_VerifyBarcode
             // 
-            this.tabPage_MoveReaderInfo.Controls.Add(this.button7);
-            this.tabPage_MoveReaderInfo.Controls.Add(this.button_moveReaderInfo);
-            this.tabPage_MoveReaderInfo.Controls.Add(this.textBox_moveReaderInfo_strTargetRecPath);
-            this.tabPage_MoveReaderInfo.Controls.Add(this.textBox_moveReaderInfo_strSourceRecPath);
-            this.tabPage_MoveReaderInfo.Controls.Add(this.label155);
-            this.tabPage_MoveReaderInfo.Controls.Add(this.label156);
-            this.tabPage_MoveReaderInfo.Location = new System.Drawing.Point(10, 46);
-            this.tabPage_MoveReaderInfo.Name = "tabPage_MoveReaderInfo";
-            this.tabPage_MoveReaderInfo.Size = new System.Drawing.Size(1060, 672);
-            this.tabPage_MoveReaderInfo.TabIndex = 35;
-            this.tabPage_MoveReaderInfo.Text = "MoveReaderInfo";
-            this.tabPage_MoveReaderInfo.UseVisualStyleBackColor = true;
+            this.tabPage_VerifyBarcode.Controls.Add(this.textBox_verifyBarcode_strBarcode);
+            this.tabPage_VerifyBarcode.Controls.Add(this.label159);
+            this.tabPage_VerifyBarcode.Controls.Add(this.button8);
+            this.tabPage_VerifyBarcode.Controls.Add(this.button_verifyBarcode);
+            this.tabPage_VerifyBarcode.Controls.Add(this.textBox_verifyBarcode_libraryCode);
+            this.tabPage_VerifyBarcode.Controls.Add(this.textBox_verifyBarcode_strAction);
+            this.tabPage_VerifyBarcode.Controls.Add(this.label157);
+            this.tabPage_VerifyBarcode.Controls.Add(this.label158);
+            this.tabPage_VerifyBarcode.Location = new System.Drawing.Point(10, 46);
+            this.tabPage_VerifyBarcode.Name = "tabPage_VerifyBarcode";
+            this.tabPage_VerifyBarcode.Size = new System.Drawing.Size(1060, 672);
+            this.tabPage_VerifyBarcode.TabIndex = 36;
+            this.tabPage_VerifyBarcode.Text = "VerifyBarcode";
+            this.tabPage_VerifyBarcode.UseVisualStyleBackColor = true;
             // 
-            // button7
+            // button8
             // 
-            this.button7.Location = new System.Drawing.Point(1, -1);
-            this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(54, 117);
-            this.button7.TabIndex = 69;
-            this.button7.Text = "帮助";
-            this.button7.UseVisualStyleBackColor = true;
+            this.button8.Location = new System.Drawing.Point(1, 0);
+            this.button8.Name = "button8";
+            this.button8.Size = new System.Drawing.Size(54, 117);
+            this.button8.TabIndex = 69;
+            this.button8.Text = "帮助";
+            this.button8.UseVisualStyleBackColor = true;
             // 
-            // button_moveReaderInfo
+            // button_verifyBarcode
             // 
-            this.button_moveReaderInfo.Location = new System.Drawing.Point(324, 168);
-            this.button_moveReaderInfo.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
-            this.button_moveReaderInfo.Name = "button_moveReaderInfo";
-            this.button_moveReaderInfo.Size = new System.Drawing.Size(276, 62);
-            this.button_moveReaderInfo.TabIndex = 68;
-            this.button_moveReaderInfo.Tag = "";
-            this.button_moveReaderInfo.Text = "MoveReaderInfo";
-            this.button_moveReaderInfo.UseVisualStyleBackColor = true;
-            this.button_moveReaderInfo.Click += new System.EventHandler(this.button_moveReaderInfo_Click);
+            this.button_verifyBarcode.Location = new System.Drawing.Point(337, 298);
+            this.button_verifyBarcode.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.button_verifyBarcode.Name = "button_verifyBarcode";
+            this.button_verifyBarcode.Size = new System.Drawing.Size(276, 62);
+            this.button_verifyBarcode.TabIndex = 68;
+            this.button_verifyBarcode.Tag = "";
+            this.button_verifyBarcode.Text = "verifyBarcode";
+            this.button_verifyBarcode.UseVisualStyleBackColor = true;
+            this.button_verifyBarcode.Click += new System.EventHandler(this.button_verifyBarcode_Click);
             // 
-            // textBox_moveReaderInfo_strTargetRecPath
+            // textBox_verifyBarcode_libraryCode
             // 
-            this.textBox_moveReaderInfo_strTargetRecPath.Location = new System.Drawing.Point(324, 107);
-            this.textBox_moveReaderInfo_strTargetRecPath.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
-            this.textBox_moveReaderInfo_strTargetRecPath.Name = "textBox_moveReaderInfo_strTargetRecPath";
-            this.textBox_moveReaderInfo_strTargetRecPath.Size = new System.Drawing.Size(724, 38);
-            this.textBox_moveReaderInfo_strTargetRecPath.TabIndex = 66;
+            this.textBox_verifyBarcode_libraryCode.Location = new System.Drawing.Point(328, 113);
+            this.textBox_verifyBarcode_libraryCode.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.textBox_verifyBarcode_libraryCode.Name = "textBox_verifyBarcode_libraryCode";
+            this.textBox_verifyBarcode_libraryCode.Size = new System.Drawing.Size(583, 38);
+            this.textBox_verifyBarcode_libraryCode.TabIndex = 66;
             // 
-            // textBox_moveReaderInfo_strSourceRecPath
+            // textBox_verifyBarcode_strAction
             // 
-            this.textBox_moveReaderInfo_strSourceRecPath.Location = new System.Drawing.Point(324, 42);
-            this.textBox_moveReaderInfo_strSourceRecPath.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
-            this.textBox_moveReaderInfo_strSourceRecPath.Name = "textBox_moveReaderInfo_strSourceRecPath";
-            this.textBox_moveReaderInfo_strSourceRecPath.Size = new System.Drawing.Size(724, 38);
-            this.textBox_moveReaderInfo_strSourceRecPath.TabIndex = 64;
+            this.textBox_verifyBarcode_strAction.Location = new System.Drawing.Point(328, 42);
+            this.textBox_verifyBarcode_strAction.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.textBox_verifyBarcode_strAction.Name = "textBox_verifyBarcode_strAction";
+            this.textBox_verifyBarcode_strAction.Size = new System.Drawing.Size(583, 38);
+            this.textBox_verifyBarcode_strAction.TabIndex = 64;
             // 
-            // label155
+            // label157
             // 
-            this.label155.AutoSize = true;
-            this.label155.Location = new System.Drawing.Point(78, 110);
-            this.label155.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
-            this.label155.Name = "label155";
-            this.label155.Size = new System.Drawing.Size(236, 27);
-            this.label155.TabIndex = 67;
-            this.label155.Text = "strTargetRecPath";
+            this.label157.AutoSize = true;
+            this.label157.Location = new System.Drawing.Point(82, 116);
+            this.label157.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label157.Name = "label157";
+            this.label157.Size = new System.Drawing.Size(208, 27);
+            this.label157.TabIndex = 67;
+            this.label157.Text = "strLibraryCode";
             // 
-            // label156
+            // label158
             // 
-            this.label156.AutoSize = true;
-            this.label156.Location = new System.Drawing.Point(78, 42);
-            this.label156.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
-            this.label156.Name = "label156";
-            this.label156.Size = new System.Drawing.Size(236, 27);
-            this.label156.TabIndex = 65;
-            this.label156.Text = "strSourceRecPath";
+            this.label158.AutoSize = true;
+            this.label158.Location = new System.Drawing.Point(113, 45);
+            this.label158.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label158.Name = "label158";
+            this.label158.Size = new System.Drawing.Size(138, 27);
+            this.label158.TabIndex = 65;
+            this.label158.Text = "strAction";
+            // 
+            // textBox_verifyBarcode_strBarcode
+            // 
+            this.textBox_verifyBarcode_strBarcode.Location = new System.Drawing.Point(328, 176);
+            this.textBox_verifyBarcode_strBarcode.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.textBox_verifyBarcode_strBarcode.Name = "textBox_verifyBarcode_strBarcode";
+            this.textBox_verifyBarcode_strBarcode.Size = new System.Drawing.Size(583, 38);
+            this.textBox_verifyBarcode_strBarcode.TabIndex = 70;
+            // 
+            // label159
+            // 
+            this.label159.AutoSize = true;
+            this.label159.Location = new System.Drawing.Point(82, 179);
+            this.label159.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label159.Name = "label159";
+            this.label159.Size = new System.Drawing.Size(152, 27);
+            this.label159.TabIndex = 71;
+            this.label159.Text = "strBarcode";
             // 
             // Form_main
             // 
@@ -5488,6 +5591,8 @@
             this.tabPage_SetReaderInfo.PerformLayout();
             this.tabPage_GetReaderInfo.ResumeLayout(false);
             this.tabPage_GetReaderInfo.PerformLayout();
+            this.tabPage_MoveReaderInfo.ResumeLayout(false);
+            this.tabPage_MoveReaderInfo.PerformLayout();
             this.tabPage_SetItemInfo.ResumeLayout(false);
             this.tabPage_SetItemInfo.PerformLayout();
             this.tabPage_GetItemInfo.ResumeLayout(false);
@@ -5535,8 +5640,8 @@
             this.splitContainer1.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
-            this.tabPage_MoveReaderInfo.ResumeLayout(false);
-            this.tabPage_MoveReaderInfo.PerformLayout();
+            this.tabPage_VerifyBarcode.ResumeLayout(false);
+            this.tabPage_VerifyBarcode.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -5992,6 +6097,15 @@
         private System.Windows.Forms.TextBox textBox_moveReaderInfo_strSourceRecPath;
         private System.Windows.Forms.Label label155;
         private System.Windows.Forms.Label label156;
+        private System.Windows.Forms.TabPage tabPage_VerifyBarcode;
+        private System.Windows.Forms.Button button8;
+        private System.Windows.Forms.Button button_verifyBarcode;
+        private System.Windows.Forms.TextBox textBox_verifyBarcode_libraryCode;
+        private System.Windows.Forms.TextBox textBox_verifyBarcode_strAction;
+        private System.Windows.Forms.Label label157;
+        private System.Windows.Forms.Label label158;
+        private System.Windows.Forms.TextBox textBox_verifyBarcode_strBarcode;
+        private System.Windows.Forms.Label label159;
     }
 }
 

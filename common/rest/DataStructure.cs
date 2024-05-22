@@ -226,6 +226,22 @@ namespace DigitalPlatform.LibraryRestClient
 
     #region VerifyBarcode
 
+    /*
+        // 校验条码号
+        // parameters:
+        //      strAction   verify VerifyBarcode
+        //                  transform TransformBarcode
+        //      strBarcode 条码号
+        // return:
+        //      result.Value 0: 不是合法的条码号 1:合法的读者证条码号 2:合法的册条码号
+        // 权限：暂时不需要任何权限
+        public LibraryServerResult VerifyBarcode(
+            string strAction,
+            string strLibraryCode,
+            string strBarcode,
+            out string strOutputBarcode)
+     */
+
     // 校验条码号
     // parameters:
     //      strLibraryCode  分馆代码
@@ -237,6 +253,9 @@ namespace DigitalPlatform.LibraryRestClient
     public class VerifyBarcodeRequest
     {
         [DataMember]
+        public string strAction { get; set; }
+
+        [DataMember]
         public string strLibraryCode { get; set; }
         [DataMember]
         public string strBarcode { get; set; }
@@ -247,6 +266,9 @@ namespace DigitalPlatform.LibraryRestClient
     {
         [DataMember]
         public LibraryServerResult VerifyBarcodeResult { get; set; }
+
+        [DataMember]
+        public string strOutputBarcode { get; set; }
 
     }
 

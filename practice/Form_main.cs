@@ -3844,6 +3844,53 @@ this.checkBox_continueWhenError.Checked,
                 this._channelPool.ReturnChannel(channel);
             }
         }
+
+        private void button_verifyBarcode_Click(object sender, EventArgs e)
+        {
+            // 清空底部输出信息
+            this.ClearResultInfo();
+
+            string strAction = this.textBox_verifyBarcode_strAction.Text.Trim();
+            //if (string.IsNullOrEmpty(strAction) == true)
+            //{
+            //    MessageBox.Show(this, "strAction参数不能为空。");
+            //    return;
+            //}
+
+            string strLibraryCode = this.textBox_verifyBarcode_libraryCode.Text.Trim();
+            //if (string.IsNullOrEmpty(strLibraryCode) == true)
+            //{
+            //    MessageBox.Show(this, "strLibraryCode参数不能为空。");
+            //    return;
+            //}
+
+            string strBarcode = this.textBox_verifyBarcode_strBarcode.Text.Trim();
+
+
+            RestChannel channel = this.GetChannel();
+            try
+            {
+                VerifyBarcodeResponse response = channel.VerifyBarcode(strAction,
+                    strLibraryCode,
+                    strBarcode);
+                   // out string strError);
+
+                // 显示返回信息
+                this.SetResultInfo("VerifyBarcode()\r\n" + RestChannel.GetResultInfo(response));
+
+                //this.SetResultInfo("VerifyBarcode()\r\n" + nRet+"-["+strError+"]");
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, "VerifyBarcode()异常：" + ex.Message);
+                return;
+            }
+            finally
+            {
+                this._channelPool.ReturnChannel(channel);
+            }
+        }
     }
 
 
