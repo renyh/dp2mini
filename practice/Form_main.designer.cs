@@ -229,6 +229,8 @@
             this.label17 = new System.Windows.Forms.Label();
             this.label18 = new System.Windows.Forms.Label();
             this.tabPage_SetReaderInfo = new System.Windows.Forms.TabPage();
+            this.label160 = new System.Windows.Forms.Label();
+            this.textBox_setReaderInfo_strStyle = new System.Windows.Forms.TextBox();
             this.button_help_SetReaderInfo = new System.Windows.Forms.Button();
             this.label24 = new System.Windows.Forms.Label();
             this.textBox_SetReaderInfo_strOldXml = new System.Windows.Forms.TextBox();
@@ -486,8 +488,10 @@
             this.自动测试1ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.自动测试2ToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.label160 = new System.Windows.Forms.Label();
-            this.textBox_setReaderInfo_strStyle = new System.Windows.Forms.TextBox();
+            this.textBox_moveReaderInfo_strStyle = new System.Windows.Forms.TextBox();
+            this.textBox_moveReaderInfo_strNewReader = new System.Windows.Forms.TextBox();
+            this.label161 = new System.Windows.Forms.Label();
+            this.label162 = new System.Windows.Forms.Label();
             this.tabPage_SearchBiblio.SuspendLayout();
             this.tabPage_Server.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -2807,6 +2811,26 @@
             this.tabPage_SetReaderInfo.Text = "SetReaderInfo";
             this.tabPage_SetReaderInfo.UseVisualStyleBackColor = true;
             // 
+            // label160
+            // 
+            this.label160.AutoSize = true;
+            this.label160.Location = new System.Drawing.Point(103, 533);
+            this.label160.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label160.Name = "label160";
+            this.label160.Size = new System.Drawing.Size(124, 27);
+            this.label160.TabIndex = 73;
+            this.label160.Text = "strStyle";
+            // 
+            // textBox_setReaderInfo_strStyle
+            // 
+            this.textBox_setReaderInfo_strStyle.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBox_setReaderInfo_strStyle.Location = new System.Drawing.Point(237, 530);
+            this.textBox_setReaderInfo_strStyle.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.textBox_setReaderInfo_strStyle.Name = "textBox_setReaderInfo_strStyle";
+            this.textBox_setReaderInfo_strStyle.Size = new System.Drawing.Size(741, 38);
+            this.textBox_setReaderInfo_strStyle.TabIndex = 72;
+            // 
             // button_help_SetReaderInfo
             // 
             this.button_help_SetReaderInfo.Location = new System.Drawing.Point(3, -3);
@@ -3008,6 +3032,10 @@
             // 
             // tabPage_MoveReaderInfo
             // 
+            this.tabPage_MoveReaderInfo.Controls.Add(this.textBox_moveReaderInfo_strStyle);
+            this.tabPage_MoveReaderInfo.Controls.Add(this.textBox_moveReaderInfo_strNewReader);
+            this.tabPage_MoveReaderInfo.Controls.Add(this.label161);
+            this.tabPage_MoveReaderInfo.Controls.Add(this.label162);
             this.tabPage_MoveReaderInfo.Controls.Add(this.button7);
             this.tabPage_MoveReaderInfo.Controls.Add(this.button_moveReaderInfo);
             this.tabPage_MoveReaderInfo.Controls.Add(this.textBox_moveReaderInfo_strTargetRecPath);
@@ -3032,7 +3060,9 @@
             // 
             // button_moveReaderInfo
             // 
-            this.button_moveReaderInfo.Location = new System.Drawing.Point(324, 168);
+            this.button_moveReaderInfo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.button_moveReaderInfo.Location = new System.Drawing.Point(324, 554);
             this.button_moveReaderInfo.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.button_moveReaderInfo.Name = "button_moveReaderInfo";
             this.button_moveReaderInfo.Size = new System.Drawing.Size(276, 62);
@@ -3044,6 +3074,8 @@
             // 
             // textBox_moveReaderInfo_strTargetRecPath
             // 
+            this.textBox_moveReaderInfo_strTargetRecPath.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.textBox_moveReaderInfo_strTargetRecPath.Location = new System.Drawing.Point(324, 107);
             this.textBox_moveReaderInfo_strTargetRecPath.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.textBox_moveReaderInfo_strTargetRecPath.Name = "textBox_moveReaderInfo_strTargetRecPath";
@@ -3052,6 +3084,8 @@
             // 
             // textBox_moveReaderInfo_strSourceRecPath
             // 
+            this.textBox_moveReaderInfo_strSourceRecPath.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.textBox_moveReaderInfo_strSourceRecPath.Location = new System.Drawing.Point(324, 42);
             this.textBox_moveReaderInfo_strSourceRecPath.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.textBox_moveReaderInfo_strSourceRecPath.Name = "textBox_moveReaderInfo_strSourceRecPath";
@@ -5545,25 +5579,46 @@
             this.splitContainer1.SplitterDistance = 728;
             this.splitContainer1.TabIndex = 21;
             // 
-            // label160
+            // textBox_moveReaderInfo_strStyle
             // 
-            this.label160.AutoSize = true;
-            this.label160.Location = new System.Drawing.Point(103, 533);
-            this.label160.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
-            this.label160.Name = "label160";
-            this.label160.Size = new System.Drawing.Size(124, 27);
-            this.label160.TabIndex = 73;
-            this.label160.Text = "strStyle";
-            // 
-            // textBox_setReaderInfo_strStyle
-            // 
-            this.textBox_setReaderInfo_strStyle.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.textBox_moveReaderInfo_strStyle.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox_setReaderInfo_strStyle.Location = new System.Drawing.Point(237, 530);
-            this.textBox_setReaderInfo_strStyle.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
-            this.textBox_setReaderInfo_strStyle.Name = "textBox_setReaderInfo_strStyle";
-            this.textBox_setReaderInfo_strStyle.Size = new System.Drawing.Size(741, 38);
-            this.textBox_setReaderInfo_strStyle.TabIndex = 72;
+            this.textBox_moveReaderInfo_strStyle.Location = new System.Drawing.Point(324, 492);
+            this.textBox_moveReaderInfo_strStyle.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.textBox_moveReaderInfo_strStyle.Name = "textBox_moveReaderInfo_strStyle";
+            this.textBox_moveReaderInfo_strStyle.Size = new System.Drawing.Size(724, 38);
+            this.textBox_moveReaderInfo_strStyle.TabIndex = 72;
+            // 
+            // textBox_moveReaderInfo_strNewReader
+            // 
+            this.textBox_moveReaderInfo_strNewReader.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBox_moveReaderInfo_strNewReader.Location = new System.Drawing.Point(324, 171);
+            this.textBox_moveReaderInfo_strNewReader.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.textBox_moveReaderInfo_strNewReader.Multiline = true;
+            this.textBox_moveReaderInfo_strNewReader.Name = "textBox_moveReaderInfo_strNewReader";
+            this.textBox_moveReaderInfo_strNewReader.Size = new System.Drawing.Size(724, 315);
+            this.textBox_moveReaderInfo_strNewReader.TabIndex = 70;
+            // 
+            // label161
+            // 
+            this.label161.AutoSize = true;
+            this.label161.Location = new System.Drawing.Point(78, 503);
+            this.label161.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label161.Name = "label161";
+            this.label161.Size = new System.Drawing.Size(124, 27);
+            this.label161.TabIndex = 73;
+            this.label161.Text = "strStyle";
+            // 
+            // label162
+            // 
+            this.label162.AutoSize = true;
+            this.label162.Location = new System.Drawing.Point(78, 171);
+            this.label162.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label162.Name = "label162";
+            this.label162.Size = new System.Drawing.Size(180, 27);
+            this.label162.TabIndex = 71;
+            this.label162.Text = "strNewReader";
             // 
             // Form_main
             // 
@@ -6132,6 +6187,10 @@
         private System.Windows.Forms.Label label159;
         private System.Windows.Forms.Label label160;
         private System.Windows.Forms.TextBox textBox_setReaderInfo_strStyle;
+        private System.Windows.Forms.TextBox textBox_moveReaderInfo_strStyle;
+        private System.Windows.Forms.TextBox textBox_moveReaderInfo_strNewReader;
+        private System.Windows.Forms.Label label161;
+        private System.Windows.Forms.Label label162;
     }
 }
 

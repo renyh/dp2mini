@@ -3826,11 +3826,17 @@ this.checkBox_continueWhenError.Checked,
                 return;
             }
 
+            string strNewReader = this.textBox_moveReaderInfo_strNewReader.Text.Trim();
+            string strStyle = this.textBox_moveReaderInfo_strStyle.Text.Trim();
+
+
             RestChannel channel = this.GetChannel();
             try
             {
                 MoveReaderInfoResponse response = channel.MoveReaderInfo(strSourceRecPath,
-                    strTargetRecPath);
+                    strTargetRecPath,
+                    strNewReader,
+                    strStyle);
 
                 // 显示返回信息
                 this.SetResultInfo("MoveReaderInfo()\r\n" + RestChannel.GetResultInfo(response));

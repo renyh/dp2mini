@@ -2304,7 +2304,9 @@ int nAttachmentFragmentLength)
         // 移动读者
         public MoveReaderInfoResponse MoveReaderInfo(
             string strSourceRecPath,
-            string strTargetRecPath)
+            string strTargetRecPath,
+            string strNewReader,
+            string strStyle)
         {
             string strError = "";
         REDO:
@@ -2316,6 +2318,8 @@ int nAttachmentFragmentLength)
                 MoveReaderInfoRequest request = new MoveReaderInfoRequest();
                 request.strSourceRecPath = strSourceRecPath;
                 request.strTargetRecPath = strTargetRecPath;
+                request.strNewReader = strNewReader;
+                request.strStyle = strStyle;
                 byte[] baData = Encoding.UTF8.GetBytes(Serialize(request));
                 byte[] result = client.UploadData(this.GetRestfulApiUrl("movereaderinfo"),
                     "POST",

@@ -648,6 +648,14 @@ LibraryServerResult.ErrorInfo		出错信息
     //string strSourceRecPath,
     //ref string strTargetRecPath,
     //out byte[] target_timestamp);
+    /*
+        public LibraryServerResult MoveReaderInfo(
+            string strSourceRecPath,
+            ref string strTargetRecPath,
+            string strNewReader,    // 2024/5/21
+            string strStyle,    // 2024/5/21
+            out byte[] target_timestamp)
+     */
 
     [DataContract]
     public class MoveReaderInfoRequest
@@ -656,6 +664,12 @@ LibraryServerResult.ErrorInfo		出错信息
         public string strSourceRecPath { get; set; }
         [DataMember]
         public string strTargetRecPath { get; set; }
+
+        [DataMember]
+        public string strNewReader { get; set; }
+
+        [DataMember]
+        public string strStyle { get; set; }
     }
 
     [DataContract]
