@@ -641,7 +641,8 @@ bool isReader = false)
                     strResPath,
                     strNewXml,
                     "",
-                    baTimestamp);
+                    baTimestamp,
+                    "");
                 // 间戳不匹配，自动重试
                 if (response.SetReaderInfoResult.ErrorCode == ErrorCode.TimestampMismatch)
                 {
@@ -5001,7 +5002,8 @@ bool isReader = false)
                     strTargetRecPath,
                     dom.OuterXml,
                     null,
-                    null);
+                    null,
+                    "");
                 if (response.SetReaderInfoResult.Value == -1)
                     return -1;
 

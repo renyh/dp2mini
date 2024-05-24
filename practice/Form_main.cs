@@ -2527,6 +2527,7 @@ out string strError);
 
             string strTimestamp = this.textBox_SetReaderInfo_baOldTimestamp.Text;
             byte[] baOldTimestamp = ByteArray.GetTimeStampByteArray(strTimestamp);
+            string strStyle = this.textBox_setReaderInfo_strStyle.Text.Trim();
 
             RestChannel channel = this.GetChannel();
             try
@@ -2536,7 +2537,8 @@ out string strError);
                     strRecPath,
                     strNewXml,
                     strOldXml,
-                    baOldTimestamp);
+                    baOldTimestamp,
+                    strStyle);
 
                 // 显示返回信息
                 this.SetResultInfo("SetReaderInfo()\r\n" + RestChannel.GetResultInfo(response));

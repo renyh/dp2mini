@@ -621,6 +621,9 @@ LibraryServerResult.ErrorInfo		出错信息
         public string strOldXml { get; set; }
         [DataMember]
         public byte[] baOldTimestamp { get; set; }
+
+        [DataMember]
+        public string strStyle { get; set; }    // 2024/5/23
     }
 
     [DataContract]

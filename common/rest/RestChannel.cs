@@ -2249,7 +2249,8 @@ int nAttachmentFragmentLength)
             string strRecPath,
             string strNewXml,
             string strOldXml,
-            byte[] baOldTimestamp)
+            byte[] baOldTimestamp,
+            string strStyle)
         {
             string strError = "";
         REDO:
@@ -2264,6 +2265,7 @@ int nAttachmentFragmentLength)
                 request.strNewXml = strNewXml;
                 request.strOldXml = strOldXml;
                 request.baOldTimestamp = baOldTimestamp;// ByteArray.GetTimeStampByteArray(strOldTimestamp);
+                request.strStyle = strStyle;
                 byte[] baData = Encoding.UTF8.GetBytes(Serialize(request));
                 byte[] result = client.UploadData(this.GetRestfulApiUrl("setreaderinfo"),
                     "POST",

@@ -134,6 +134,15 @@
             this.textBox_WriteRes_baContent = new System.Windows.Forms.TextBox();
             this.label59 = new System.Windows.Forms.Label();
             this.textBox_WriteRes_strResPath = new System.Windows.Forms.TextBox();
+            this.tabPage_VerifyBarcode = new System.Windows.Forms.TabPage();
+            this.textBox_verifyBarcode_strBarcode = new System.Windows.Forms.TextBox();
+            this.label159 = new System.Windows.Forms.Label();
+            this.button8 = new System.Windows.Forms.Button();
+            this.button_verifyBarcode = new System.Windows.Forms.Button();
+            this.textBox_verifyBarcode_libraryCode = new System.Windows.Forms.TextBox();
+            this.textBox_verifyBarcode_strAction = new System.Windows.Forms.TextBox();
+            this.label157 = new System.Windows.Forms.Label();
+            this.label158 = new System.Windows.Forms.Label();
             this.tabPage_hire = new System.Windows.Forms.TabPage();
             this.button_hire_help = new System.Windows.Forms.Button();
             this.button_hire = new System.Windows.Forms.Button();
@@ -477,15 +486,8 @@
             this.自动测试1ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.自动测试2ToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.tabPage_VerifyBarcode = new System.Windows.Forms.TabPage();
-            this.button8 = new System.Windows.Forms.Button();
-            this.button_verifyBarcode = new System.Windows.Forms.Button();
-            this.textBox_verifyBarcode_libraryCode = new System.Windows.Forms.TextBox();
-            this.textBox_verifyBarcode_strAction = new System.Windows.Forms.TextBox();
-            this.label157 = new System.Windows.Forms.Label();
-            this.label158 = new System.Windows.Forms.Label();
-            this.textBox_verifyBarcode_strBarcode = new System.Windows.Forms.TextBox();
-            this.label159 = new System.Windows.Forms.Label();
+            this.label160 = new System.Windows.Forms.Label();
+            this.textBox_setReaderInfo_strStyle = new System.Windows.Forms.TextBox();
             this.tabPage_SearchBiblio.SuspendLayout();
             this.tabPage_Server.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -495,6 +497,7 @@
             this.groupBox5.SuspendLayout();
             this.tabPage_RepairBorrowInfo.SuspendLayout();
             this.tabPage_WriteRes.SuspendLayout();
+            this.tabPage_VerifyBarcode.SuspendLayout();
             this.tabPage_hire.SuspendLayout();
             this.tabPage_Foregift.SuspendLayout();
             this.tabPage_Settlement.SuspendLayout();
@@ -531,7 +534,6 @@
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
-            this.tabPage_VerifyBarcode.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabPage_SearchBiblio
@@ -1773,6 +1775,98 @@
             this.textBox_WriteRes_strResPath.Size = new System.Drawing.Size(492, 38);
             this.textBox_WriteRes_strResPath.TabIndex = 7;
             // 
+            // tabPage_VerifyBarcode
+            // 
+            this.tabPage_VerifyBarcode.Controls.Add(this.textBox_verifyBarcode_strBarcode);
+            this.tabPage_VerifyBarcode.Controls.Add(this.label159);
+            this.tabPage_VerifyBarcode.Controls.Add(this.button8);
+            this.tabPage_VerifyBarcode.Controls.Add(this.button_verifyBarcode);
+            this.tabPage_VerifyBarcode.Controls.Add(this.textBox_verifyBarcode_libraryCode);
+            this.tabPage_VerifyBarcode.Controls.Add(this.textBox_verifyBarcode_strAction);
+            this.tabPage_VerifyBarcode.Controls.Add(this.label157);
+            this.tabPage_VerifyBarcode.Controls.Add(this.label158);
+            this.tabPage_VerifyBarcode.Location = new System.Drawing.Point(10, 46);
+            this.tabPage_VerifyBarcode.Name = "tabPage_VerifyBarcode";
+            this.tabPage_VerifyBarcode.Size = new System.Drawing.Size(1060, 672);
+            this.tabPage_VerifyBarcode.TabIndex = 36;
+            this.tabPage_VerifyBarcode.Text = "VerifyBarcode";
+            this.tabPage_VerifyBarcode.UseVisualStyleBackColor = true;
+            // 
+            // textBox_verifyBarcode_strBarcode
+            // 
+            this.textBox_verifyBarcode_strBarcode.Location = new System.Drawing.Point(328, 176);
+            this.textBox_verifyBarcode_strBarcode.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.textBox_verifyBarcode_strBarcode.Name = "textBox_verifyBarcode_strBarcode";
+            this.textBox_verifyBarcode_strBarcode.Size = new System.Drawing.Size(583, 38);
+            this.textBox_verifyBarcode_strBarcode.TabIndex = 70;
+            // 
+            // label159
+            // 
+            this.label159.AutoSize = true;
+            this.label159.Location = new System.Drawing.Point(82, 179);
+            this.label159.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label159.Name = "label159";
+            this.label159.Size = new System.Drawing.Size(152, 27);
+            this.label159.TabIndex = 71;
+            this.label159.Text = "strBarcode";
+            // 
+            // button8
+            // 
+            this.button8.Location = new System.Drawing.Point(1, 0);
+            this.button8.Name = "button8";
+            this.button8.Size = new System.Drawing.Size(54, 117);
+            this.button8.TabIndex = 69;
+            this.button8.Text = "帮助";
+            this.button8.UseVisualStyleBackColor = true;
+            // 
+            // button_verifyBarcode
+            // 
+            this.button_verifyBarcode.Location = new System.Drawing.Point(337, 298);
+            this.button_verifyBarcode.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.button_verifyBarcode.Name = "button_verifyBarcode";
+            this.button_verifyBarcode.Size = new System.Drawing.Size(276, 62);
+            this.button_verifyBarcode.TabIndex = 68;
+            this.button_verifyBarcode.Tag = "";
+            this.button_verifyBarcode.Text = "verifyBarcode";
+            this.button_verifyBarcode.UseVisualStyleBackColor = true;
+            this.button_verifyBarcode.Click += new System.EventHandler(this.button_verifyBarcode_Click);
+            // 
+            // textBox_verifyBarcode_libraryCode
+            // 
+            this.textBox_verifyBarcode_libraryCode.Location = new System.Drawing.Point(328, 113);
+            this.textBox_verifyBarcode_libraryCode.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.textBox_verifyBarcode_libraryCode.Name = "textBox_verifyBarcode_libraryCode";
+            this.textBox_verifyBarcode_libraryCode.Size = new System.Drawing.Size(583, 38);
+            this.textBox_verifyBarcode_libraryCode.TabIndex = 66;
+            // 
+            // textBox_verifyBarcode_strAction
+            // 
+            this.textBox_verifyBarcode_strAction.Location = new System.Drawing.Point(328, 42);
+            this.textBox_verifyBarcode_strAction.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.textBox_verifyBarcode_strAction.Name = "textBox_verifyBarcode_strAction";
+            this.textBox_verifyBarcode_strAction.Size = new System.Drawing.Size(583, 38);
+            this.textBox_verifyBarcode_strAction.TabIndex = 64;
+            // 
+            // label157
+            // 
+            this.label157.AutoSize = true;
+            this.label157.Location = new System.Drawing.Point(82, 116);
+            this.label157.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label157.Name = "label157";
+            this.label157.Size = new System.Drawing.Size(208, 27);
+            this.label157.TabIndex = 67;
+            this.label157.Text = "strLibraryCode";
+            // 
+            // label158
+            // 
+            this.label158.AutoSize = true;
+            this.label158.Location = new System.Drawing.Point(113, 45);
+            this.label158.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label158.Name = "label158";
+            this.label158.Size = new System.Drawing.Size(138, 27);
+            this.label158.TabIndex = 65;
+            this.label158.Text = "strAction";
+            // 
             // tabPage_hire
             // 
             this.tabPage_hire.Controls.Add(this.button_hire_help);
@@ -2692,6 +2786,8 @@
             // 
             // tabPage_SetReaderInfo
             // 
+            this.tabPage_SetReaderInfo.Controls.Add(this.label160);
+            this.tabPage_SetReaderInfo.Controls.Add(this.textBox_setReaderInfo_strStyle);
             this.tabPage_SetReaderInfo.Controls.Add(this.button_help_SetReaderInfo);
             this.tabPage_SetReaderInfo.Controls.Add(this.label24);
             this.tabPage_SetReaderInfo.Controls.Add(this.textBox_SetReaderInfo_strOldXml);
@@ -2740,13 +2836,13 @@
             this.textBox_SetReaderInfo_strOldXml.Multiline = true;
             this.textBox_SetReaderInfo_strOldXml.Name = "textBox_SetReaderInfo_strOldXml";
             this.textBox_SetReaderInfo_strOldXml.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBox_SetReaderInfo_strOldXml.Size = new System.Drawing.Size(741, 127);
+            this.textBox_SetReaderInfo_strOldXml.Size = new System.Drawing.Size(741, 81);
             this.textBox_SetReaderInfo_strOldXml.TabIndex = 69;
             // 
             // label60
             // 
             this.label60.AutoSize = true;
-            this.label60.Location = new System.Drawing.Point(19, 544);
+            this.label60.Location = new System.Drawing.Point(19, 487);
             this.label60.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.label60.Name = "label60";
             this.label60.Size = new System.Drawing.Size(208, 27);
@@ -2757,7 +2853,7 @@
             // 
             this.textBox_SetReaderInfo_baOldTimestamp.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox_SetReaderInfo_baOldTimestamp.Location = new System.Drawing.Point(237, 543);
+            this.textBox_SetReaderInfo_baOldTimestamp.Location = new System.Drawing.Point(237, 486);
             this.textBox_SetReaderInfo_baOldTimestamp.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.textBox_SetReaderInfo_baOldTimestamp.Name = "textBox_SetReaderInfo_baOldTimestamp";
             this.textBox_SetReaderInfo_baOldTimestamp.Size = new System.Drawing.Size(741, 38);
@@ -5449,97 +5545,25 @@
             this.splitContainer1.SplitterDistance = 728;
             this.splitContainer1.TabIndex = 21;
             // 
-            // tabPage_VerifyBarcode
+            // label160
             // 
-            this.tabPage_VerifyBarcode.Controls.Add(this.textBox_verifyBarcode_strBarcode);
-            this.tabPage_VerifyBarcode.Controls.Add(this.label159);
-            this.tabPage_VerifyBarcode.Controls.Add(this.button8);
-            this.tabPage_VerifyBarcode.Controls.Add(this.button_verifyBarcode);
-            this.tabPage_VerifyBarcode.Controls.Add(this.textBox_verifyBarcode_libraryCode);
-            this.tabPage_VerifyBarcode.Controls.Add(this.textBox_verifyBarcode_strAction);
-            this.tabPage_VerifyBarcode.Controls.Add(this.label157);
-            this.tabPage_VerifyBarcode.Controls.Add(this.label158);
-            this.tabPage_VerifyBarcode.Location = new System.Drawing.Point(10, 46);
-            this.tabPage_VerifyBarcode.Name = "tabPage_VerifyBarcode";
-            this.tabPage_VerifyBarcode.Size = new System.Drawing.Size(1060, 672);
-            this.tabPage_VerifyBarcode.TabIndex = 36;
-            this.tabPage_VerifyBarcode.Text = "VerifyBarcode";
-            this.tabPage_VerifyBarcode.UseVisualStyleBackColor = true;
+            this.label160.AutoSize = true;
+            this.label160.Location = new System.Drawing.Point(103, 533);
+            this.label160.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label160.Name = "label160";
+            this.label160.Size = new System.Drawing.Size(124, 27);
+            this.label160.TabIndex = 73;
+            this.label160.Text = "strStyle";
             // 
-            // button8
+            // textBox_setReaderInfo_strStyle
             // 
-            this.button8.Location = new System.Drawing.Point(1, 0);
-            this.button8.Name = "button8";
-            this.button8.Size = new System.Drawing.Size(54, 117);
-            this.button8.TabIndex = 69;
-            this.button8.Text = "帮助";
-            this.button8.UseVisualStyleBackColor = true;
-            // 
-            // button_verifyBarcode
-            // 
-            this.button_verifyBarcode.Location = new System.Drawing.Point(337, 298);
-            this.button_verifyBarcode.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
-            this.button_verifyBarcode.Name = "button_verifyBarcode";
-            this.button_verifyBarcode.Size = new System.Drawing.Size(276, 62);
-            this.button_verifyBarcode.TabIndex = 68;
-            this.button_verifyBarcode.Tag = "";
-            this.button_verifyBarcode.Text = "verifyBarcode";
-            this.button_verifyBarcode.UseVisualStyleBackColor = true;
-            this.button_verifyBarcode.Click += new System.EventHandler(this.button_verifyBarcode_Click);
-            // 
-            // textBox_verifyBarcode_libraryCode
-            // 
-            this.textBox_verifyBarcode_libraryCode.Location = new System.Drawing.Point(328, 113);
-            this.textBox_verifyBarcode_libraryCode.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
-            this.textBox_verifyBarcode_libraryCode.Name = "textBox_verifyBarcode_libraryCode";
-            this.textBox_verifyBarcode_libraryCode.Size = new System.Drawing.Size(583, 38);
-            this.textBox_verifyBarcode_libraryCode.TabIndex = 66;
-            // 
-            // textBox_verifyBarcode_strAction
-            // 
-            this.textBox_verifyBarcode_strAction.Location = new System.Drawing.Point(328, 42);
-            this.textBox_verifyBarcode_strAction.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
-            this.textBox_verifyBarcode_strAction.Name = "textBox_verifyBarcode_strAction";
-            this.textBox_verifyBarcode_strAction.Size = new System.Drawing.Size(583, 38);
-            this.textBox_verifyBarcode_strAction.TabIndex = 64;
-            // 
-            // label157
-            // 
-            this.label157.AutoSize = true;
-            this.label157.Location = new System.Drawing.Point(82, 116);
-            this.label157.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
-            this.label157.Name = "label157";
-            this.label157.Size = new System.Drawing.Size(208, 27);
-            this.label157.TabIndex = 67;
-            this.label157.Text = "strLibraryCode";
-            // 
-            // label158
-            // 
-            this.label158.AutoSize = true;
-            this.label158.Location = new System.Drawing.Point(113, 45);
-            this.label158.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
-            this.label158.Name = "label158";
-            this.label158.Size = new System.Drawing.Size(138, 27);
-            this.label158.TabIndex = 65;
-            this.label158.Text = "strAction";
-            // 
-            // textBox_verifyBarcode_strBarcode
-            // 
-            this.textBox_verifyBarcode_strBarcode.Location = new System.Drawing.Point(328, 176);
-            this.textBox_verifyBarcode_strBarcode.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
-            this.textBox_verifyBarcode_strBarcode.Name = "textBox_verifyBarcode_strBarcode";
-            this.textBox_verifyBarcode_strBarcode.Size = new System.Drawing.Size(583, 38);
-            this.textBox_verifyBarcode_strBarcode.TabIndex = 70;
-            // 
-            // label159
-            // 
-            this.label159.AutoSize = true;
-            this.label159.Location = new System.Drawing.Point(82, 179);
-            this.label159.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
-            this.label159.Name = "label159";
-            this.label159.Size = new System.Drawing.Size(152, 27);
-            this.label159.TabIndex = 71;
-            this.label159.Text = "strBarcode";
+            this.textBox_setReaderInfo_strStyle.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBox_setReaderInfo_strStyle.Location = new System.Drawing.Point(237, 530);
+            this.textBox_setReaderInfo_strStyle.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.textBox_setReaderInfo_strStyle.Name = "textBox_setReaderInfo_strStyle";
+            this.textBox_setReaderInfo_strStyle.Size = new System.Drawing.Size(741, 38);
+            this.textBox_setReaderInfo_strStyle.TabIndex = 72;
             // 
             // Form_main
             // 
@@ -5571,6 +5595,8 @@
             this.tabPage_RepairBorrowInfo.PerformLayout();
             this.tabPage_WriteRes.ResumeLayout(false);
             this.tabPage_WriteRes.PerformLayout();
+            this.tabPage_VerifyBarcode.ResumeLayout(false);
+            this.tabPage_VerifyBarcode.PerformLayout();
             this.tabPage_hire.ResumeLayout(false);
             this.tabPage_hire.PerformLayout();
             this.tabPage_Foregift.ResumeLayout(false);
@@ -5640,8 +5666,6 @@
             this.splitContainer1.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
-            this.tabPage_VerifyBarcode.ResumeLayout(false);
-            this.tabPage_VerifyBarcode.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -6106,6 +6130,8 @@
         private System.Windows.Forms.Label label158;
         private System.Windows.Forms.TextBox textBox_verifyBarcode_strBarcode;
         private System.Windows.Forms.Label label159;
+        private System.Windows.Forms.Label label160;
+        private System.Windows.Forms.TextBox textBox_setReaderInfo_strStyle;
     }
 }
 
