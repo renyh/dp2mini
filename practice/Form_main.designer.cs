@@ -109,6 +109,27 @@
             this.label148 = new System.Windows.Forms.Label();
             this.textBox_RepairBorrowInfo_strReaderBarcode = new System.Windows.Forms.TextBox();
             this.button_RepairBorrowInfo = new System.Windows.Forms.Button();
+            this.tabPage_borrow = new System.Windows.Forms.TabPage();
+            this.textBox_borrow_strBiblioFormatList = new System.Windows.Forms.TextBox();
+            this.label171 = new System.Windows.Forms.Label();
+            this.textBox_borrow_strReaderFormatList = new System.Windows.Forms.TextBox();
+            this.label170 = new System.Windows.Forms.Label();
+            this.checkBox_borrow_bForce = new System.Windows.Forms.CheckBox();
+            this.checkBox_borrow_bRenew = new System.Windows.Forms.CheckBox();
+            this.textBox_borrow_strItemFormatList = new System.Windows.Forms.TextBox();
+            this.button9 = new System.Windows.Forms.Button();
+            this.label163 = new System.Windows.Forms.Label();
+            this.textBox_borrow_saBorrowedItemBarcode = new System.Windows.Forms.TextBox();
+            this.label164 = new System.Windows.Forms.Label();
+            this.textBox_borrow_style = new System.Windows.Forms.TextBox();
+            this.label165 = new System.Windows.Forms.Label();
+            this.textBox_borrow_strConfirmItemRecPath = new System.Windows.Forms.TextBox();
+            this.label166 = new System.Windows.Forms.Label();
+            this.label167 = new System.Windows.Forms.Label();
+            this.textBox_borrow_strItemBarcode = new System.Windows.Forms.TextBox();
+            this.label169 = new System.Windows.Forms.Label();
+            this.textBox_borrow_strReaderBarcode = new System.Windows.Forms.TextBox();
+            this.button_borrow = new System.Windows.Forms.Button();
             this.tabPage_WriteRes = new System.Windows.Forms.TabPage();
             this.checkBox_WriteRes_baContent = new System.Windows.Forms.CheckBox();
             this.button_WriteRes_createMetadata = new System.Windows.Forms.Button();
@@ -251,6 +272,10 @@
             this.label25 = new System.Windows.Forms.Label();
             this.label61 = new System.Windows.Forms.Label();
             this.tabPage_MoveReaderInfo = new System.Windows.Forms.TabPage();
+            this.textBox_moveReaderInfo_strStyle = new System.Windows.Forms.TextBox();
+            this.textBox_moveReaderInfo_strNewReader = new System.Windows.Forms.TextBox();
+            this.label161 = new System.Windows.Forms.Label();
+            this.label162 = new System.Windows.Forms.Label();
             this.button7 = new System.Windows.Forms.Button();
             this.button_moveReaderInfo = new System.Windows.Forms.Button();
             this.textBox_moveReaderInfo_strTargetRecPath = new System.Windows.Forms.TextBox();
@@ -488,10 +513,26 @@
             this.自动测试1ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.自动测试2ToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.textBox_moveReaderInfo_strStyle = new System.Windows.Forms.TextBox();
-            this.textBox_moveReaderInfo_strNewReader = new System.Windows.Forms.TextBox();
-            this.label161 = new System.Windows.Forms.Label();
-            this.label162 = new System.Windows.Forms.Label();
+            this.tabPage_return = new System.Windows.Forms.TabPage();
+            this.textBox_return_strBiblioFormatList = new System.Windows.Forms.TextBox();
+            this.label168 = new System.Windows.Forms.Label();
+            this.textBox_return_strReaderFormatList = new System.Windows.Forms.TextBox();
+            this.label172 = new System.Windows.Forms.Label();
+            this.checkBox_return_bForce = new System.Windows.Forms.CheckBox();
+            this.textBox_return_strItemFormatList = new System.Windows.Forms.TextBox();
+            this.button10 = new System.Windows.Forms.Button();
+            this.label174 = new System.Windows.Forms.Label();
+            this.textBox_return_strStyle = new System.Windows.Forms.TextBox();
+            this.label175 = new System.Windows.Forms.Label();
+            this.textBox_return_strConfirmItemRecPath = new System.Windows.Forms.TextBox();
+            this.label176 = new System.Windows.Forms.Label();
+            this.label177 = new System.Windows.Forms.Label();
+            this.textBox_return_strItemBarcode = new System.Windows.Forms.TextBox();
+            this.label178 = new System.Windows.Forms.Label();
+            this.textBox_return_strReaderBarcode = new System.Windows.Forms.TextBox();
+            this.button_return = new System.Windows.Forms.Button();
+            this.label179 = new System.Windows.Forms.Label();
+            this.textBox_return_strAction = new System.Windows.Forms.TextBox();
             this.tabPage_SearchBiblio.SuspendLayout();
             this.tabPage_Server.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -500,6 +541,7 @@
             this.tabPage_task.SuspendLayout();
             this.groupBox5.SuspendLayout();
             this.tabPage_RepairBorrowInfo.SuspendLayout();
+            this.tabPage_borrow.SuspendLayout();
             this.tabPage_WriteRes.SuspendLayout();
             this.tabPage_VerifyBarcode.SuspendLayout();
             this.tabPage_hire.SuspendLayout();
@@ -538,6 +580,7 @@
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
+            this.tabPage_return.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabPage_SearchBiblio
@@ -1078,6 +1121,8 @@
             this.tabControl1.Controls.Add(this.tabPage_Server);
             this.tabControl1.Controls.Add(this.tabPage_task);
             this.tabControl1.Controls.Add(this.tabPage_RepairBorrowInfo);
+            this.tabControl1.Controls.Add(this.tabPage_borrow);
+            this.tabControl1.Controls.Add(this.tabPage_return);
             this.tabControl1.Controls.Add(this.tabPage_WriteRes);
             this.tabControl1.Controls.Add(this.tabPage_VerifyBarcode);
             this.tabControl1.Controls.Add(this.tabPage_hire);
@@ -1477,6 +1522,238 @@
             this.button_RepairBorrowInfo.Text = "RepairBorrowInfo";
             this.button_RepairBorrowInfo.UseVisualStyleBackColor = true;
             this.button_RepairBorrowInfo.Click += new System.EventHandler(this.button_RepairBorrowInfo_Click);
+            // 
+            // tabPage_borrow
+            // 
+            this.tabPage_borrow.Controls.Add(this.textBox_borrow_strBiblioFormatList);
+            this.tabPage_borrow.Controls.Add(this.label171);
+            this.tabPage_borrow.Controls.Add(this.textBox_borrow_strReaderFormatList);
+            this.tabPage_borrow.Controls.Add(this.label170);
+            this.tabPage_borrow.Controls.Add(this.checkBox_borrow_bForce);
+            this.tabPage_borrow.Controls.Add(this.checkBox_borrow_bRenew);
+            this.tabPage_borrow.Controls.Add(this.textBox_borrow_strItemFormatList);
+            this.tabPage_borrow.Controls.Add(this.button9);
+            this.tabPage_borrow.Controls.Add(this.label163);
+            this.tabPage_borrow.Controls.Add(this.textBox_borrow_saBorrowedItemBarcode);
+            this.tabPage_borrow.Controls.Add(this.label164);
+            this.tabPage_borrow.Controls.Add(this.textBox_borrow_style);
+            this.tabPage_borrow.Controls.Add(this.label165);
+            this.tabPage_borrow.Controls.Add(this.textBox_borrow_strConfirmItemRecPath);
+            this.tabPage_borrow.Controls.Add(this.label166);
+            this.tabPage_borrow.Controls.Add(this.label167);
+            this.tabPage_borrow.Controls.Add(this.textBox_borrow_strItemBarcode);
+            this.tabPage_borrow.Controls.Add(this.label169);
+            this.tabPage_borrow.Controls.Add(this.textBox_borrow_strReaderBarcode);
+            this.tabPage_borrow.Controls.Add(this.button_borrow);
+            this.tabPage_borrow.Location = new System.Drawing.Point(10, 46);
+            this.tabPage_borrow.Name = "tabPage_borrow";
+            this.tabPage_borrow.Size = new System.Drawing.Size(1060, 672);
+            this.tabPage_borrow.TabIndex = 37;
+            this.tabPage_borrow.Text = "borrow";
+            this.tabPage_borrow.UseVisualStyleBackColor = true;
+            // 
+            // textBox_borrow_strBiblioFormatList
+            // 
+            this.textBox_borrow_strBiblioFormatList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBox_borrow_strBiblioFormatList.Location = new System.Drawing.Point(321, 460);
+            this.textBox_borrow_strBiblioFormatList.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.textBox_borrow_strBiblioFormatList.Name = "textBox_borrow_strBiblioFormatList";
+            this.textBox_borrow_strBiblioFormatList.Size = new System.Drawing.Size(682, 38);
+            this.textBox_borrow_strBiblioFormatList.TabIndex = 95;
+            // 
+            // label171
+            // 
+            this.label171.AutoSize = true;
+            this.label171.Location = new System.Drawing.Point(36, 460);
+            this.label171.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label171.Name = "label171";
+            this.label171.Size = new System.Drawing.Size(278, 27);
+            this.label171.TabIndex = 94;
+            this.label171.Text = "strBiblioFormatList";
+            // 
+            // textBox_borrow_strReaderFormatList
+            // 
+            this.textBox_borrow_strReaderFormatList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBox_borrow_strReaderFormatList.Location = new System.Drawing.Point(321, 403);
+            this.textBox_borrow_strReaderFormatList.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.textBox_borrow_strReaderFormatList.Name = "textBox_borrow_strReaderFormatList";
+            this.textBox_borrow_strReaderFormatList.Size = new System.Drawing.Size(682, 38);
+            this.textBox_borrow_strReaderFormatList.TabIndex = 93;
+            // 
+            // label170
+            // 
+            this.label170.AutoSize = true;
+            this.label170.Location = new System.Drawing.Point(36, 406);
+            this.label170.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label170.Name = "label170";
+            this.label170.Size = new System.Drawing.Size(278, 27);
+            this.label170.TabIndex = 92;
+            this.label170.Text = "strReaderFormatList";
+            // 
+            // checkBox_borrow_bForce
+            // 
+            this.checkBox_borrow_bForce.AutoSize = true;
+            this.checkBox_borrow_bForce.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
+            this.checkBox_borrow_bForce.Location = new System.Drawing.Point(499, 28);
+            this.checkBox_borrow_bForce.Name = "checkBox_borrow_bForce";
+            this.checkBox_borrow_bForce.Size = new System.Drawing.Size(128, 31);
+            this.checkBox_borrow_bForce.TabIndex = 91;
+            this.checkBox_borrow_bForce.Text = "bForce";
+            this.checkBox_borrow_bForce.UseVisualStyleBackColor = false;
+            // 
+            // checkBox_borrow_bRenew
+            // 
+            this.checkBox_borrow_bRenew.AutoSize = true;
+            this.checkBox_borrow_bRenew.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
+            this.checkBox_borrow_bRenew.Location = new System.Drawing.Point(321, 28);
+            this.checkBox_borrow_bRenew.Name = "checkBox_borrow_bRenew";
+            this.checkBox_borrow_bRenew.Size = new System.Drawing.Size(128, 31);
+            this.checkBox_borrow_bRenew.TabIndex = 90;
+            this.checkBox_borrow_bRenew.Text = "bRenew";
+            this.checkBox_borrow_bRenew.UseVisualStyleBackColor = false;
+            // 
+            // textBox_borrow_strItemFormatList
+            // 
+            this.textBox_borrow_strItemFormatList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBox_borrow_strItemFormatList.Location = new System.Drawing.Point(320, 350);
+            this.textBox_borrow_strItemFormatList.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.textBox_borrow_strItemFormatList.Name = "textBox_borrow_strItemFormatList";
+            this.textBox_borrow_strItemFormatList.Size = new System.Drawing.Size(682, 38);
+            this.textBox_borrow_strItemFormatList.TabIndex = 89;
+            // 
+            // button9
+            // 
+            this.button9.Location = new System.Drawing.Point(0, 1);
+            this.button9.Name = "button9";
+            this.button9.Size = new System.Drawing.Size(54, 117);
+            this.button9.TabIndex = 88;
+            this.button9.Text = "帮助";
+            this.button9.UseVisualStyleBackColor = true;
+            // 
+            // label163
+            // 
+            this.label163.AutoSize = true;
+            this.label163.Location = new System.Drawing.Point(8, 238);
+            this.label163.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label163.Name = "label163";
+            this.label163.Size = new System.Drawing.Size(306, 27);
+            this.label163.TabIndex = 87;
+            this.label163.Text = "saBorrowedItemBarcode";
+            // 
+            // textBox_borrow_saBorrowedItemBarcode
+            // 
+            this.textBox_borrow_saBorrowedItemBarcode.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBox_borrow_saBorrowedItemBarcode.Location = new System.Drawing.Point(321, 238);
+            this.textBox_borrow_saBorrowedItemBarcode.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.textBox_borrow_saBorrowedItemBarcode.Name = "textBox_borrow_saBorrowedItemBarcode";
+            this.textBox_borrow_saBorrowedItemBarcode.Size = new System.Drawing.Size(682, 38);
+            this.textBox_borrow_saBorrowedItemBarcode.TabIndex = 86;
+            // 
+            // label164
+            // 
+            this.label164.AutoSize = true;
+            this.label164.Location = new System.Drawing.Point(228, 285);
+            this.label164.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label164.Name = "label164";
+            this.label164.Size = new System.Drawing.Size(82, 27);
+            this.label164.TabIndex = 85;
+            this.label164.Text = "style";
+            // 
+            // textBox_borrow_style
+            // 
+            this.textBox_borrow_style.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBox_borrow_style.Location = new System.Drawing.Point(320, 282);
+            this.textBox_borrow_style.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.textBox_borrow_style.Name = "textBox_borrow_style";
+            this.textBox_borrow_style.Size = new System.Drawing.Size(682, 38);
+            this.textBox_borrow_style.TabIndex = 84;
+            // 
+            // label165
+            // 
+            this.label165.AutoSize = true;
+            this.label165.Location = new System.Drawing.Point(8, 194);
+            this.label165.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label165.Name = "label165";
+            this.label165.Size = new System.Drawing.Size(306, 27);
+            this.label165.TabIndex = 83;
+            this.label165.Text = "strConfirmItemRecPath";
+            // 
+            // textBox_borrow_strConfirmItemRecPath
+            // 
+            this.textBox_borrow_strConfirmItemRecPath.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBox_borrow_strConfirmItemRecPath.Location = new System.Drawing.Point(320, 183);
+            this.textBox_borrow_strConfirmItemRecPath.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.textBox_borrow_strConfirmItemRecPath.Name = "textBox_borrow_strConfirmItemRecPath";
+            this.textBox_borrow_strConfirmItemRecPath.Size = new System.Drawing.Size(682, 38);
+            this.textBox_borrow_strConfirmItemRecPath.TabIndex = 82;
+            // 
+            // label166
+            // 
+            this.label166.AutoSize = true;
+            this.label166.Location = new System.Drawing.Point(60, 353);
+            this.label166.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label166.Name = "label166";
+            this.label166.Size = new System.Drawing.Size(250, 27);
+            this.label166.TabIndex = 81;
+            this.label166.Text = "strItemFormatList";
+            // 
+            // label167
+            // 
+            this.label167.AutoSize = true;
+            this.label167.Location = new System.Drawing.Point(102, 144);
+            this.label167.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label167.Name = "label167";
+            this.label167.Size = new System.Drawing.Size(208, 27);
+            this.label167.TabIndex = 80;
+            this.label167.Text = "strItemBarcode";
+            // 
+            // textBox_borrow_strItemBarcode
+            // 
+            this.textBox_borrow_strItemBarcode.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBox_borrow_strItemBarcode.Location = new System.Drawing.Point(320, 133);
+            this.textBox_borrow_strItemBarcode.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.textBox_borrow_strItemBarcode.Name = "textBox_borrow_strItemBarcode";
+            this.textBox_borrow_strItemBarcode.Size = new System.Drawing.Size(682, 38);
+            this.textBox_borrow_strItemBarcode.TabIndex = 79;
+            // 
+            // label169
+            // 
+            this.label169.AutoSize = true;
+            this.label169.Location = new System.Drawing.Point(78, 85);
+            this.label169.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label169.Name = "label169";
+            this.label169.Size = new System.Drawing.Size(236, 27);
+            this.label169.TabIndex = 76;
+            this.label169.Text = "strReaderBarcode";
+            // 
+            // textBox_borrow_strReaderBarcode
+            // 
+            this.textBox_borrow_strReaderBarcode.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBox_borrow_strReaderBarcode.Location = new System.Drawing.Point(320, 82);
+            this.textBox_borrow_strReaderBarcode.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.textBox_borrow_strReaderBarcode.Name = "textBox_borrow_strReaderBarcode";
+            this.textBox_borrow_strReaderBarcode.Size = new System.Drawing.Size(682, 38);
+            this.textBox_borrow_strReaderBarcode.TabIndex = 75;
+            // 
+            // button_borrow
+            // 
+            this.button_borrow.Location = new System.Drawing.Point(321, 522);
+            this.button_borrow.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.button_borrow.Name = "button_borrow";
+            this.button_borrow.Size = new System.Drawing.Size(315, 57);
+            this.button_borrow.TabIndex = 74;
+            this.button_borrow.Tag = "";
+            this.button_borrow.Text = "borrow";
+            this.button_borrow.UseVisualStyleBackColor = true;
+            this.button_borrow.Click += new System.EventHandler(this.button_borrow_Click);
             // 
             // tabPage_WriteRes
             // 
@@ -3048,6 +3325,47 @@
             this.tabPage_MoveReaderInfo.TabIndex = 35;
             this.tabPage_MoveReaderInfo.Text = "MoveReaderInfo";
             this.tabPage_MoveReaderInfo.UseVisualStyleBackColor = true;
+            // 
+            // textBox_moveReaderInfo_strStyle
+            // 
+            this.textBox_moveReaderInfo_strStyle.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBox_moveReaderInfo_strStyle.Location = new System.Drawing.Point(324, 492);
+            this.textBox_moveReaderInfo_strStyle.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.textBox_moveReaderInfo_strStyle.Name = "textBox_moveReaderInfo_strStyle";
+            this.textBox_moveReaderInfo_strStyle.Size = new System.Drawing.Size(724, 38);
+            this.textBox_moveReaderInfo_strStyle.TabIndex = 72;
+            // 
+            // textBox_moveReaderInfo_strNewReader
+            // 
+            this.textBox_moveReaderInfo_strNewReader.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBox_moveReaderInfo_strNewReader.Location = new System.Drawing.Point(324, 171);
+            this.textBox_moveReaderInfo_strNewReader.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.textBox_moveReaderInfo_strNewReader.Multiline = true;
+            this.textBox_moveReaderInfo_strNewReader.Name = "textBox_moveReaderInfo_strNewReader";
+            this.textBox_moveReaderInfo_strNewReader.Size = new System.Drawing.Size(724, 315);
+            this.textBox_moveReaderInfo_strNewReader.TabIndex = 70;
+            // 
+            // label161
+            // 
+            this.label161.AutoSize = true;
+            this.label161.Location = new System.Drawing.Point(78, 503);
+            this.label161.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label161.Name = "label161";
+            this.label161.Size = new System.Drawing.Size(124, 27);
+            this.label161.TabIndex = 73;
+            this.label161.Text = "strStyle";
+            // 
+            // label162
+            // 
+            this.label162.AutoSize = true;
+            this.label162.Location = new System.Drawing.Point(78, 171);
+            this.label162.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label162.Name = "label162";
+            this.label162.Size = new System.Drawing.Size(180, 27);
+            this.label162.TabIndex = 71;
+            this.label162.Text = "strNewReader";
             // 
             // button7
             // 
@@ -5579,46 +5897,225 @@
             this.splitContainer1.SplitterDistance = 728;
             this.splitContainer1.TabIndex = 21;
             // 
-            // textBox_moveReaderInfo_strStyle
+            // tabPage_return
             // 
-            this.textBox_moveReaderInfo_strStyle.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.tabPage_return.Controls.Add(this.label179);
+            this.tabPage_return.Controls.Add(this.textBox_return_strAction);
+            this.tabPage_return.Controls.Add(this.textBox_return_strBiblioFormatList);
+            this.tabPage_return.Controls.Add(this.label168);
+            this.tabPage_return.Controls.Add(this.textBox_return_strReaderFormatList);
+            this.tabPage_return.Controls.Add(this.label172);
+            this.tabPage_return.Controls.Add(this.checkBox_return_bForce);
+            this.tabPage_return.Controls.Add(this.textBox_return_strItemFormatList);
+            this.tabPage_return.Controls.Add(this.button10);
+            this.tabPage_return.Controls.Add(this.label174);
+            this.tabPage_return.Controls.Add(this.textBox_return_strStyle);
+            this.tabPage_return.Controls.Add(this.label175);
+            this.tabPage_return.Controls.Add(this.textBox_return_strConfirmItemRecPath);
+            this.tabPage_return.Controls.Add(this.label176);
+            this.tabPage_return.Controls.Add(this.label177);
+            this.tabPage_return.Controls.Add(this.textBox_return_strItemBarcode);
+            this.tabPage_return.Controls.Add(this.label178);
+            this.tabPage_return.Controls.Add(this.textBox_return_strReaderBarcode);
+            this.tabPage_return.Controls.Add(this.button_return);
+            this.tabPage_return.Location = new System.Drawing.Point(10, 46);
+            this.tabPage_return.Name = "tabPage_return";
+            this.tabPage_return.Size = new System.Drawing.Size(1060, 672);
+            this.tabPage_return.TabIndex = 38;
+            this.tabPage_return.Text = "return";
+            this.tabPage_return.UseVisualStyleBackColor = true;
+            // 
+            // textBox_return_strBiblioFormatList
+            // 
+            this.textBox_return_strBiblioFormatList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox_moveReaderInfo_strStyle.Location = new System.Drawing.Point(324, 492);
-            this.textBox_moveReaderInfo_strStyle.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
-            this.textBox_moveReaderInfo_strStyle.Name = "textBox_moveReaderInfo_strStyle";
-            this.textBox_moveReaderInfo_strStyle.Size = new System.Drawing.Size(724, 38);
-            this.textBox_moveReaderInfo_strStyle.TabIndex = 72;
+            this.textBox_return_strBiblioFormatList.Location = new System.Drawing.Point(321, 501);
+            this.textBox_return_strBiblioFormatList.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.textBox_return_strBiblioFormatList.Name = "textBox_return_strBiblioFormatList";
+            this.textBox_return_strBiblioFormatList.Size = new System.Drawing.Size(682, 38);
+            this.textBox_return_strBiblioFormatList.TabIndex = 115;
             // 
-            // textBox_moveReaderInfo_strNewReader
+            // label168
             // 
-            this.textBox_moveReaderInfo_strNewReader.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.label168.AutoSize = true;
+            this.label168.Location = new System.Drawing.Point(36, 501);
+            this.label168.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label168.Name = "label168";
+            this.label168.Size = new System.Drawing.Size(278, 27);
+            this.label168.TabIndex = 114;
+            this.label168.Text = "strBiblioFormatList";
+            // 
+            // textBox_return_strReaderFormatList
+            // 
+            this.textBox_return_strReaderFormatList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox_moveReaderInfo_strNewReader.Location = new System.Drawing.Point(324, 171);
-            this.textBox_moveReaderInfo_strNewReader.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
-            this.textBox_moveReaderInfo_strNewReader.Multiline = true;
-            this.textBox_moveReaderInfo_strNewReader.Name = "textBox_moveReaderInfo_strNewReader";
-            this.textBox_moveReaderInfo_strNewReader.Size = new System.Drawing.Size(724, 315);
-            this.textBox_moveReaderInfo_strNewReader.TabIndex = 70;
+            this.textBox_return_strReaderFormatList.Location = new System.Drawing.Point(321, 444);
+            this.textBox_return_strReaderFormatList.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.textBox_return_strReaderFormatList.Name = "textBox_return_strReaderFormatList";
+            this.textBox_return_strReaderFormatList.Size = new System.Drawing.Size(682, 38);
+            this.textBox_return_strReaderFormatList.TabIndex = 113;
             // 
-            // label161
+            // label172
             // 
-            this.label161.AutoSize = true;
-            this.label161.Location = new System.Drawing.Point(78, 503);
-            this.label161.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
-            this.label161.Name = "label161";
-            this.label161.Size = new System.Drawing.Size(124, 27);
-            this.label161.TabIndex = 73;
-            this.label161.Text = "strStyle";
+            this.label172.AutoSize = true;
+            this.label172.Location = new System.Drawing.Point(36, 447);
+            this.label172.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label172.Name = "label172";
+            this.label172.Size = new System.Drawing.Size(278, 27);
+            this.label172.TabIndex = 112;
+            this.label172.Text = "strReaderFormatList";
             // 
-            // label162
+            // checkBox_return_bForce
             // 
-            this.label162.AutoSize = true;
-            this.label162.Location = new System.Drawing.Point(78, 171);
-            this.label162.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
-            this.label162.Name = "label162";
-            this.label162.Size = new System.Drawing.Size(180, 27);
-            this.label162.TabIndex = 71;
-            this.label162.Text = "strNewReader";
+            this.checkBox_return_bForce.AutoSize = true;
+            this.checkBox_return_bForce.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
+            this.checkBox_return_bForce.Location = new System.Drawing.Point(320, 23);
+            this.checkBox_return_bForce.Name = "checkBox_return_bForce";
+            this.checkBox_return_bForce.Size = new System.Drawing.Size(128, 31);
+            this.checkBox_return_bForce.TabIndex = 111;
+            this.checkBox_return_bForce.Text = "bForce";
+            this.checkBox_return_bForce.UseVisualStyleBackColor = false;
+            // 
+            // textBox_return_strItemFormatList
+            // 
+            this.textBox_return_strItemFormatList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBox_return_strItemFormatList.Location = new System.Drawing.Point(320, 391);
+            this.textBox_return_strItemFormatList.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.textBox_return_strItemFormatList.Name = "textBox_return_strItemFormatList";
+            this.textBox_return_strItemFormatList.Size = new System.Drawing.Size(682, 38);
+            this.textBox_return_strItemFormatList.TabIndex = 109;
+            // 
+            // button10
+            // 
+            this.button10.Location = new System.Drawing.Point(0, 1);
+            this.button10.Name = "button10";
+            this.button10.Size = new System.Drawing.Size(54, 117);
+            this.button10.TabIndex = 108;
+            this.button10.Text = "帮助";
+            this.button10.UseVisualStyleBackColor = true;
+            // 
+            // label174
+            // 
+            this.label174.AutoSize = true;
+            this.label174.Location = new System.Drawing.Point(228, 330);
+            this.label174.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label174.Name = "label174";
+            this.label174.Size = new System.Drawing.Size(82, 27);
+            this.label174.TabIndex = 105;
+            this.label174.Text = "style";
+            // 
+            // textBox_return_strStyle
+            // 
+            this.textBox_return_strStyle.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBox_return_strStyle.Location = new System.Drawing.Point(320, 327);
+            this.textBox_return_strStyle.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.textBox_return_strStyle.Name = "textBox_return_strStyle";
+            this.textBox_return_strStyle.Size = new System.Drawing.Size(682, 38);
+            this.textBox_return_strStyle.TabIndex = 104;
+            // 
+            // label175
+            // 
+            this.label175.AutoSize = true;
+            this.label175.Location = new System.Drawing.Point(8, 275);
+            this.label175.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label175.Name = "label175";
+            this.label175.Size = new System.Drawing.Size(306, 27);
+            this.label175.TabIndex = 103;
+            this.label175.Text = "strConfirmItemRecPath";
+            // 
+            // textBox_return_strConfirmItemRecPath
+            // 
+            this.textBox_return_strConfirmItemRecPath.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBox_return_strConfirmItemRecPath.Location = new System.Drawing.Point(320, 264);
+            this.textBox_return_strConfirmItemRecPath.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.textBox_return_strConfirmItemRecPath.Name = "textBox_return_strConfirmItemRecPath";
+            this.textBox_return_strConfirmItemRecPath.Size = new System.Drawing.Size(682, 38);
+            this.textBox_return_strConfirmItemRecPath.TabIndex = 102;
+            // 
+            // label176
+            // 
+            this.label176.AutoSize = true;
+            this.label176.Location = new System.Drawing.Point(60, 394);
+            this.label176.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label176.Name = "label176";
+            this.label176.Size = new System.Drawing.Size(250, 27);
+            this.label176.TabIndex = 101;
+            this.label176.Text = "strItemFormatList";
+            // 
+            // label177
+            // 
+            this.label177.AutoSize = true;
+            this.label177.Location = new System.Drawing.Point(102, 225);
+            this.label177.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label177.Name = "label177";
+            this.label177.Size = new System.Drawing.Size(208, 27);
+            this.label177.TabIndex = 100;
+            this.label177.Text = "strItemBarcode";
+            // 
+            // textBox_return_strItemBarcode
+            // 
+            this.textBox_return_strItemBarcode.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBox_return_strItemBarcode.Location = new System.Drawing.Point(320, 214);
+            this.textBox_return_strItemBarcode.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.textBox_return_strItemBarcode.Name = "textBox_return_strItemBarcode";
+            this.textBox_return_strItemBarcode.Size = new System.Drawing.Size(682, 38);
+            this.textBox_return_strItemBarcode.TabIndex = 99;
+            // 
+            // label178
+            // 
+            this.label178.AutoSize = true;
+            this.label178.Location = new System.Drawing.Point(78, 166);
+            this.label178.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label178.Name = "label178";
+            this.label178.Size = new System.Drawing.Size(236, 27);
+            this.label178.TabIndex = 98;
+            this.label178.Text = "strReaderBarcode";
+            // 
+            // textBox_return_strReaderBarcode
+            // 
+            this.textBox_return_strReaderBarcode.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBox_return_strReaderBarcode.Location = new System.Drawing.Point(320, 163);
+            this.textBox_return_strReaderBarcode.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.textBox_return_strReaderBarcode.Name = "textBox_return_strReaderBarcode";
+            this.textBox_return_strReaderBarcode.Size = new System.Drawing.Size(682, 38);
+            this.textBox_return_strReaderBarcode.TabIndex = 97;
+            // 
+            // button_return
+            // 
+            this.button_return.Location = new System.Drawing.Point(321, 563);
+            this.button_return.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.button_return.Name = "button_return";
+            this.button_return.Size = new System.Drawing.Size(315, 57);
+            this.button_return.TabIndex = 96;
+            this.button_return.Tag = "";
+            this.button_return.Text = "return";
+            this.button_return.UseVisualStyleBackColor = true;
+            this.button_return.Click += new System.EventHandler(this.button_return_Click);
+            // 
+            // label179
+            // 
+            this.label179.AutoSize = true;
+            this.label179.Location = new System.Drawing.Point(172, 112);
+            this.label179.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label179.Name = "label179";
+            this.label179.Size = new System.Drawing.Size(138, 27);
+            this.label179.TabIndex = 117;
+            this.label179.Text = "strAction";
+            // 
+            // textBox_return_strAction
+            // 
+            this.textBox_return_strAction.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBox_return_strAction.Location = new System.Drawing.Point(321, 109);
+            this.textBox_return_strAction.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.textBox_return_strAction.Name = "textBox_return_strAction";
+            this.textBox_return_strAction.Size = new System.Drawing.Size(682, 38);
+            this.textBox_return_strAction.TabIndex = 116;
             // 
             // Form_main
             // 
@@ -5648,6 +6145,8 @@
             this.groupBox5.PerformLayout();
             this.tabPage_RepairBorrowInfo.ResumeLayout(false);
             this.tabPage_RepairBorrowInfo.PerformLayout();
+            this.tabPage_borrow.ResumeLayout(false);
+            this.tabPage_borrow.PerformLayout();
             this.tabPage_WriteRes.ResumeLayout(false);
             this.tabPage_WriteRes.PerformLayout();
             this.tabPage_VerifyBarcode.ResumeLayout(false);
@@ -5721,6 +6220,8 @@
             this.splitContainer1.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
+            this.tabPage_return.ResumeLayout(false);
+            this.tabPage_return.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -6191,6 +6692,47 @@
         private System.Windows.Forms.TextBox textBox_moveReaderInfo_strNewReader;
         private System.Windows.Forms.Label label161;
         private System.Windows.Forms.Label label162;
+        private System.Windows.Forms.TabPage tabPage_borrow;
+        private System.Windows.Forms.TextBox textBox_borrow_strItemFormatList;
+        private System.Windows.Forms.Button button9;
+        private System.Windows.Forms.Label label163;
+        private System.Windows.Forms.TextBox textBox_borrow_saBorrowedItemBarcode;
+        private System.Windows.Forms.Label label164;
+        private System.Windows.Forms.TextBox textBox_borrow_style;
+        private System.Windows.Forms.Label label165;
+        private System.Windows.Forms.TextBox textBox_borrow_strConfirmItemRecPath;
+        private System.Windows.Forms.Label label166;
+        private System.Windows.Forms.Label label167;
+        private System.Windows.Forms.TextBox textBox_borrow_strItemBarcode;
+        private System.Windows.Forms.Label label169;
+        private System.Windows.Forms.TextBox textBox_borrow_strReaderBarcode;
+        private System.Windows.Forms.Button button_borrow;
+        private System.Windows.Forms.CheckBox checkBox_borrow_bRenew;
+        private System.Windows.Forms.CheckBox checkBox_borrow_bForce;
+        private System.Windows.Forms.TextBox textBox_borrow_strBiblioFormatList;
+        private System.Windows.Forms.Label label171;
+        private System.Windows.Forms.TextBox textBox_borrow_strReaderFormatList;
+        private System.Windows.Forms.Label label170;
+        private System.Windows.Forms.TabPage tabPage_return;
+        private System.Windows.Forms.TextBox textBox_return_strBiblioFormatList;
+        private System.Windows.Forms.Label label168;
+        private System.Windows.Forms.TextBox textBox_return_strReaderFormatList;
+        private System.Windows.Forms.Label label172;
+        private System.Windows.Forms.CheckBox checkBox_return_bForce;
+        private System.Windows.Forms.TextBox textBox_return_strItemFormatList;
+        private System.Windows.Forms.Button button10;
+        private System.Windows.Forms.Label label174;
+        private System.Windows.Forms.TextBox textBox_return_strStyle;
+        private System.Windows.Forms.Label label175;
+        private System.Windows.Forms.TextBox textBox_return_strConfirmItemRecPath;
+        private System.Windows.Forms.Label label176;
+        private System.Windows.Forms.Label label177;
+        private System.Windows.Forms.TextBox textBox_return_strItemBarcode;
+        private System.Windows.Forms.Label label178;
+        private System.Windows.Forms.TextBox textBox_return_strReaderBarcode;
+        private System.Windows.Forms.Button button_return;
+        private System.Windows.Forms.Label label179;
+        private System.Windows.Forms.TextBox textBox_return_strAction;
     }
 }
 

@@ -16,6 +16,7 @@ using DigitalPlatform;
 using DigitalPlatform.Text;
 using DigitalPlatform.Xml;
 using System.Linq;
+using System.Data.SqlClient;
 
 namespace DigitalPlatform.LibraryRestClient
 {
@@ -238,7 +239,7 @@ namespace DigitalPlatform.LibraryRestClient
                 VerifyBarcodeResponse r = (VerifyBarcodeResponse)o;
 
                 return GetServerResultInfo(r.VerifyBarcodeResult) + "\r\n"
-                    + "strOutputBarcode:" + r.strOutputBarcode+ "\r\n";
+                    + "strOutputBarcode:" + r.strOutputBarcode + "\r\n";
             }
             else if (o is GetReaderInfoResponse)
             {
@@ -301,7 +302,7 @@ namespace DigitalPlatform.LibraryRestClient
                 HireResponse r = (HireResponse)o;
 
                 return GetServerResultInfo(r.HireResult) + "\r\n"
-                + "strOutputReaderXml=" + r.strOutputReaderXml+"\r\n"
+                + "strOutputReaderXml=" + r.strOutputReaderXml + "\r\n"
                 + "strOutputID=" + r.strOutputID + "\r\n"
                 ;
             }
@@ -451,7 +452,7 @@ namespace DigitalPlatform.LibraryRestClient
                 SetCalendarResponse r = (SetCalendarResponse)o;
                 string info = GetServerResultInfo(r.SetCalendarResult) + "\r\n";
 
-              
+
 
                 return info;  //
             }
@@ -460,7 +461,7 @@ namespace DigitalPlatform.LibraryRestClient
                 BatchTaskResponse r = (BatchTaskResponse)o;
                 string info = GetServerResultInfo(r.BatchTaskResult) + "\r\n";
 
-                info += "ResultText="+r.resultInfo.ResultText;
+                info += "ResultText=" + r.resultInfo.ResultText;
 
 
 
@@ -475,16 +476,112 @@ namespace DigitalPlatform.LibraryRestClient
                     + "nTotalBorrowItems=" + r.nTotalBorrowItems.ToString() + "\r\n"
                     + "strOutputReaderBarcode=" + r.strOutputReaderBarcode.ToString() + "\r\n";
 
-                if (r.aDupPath !=null &&  r.aDupPath.Length > 0)
+                if (r.aDupPath != null && r.aDupPath.Length > 0)
                 {
                     info += "aDupPath=" + r.aDupPath.Length.ToString() + "\r\n";
                 }
 
+                return info;
 
+            }
+            else if (o is BorrowResponse)
+            {
+                /*
+                    public class BorrowResponse
+                    {
+                        [DataMember]
+                        public LibraryServerResult BorrowResult { get; set; }
+                        [DataMember]
+                        public string[] item_records { get; set; }
+                        [DataMember]
+                        public string[] reader_records { get; set; }
+
+                        [DataMember]
+                        public string[] biblio_records { get; set; }
+
+                        [DataMember]
+                        public BorrowInfo borrow_info { get; set; }
+
+                        [DataMember]
+                        public string[] aDupPath { get; set; }
+
+                        [DataMember]
+                        public string strOutputReaderBarcode { get; set; }
+                    }
+
+                    [DataContract(Namespace = "http://dp2003.com/dp2library/")]
+                    public class BorrowInfo
+                    {
+                        [DataMember]
+                        public string LatestReturnTime = "";  // 应还日期/时间
+                        [DataMember]
+                        public string Period = "";  //   // 借书期限。例如“20day”
+                        [DataMember]
+                        public long BorrowCount = 0;   // // 当前为续借的第几次？0表示初次借阅
+                        [DataMember]
+                        public string BorrowOperator = "";  //  借书操作者
+
+                    }
+                 */
+
+
+                BorrowResponse r = (BorrowResponse)o;
+                string info = GetServerResultInfo(r.BorrowResult) + "\r\n";
+
+                if (r.item_records != null && r.item_records.Length > 0)
+                {
+                    info += "item_records:" + string.Join(",", r.item_records) + "\r\n";
+                }
+                if (r.reader_records != null && r.reader_records.Length > 0)
+                {
+                    info += "reader_records:" + string.Join(",", r.reader_records) + "\r\n";
+                }
+                if (r.biblio_records != null && r.biblio_records.Length > 0)
+                {
+                    info += "biblio_records:" + string.Join(",", r.biblio_records) + "\r\n";
+                }
+                if (r.aDupPath != null && r.aDupPath.Length > 0)
+                {
+                    info += "aDupPath:" + string.Join(",", r.aDupPath) + "\r\n";
+                }
+
+                info+= "strOutputReaderBarcode:"+ r.strOutputReaderBarcode+ "\r\n";
+
+
+                if (r.borrow_info != null)
+                {
+                    info += "LatestReturnTime:[" + r.borrow_info.LatestReturnTime + "] Period:[" + r.borrow_info.Period + "] BorrowCount:[" + r.borrow_info.BorrowCount + "] BorrowOperator:[" + r.borrow_info.BorrowOperator + "]\r\n";
+                }
+
+                return info;  //BatchTaskResponse
+            }
+            else if (o is ReturnResponse)
+            {
+
+                ReturnResponse r = (ReturnResponse)o;
+                string info = GetServerResultInfo(r.ReturnResult) + "\r\n";
+
+                if (r.item_records != null && r.item_records.Length > 0)
+                {
+                    info += "item_records:" + string.Join(",", r.item_records) + "\r\n";
+                }
+                if (r.reader_records != null && r.reader_records.Length > 0)
+                {
+                    info += "reader_records:" + string.Join(",", r.reader_records) + "\r\n";
+                }
+                if (r.biblio_records != null && r.biblio_records.Length > 0)
+                {
+                    info += "biblio_records:" + string.Join(",", r.biblio_records) + "\r\n";
+                }
+                if (r.aDupPath != null && r.aDupPath.Length > 0)
+                {
+                    info += "aDupPath:" + string.Join(",", r.aDupPath) + "\r\n";
+                }
+
+                info += "strOutputReaderBarcode:" + r.strOutputReaderBarcode + "\r\n";
 
 
                 return info;  //BatchTaskResponse
-
             }
 
 
@@ -2651,6 +2748,88 @@ int nAttachmentFragmentLength)
                 int nRet = ConvertWebError(ex, out strError);
                 if (nRet == 0)
                     return -1;
+                goto REDO;
+            }
+        }
+
+
+        public BorrowResponse Borrow(BorrowRequest request)
+        {
+            string strError = "";
+
+        REDO:
+            try
+            {
+                CookieAwareWebClient client = this.GetClient();
+
+                byte[] baData = Encoding.UTF8.GetBytes(Serialize(request));
+                byte[] result = client.UploadData(this.GetRestfulApiUrl("Borrow"),
+                    "POST",
+                    baData);
+
+                string strResult = Encoding.UTF8.GetString(result);
+
+                BorrowResponse response = Deserialize<BorrowResponse>(strResult);
+                // 未登录的情况
+
+
+                if (response.BorrowResult.Value == -1
+                    && response.BorrowResult.ErrorCode == ErrorCode.NotLogin)
+                {
+                    if (DoNotLogin(ref strError) == 1)
+                        goto REDO;
+                    return response;
+
+                }
+
+                this.ClearRedoCount();
+                return response;
+            }
+            catch (Exception ex)
+            {
+                int nRet = ConvertWebError(ex, out strError);
+                if (nRet == 0)
+                    throw ex;
+
+                goto REDO;
+            }
+        }
+
+        public ReturnResponse Return(ReturnRequest request)
+        {
+            string strError = "";
+
+        REDO:
+            try
+            {
+                CookieAwareWebClient client = this.GetClient();
+
+                byte[] baData = Encoding.UTF8.GetBytes(Serialize(request));
+                byte[] result = client.UploadData(this.GetRestfulApiUrl("Return"),
+                    "POST",
+                    baData);
+
+                string strResult = Encoding.UTF8.GetString(result);
+
+                ReturnResponse response = Deserialize<ReturnResponse>(strResult);
+                if (response.ReturnResult.Value == -1
+                    && response.ReturnResult.ErrorCode == ErrorCode.NotLogin)
+                {
+                    if (DoNotLogin(ref strError) == 1)
+                        goto REDO;
+                    return response;
+
+                }
+
+                this.ClearRedoCount();
+                return response;
+            }
+            catch (Exception ex)
+            {
+                int nRet = ConvertWebError(ex, out strError);
+                if (nRet == 0)
+                    throw ex;
+
                 goto REDO;
             }
         }

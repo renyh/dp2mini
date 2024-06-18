@@ -3899,6 +3899,87 @@ this.checkBox_continueWhenError.Checked,
                 this._channelPool.ReturnChannel(channel);
             }
         }
+
+        private void button_borrow_Click(object sender, EventArgs e)
+        {
+            // 清空底部输出信息
+            this.ClearResultInfo();
+
+            BorrowRequest request = new BorrowRequest();
+            request.strReaderBarcode=this.textBox_borrow_strReaderBarcode.Text.Trim();
+            request.strItemBarcode=this.textBox_borrow_strItemBarcode.Text.Trim();
+            request.strConfirmItemRecPath=this.textBox_borrow_strConfirmItemRecPath.Text.Trim();
+            request.saBorrowedItemBarcode= new string[] { };
+
+            request.strStyle=this.textBox_borrow_style.Text .Trim();
+            request.strItemFormatList = this.textBox_borrow_strItemFormatList.Text.Trim();
+            request.strReaderFormatList=this.textBox_borrow_strReaderFormatList.Text.Trim();
+            request.strBiblioFormatList = this.textBox_borrow_strBiblioFormatList.Text.Trim();
+
+
+            request.bRenew = this.checkBox_borrow_bRenew.Checked;
+            request.bForce = this.checkBox_borrow_bForce.Checked;
+
+            RestChannel channel = this.GetChannel();
+            try
+            {
+                BorrowResponse response = channel.Borrow(request);
+
+                // 显示返回信息
+                this.SetResultInfo("Borrow()\r\n" + RestChannel.GetResultInfo(response));
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, "Borrow()异常：" + ex.Message);
+                return;
+            }
+            finally
+            {
+                this._channelPool.ReturnChannel(channel);
+            }
+        }
+
+        private void button_return_Click(object sender, EventArgs e)
+        {
+            // 清空底部输出信息
+            this.ClearResultInfo();
+
+            ReturnRequest request = new ReturnRequest();
+            request.strAction = this.textBox_return_strAction.Text.Trim();
+            request.strReaderBarcode = this.textBox_return_strReaderBarcode.Text.Trim();
+            request.strItemBarcode = this.textBox_return_strItemBarcode.Text.Trim();
+            request.strConfirmItemRecPath = this.textBox_return_strConfirmItemRecPath.Text.Trim();
+
+
+            request.strStyle = this.textBox_return_strStyle.Text.Trim();
+            request.strItemFormatList = this.textBox_return_strItemFormatList.Text.Trim();
+            request.strReaderFormatList = this.textBox_return_strReaderFormatList.Text.Trim();
+            request.strBiblioFormatList = this.textBox_return_strBiblioFormatList.Text.Trim();
+
+
+
+            request.bForce = this.checkBox_return_bForce.Checked;
+
+            RestChannel channel = this.GetChannel();
+            try
+            {
+                ReturnResponse response = channel.Return(request);
+
+                // 显示返回信息
+                this.SetResultInfo("Return()\r\n" + RestChannel.GetResultInfo(response));
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, "Return()异常：" + ex.Message);
+                return;
+            }
+            finally
+            {
+                this._channelPool.ReturnChannel(channel);
+            }
+        }
     }
 
 

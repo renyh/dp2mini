@@ -1847,6 +1847,44 @@ LibraryServerResult.ErrorInfo		出错信息
     #region Borrow
 
     /*
+       // 借书
+        // parameters:
+        //      strReaderBarcode    读者证条码
+        //      strItemBarcode  册条码号
+        //      strConfirmItemRecPath  册记录路径。在册条码号重复的情况下，才需要使用这个参数，平时为null即可
+        //      saBorrowedItemBarcode   同一读者先前已经借阅成功的册条码号集合。用于在返回的读者html中显示出特定的颜色而已。
+        //      strStyle    操作风格。
+        //                  "item"表示将返回册记录；"reader"表示将返回读者记录
+        //                  "auto_renew"  表示如果当前处在已经借出状态，并且发起借书的又是同一人，自动当作续借请求进行操作
+        //      strItemFormatList   规定strItemRecord参数所返回的数据格式
+        //      item_records   返回册记录
+        //      strReaderFormatList 规定strReaderRecord参数所返回的数据格式
+        //      reader_records 返回读者记录
+        //      aDupPath    如果发生条码号重复，这里返回了相关册记录的路径
+        // 权限：无论工作人员还是读者，首先应具备borrow或renew权限。
+        //      对于读者，还需要他进行的借阅(续借)操作是针对自己的，即strReaderBarcode必须和账户信息中的证条码号一致。
+        //      也就是说，读者不允许替他人借阅(续借)图书，这样规定是为了防止读者捣乱。
+        // 日志：
+        //      要产生日志
+        public LibraryServerResult Borrow(
+            bool bRenew,
+            string strReaderBarcode,
+            string strItemBarcode,
+            string strConfirmItemRecPath,
+            bool bForce,
+            string[] saBorrowedItemBarcode,
+            string strStyle,
+            string strItemFormatList,
+            out string[] item_records,
+            string strReaderFormatList,
+            out string[] reader_records,
+            string strBiblioFormatList,
+            out string[] biblio_records,
+            out BorrowInfo borrow_info,
+            out string[] aDupPath,
+            out string strOutputReaderBarcode)
+     * 
+     * 
         LibraryServerResult Borrow(
                     bool bRenew,
                     string strReaderBarcode,
@@ -1879,6 +1917,8 @@ LibraryServerResult.ErrorInfo		出错信息
         public string strItemBarcode { get; set; }
         [DataMember]
         public string strConfirmItemRecPath { get; set; }
+
+
         [DataMember]
         public bool bForce { get; set; }
 
