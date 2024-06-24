@@ -1120,6 +1120,7 @@
             // 
             this.tabControl1.Controls.Add(this.tabPage_Server);
             this.tabControl1.Controls.Add(this.tabPage_task);
+            this.tabControl1.Controls.Add(this.tabPage_ManageDatabase);
             this.tabControl1.Controls.Add(this.tabPage_RepairBorrowInfo);
             this.tabControl1.Controls.Add(this.tabPage_borrow);
             this.tabControl1.Controls.Add(this.tabPage_return);
@@ -1152,7 +1153,6 @@
             this.tabControl1.Controls.Add(this.tabPage_ChangeReaderPassword);
             this.tabControl1.Controls.Add(this.tabPage_GetOperLog);
             this.tabControl1.Controls.Add(this.tabPage_GetSystemParameter);
-            this.tabControl1.Controls.Add(this.tabPage_ManageDatabase);
             this.tabControl1.Controls.Add(this.tabPage_getCalendar);
             this.tabControl1.Controls.Add(this.tabPage_setCalendar);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
