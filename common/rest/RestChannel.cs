@@ -120,6 +120,12 @@ namespace DigitalPlatform.LibraryRestClient
                 LibraryServerResult r = (LibraryServerResult)o;
                 return GetServerResultInfo(r);
             }
+            else if (o is ManageDatabaseResponse)
+            {
+                ManageDatabaseResponse r = (ManageDatabaseResponse)o;
+                return GetServerResultInfo(r.ManageDatabaseResult) + "\r\n"
+                    + "strOutputInfo:" + r.strOutputInfo + "\r\n";
+            }
             else if (o is WriteResResponse)
             {
                 WriteResResponse r = (WriteResResponse)o;
@@ -545,7 +551,7 @@ namespace DigitalPlatform.LibraryRestClient
                     info += "aDupPath:" + string.Join(",", r.aDupPath) + "\r\n";
                 }
 
-                info+= "strOutputReaderBarcode:"+ r.strOutputReaderBarcode+ "\r\n";
+                info += "strOutputReaderBarcode:" + r.strOutputReaderBarcode + "\r\n";
 
 
                 if (r.borrow_info != null)
