@@ -138,6 +138,7 @@ namespace dp2mini
                     "arrived",
                     strOutputStyle);
                 long lRet = searchResponse.SearchResult.Value;
+                strError = searchResponse.SearchResult.ErrorInfo;
                 if (lRet == -1)
                 {
                     strError = "检索发生错误：" + strError;
