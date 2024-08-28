@@ -3508,8 +3508,9 @@ out string strError);
                 CalenderInfo cInfo = new CalenderInfo();
                 cInfo.Name = this.textBox_setCalendar_name.Text.Trim();
                 cInfo.Range = this.textBox_setCalendar_range.Text.Trim();//"20220101-20241231";
-                cInfo.Comment = this.textBox_setCalendar_content.Text.Trim();
-                cInfo.Content = this.textBox_setCalendar_comment.Text.Trim();
+                cInfo.Content = this.textBox_setCalendar_content.Text.Trim();
+                cInfo.Comment = this.textBox_setCalendar_comment.Text.Trim();
+
 
                 SetCalendarResponse response = channel.SetCalendar(
                    this.textBox_setCalendar_action.Text.Trim(),
