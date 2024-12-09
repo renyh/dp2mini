@@ -73,6 +73,15 @@ namespace dp2mini
             }
         }
 
+        // 巡检界面上输入的分馆代码，如果输入了分馆代码，则只巡检该分馆的数据。
+        public string InputLibCode
+        {
+            get
+            {
+                return this.textBox_librarycode.Text.Trim();
+            }
+        }
+
 
 
         #region 界面操作按钮
@@ -125,9 +134,9 @@ namespace dp2mini
                 }
                 this.textBox_info.Text = "";
 
-                string inputLibCode = this.textBox_librarycode.Text.Trim();
+                //string inputLibCode = this.textBox_librarycode.Text.Trim();
 
-                if (string.IsNullOrEmpty(inputLibCode) == true)
+                if (string.IsNullOrEmpty(this.InputLibCode) == true)
                 {
 
                     DialogResult result = MessageBox.Show(this,
@@ -218,7 +227,10 @@ namespace dp2mini
                 this.button_right_Click(sender, e);
 
                 // 安全
-                this.button_security_Click(sender, e);
+                if (string.IsNullOrEmpty(this.InputLibCode) == true)  // 2024/12/9增加，只有当总馆时才输出安全信息。
+                {
+                    this.button_security_Click(sender, e);
+                }
 
 
             }
@@ -381,10 +393,10 @@ namespace dp2mini
                     }
 
                     // 2024/12/9如果输入了分馆，则只显示分馆的帐号
-                    string inputLibCode = this.textBox_librarycode.Text.Trim();
-                    if (string.IsNullOrEmpty(inputLibCode) == false)
+                    //string inputLibCode = this.textBox_librarycode.Text.Trim();
+                    if (string.IsNullOrEmpty(this.InputLibCode) == false)
                     {
-                        if (inputLibCode != libraryCode)
+                        if (this.InputLibCode != libraryCode)
                             continue;
                     }
 
@@ -845,10 +857,10 @@ namespace dp2mini
 
 
                     // 如果输入了分馆，用馆藏地点检索，速度快
-                    string inputLibCode = this.textBox_librarycode.Text.Trim();
-                    if (string.IsNullOrEmpty(inputLibCode) == false)
+                    //string inputLibCode = this.textBox_librarycode.Text.Trim();
+                    if (string.IsNullOrEmpty(this.InputLibCode) == false)
                     {
-                        word = inputLibCode;
+                        word = this.InputLibCode;
                         from = "馆藏地点";
                     }
 
@@ -3520,10 +3532,10 @@ namespace dp2mini
                     foreach (string loc in paijia.locs)
                     {
                         // 2024/12/9如果输入了分馆，则只显示分馆的排架
-                        string inputLibCode = this.textBox_librarycode.Text.Trim();
-                        if (string.IsNullOrEmpty(inputLibCode) == false)
+                        //string inputLibCode = this.textBox_librarycode.Text.Trim();
+                        if (string.IsNullOrEmpty(this.InputLibCode) == false)
                         {
-                            if (loc.IndexOf(inputLibCode) == -1)
+                            if (loc.IndexOf(this.InputLibCode) == -1)
                                 continue;
                         }
 
@@ -3645,8 +3657,8 @@ namespace dp2mini
                 string xml = "<barcodeValidation>" + barcodeValidation + "</barcodeValidation>";
 
                 // 2024/12/9如果输入了分馆，则只显示分馆的
-                string inputLibCode = this.textBox_librarycode.Text.Trim();
-                if (string.IsNullOrEmpty(inputLibCode) == false)
+                //string inputLibCode = this.textBox_librarycode.Text.Trim();
+                if (string.IsNullOrEmpty(this.InputLibCode) == false)
                 {
                     string temp = "";
                     XmlDocument dom = new XmlDocument();
@@ -3656,7 +3668,7 @@ namespace dp2mini
                     {
                         //<validator location="天津市xx中学,天津市xx中学/*">
                         string loc = DomUtil.GetAttr(node, "location");
-                        if (loc.IndexOf(inputLibCode) != -1)
+                        if (loc.IndexOf(this.InputLibCode) != -1)
                         {
                             temp += node.OuterXml ;
                         }
@@ -3750,21 +3762,115 @@ namespace dp2mini
             }
         }
 
+
+
         public void GetConfig()
         {
 
             XmlNode root = this.LibraryDom.DocumentElement;
 
-            // 脚本函数
-            //ItemCanBorrow 无
-            //ItemCanReturn 无
-            // 说明：这两个函数是dp2老版本采用的方式，dp2 V3版本一般在馆藏地设置是否允许借还
+
+            // RFID机构代码
+            // 内容
+            // 说明：如果已上线RFID，但没配置机构代码，属异常
             /*
-    <script><![CDATA[
-using System;
-using System.Xml;
+    <rfid>
+        <ownerInstitution>
+            <item map="/" isil="CN-120103-C-SYZX" />
+        </ownerInstitution>
+    </rfid>
              */
+            //string rfid = this.GetSystemParameter("system","rfid");
+            //rfid=DomUtil.GetIndentXml(rfid);
+            //this.OutputInfo(rfid);
             this.OutputEmprty();
+            this.OutputInfo("==RFID机构代码==");
+            XmlNode itemNode = null;
+            bool hasRfid = false;
+            string rfid = "";
+            XmlNode node = root.SelectSingleNode("rfid");
+            if (node != null)
+            {
+                /*
+     <ownerInstitution>
+        <item map="南开区xx中学/" isil="CN-120104-C-0394" />
+        <item map="南开xx小学/" isil="CN-120104-C-0298" />
+    </ownerInstitution>                
+                 */
+
+                // 2024/12/9如果输入了分馆，则只显示分馆的RFID配置
+                string items = "";
+                if (string.IsNullOrEmpty(this.InputLibCode) == false)
+                {
+                    XmlNodeList list = node.SelectNodes("ownerInstitution/item");
+                    foreach (XmlNode node2 in list)
+                    {
+                        string map = DomUtil.GetAttr(node2, "map");
+                        if (map.IndexOf(this.InputLibCode) != -1)
+                        {
+                            items += node2.OuterXml;
+                        }
+                    }
+                    if (string.IsNullOrEmpty(items) == false)
+                    {
+                        hasRfid = true;
+                        rfid = "<ownerInstitution>" + items + "</ownerInstitution>";
+                    }
+                }
+                else // 巡检工具没有输入分馆代码的情况，获取全部配置
+                {
+                    rfid = node.OuterXml;
+                    itemNode = node.SelectSingleNode("ownerInstitution/item");
+                    if (itemNode != null)
+                        hasRfid = true;
+                }
+            }
+
+
+
+            if (string.IsNullOrEmpty(rfid) == false)
+            {
+                rfid = DomUtil.GetIndentXml(rfid);
+                this.OutputInfo(rfid);
+            }
+            else
+            {
+                this.OutputInfo("未配置RFID机构代码");
+            }
+            /*
+             * 功能说明：机构代码表示图书馆图书资产和读者所属的机构，如果已上线RFID智能图书馆功能，需配置机构代码，如未配置属异常情况。
+
+            检查结果：
+            已配置RFID机构代码，配置良好。
+            未配置RFID机构代码，需和用户单位确认，是否已使用RFID功能，如已使用，一定要配置上；如未使用RFID，也建议尽早配置上。
+             */
+            this.OutputInfo("\r\n功能说明：机构代码表示图书馆图书资产和读者所属的机构，如果已上线RFID智能图书馆功能，需配置机构代码，如未配置属异常情况。");
+            if (hasRfid == true)
+            {
+                this.OutputInfo("\r\n检查结果：已配置RFID机构代码，需确认是否符合RFID规范。");
+            }
+            else
+            {
+                this.OutputInfo("\r\n未配置RFID机构代码，需和用户单位确认，是否已使用RFID功能，如已使用，一定要配置上；如未使用RFID，也建议尽早配置上。");
+            }
+
+            // 如果只是巡检分馆，则不输出其它信息
+            if (string.IsNullOrEmpty(this.InputLibCode) == false)
+            {
+                return;
+            }
+
+
+                // 脚本函数
+                //ItemCanBorrow 无
+                //ItemCanReturn 无
+                // 说明：这两个函数是dp2老版本采用的方式，dp2 V3版本一般在馆藏地设置是否允许借还
+                /*
+        <script><![CDATA[
+    using System;
+    using System.Xml;
+                 */
+                this.OutputEmprty();
             this.OutputInfo("==脚本函数==");
             string script = DomUtil.GetElementInnerText(root, "script");
             bool hasItemCanBorrow = false;
@@ -3831,7 +3937,7 @@ using System.Xml;
             this.OutputEmprty();
             this.OutputInfo("==值列表==");
             string valueTables = "";
-            XmlNode node = root.SelectSingleNode("valueTables");
+             node = root.SelectSingleNode("valueTables");
             bool hasVt = false;
             if (node != null)
             {
@@ -3946,94 +4052,6 @@ using System.Xml;
             }
 
 
-            // RFID机构代码
-            // 内容
-            // 说明：如果已上线RFID，但没配置机构代码，属异常
-            /*
-    <rfid>
-        <ownerInstitution>
-            <item map="/" isil="CN-120103-C-SYZX" />
-        </ownerInstitution>
-    </rfid>
-             */
-            //string rfid = this.GetSystemParameter("system","rfid");
-            //rfid=DomUtil.GetIndentXml(rfid);
-            //this.OutputInfo(rfid);
-            this.OutputEmprty();
-            this.OutputInfo("==RFID机构代码==");
-            XmlNode itemNode = null;
-            bool hasRfid = false;
-            string rfid = "";
-            node = root.SelectSingleNode("rfid");
-            if (node != null)
-            {
-                /*
-     <ownerInstitution>
-        <item map="南开区xx中学/" isil="CN-120104-C-0394" />
-        <item map="南开xx小学/" isil="CN-120104-C-0298" />
-    </ownerInstitution>                
-                 */
-
-
-
-                // 2024/12/9如果输入了分馆，则只显示分馆的日历
-                string inputLibCode = this.textBox_librarycode.Text.Trim();
-                string items = "";
-                if (string.IsNullOrEmpty(inputLibCode) == false)
-                {
-                    XmlNodeList list = node.SelectNodes("ownerInstitution/item");
-                    foreach (XmlNode node2 in list)
-                    {
-                        string map = DomUtil.GetAttr(node2, "map");
-                        if (map.IndexOf(inputLibCode) != -1)
-                        {
-                            items += node2.OuterXml;
-                        }
-                    }
-                    if (string.IsNullOrEmpty(items) == false)
-                    {
-                        hasRfid = true;
-                        rfid = "<ownerInstitution>" + items + "</ownerInstitution>";
-                    }
-                }
-                else // 巡检工具没有输入分馆代码的情况，获取全部配置
-                {
-                    rfid = node.OuterXml;
-                    itemNode = node.SelectSingleNode("ownerInstitution/item");
-                    if (itemNode != null)
-                        hasRfid = true;
-                }
-
-
-            }
-
-
-
-            if (string.IsNullOrEmpty(rfid) == false)
-            {
-                rfid = DomUtil.GetIndentXml(rfid);
-                this.OutputInfo(rfid);
-            }
-            else
-            {
-                this.OutputInfo("未配置RFID机构代码");
-            }
-            /*
-             * 功能说明：机构代码表示图书馆图书资产和读者所属的机构，如果已上线RFID智能图书馆功能，需配置机构代码，如未配置属异常情况。
-
-            检查结果：
-            已配置RFID机构代码，配置良好。
-            未配置RFID机构代码，需和用户单位确认，是否已使用RFID功能，如已使用，一定要配置上；如未使用RFID，也建议尽早配置上。
-             */
-            this.OutputInfo("\r\n功能说明：机构代码表示图书馆图书资产和读者所属的机构，如果已上线RFID智能图书馆功能，需配置机构代码，如未配置属异常情况。");
-            if (hasRfid == true)
-            {
-                this.OutputInfo("\r\n检查结果：已配置RFID机构代码，需确认是否符合RFID规范。");
-            }
-            else
-            {
-                this.OutputInfo("\r\n未配置RFID机构代码，需和用户单位确认，是否已使用RFID功能，如已使用，一定要配置上；如未使用RFID，也建议尽早配置上。");
-            }
 
             //mongoDB数据库配置
             // 说明：如果不配置这项，没有4个库
@@ -4767,10 +4785,10 @@ idElementName="barcode"
                     string text = calendar.InnerText.Trim();
 
                     // 2024/12/9如果输入了分馆，则只显示分馆的日历
-                    string inputLibCode = this.textBox_librarycode.Text.Trim();
-                    if (string.IsNullOrEmpty(inputLibCode) == false)
+                    //string inputLibCode = this.textBox_librarycode.Text.Trim();
+                    if (string.IsNullOrEmpty(this.InputLibCode) == false)
                     {
-                        if (name.IndexOf(inputLibCode) == -1)
+                        if (name.IndexOf(this.InputLibCode) == -1)
                             continue;
                     }
 
