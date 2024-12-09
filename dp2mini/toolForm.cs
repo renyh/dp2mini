@@ -25,6 +25,10 @@ using System.Text.RegularExpressions;
 using DigitalPlatform.Text;
 using ClosedXML.Excel;
 using common;
+using DocumentFormat.OpenXml.Wordprocessing;
+using System.Xml.Linq;
+using Microsoft.EntityFrameworkCore.Internal;
+//using DocumentFormat.OpenXml.ExtendedProperties;
 
 namespace dp2mini
 {
@@ -120,6 +124,23 @@ namespace dp2mini
                     _sw = null;
                 }
                 this.textBox_info.Text = "";
+
+                string inputLibCode = this.textBox_librarycode.Text.Trim();
+
+                if (string.IsNullOrEmpty(inputLibCode) == true)
+                {
+
+                    DialogResult result = MessageBox.Show(this,
+        "您未输入分馆代码，确认是要检查全部数据吗？",
+        "OperLogItemLoader",
+        MessageBoxButtons.YesNo,
+        MessageBoxIcon.Question,
+        MessageBoxDefaultButton.Button1);
+                    if (result == DialogResult.No)
+                        return;
+                }
+
+
 
                 // 每次开头都重新 new 一个。这样避免受到上次遗留的 _cancel 对象的状态影响
                 this._cancel.Dispose();
@@ -357,6 +378,14 @@ namespace dp2mini
                         || name == "capo")
                     {
                         continue;
+                    }
+
+                    // 2024/12/9如果输入了分馆，则只显示分馆的帐号
+                    string inputLibCode = this.textBox_librarycode.Text.Trim();
+                    if (string.IsNullOrEmpty(inputLibCode) == false)
+                    {
+                        if (inputLibCode != libraryCode)
+                            continue;
                     }
 
                     // 危险权限
@@ -739,8 +768,8 @@ namespace dp2mini
                     lTotalCount += response.SearchBiblioResult.Value;
                 }
 
-                this.OutputInfo("\r\n图书馆系统中总共有" + index + "个书目库，书目记录总数量为" + lTotalCount
-                    + "，其中有" + cirDbCount + "个库可流通，流通的书目种数为" + lCirCount + "。" + "\r\n",
+                this.OutputInfo("\r\n图书馆系统中总共有" + index + "个书目库，书目记录总数量为" + lTotalCount + "。" + "\r\n",
+                    //+ "，其中有" + cirDbCount + "个库可流通，流通的书目种数为" + lCirCount + "。" + "\r\n",
                     true, false);
 
 
@@ -811,20 +840,40 @@ namespace dp2mini
                 {
                     token.ThrowIfCancellationRequested();
 
+                    string word = "";
+                    string from = "__id";
+
+
+                    // 如果输入了分馆，用馆藏地点检索，速度快
+                    string inputLibCode = this.textBox_librarycode.Text.Trim();
+                    if (string.IsNullOrEmpty(inputLibCode) == false)
+                    {
+                        word = inputLibCode;
+                        from = "馆藏地点";
+                    }
+
+
+
                     // 检查全部册
                     SearchItemResponse response = channel.SearchItem(//stop,
                        "<all>",
-                       "", // 
+                       word,//"", // 
                        -1,
-                       "__id",
+                       from,//"__id",
                        "left",
                        "myresult",
                        "",//strSearchStyle
-                       "id,xml");
-                       //out strError);
+                       "id");
+                    //out strError);
+                    if (response == null )
+                    {
+                        this.OutputInfo("检索册记录返回值response=null", true, false);
+                        return;
+                    }
+
                     if (response.SearchItemResult.Value == -1)
                     {
-                        this.OutputInfo("检索册记录出错：" + strError, true, false);
+                        this.OutputInfo("检索册记录出错：" + response.SearchItemResult.ErrorInfo, true, false);
                         return;
                     }
 
@@ -940,6 +989,10 @@ namespace dp2mini
                         if (lStart >= lHitCount || lCount <= 0)
                             break;
                     }
+
+
+
+
 
 
                 }
@@ -1410,6 +1463,17 @@ namespace dp2mini
                 {
                     return group;
                 }
+                else
+                {
+                    if (name.IndexOf(':') != -1)
+                    {
+                        string left = name.Substring(0, name.IndexOf(":"));
+                        if (group.location == left)
+                        {
+                            return group;
+                        }
+                    }
+                }
             }
             return null;
         }
@@ -1565,8 +1629,14 @@ namespace dp2mini
 
                     // 写excel
                     ws.Cell(index + 1, 1).Value = loc.location;
-                    ws.Cell(index + 1, 2).Value = "未定义";
-                    ws.Cell(index + 1, 3).Value = loc.count;
+
+
+                    // 例如 班级书架:1班，这种不叫未定义 2024/12/9更正
+                    ws.Cell(index + 1, 2).Value = checkIsConfig(loc.location, locList);//"未定义";
+
+
+
+                    ws.Cell(index + 1, 3).Value = loc.count.ToString();
                 }
             }
 
@@ -1577,6 +1647,28 @@ namespace dp2mini
             this._workbook.SaveAs(this.ExcelFileName);
 
             return;
+        }
+
+        private string checkIsConfig(string name, List<simpleLoc> locList)
+        {
+            //string left = name;
+            if (name.IndexOf(",#reservation") != -1)
+            {
+                name = name.Substring(0, name.IndexOf(",#reservation"));
+            }
+
+            if (name.IndexOf(':') != -1)
+            {
+                name = name.Substring(0, name.IndexOf(":"));
+            }
+
+            foreach (simpleLoc loc in locList)
+            {
+                if (loc.name == name)
+                    return loc.canBorrow;
+            }
+
+            return "未定义";
         }
 
         public string ExcelFileName
@@ -3338,6 +3430,23 @@ namespace dp2mini
             {
                 foreach (string loc in paijia.locs)
                 {
+                    // 截出后面是不是*
+                    if (location.IndexOf('/') != -1 && loc.IndexOf('/') != -1)
+                    {
+                        string left = location.Substring(0, location.IndexOf("/"));
+
+                        string locLeft = loc.Substring(0,loc.IndexOf("/"));
+
+                        if (left==locLeft)
+                        {
+                            string locRight=loc.Substring(loc.IndexOf("/")+1);
+                            if (locRight.IndexOf('*') != -1)
+                                return paijia;
+
+                        }
+                    }
+
+
                     if (loc == location) 
                         return paijia;
                 }
@@ -3410,6 +3519,14 @@ namespace dp2mini
 
                     foreach (string loc in paijia.locs)
                     {
+                        // 2024/12/9如果输入了分馆，则只显示分馆的排架
+                        string inputLibCode = this.textBox_librarycode.Text.Trim();
+                        if (string.IsNullOrEmpty(inputLibCode) == false)
+                        {
+                            if (loc.IndexOf(inputLibCode) == -1)
+                                continue;
+                        }
+
                         this.OutputInfo(loc, true, false);
                         paijiaLocs.Add(loc);
                     }
@@ -3523,13 +3640,51 @@ namespace dp2mini
                 this.OutputInfo(GetInfoAddTime("==开始获取条码校验规则==", start));
 
                 //barcodeValidation
-                string strValue = this.GetSystemParameter("circulation", "barcodeValidation");
-                strValue = DomUtil.GetIndentXml("<barcodeValidation>" + strValue + "</barcodeValidation>");
+                string barcodeValidation = this.GetSystemParameter("circulation", "barcodeValidation");
 
-                if (string.IsNullOrEmpty(strValue) == false)
+                string xml = "<barcodeValidation>" + barcodeValidation + "</barcodeValidation>";
+
+                // 2024/12/9如果输入了分馆，则只显示分馆的
+                string inputLibCode = this.textBox_librarycode.Text.Trim();
+                if (string.IsNullOrEmpty(inputLibCode) == false)
+                {
+                    string temp = "";
+                    XmlDocument dom = new XmlDocument();
+                    dom.LoadXml(xml);
+                    XmlNodeList nodes = dom.DocumentElement.SelectNodes("validator");
+                    foreach (XmlNode node in nodes)
+                    {
+                        //<validator location="天津市xx中学,天津市xx中学/*">
+                        string loc = DomUtil.GetAttr(node, "location");
+                        if (loc.IndexOf(inputLibCode) != -1)
+                        {
+                            temp += node.OuterXml ;
+                        }
+                    }
+                    if (string.IsNullOrEmpty(temp) == false)
+                    {
+                        xml = "<barcodeValidation>" + temp + "</barcodeValidation>";
+                        barcodeValidation = DomUtil.GetIndentXml(xml);
+                    }
+                }
+                else
+                {
+                    barcodeValidation = DomUtil.GetIndentXml(xml);
+                }
+
+
+                
+
+
+
+
+                //validator
+
+
+                if (string.IsNullOrEmpty(barcodeValidation) == false)
                 {
                     this.OutputInfo("已配置新版本条码校验规则，如下:");
-                    this.OutputInfo(strValue, true, false);
+                    this.OutputInfo(barcodeValidation, true, false);
                 }
                 else
                 {
@@ -3539,13 +3694,13 @@ namespace dp2mini
 
 
                 //script
-                strValue = this.GetSystemParameter("circulation", "script");
-                if (strValue.IndexOf("VerifyBarcode") != -1)
+                barcodeValidation = this.GetSystemParameter("circulation", "script");
+                if (barcodeValidation.IndexOf("VerifyBarcode") != -1)
                 {
                     this.OutputInfo("存在C#条码校验函数，建议改为新的配置方式");
                     // 输出空格
                     this.OutputEmprty();
-                    this.OutputInfo(strValue, true, false);
+                    this.OutputInfo(barcodeValidation, true, false);
                 }
 
 
@@ -3812,15 +3967,52 @@ using System.Xml;
             node = root.SelectSingleNode("rfid");
             if (node != null)
             {
-                rfid = node.OuterXml;
-                itemNode = node.SelectSingleNode("ownerInstitution/item");
+                /*
+     <ownerInstitution>
+        <item map="南开区xx中学/" isil="CN-120104-C-0394" />
+        <item map="南开xx小学/" isil="CN-120104-C-0298" />
+    </ownerInstitution>                
+                 */
+
+
+
+                // 2024/12/9如果输入了分馆，则只显示分馆的日历
+                string inputLibCode = this.textBox_librarycode.Text.Trim();
+                string items = "";
+                if (string.IsNullOrEmpty(inputLibCode) == false)
+                {
+                    XmlNodeList list = node.SelectNodes("ownerInstitution/item");
+                    foreach (XmlNode node2 in list)
+                    {
+                        string map = DomUtil.GetAttr(node2, "map");
+                        if (map.IndexOf(inputLibCode) != -1)
+                        {
+                            items += node2.OuterXml;
+                        }
+                    }
+                    if (string.IsNullOrEmpty(items) == false)
+                    {
+                        hasRfid = true;
+                        rfid = "<ownerInstitution>" + items + "</ownerInstitution>";
+                    }
+                }
+                else // 巡检工具没有输入分馆代码的情况，获取全部配置
+                {
+                    rfid = node.OuterXml;
+                    itemNode = node.SelectSingleNode("ownerInstitution/item");
+                    if (itemNode != null)
+                        hasRfid = true;
+                }
+
+
             }
+
+
+
             if (string.IsNullOrEmpty(rfid) == false)
             {
                 rfid = DomUtil.GetIndentXml(rfid);
                 this.OutputInfo(rfid);
-                if (itemNode != null)
-                    hasRfid = true;
             }
             else
             {
@@ -4432,7 +4624,10 @@ idElementName="barcode"
                     long lRet = response.GetResResult.Value;
                     if (lRet == -1)
                     {
-                        this.OutputInfo("获得服务器文件 '" + strPath + "' 时发生错误： " + response.GetResResult.ErrorInfo, true, false);
+                        string error = "获得服务器文件 '" + strPath + "' 时发生错误： " + response.GetResResult.ErrorInfo;
+                        this.OutputInfo(error , true, false);
+                        
+                        //throw new Exception(error);
                         return;
                     }
                     baContent = response.baContent;
@@ -4459,7 +4654,7 @@ idElementName="barcode"
                 //string  strResult = ByteArray.ToString(baTotal, Encoding.UTF8);
 
                 // // 把baTotal加载到dom
-                this._libraryDom1 = new XmlDocument();
+                 this._libraryDom1 = new XmlDocument();
                 stream.Seek(0, SeekOrigin.Begin);
                 this._libraryDom1.Load(stream);
 
@@ -4467,6 +4662,7 @@ idElementName="barcode"
             catch (Exception ex)
             {
                 this.OutputInfo(ExceptionUtil.GetDebugText(ex));
+                throw ex;
                 return;
             }
             finally
@@ -4563,13 +4759,22 @@ idElementName="barcode"
                 XmlNodeList calendarList = this.LibraryDom.DocumentElement.SelectNodes("calendars/calendar");
                 foreach (XmlNode calendar in calendarList)
                 {
-                    index++;
+
                     string name = DomUtil.GetAttr(calendar, "name");
                     string range = DomUtil.GetAttr(calendar, "range");
                     string comment = DomUtil.GetAttr(calendar, "comment").Trim();
 
                     string text = calendar.InnerText.Trim();
 
+                    // 2024/12/9如果输入了分馆，则只显示分馆的日历
+                    string inputLibCode = this.textBox_librarycode.Text.Trim();
+                    if (string.IsNullOrEmpty(inputLibCode) == false)
+                    {
+                        if (name.IndexOf(inputLibCode) == -1)
+                            continue;
+                    }
+
+                    index++;
                     // 写excel
                     ws.Cell(index, 1).Value = name;
                     ws.Cell(index, 2).Value = range;
