@@ -88,7 +88,7 @@
             this.textBox_info.Multiline = true;
             this.textBox_info.Name = "textBox_info";
             this.textBox_info.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.textBox_info.Size = new System.Drawing.Size(847, 360);
+            this.textBox_info.Size = new System.Drawing.Size(838, 359);
             this.textBox_info.TabIndex = 5;
             // 
             // button_circulationRight
@@ -108,10 +108,10 @@
             this.webBrowser1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.webBrowser1.Location = new System.Drawing.Point(3, 3);
+            this.webBrowser1.Location = new System.Drawing.Point(17, 3);
             this.webBrowser1.MinimumSize = new System.Drawing.Size(16, 16);
             this.webBrowser1.Name = "webBrowser1";
-            this.webBrowser1.Size = new System.Drawing.Size(402, 359);
+            this.webBrowser1.Size = new System.Drawing.Size(389, 359);
             this.webBrowser1.TabIndex = 7;
             // 
             // button_entity

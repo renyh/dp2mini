@@ -2028,12 +2028,45 @@ namespace dp2mini
                 }
 
                 string firstRight = right.Substring(0, 1);
-                if (StringUtil.Between(firstRight, "A", "Z") == true
-                    && right.Length == 4)
+
+                // 如果存在这些特殊符号，取特殊符号之前的部分
+                string zzhNo = right.Substring(1);
+                
+                nTemp = zzhNo.IndexOf("=");
+                if (nTemp == -1)
+                    nTemp = zzhNo.IndexOf(".");
+                if (nTemp == -1)
+                    nTemp = zzhNo.IndexOf("·");
+                if (nTemp == -1)
+                    nTemp = zzhNo.IndexOf(":");
+                if (nTemp == -1)
+                    nTemp = zzhNo.IndexOf("：");
+
+                if (nTemp == -1)
+                    nTemp = zzhNo.IndexOf(";");
+                if (nTemp == -1)
+                    nTemp = zzhNo.IndexOf("；");
+
+
+                if (nTemp > 0)
                 {
-                    return 1;
+                    zzhNo = zzhNo.Substring(0, nTemp);
                 }
 
+
+                if (StringUtil.Between(firstRight, "A", "Z") == true)
+                {
+                    try
+                    {
+                        int n = Convert.ToInt32(zzhNo);
+                        return 1;
+                    }
+                    catch
+                    {
+                        error = "著者号[" + right + "]不合法。";
+                        return -1;
+                    }
+                }
                 error = "著者号[" + right + "]不合法。";
                 return -1;
             }// end 著者号
