@@ -120,6 +120,7 @@ namespace DigitalPlatform.LibraryRestClient
                 LibraryServerResult r = (LibraryServerResult)o;
                 return GetServerResultInfo(r);
             }
+
             else if (o is ManageDatabaseResponse)
             {
                 ManageDatabaseResponse r = (ManageDatabaseResponse)o;
@@ -264,6 +265,23 @@ namespace DigitalPlatform.LibraryRestClient
 
                 return info;
             }
+            //BindPatronResponse
+            else if (o is BindPatronResponse)
+            {
+                BindPatronResponse r = (BindPatronResponse)o;
+                string info = GetServerResultInfo(r.BindPatronResult) + "\r\n";
+
+                info += "result:\r\n";
+                if (r.results != null)
+                {
+                    foreach (string one in r.results)
+                    {
+                        info += one + "\r\n";
+                    }
+                }
+
+                return info;
+            }
             else if (o is ChangeReaderPasswordResponse)
             {
                 ChangeReaderPasswordResponse r = (ChangeReaderPasswordResponse)o;
@@ -342,6 +360,12 @@ namespace DigitalPlatform.LibraryRestClient
                 SearchResponse r = (SearchResponse)o;
                 return GetServerResultInfo(r.SearchResult);
 
+            }
+            //VerifyReaderPasswordResponse
+            if (o is VerifyReaderPasswordResponse)
+            {
+                VerifyReaderPasswordResponse r = (VerifyReaderPasswordResponse)o;
+                return GetServerResultInfo(r.VerifyReaderPasswordResult);
             }
             else if (o is GetItemInfoResponse)
             {
@@ -5171,6 +5195,162 @@ int nAttachmentFragmentLength)
 
 
         }
+
+
+
+
+        // 为读者记录绑定新的号码
+        // parameters:
+        //      strAction   动作。有 bind/unbind
+        //      strQueryWord    用于定位读者记录的检索词。
+        //          0) 如果以"RI:"开头，表示利用 参考ID 进行检索
+        //          1) 如果以"NB:"开头，表示利用姓名生日进行检索。姓名和生日之间间隔以'|'。姓名必须完整，生日为8字符形式
+        //          2) 如果以"EM:"开头，表示利用email地址进行检索。注意 email 本身应该是 email:xxxx 这样的形态。也就是说，整个加起来是 EM:email:xxxxx
+        //          3) 如果以"TP:"开头，表示利用电话号码进行检索
+        //          4) 如果以"ID:"开头，表示利用身份证号进行检索
+        //          5) 如果以"CN:"开头，表示利用证件号码进行检索
+        //          6) 如果以"UN:"开头，表示利用用户名进行检索，意思就是工作人员的账户名了，不是针对读者绑定
+        //          7) 否则用证条码号进行检索
+        //      strPassword     读者记录的密码
+        //      strBindingID    要绑定的号码。格式如 email:xxxx 或 weixinid:xxxxx
+        //      strStyle    风格。multiple/single/singlestrict。默认 single
+        //                  multiple 表示允许多次绑定同一类型号码；single 表示同一类型号码只能绑定一次，如果多次绑定以前的同类型号码会被清除; singlestrict 表示如果以前存在同类型号码，本次绑定会是失败
+        //                  如果包含 null_password，表示不用读者密码，strPassword 参数无效。但这个功能只能被工作人员使用
+        //      strResultTypeList   结果类型数组 xml/html/text/calendar/advancexml/recpaths/summary
+        //              其中calendar表示获得读者所关联的日历名；advancexml表示经过运算了的提供了丰富附加信息的xml，例如具有超期和停借期附加信息
+        //              advancexml_borrow_bibliosummary/advancexml_overdue_bibliosummary/advancexml_history_bibliosummary
+        //      results 返回操作成功后的读者记录
+        //public LibraryServerResult BindPatron(
+        //    string strAction,
+        //    string strQueryWord,
+        //    string strPassword,
+        //    string strBindingID,
+        //    string strStyle,
+        //    string strResultTypeList,
+        //    out string[] results)
+        public BindPatronResponse BindPatron(//string strAction,
+    //string strQueryWord,
+    //string strPassword,
+    //string strBindingID,
+    //string strStyle,
+    //string strResultTypeList
+            BindPatronRequest request
+            )
+        {
+        //strError = "";
+        //strOutputInfo = "";
+
+        REDO:
+            try
+            {
+
+                CookieAwareWebClient client = this.GetClient();
+
+                //BindPatronRequest request = new BindPatronRequest()
+                //{
+                //    strAction = strAction,
+                //    strQueryWord = strQueryWord,
+                //    strPassword = strPassword,
+                //    strBindingID = strBindingID,
+                //    strStyle = strStyle,
+                //    strResultTypeList = strResultTypeList
+                //};
+
+                byte[] baData = Encoding.UTF8.GetBytes(Serialize(request));
+                byte[] result = client.UploadData(GetRestfulApiUrl("BindPatron"),
+                        "POST",
+                        baData);
+
+                string strResult = Encoding.UTF8.GetString(result);
+                BindPatronResponse response = Deserialize<BindPatronResponse>(strResult);
+                if (response.BindPatronResult.Value == -1
+    && response.BindPatronResult.ErrorCode == ErrorCode.NotLogin)
+                {
+                    string strError = "";
+                    if (DoNotLogin(ref strError) == 1)
+                        goto REDO;
+                }
+                return response;
+            }
+            catch (Exception ex)
+            {
+                int nRet = ConvertWebError(ex, out string strError);
+                if (nRet == 0)
+                    return null;
+                goto REDO;
+            }
+
+
+        }
+
+
+        /*
+     // 验证读者密码
+    /// <summary>
+    /// 验证读者帐户的密码
+    /// </summary>
+    /// <param name="stop"></param>
+    /// <param name="strReaderBarcode">读者证条码号</param>
+    /// <param name="strReaderPassword">要验证的读者帐户密码</param>
+    /// <param name="strError">返回出错信息</param>
+    /// <returns>
+    /// <para>-1:   验证过程出错</para>
+    /// <para>0:    密码不正确</para>
+    /// <para>1:    密码正确</para>
+    /// </returns>
+    public long VerifyReaderPassword(
+        DigitalPlatform.Stop stop,
+        string strReaderBarcode,
+        string strReaderPassword,
+        out string strError)
+*/
+        public VerifyReaderPasswordResponse VerifyReaderPassword(
+            VerifyReaderPasswordRequest request)
+        {
+        //strError = "";
+        //strOutputInfo = "";
+
+        REDO:
+            try
+            {
+
+                CookieAwareWebClient client = this.GetClient();
+
+                //VerifyReaderPasswordRequest request = new VerifyReaderPasswordRequest()
+                //{
+                //    strReaderBarcode = strReaderBarcode,
+                //    strReaderPassword = strReaderPassword
+                //};
+
+                byte[] baData = Encoding.UTF8.GetBytes(Serialize(request));
+                byte[] result = client.UploadData(GetRestfulApiUrl("VerifyReaderPassword"),
+                        "POST",
+                        baData);
+
+                string strResult = Encoding.UTF8.GetString(result);
+                VerifyReaderPasswordResponse response = Deserialize<VerifyReaderPasswordResponse>(strResult);
+                if (response.VerifyReaderPasswordResult.Value == -1
+    && response.VerifyReaderPasswordResult.ErrorCode == ErrorCode.NotLogin)
+                {
+                    string strError = "";
+                    if (DoNotLogin(ref strError) == 1)
+                        goto REDO;
+                }
+                return response;
+            }
+            catch (Exception ex)
+            {
+                int nRet = ConvertWebError(ex, out string strError);
+                if (nRet == 0)
+                    return null;
+                goto REDO;
+            }
+
+
+        }
+
+
+
 
         // 获得日历
         /// <summary>

@@ -224,6 +224,108 @@ namespace DigitalPlatform.LibraryRestClient
     #endregion
 
 
+    #region BindPatron
+
+    /*
+        // 为读者记录绑定新的号码
+        // parameters:
+        //      strAction   动作。有 bind/unbind
+        //      strQueryWord    用于定位读者记录的检索词。
+        //          0) 如果以"RI:"开头，表示利用 参考ID 进行检索
+        //          1) 如果以"NB:"开头，表示利用姓名生日进行检索。姓名和生日之间间隔以'|'。姓名必须完整，生日为8字符形式
+        //          2) 如果以"EM:"开头，表示利用email地址进行检索。注意 email 本身应该是 email:xxxx 这样的形态。也就是说，整个加起来是 EM:email:xxxxx
+        //          3) 如果以"TP:"开头，表示利用电话号码进行检索
+        //          4) 如果以"ID:"开头，表示利用身份证号进行检索
+        //          5) 如果以"CN:"开头，表示利用证件号码进行检索
+        //          6) 如果以"UN:"开头，表示利用用户名进行检索，意思就是工作人员的账户名了，不是针对读者绑定
+        //          7) 否则用证条码号进行检索
+        //      strPassword     读者记录的密码
+        //      strBindingID    要绑定的号码。格式如 email:xxxx 或 weixinid:xxxxx
+        //      strStyle    风格。multiple/single/singlestrict。默认 single
+        //                  multiple 表示允许多次绑定同一类型号码；single 表示同一类型号码只能绑定一次，如果多次绑定以前的同类型号码会被清除; singlestrict 表示如果以前存在同类型号码，本次绑定会是失败
+        //                  如果包含 null_password，表示不用读者密码，strPassword 参数无效。但这个功能只能被工作人员使用
+        //      strResultTypeList   结果类型数组 xml/html/text/calendar/advancexml/recpaths/summary
+        //              其中calendar表示获得读者所关联的日历名；advancexml表示经过运算了的提供了丰富附加信息的xml，例如具有超期和停借期附加信息
+        //              advancexml_borrow_bibliosummary/advancexml_overdue_bibliosummary/advancexml_history_bibliosummary
+        //      results 返回操作成功后的读者记录
+        public LibraryServerResult BindPatron(
+            string strAction,
+            string strQueryWord,
+            string strPassword,
+            string strBindingID,
+            string strStyle,
+            string strResultTypeList,
+            out string[] results)
+     */
+    [DataContract]
+    public class BindPatronRequest
+    {
+        [DataMember]
+        public string strAction { get; set; }
+        [DataMember]
+        public string strQueryWord { get; set; }
+
+        [DataMember]
+        public string strPassword { get; set; }
+
+
+        [DataMember]
+        public string strBindingID { get; set; }
+
+        //
+        [DataMember]
+        public string strStyle { get; set; }
+
+        [DataMember]
+        public string strResultTypeList { get; set; }
+    }
+
+    [DataContract]
+    public class BindPatronResponse
+    {
+        [DataMember]
+        public LibraryServerResult BindPatronResult { get; set; }
+
+
+        [DataMember]
+        public string[] results { get; set; }
+
+    }
+
+    #endregion
+
+
+    #region VerifyReaderPassword
+
+    /*
+
+    */
+    /*
+    [DataContract]
+    public class VerifyReaderPasswordRequest
+    {
+        [DataMember]
+        public string strReaderBarcode { get; set; }
+
+        [DataMember]
+        public string strReaderPassword { get; set; }
+    }
+
+    [DataContract]
+    public class VerifyReaderPasswordResponse
+    {
+        [DataMember]
+        public LibraryServerResult VerifyReaderPasswordResult { get; set; }
+
+    }
+
+
+
+
+    */
+    #endregion
+
+
     #region VerifyBarcode
 
     /*
@@ -597,6 +699,7 @@ LibraryServerResult.ErrorInfo		出错信息
         public LibraryServerResult GetReaderInfoResult { get; set; }
         [DataMember]
         public string[] results { get; set; }
+
         [DataMember]
         public string strRecPath { get; set; }
         [DataMember]
@@ -824,8 +927,28 @@ LibraryServerResult.ErrorInfo		出错信息
 
     #endregion
 
-    #region VerifyReader
+    #region VerifyReaderPassword
 
+    /*
+         // 验证读者密码
+    /// <summary>
+    /// 验证读者帐户的密码
+    /// </summary>
+    /// <param name="stop"></param>
+    /// <param name="strReaderBarcode">读者证条码号</param>
+    /// <param name="strReaderPassword">要验证的读者帐户密码</param>
+    /// <param name="strError">返回出错信息</param>
+    /// <returns>
+    /// <para>-1:   验证过程出错</para>
+    /// <para>0:    密码不正确</para>
+    /// <para>1:    密码正确</para>
+    /// </returns>
+    public long VerifyReaderPassword(
+        DigitalPlatform.Stop stop,
+        string strReaderBarcode,
+        string strReaderPassword,
+        out string strError)
+        */
     // VerifyReaderPassword
     [DataContract]
     public class VerifyReaderPasswordRequest
