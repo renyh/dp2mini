@@ -172,8 +172,9 @@ namespace dp2mini
                 this.button_paijia_Click(sender, e);
 
                 // 索取号
-                if(this._mainForm.LibraryName!= "红泥巴数字平台图书馆")  // 红泥巴里面索取号有很多的是红泥巴分类的，不校验
-                    this.button_checkAccessNo_Click(sender, e);
+                //if(this._mainForm.LibraryName!= "红泥巴数字平台图书馆")  // 红泥巴里面索取号有很多的是红泥巴分类的，不校验
+                // 2024/12/23 索取号校验规则改进后，可以校验红泥巴分馆了。所以放开这个检索条码。
+                this.button_checkAccessNo_Click(sender, e);
 
                 // 册价格
                 this.button_checkPrice_Click(sender, e);
