@@ -686,6 +686,7 @@ namespace DigitalPlatform.LibraryRestClient
             {
                 if (record == null)
                     continue;
+                
                 browse.AppendLine("path:" + record.Path);
 
                 if (record.Cols != null)
