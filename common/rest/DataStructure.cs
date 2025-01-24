@@ -599,6 +599,11 @@ LibraryServerResult.ErrorInfo		出错信息
         // strQueryXml
         [DataMember]
         public string strQueryXml { get; set; }
+
+
+        // explain  20250124新增
+        [DataMember]
+        public string explain { get; set; }
     }
 
     #endregion

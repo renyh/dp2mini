@@ -296,7 +296,8 @@ namespace DigitalPlatform.LibraryRestClient
                 SearchBiblioResponse r = (SearchBiblioResponse)o;
 
                 return GetServerResultInfo(r.SearchBiblioResult) + "\r\n"
-                    + "strQueryXml:" + r.strQueryXml + "\r\n";
+                    + "strQueryXml:" + r.strQueryXml + "\r\n"
+                    + "explain:"+r.explain+"\r\n";
             }
             else if (o is GetSearchResultResponse)
             {
