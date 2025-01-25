@@ -28,6 +28,8 @@ namespace DigitalPlatform.LibraryRestClient
             if (request is HttpWebRequest)
             {
                 (request as HttpWebRequest).CookieContainer = this.CookieContainer;
+
+                (request as HttpWebRequest).Timeout = 1000 * 60 * 5;  //5分钟  20250125设置
             }
             return request;
         }

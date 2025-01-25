@@ -3175,6 +3175,8 @@ int nAttachmentFragmentLength)
             {
                 CookieAwareWebClient client = this.GetClient();
 
+                
+
                 SearchBiblioRequest request = new SearchBiblioRequest();
                 request.strBiblioDbNames = strBiblioDbNames;
                 request.strQueryWord = strQueryWord;
@@ -4910,6 +4912,8 @@ int nAttachmentFragmentLength)
             CookieAwareWebClient client = new CookieAwareWebClient(this.Cookies);
             client.Headers["Content-type"] = "application/json; charset=utf-8";
             client.Headers["User-Agent"] = "dp2LibraryClient";
+
+           
             return client;
         }
 

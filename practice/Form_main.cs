@@ -458,6 +458,8 @@ namespace practice
 
 
             RestChannel channel = this.GetChannel();
+
+            
             try
             {
                 SearchBiblioResponse response = channel.SearchBiblio(this.textBox_SearchBiblio_strBiblioDbNames.Text,
