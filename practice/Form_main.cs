@@ -437,6 +437,7 @@ namespace practice
         {
             // 清空底部输出信息
             this.ClearResultInfo();
+            this.button_SearchBiblio.Enabled = false;  //20250125加
 
             int nPerMax = 0;
             if (this.textBox_SearchBiblio_nPerMax.Text == "")
@@ -481,6 +482,8 @@ namespace practice
             finally
             {
                 this._channelPool.ReturnChannel(channel);
+
+                this.button_SearchBiblio.Enabled = true;  //20250125加
             }
         }
 
