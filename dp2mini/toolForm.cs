@@ -1664,6 +1664,12 @@ namespace dp2mini
 
         private string checkIsConfig(string name, List<simpleLoc> locList)
         {
+            if (name == null)
+                return "null-未定义";
+
+            if (name == "")
+                return "空-未定义";
+
             //string left = name;
             if (name.IndexOf(",#reservation") != -1)
             {
