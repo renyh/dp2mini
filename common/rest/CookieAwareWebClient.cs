@@ -29,7 +29,7 @@ namespace DigitalPlatform.LibraryRestClient
             {
                 (request as HttpWebRequest).CookieContainer = this.CookieContainer;
 
-                (request as HttpWebRequest).Timeout = 1000 * 60 * 5;  //5分钟  20250125设置
+                (request as HttpWebRequest).Timeout = 1000 * 60 * 10;  //10分钟  20250125设置，2/10调整成10分钟
             }
             return request;
         }
