@@ -65,6 +65,7 @@
             删除ToolStripMenuItem = new ToolStripMenuItem();
             导出附件ToolStripMenuItem = new ToolStripMenuItem();
             拷贝xml到剪切板ToolStripMenuItem = new ToolStripMenuItem();
+            复制到新文件ToolStripMenuItem = new ToolStripMenuItem();
             button_new = new Button();
             button_att = new Button();
             textBox_att = new TextBox();
@@ -81,7 +82,6 @@
             textBox_files = new TextBox();
             label2 = new Label();
             tabPage2 = new TabPage();
-            复制到新文件ToolStripMenuItem = new ToolStripMenuItem();
             tabControl1.SuspendLayout();
             tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
@@ -405,28 +405,35 @@
             contextMenuStrip1.ImageScalingSize = new Size(36, 36);
             contextMenuStrip1.Items.AddRange(new ToolStripItem[] { 删除ToolStripMenuItem, 导出附件ToolStripMenuItem, 拷贝xml到剪切板ToolStripMenuItem, 复制到新文件ToolStripMenuItem });
             contextMenuStrip1.Name = "contextMenuStrip1";
-            contextMenuStrip1.Size = new Size(331, 222);
+            contextMenuStrip1.Size = new Size(299, 172);
             // 
             // 删除ToolStripMenuItem
             // 
             删除ToolStripMenuItem.Name = "删除ToolStripMenuItem";
-            删除ToolStripMenuItem.Size = new Size(330, 42);
+            删除ToolStripMenuItem.Size = new Size(298, 42);
             删除ToolStripMenuItem.Text = "删除";
             删除ToolStripMenuItem.Click += 删除ToolStripMenuItem_Click;
             // 
             // 导出附件ToolStripMenuItem
             // 
             导出附件ToolStripMenuItem.Name = "导出附件ToolStripMenuItem";
-            导出附件ToolStripMenuItem.Size = new Size(330, 42);
+            导出附件ToolStripMenuItem.Size = new Size(298, 42);
             导出附件ToolStripMenuItem.Text = "导出附件";
             导出附件ToolStripMenuItem.Click += 导出附件ToolStripMenuItem_Click;
             // 
             // 拷贝xml到剪切板ToolStripMenuItem
             // 
             拷贝xml到剪切板ToolStripMenuItem.Name = "拷贝xml到剪切板ToolStripMenuItem";
-            拷贝xml到剪切板ToolStripMenuItem.Size = new Size(330, 42);
+            拷贝xml到剪切板ToolStripMenuItem.Size = new Size(298, 42);
             拷贝xml到剪切板ToolStripMenuItem.Text = "拷贝xml到剪切板";
             拷贝xml到剪切板ToolStripMenuItem.Click += 拷贝xml到剪切板ToolStripMenuItem_Click;
+            // 
+            // 复制到新文件ToolStripMenuItem
+            // 
+            复制到新文件ToolStripMenuItem.Name = "复制到新文件ToolStripMenuItem";
+            复制到新文件ToolStripMenuItem.Size = new Size(298, 42);
+            复制到新文件ToolStripMenuItem.Text = "复制到新文件";
+            复制到新文件ToolStripMenuItem.Click += 复制到新文件ToolStripMenuItem_Click;
             // 
             // button_new
             // 
@@ -611,13 +618,6 @@
             tabPage2.Text = "tabPage2";
             tabPage2.UseVisualStyleBackColor = true;
             // 
-            // 复制到新文件ToolStripMenuItem
-            // 
-            复制到新文件ToolStripMenuItem.Name = "复制到新文件ToolStripMenuItem";
-            复制到新文件ToolStripMenuItem.Size = new Size(330, 42);
-            复制到新文件ToolStripMenuItem.Text = "复制到新文件";
-            复制到新文件ToolStripMenuItem.Click += 复制到新文件ToolStripMenuItem_Click;
-            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(216F, 216F);
@@ -626,7 +626,7 @@
             Controls.Add(tabControl1);
             Controls.Add(label3);
             Name = "Form1";
-            Text = "Form1";
+            Text = "operLogTool";
             Load += Form1_Load;
             tabControl1.ResumeLayout(false);
             tabPage1.ResumeLayout(false);
