@@ -291,6 +291,14 @@ namespace DigitalPlatform.LibraryRestClient
                 return GetServerResultInfo(r.ChangeReaderPasswordResult);
 
             }
+            else if (o is ResetPasswordResponse)
+            {
+                ResetPasswordResponse r = (ResetPasswordResponse)o;
+                return GetServerResultInfo(r.ResetPasswordResult) + "\r\n"
+                    + "strMessage:" + r.strMessage;
+
+            }
+
             else if (o is ChangeUserPasswordResponse)
             {
                 ChangeUserPasswordResponse r = (ChangeUserPasswordResponse)o;
@@ -466,6 +474,29 @@ namespace DigitalPlatform.LibraryRestClient
                     + "attachment_data:" + ByteArray.GetHexTimeStampString(r.attachment_data) + "\r\n"
                     + "lAttachmentTotalLength:" + r.lAttachmentTotalLength + "\r\n";
             }
+            else if (o is GetOperLogsResponse)
+            {
+                GetOperLogsResponse r = (GetOperLogsResponse)o;
+                string info= GetServerResultInfo(r.GetOperLogsResult) + "\r\n";
+                //+ "strXml:" + r.records + "\r\n"
+                //+ "lHintNext:" + r.lHintNext + "\r\n"
+                //+ "attachment_data:" + ByteArray.GetHexTimeStampString(r.attachment_data) + "\r\n"
+                //+ "lAttachmentTotalLength:" + r.lAttachmentTotalLength + "\r\n";
+
+                if (r.records != null)
+                {
+                    foreach (OperLogInfo log in r.records)
+                    {
+                        info += "Xml:" + log.Xml + "\r\n"
+                            + "Index:" + log.Index + "\r\n"
+                            + "HintNext:" + log.HintNext + "\r\n"
+                            + "AttachmentLength:" + log.AttachmentLength + "\r\n" + "\r\n";
+                    }
+                }
+
+                return info;
+            }
+
             else if (o is GetCalendarResponse)
             {
                 GetCalendarResponse r = (GetCalendarResponse)o;
@@ -1849,6 +1880,50 @@ int nAttachmentFragmentLength)
         }
 
 
+        // 20250218增加
+        public GetOperLogsResponse GetOperLogs(
+    string strFileName,
+    long lIndex,
+    long lHint,
+    int nCount,
+    string strStyle,
+    string strFilter)
+        {
+
+
+        REDO:
+            CookieAwareWebClient client = this.GetClient();
+
+            // 请求参数
+            GetOperLogsRequest request = new GetOperLogsRequest();
+            request.strFileName = strFileName;
+            request.lIndex = lIndex;
+            request.lHint = lHint;
+            request.strStyle = strStyle;
+            request.strFilter = strFilter;
+            request.nCount = nCount;
+
+            byte[] baData = Encoding.UTF8.GetBytes(Serialize(request));
+            byte[] result = client.UploadData(this.GetRestfulApiUrl("GetOperLogs"),
+                                                "POST",
+                                                baData);
+            string strResult = Encoding.UTF8.GetString(result);
+            GetOperLogsResponse response = Deserialize<GetOperLogsResponse>(strResult);
+
+            string strError = response.GetOperLogsResult.ErrorInfo;
+
+            if (response.GetOperLogsResult.Value == -1
+                && response.GetOperLogsResult.ErrorCode == ErrorCode.NotLogin)
+            {
+                if (DoNotLogin(ref strError) == 1)
+                    goto REDO;
+            }
+
+
+            return response;
+        }
+
+
         /// <summary>
         /// 获得检索结果。
         /// 请参考关于 dp2Library API GetSearchResult() 的介绍
@@ -2166,6 +2241,46 @@ int nAttachmentFragmentLength)
                     if (DoNotLogin(ref strError) == 1)
                         goto REDO;
                 }
+                return response;
+            }
+            catch (Exception ex)
+            {
+                int nRet = ConvertWebError(ex, out strError);
+                if (nRet == 0)
+                    throw ex;
+
+                // 网络问题重做
+                goto REDO; ;
+            }
+        }
+
+
+        public ResetPasswordResponse ResetPassword(string strParameters,
+            string strMessageTemplate)
+        {
+            string strError = "";
+        REDO:
+            try
+            {
+                CookieAwareWebClient client = this.GetClient();
+
+                ResetPasswordRequest request = new ResetPasswordRequest();
+                request.strParameters = strParameters;
+                request.strMessageTemplate = strMessageTemplate;
+
+                byte[] baData = Encoding.UTF8.GetBytes(Serialize(request));
+                byte[] result = client.UploadData(this.GetRestfulApiUrl("ResetPassword"),
+                    "POST",
+                    baData);
+
+                string strResult = Encoding.UTF8.GetString(result);
+                ResetPasswordResponse response = Deserialize<ResetPasswordResponse>(strResult);
+                //if (response.ResetPasswordResult.Value == -1
+                //     && response.ResetPasswordResult.ErrorCode == ErrorCode.NotLogin)
+                //{
+                //    if (DoNotLogin(ref strError) == 1)
+                //        goto REDO;
+                //}
                 return response;
             }
             catch (Exception ex)

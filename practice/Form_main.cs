@@ -65,6 +65,11 @@ namespace practice
             this.textBox_GetSearchResult_lStart.Text = Properties.Settings.Default.getSearchResult_start;
             this.textBox_GetSearchResult_lCount.Text = Properties.Settings.Default.getSearchResult_count;
             this.textBox_GetSearchResult_strBrowseInfoStyle.Text = Properties.Settings.Default.getSearchResult_browseInfoStyle;
+
+
+
+            textBox_GetOperLog_strFileName.Text = DateTime.Now.ToString("yyyyMMdd")+".log";
+            textBox_logs_strFileName.Text = DateTime.Now.ToString("yyyyMMdd") + ".log";
         }
 
         // 关闭时
@@ -4178,6 +4183,112 @@ this.checkBox_continueWhenError.Checked,
                 this.button_ChangeUserPassword.Enabled =true;
             }
         }
+
+        private void button_GetOperLogs_Click(object sender, EventArgs e)
+        {
+            // 清空底部输出信息
+            this.ClearResultInfo();
+
+            string strFileName = this.textBox_logs_strFileName.Text;
+
+            string strIndex = textBox_logs_index.Text.Trim();
+            long lIndex = 0;
+            try
+            {
+                lIndex = Convert.ToInt64(strIndex);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, "IIndex格式不合法，须为数值型。" + ex.Message);
+                return;
+            }
+
+
+            string strHint = this.textBox_logs_hint.Text.Trim();
+            long lHint = 0;
+            try
+            {
+                lHint = Convert.ToInt64(strHint);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, "IHint格式不合法，须为数值型。" + ex.Message);
+                return;
+            }
+
+            string strCount = this.textBox_logs_nCount.Text.Trim();
+            int nCount = 0;
+            try
+            {
+                nCount = Convert.ToInt32(strCount);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, "nCount格式不合法，须为数值型。" + ex.Message);
+                return;
+            }
+
+            string strStyle = this.textBox_logs_strStyle.Text;
+            string strFilter = this.textBox_logs_strFilter.Text;
+
+
+            RestChannel channel = this.GetChannel();
+            try
+            {
+                GetOperLogsResponse response = channel.GetOperLogs(
+                    strFileName,
+                    lIndex,
+                    lHint,
+                    nCount,
+                    strStyle,
+                    strFilter);
+
+                // 显示返回信息
+                this.SetResultInfo("GetOperLogs()\r\n" + RestChannel.GetResultInfo(response));
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, "GetOperLogs()异常:" + ex.Message);
+                return;
+            }
+            finally
+            {
+                this._channelPool.ReturnChannel(channel);
+            }
+        }
+
+        private void button_ResetPassword_Click(object sender, EventArgs e)
+        {
+            // 清空底部输出信息
+            this.ClearResultInfo();
+
+            string strParameters = this.textBox_ResetPassword_strParameters.Text;
+            string strMessageTemplate = this.textBox_ResetPassword_strMessageTemplate.Text;
+
+            RestChannel channel = this.GetChannel();
+            try
+            {
+                ResetPasswordResponse response = channel.ResetPassword(strParameters,
+                    strMessageTemplate);
+
+                // 显示返回信息
+                this.SetResultInfo("ResetPassword()\r\n" + RestChannel.GetResultInfo(response));
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, "ResetPassword()异常：" + ex.Message);
+                return;
+            }
+            finally
+            {
+                this._channelPool.ReturnChannel(channel);
+            }
+        }
+
+
+
+
     }
 
 

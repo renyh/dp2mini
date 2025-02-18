@@ -92,36 +92,36 @@
             this.checkBox_clearBefore = new System.Windows.Forms.CheckBox();
             this.comboBox_recoverLevel = new System.Windows.Forms.ComboBox();
             this.label_recoverLevel = new System.Windows.Forms.Label();
-            this.tabPage_BindPatron = new System.Windows.Forms.TabPage();
-            this.button11 = new System.Windows.Forms.Button();
-            this.label173 = new System.Windows.Forms.Label();
-            this.textBox_bind_strStyle = new System.Windows.Forms.TextBox();
-            this.label180 = new System.Windows.Forms.Label();
-            this.textBox_bind_strResultTypeList = new System.Windows.Forms.TextBox();
-            this.label181 = new System.Windows.Forms.Label();
-            this.textBox_bind_strBindingID = new System.Windows.Forms.TextBox();
-            this.label183 = new System.Windows.Forms.Label();
-            this.textBox_bind_strPassword = new System.Windows.Forms.TextBox();
-            this.label184 = new System.Windows.Forms.Label();
-            this.textBox_bind_strAction = new System.Windows.Forms.TextBox();
-            this.label185 = new System.Windows.Forms.Label();
-            this.textBox_bind_strQueryWord = new System.Windows.Forms.TextBox();
-            this.button_bindPatron = new System.Windows.Forms.Button();
-            this.tabPage_VerifyReaderPassword = new System.Windows.Forms.TabPage();
-            this.button_VerifyReaderPassword = new System.Windows.Forms.Button();
-            this.button12 = new System.Windows.Forms.Button();
-            this.label182 = new System.Windows.Forms.Label();
-            this.textBox_vrp_strReaderBarcode = new System.Windows.Forms.TextBox();
-            this.label186 = new System.Windows.Forms.Label();
-            this.textBox_vrp_strReaderPassword = new System.Windows.Forms.TextBox();
-            this.tabPage_ManageDatabase = new System.Windows.Forms.TabPage();
-            this.button_ManageDatabase = new System.Windows.Forms.Button();
-            this.textBox_ManageDatabase_strDatabaseInfo = new System.Windows.Forms.TextBox();
-            this.textBox_ManageDatabase_strDatabaseName = new System.Windows.Forms.TextBox();
-            this.textBox_ManageDatabase_strAction = new System.Windows.Forms.TextBox();
-            this.label127 = new System.Windows.Forms.Label();
-            this.label128 = new System.Windows.Forms.Label();
-            this.label129 = new System.Windows.Forms.Label();
+            this.tabPage_GetOperLogs = new System.Windows.Forms.TabPage();
+            this.label193 = new System.Windows.Forms.Label();
+            this.textBox_logs_nCount = new System.Windows.Forms.TextBox();
+            this.label199 = new System.Windows.Forms.Label();
+            this.button_GetOperLogs = new System.Windows.Forms.Button();
+            this.textBox_logs_strFilter = new System.Windows.Forms.TextBox();
+            this.textBox_logs_strStyle = new System.Windows.Forms.TextBox();
+            this.textBox_logs_hint = new System.Windows.Forms.TextBox();
+            this.textBox_logs_index = new System.Windows.Forms.TextBox();
+            this.textBox_logs_strFileName = new System.Windows.Forms.TextBox();
+            this.label195 = new System.Windows.Forms.Label();
+            this.label196 = new System.Windows.Forms.Label();
+            this.label197 = new System.Windows.Forms.Label();
+            this.label198 = new System.Windows.Forms.Label();
+            this.tabPage_GetOperLog = new System.Windows.Forms.TabPage();
+            this.textBox_GetOperLog_nAttachmentFragmentLength = new System.Windows.Forms.TextBox();
+            this.label126 = new System.Windows.Forms.Label();
+            this.button_GetOperLog = new System.Windows.Forms.Button();
+            this.textBox_GetOperLog_lAttachmentFragmentStart = new System.Windows.Forms.TextBox();
+            this.textBox_GetOperLog_strFilter = new System.Windows.Forms.TextBox();
+            this.textBox_GetOperLog_strStyle = new System.Windows.Forms.TextBox();
+            this.textBox_GetOperLog_lHint = new System.Windows.Forms.TextBox();
+            this.textBox_GetOperLog_lIndex = new System.Windows.Forms.TextBox();
+            this.textBox_GetOperLog_strFileName = new System.Windows.Forms.TextBox();
+            this.label123 = new System.Windows.Forms.Label();
+            this.label122 = new System.Windows.Forms.Label();
+            this.label121 = new System.Windows.Forms.Label();
+            this.label120 = new System.Windows.Forms.Label();
+            this.label119 = new System.Windows.Forms.Label();
+            this.label116 = new System.Windows.Forms.Label();
             this.tabPage_RepairBorrowInfo = new System.Windows.Forms.TabPage();
             this.textBox_RepairBorrowInfo_nCount = new System.Windows.Forms.TextBox();
             this.button4 = new System.Windows.Forms.Button();
@@ -139,6 +139,77 @@
             this.label148 = new System.Windows.Forms.Label();
             this.textBox_RepairBorrowInfo_strReaderBarcode = new System.Windows.Forms.TextBox();
             this.button_RepairBorrowInfo = new System.Windows.Forms.Button();
+            this.tabPage_ResetPassword = new System.Windows.Forms.TabPage();
+            this.textBox_ResetPassword_strMessageTemplate = new System.Windows.Forms.TextBox();
+            this.button15 = new System.Windows.Forms.Button();
+            this.button_ResetPassword = new System.Windows.Forms.Button();
+            this.textBox_ResetPassword_strParameters = new System.Windows.Forms.TextBox();
+            this.label200 = new System.Windows.Forms.Label();
+            this.label201 = new System.Windows.Forms.Label();
+            this.tabPage_ChangeReaderPassword = new System.Windows.Forms.TabPage();
+            this.checkBox_ChangeReaderPassword = new System.Windows.Forms.CheckBox();
+            this.textBox_ChangeReaderPassword_strReaderNewPassword = new System.Windows.Forms.TextBox();
+            this.label107 = new System.Windows.Forms.Label();
+            this.textBox_ChangeReaderPassword_strReaderOldPassword = new System.Windows.Forms.TextBox();
+            this.button_help_ChangeReaderPassword = new System.Windows.Forms.Button();
+            this.button_ChangeReaderPassword = new System.Windows.Forms.Button();
+            this.textBox_ChangeReaderPassword_strReaderBarcode = new System.Windows.Forms.TextBox();
+            this.label105 = new System.Windows.Forms.Label();
+            this.label106 = new System.Windows.Forms.Label();
+            this.tabPage_changeUserPassword = new System.Windows.Forms.TabPage();
+            this.checkBox_ChangeUserPassword_oldPasswordNull = new System.Windows.Forms.CheckBox();
+            this.textBox_ChangeUserPassword_newPassword = new System.Windows.Forms.TextBox();
+            this.label190 = new System.Windows.Forms.Label();
+            this.textBox_ChangeUserPassword_oldPassword = new System.Windows.Forms.TextBox();
+            this.button14 = new System.Windows.Forms.Button();
+            this.button_ChangeUserPassword = new System.Windows.Forms.Button();
+            this.textBox_ChangeUserPassword_userName = new System.Windows.Forms.TextBox();
+            this.label191 = new System.Windows.Forms.Label();
+            this.label192 = new System.Windows.Forms.Label();
+            this.tabPage_SetUser = new System.Windows.Forms.TabPage();
+            this.button_SetUser = new System.Windows.Forms.Button();
+            this.textBox_SetUser_strAction = new System.Windows.Forms.TextBox();
+            this.label98 = new System.Windows.Forms.Label();
+            this.button_help_SetUser = new System.Windows.Forms.Button();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.textBox_SetUser_Access = new System.Windows.Forms.TextBox();
+            this.label99 = new System.Windows.Forms.Label();
+            this.textBox_SetUser_Rights = new System.Windows.Forms.TextBox();
+            this.label95 = new System.Windows.Forms.Label();
+            this.textBox_SetUser_Password = new System.Windows.Forms.TextBox();
+            this.textBox_SetUser_UserName = new System.Windows.Forms.TextBox();
+            this.label96 = new System.Windows.Forms.Label();
+            this.label97 = new System.Windows.Forms.Label();
+            this.tabPage_VerifyReaderPassword = new System.Windows.Forms.TabPage();
+            this.button_VerifyReaderPassword = new System.Windows.Forms.Button();
+            this.button12 = new System.Windows.Forms.Button();
+            this.label182 = new System.Windows.Forms.Label();
+            this.textBox_vrp_strReaderBarcode = new System.Windows.Forms.TextBox();
+            this.label186 = new System.Windows.Forms.Label();
+            this.textBox_vrp_strReaderPassword = new System.Windows.Forms.TextBox();
+            this.tabPage_BindPatron = new System.Windows.Forms.TabPage();
+            this.button11 = new System.Windows.Forms.Button();
+            this.label173 = new System.Windows.Forms.Label();
+            this.textBox_bind_strStyle = new System.Windows.Forms.TextBox();
+            this.label180 = new System.Windows.Forms.Label();
+            this.textBox_bind_strResultTypeList = new System.Windows.Forms.TextBox();
+            this.label181 = new System.Windows.Forms.Label();
+            this.textBox_bind_strBindingID = new System.Windows.Forms.TextBox();
+            this.label183 = new System.Windows.Forms.Label();
+            this.textBox_bind_strPassword = new System.Windows.Forms.TextBox();
+            this.label184 = new System.Windows.Forms.Label();
+            this.textBox_bind_strAction = new System.Windows.Forms.TextBox();
+            this.label185 = new System.Windows.Forms.Label();
+            this.textBox_bind_strQueryWord = new System.Windows.Forms.TextBox();
+            this.button_bindPatron = new System.Windows.Forms.Button();
+            this.tabPage_ManageDatabase = new System.Windows.Forms.TabPage();
+            this.button_ManageDatabase = new System.Windows.Forms.Button();
+            this.textBox_ManageDatabase_strDatabaseInfo = new System.Windows.Forms.TextBox();
+            this.textBox_ManageDatabase_strDatabaseName = new System.Windows.Forms.TextBox();
+            this.textBox_ManageDatabase_strAction = new System.Windows.Forms.TextBox();
+            this.label127 = new System.Windows.Forms.Label();
+            this.label128 = new System.Windows.Forms.Label();
+            this.label129 = new System.Windows.Forms.Label();
             this.tabPage_borrow = new System.Windows.Forms.TabPage();
             this.textBox_borrow_strBiblioFormatList = new System.Windows.Forms.TextBox();
             this.label171 = new System.Windows.Forms.Label();
@@ -455,40 +526,6 @@
             this.textBox__Reservation_readerBarcode = new System.Windows.Forms.TextBox();
             this.label_Reservation_strReaderBarcode = new System.Windows.Forms.Label();
             this.label_Reservation_action = new System.Windows.Forms.Label();
-            this.tabPage_SetUser = new System.Windows.Forms.TabPage();
-            this.button_SetUser = new System.Windows.Forms.Button();
-            this.textBox_SetUser_strAction = new System.Windows.Forms.TextBox();
-            this.label98 = new System.Windows.Forms.Label();
-            this.button_help_SetUser = new System.Windows.Forms.Button();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.textBox_SetUser_Access = new System.Windows.Forms.TextBox();
-            this.label99 = new System.Windows.Forms.Label();
-            this.textBox_SetUser_Rights = new System.Windows.Forms.TextBox();
-            this.label95 = new System.Windows.Forms.Label();
-            this.textBox_SetUser_Password = new System.Windows.Forms.TextBox();
-            this.textBox_SetUser_UserName = new System.Windows.Forms.TextBox();
-            this.label96 = new System.Windows.Forms.Label();
-            this.label97 = new System.Windows.Forms.Label();
-            this.tabPage_changeUserPassword = new System.Windows.Forms.TabPage();
-            this.checkBox_ChangeUserPassword_oldPasswordNull = new System.Windows.Forms.CheckBox();
-            this.textBox_ChangeUserPassword_newPassword = new System.Windows.Forms.TextBox();
-            this.label190 = new System.Windows.Forms.Label();
-            this.textBox_ChangeUserPassword_oldPassword = new System.Windows.Forms.TextBox();
-            this.button14 = new System.Windows.Forms.Button();
-            this.button_ChangeUserPassword = new System.Windows.Forms.Button();
-            this.textBox_ChangeUserPassword_userName = new System.Windows.Forms.TextBox();
-            this.label191 = new System.Windows.Forms.Label();
-            this.label192 = new System.Windows.Forms.Label();
-            this.tabPage_ChangeReaderPassword = new System.Windows.Forms.TabPage();
-            this.checkBox_ChangeReaderPassword = new System.Windows.Forms.CheckBox();
-            this.textBox_ChangeReaderPassword_strReaderNewPassword = new System.Windows.Forms.TextBox();
-            this.label107 = new System.Windows.Forms.Label();
-            this.textBox_ChangeReaderPassword_strReaderOldPassword = new System.Windows.Forms.TextBox();
-            this.button_help_ChangeReaderPassword = new System.Windows.Forms.Button();
-            this.button_ChangeReaderPassword = new System.Windows.Forms.Button();
-            this.textBox_ChangeReaderPassword_strReaderBarcode = new System.Windows.Forms.TextBox();
-            this.label105 = new System.Windows.Forms.Label();
-            this.label106 = new System.Windows.Forms.Label();
             this.tabPage_SearchCharging = new System.Windows.Forms.TabPage();
             this.textBox_searchCharging_order = new System.Windows.Forms.TextBox();
             this.label45 = new System.Windows.Forms.Label();
@@ -510,22 +547,6 @@
             this.GetBiblioInfo_textBox_BiblioRecPath = new System.Windows.Forms.TextBox();
             this.label19 = new System.Windows.Forms.Label();
             this.label20 = new System.Windows.Forms.Label();
-            this.tabPage_GetOperLog = new System.Windows.Forms.TabPage();
-            this.textBox_GetOperLog_nAttachmentFragmentLength = new System.Windows.Forms.TextBox();
-            this.label126 = new System.Windows.Forms.Label();
-            this.button_GetOperLog = new System.Windows.Forms.Button();
-            this.textBox_GetOperLog_lAttachmentFragmentStart = new System.Windows.Forms.TextBox();
-            this.textBox_GetOperLog_strFilter = new System.Windows.Forms.TextBox();
-            this.textBox_GetOperLog_strStyle = new System.Windows.Forms.TextBox();
-            this.textBox_GetOperLog_lHint = new System.Windows.Forms.TextBox();
-            this.textBox_GetOperLog_lIndex = new System.Windows.Forms.TextBox();
-            this.textBox_GetOperLog_strFileName = new System.Windows.Forms.TextBox();
-            this.label123 = new System.Windows.Forms.Label();
-            this.label122 = new System.Windows.Forms.Label();
-            this.label121 = new System.Windows.Forms.Label();
-            this.label120 = new System.Windows.Forms.Label();
-            this.label119 = new System.Windows.Forms.Label();
-            this.label116 = new System.Windows.Forms.Label();
             this.tabPage_GetSystemParameter = new System.Windows.Forms.TabPage();
             this.button1 = new System.Windows.Forms.Button();
             this.button_SystemParameter = new System.Windows.Forms.Button();
@@ -581,10 +602,17 @@
             this.tabControl1.SuspendLayout();
             this.tabPage_task.SuspendLayout();
             this.groupBox5.SuspendLayout();
-            this.tabPage_BindPatron.SuspendLayout();
-            this.tabPage_VerifyReaderPassword.SuspendLayout();
-            this.tabPage_ManageDatabase.SuspendLayout();
+            this.tabPage_GetOperLogs.SuspendLayout();
+            this.tabPage_GetOperLog.SuspendLayout();
             this.tabPage_RepairBorrowInfo.SuspendLayout();
+            this.tabPage_ResetPassword.SuspendLayout();
+            this.tabPage_ChangeReaderPassword.SuspendLayout();
+            this.tabPage_changeUserPassword.SuspendLayout();
+            this.tabPage_SetUser.SuspendLayout();
+            this.groupBox3.SuspendLayout();
+            this.tabPage_VerifyReaderPassword.SuspendLayout();
+            this.tabPage_BindPatron.SuspendLayout();
+            this.tabPage_ManageDatabase.SuspendLayout();
             this.tabPage_borrow.SuspendLayout();
             this.tabPage_return.SuspendLayout();
             this.tabPage_WriteRes.SuspendLayout();
@@ -609,13 +637,8 @@
             this.tabPage_GetSearchResult.SuspendLayout();
             this.tabPage_GetBrowseRecords.SuspendLayout();
             this.tabPage_Reservation.SuspendLayout();
-            this.tabPage_SetUser.SuspendLayout();
-            this.groupBox3.SuspendLayout();
-            this.tabPage_changeUserPassword.SuspendLayout();
-            this.tabPage_ChangeReaderPassword.SuspendLayout();
             this.tabPage_SearchCharging.SuspendLayout();
             this.tabPage_GetBiblioInfo.SuspendLayout();
-            this.tabPage_GetOperLog.SuspendLayout();
             this.tabPage_GetSystemParameter.SuspendLayout();
             this.tabPage_SetSystemParameter.SuspendLayout();
             this.tabPage_getCalendar.SuspendLayout();
@@ -1164,11 +1187,16 @@
             // 
             this.tabControl1.Controls.Add(this.tabPage_Server);
             this.tabControl1.Controls.Add(this.tabPage_task);
+            this.tabControl1.Controls.Add(this.tabPage_GetOperLogs);
             this.tabControl1.Controls.Add(this.tabPage_GetOperLog);
-            this.tabControl1.Controls.Add(this.tabPage_BindPatron);
-            this.tabControl1.Controls.Add(this.tabPage_VerifyReaderPassword);
-            this.tabControl1.Controls.Add(this.tabPage_ManageDatabase);
             this.tabControl1.Controls.Add(this.tabPage_RepairBorrowInfo);
+            this.tabControl1.Controls.Add(this.tabPage_ResetPassword);
+            this.tabControl1.Controls.Add(this.tabPage_ChangeReaderPassword);
+            this.tabControl1.Controls.Add(this.tabPage_changeUserPassword);
+            this.tabControl1.Controls.Add(this.tabPage_SetUser);
+            this.tabControl1.Controls.Add(this.tabPage_VerifyReaderPassword);
+            this.tabControl1.Controls.Add(this.tabPage_BindPatron);
+            this.tabControl1.Controls.Add(this.tabPage_ManageDatabase);
             this.tabControl1.Controls.Add(this.tabPage_borrow);
             this.tabControl1.Controls.Add(this.tabPage_return);
             this.tabControl1.Controls.Add(this.tabPage_WriteRes);
@@ -1194,9 +1222,6 @@
             this.tabControl1.Controls.Add(this.tabPage_GetSearchResult);
             this.tabControl1.Controls.Add(this.tabPage_GetBrowseRecords);
             this.tabControl1.Controls.Add(this.tabPage_Reservation);
-            this.tabControl1.Controls.Add(this.tabPage_SetUser);
-            this.tabControl1.Controls.Add(this.tabPage_changeUserPassword);
-            this.tabControl1.Controls.Add(this.tabPage_ChangeReaderPassword);
             this.tabControl1.Controls.Add(this.tabPage_SearchCharging);
             this.tabControl1.Controls.Add(this.tabPage_GetBiblioInfo);
             this.tabControl1.Controls.Add(this.tabPage_GetSystemParameter);
@@ -1385,328 +1410,318 @@
             this.label_recoverLevel.TabIndex = 11;
             this.label_recoverLevel.Text = "恢复级别(&L):";
             // 
-            // tabPage_BindPatron
+            // tabPage_GetOperLogs
             // 
-            this.tabPage_BindPatron.Controls.Add(this.button11);
-            this.tabPage_BindPatron.Controls.Add(this.label173);
-            this.tabPage_BindPatron.Controls.Add(this.textBox_bind_strStyle);
-            this.tabPage_BindPatron.Controls.Add(this.label180);
-            this.tabPage_BindPatron.Controls.Add(this.textBox_bind_strResultTypeList);
-            this.tabPage_BindPatron.Controls.Add(this.label181);
-            this.tabPage_BindPatron.Controls.Add(this.textBox_bind_strBindingID);
-            this.tabPage_BindPatron.Controls.Add(this.label183);
-            this.tabPage_BindPatron.Controls.Add(this.textBox_bind_strPassword);
-            this.tabPage_BindPatron.Controls.Add(this.label184);
-            this.tabPage_BindPatron.Controls.Add(this.textBox_bind_strAction);
-            this.tabPage_BindPatron.Controls.Add(this.label185);
-            this.tabPage_BindPatron.Controls.Add(this.textBox_bind_strQueryWord);
-            this.tabPage_BindPatron.Controls.Add(this.button_bindPatron);
-            this.tabPage_BindPatron.Location = new System.Drawing.Point(10, 46);
-            this.tabPage_BindPatron.Name = "tabPage_BindPatron";
-            this.tabPage_BindPatron.Size = new System.Drawing.Size(1060, 671);
-            this.tabPage_BindPatron.TabIndex = 39;
-            this.tabPage_BindPatron.Text = "BindPatron";
-            this.tabPage_BindPatron.UseVisualStyleBackColor = true;
+            this.tabPage_GetOperLogs.Controls.Add(this.label193);
+            this.tabPage_GetOperLogs.Controls.Add(this.textBox_logs_nCount);
+            this.tabPage_GetOperLogs.Controls.Add(this.label199);
+            this.tabPage_GetOperLogs.Controls.Add(this.button_GetOperLogs);
+            this.tabPage_GetOperLogs.Controls.Add(this.textBox_logs_strFilter);
+            this.tabPage_GetOperLogs.Controls.Add(this.textBox_logs_strStyle);
+            this.tabPage_GetOperLogs.Controls.Add(this.textBox_logs_hint);
+            this.tabPage_GetOperLogs.Controls.Add(this.textBox_logs_index);
+            this.tabPage_GetOperLogs.Controls.Add(this.textBox_logs_strFileName);
+            this.tabPage_GetOperLogs.Controls.Add(this.label195);
+            this.tabPage_GetOperLogs.Controls.Add(this.label196);
+            this.tabPage_GetOperLogs.Controls.Add(this.label197);
+            this.tabPage_GetOperLogs.Controls.Add(this.label198);
+            this.tabPage_GetOperLogs.Location = new System.Drawing.Point(10, 46);
+            this.tabPage_GetOperLogs.Name = "tabPage_GetOperLogs";
+            this.tabPage_GetOperLogs.Size = new System.Drawing.Size(1060, 671);
+            this.tabPage_GetOperLogs.TabIndex = 44;
+            this.tabPage_GetOperLogs.Text = "GetOperLogs";
+            this.tabPage_GetOperLogs.UseVisualStyleBackColor = true;
             // 
-            // button11
+            // label193
             // 
-            this.button11.Location = new System.Drawing.Point(0, 3);
-            this.button11.Name = "button11";
-            this.button11.Size = new System.Drawing.Size(54, 117);
-            this.button11.TabIndex = 88;
-            this.button11.Text = "帮助";
-            this.button11.UseVisualStyleBackColor = true;
+            this.label193.AutoSize = true;
+            this.label193.Location = new System.Drawing.Point(112, 255);
+            this.label193.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label193.Name = "label193";
+            this.label193.Size = new System.Drawing.Size(96, 27);
+            this.label193.TabIndex = 48;
+            this.label193.Text = "nCount";
             // 
-            // label173
+            // textBox_logs_nCount
             // 
-            this.label173.AutoSize = true;
-            this.label173.Location = new System.Drawing.Point(187, 273);
-            this.label173.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label173.Name = "label173";
-            this.label173.Size = new System.Drawing.Size(124, 27);
-            this.label173.TabIndex = 87;
-            this.label173.Text = "strStyle";
+            this.textBox_logs_nCount.Location = new System.Drawing.Point(216, 252);
+            this.textBox_logs_nCount.Margin = new System.Windows.Forms.Padding(4);
+            this.textBox_logs_nCount.Name = "textBox_logs_nCount";
+            this.textBox_logs_nCount.Size = new System.Drawing.Size(637, 38);
+            this.textBox_logs_nCount.TabIndex = 47;
+            this.textBox_logs_nCount.Text = "-1";
             // 
-            // textBox_bind_strStyle
+            // label199
             // 
-            this.textBox_bind_strStyle.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox_bind_strStyle.Location = new System.Drawing.Point(316, 273);
-            this.textBox_bind_strStyle.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.textBox_bind_strStyle.Name = "textBox_bind_strStyle";
-            this.textBox_bind_strStyle.Size = new System.Drawing.Size(681, 38);
-            this.textBox_bind_strStyle.TabIndex = 86;
+            this.label199.AutoSize = true;
+            this.label199.Location = new System.Drawing.Point(117, 183);
+            this.label199.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label199.Name = "label199";
+            this.label199.Size = new System.Drawing.Size(82, 27);
+            this.label199.TabIndex = 46;
+            this.label199.Text = "lHint";
             // 
-            // label180
+            // button_GetOperLogs
             // 
-            this.label180.AutoSize = true;
-            this.label180.Location = new System.Drawing.Point(54, 343);
-            this.label180.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label180.Name = "label180";
-            this.label180.Size = new System.Drawing.Size(250, 27);
-            this.label180.TabIndex = 85;
-            this.label180.Text = "strResultTypeList";
+            this.button_GetOperLogs.Location = new System.Drawing.Point(218, 455);
+            this.button_GetOperLogs.Margin = new System.Windows.Forms.Padding(4);
+            this.button_GetOperLogs.Name = "button_GetOperLogs";
+            this.button_GetOperLogs.Size = new System.Drawing.Size(183, 68);
+            this.button_GetOperLogs.TabIndex = 43;
+            this.button_GetOperLogs.Text = "GetOperLogs";
+            this.button_GetOperLogs.UseVisualStyleBackColor = true;
+            this.button_GetOperLogs.Click += new System.EventHandler(this.button_GetOperLogs_Click);
             // 
-            // textBox_bind_strResultTypeList
+            // textBox_logs_strFilter
             // 
-            this.textBox_bind_strResultTypeList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox_bind_strResultTypeList.Location = new System.Drawing.Point(315, 340);
-            this.textBox_bind_strResultTypeList.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.textBox_bind_strResultTypeList.Name = "textBox_bind_strResultTypeList";
-            this.textBox_bind_strResultTypeList.Size = new System.Drawing.Size(681, 38);
-            this.textBox_bind_strResultTypeList.TabIndex = 84;
+            this.textBox_logs_strFilter.Location = new System.Drawing.Point(218, 397);
+            this.textBox_logs_strFilter.Margin = new System.Windows.Forms.Padding(4);
+            this.textBox_logs_strFilter.Name = "textBox_logs_strFilter";
+            this.textBox_logs_strFilter.Size = new System.Drawing.Size(635, 38);
+            this.textBox_logs_strFilter.TabIndex = 41;
             // 
-            // label181
+            // textBox_logs_strStyle
             // 
-            this.label181.AutoSize = true;
-            this.label181.Location = new System.Drawing.Point(133, 216);
-            this.label181.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label181.Name = "label181";
-            this.label181.Size = new System.Drawing.Size(180, 27);
-            this.label181.TabIndex = 83;
-            this.label181.Text = "strBindingID";
+            this.textBox_logs_strStyle.Location = new System.Drawing.Point(218, 323);
+            this.textBox_logs_strStyle.Margin = new System.Windows.Forms.Padding(4);
+            this.textBox_logs_strStyle.Name = "textBox_logs_strStyle";
+            this.textBox_logs_strStyle.Size = new System.Drawing.Size(635, 38);
+            this.textBox_logs_strStyle.TabIndex = 40;
+            this.textBox_logs_strStyle.Text = "level-0";
             // 
-            // textBox_bind_strBindingID
+            // textBox_logs_hint
             // 
-            this.textBox_bind_strBindingID.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox_bind_strBindingID.Location = new System.Drawing.Point(315, 213);
-            this.textBox_bind_strBindingID.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.textBox_bind_strBindingID.Name = "textBox_bind_strBindingID";
-            this.textBox_bind_strBindingID.Size = new System.Drawing.Size(681, 38);
-            this.textBox_bind_strBindingID.TabIndex = 82;
+            this.textBox_logs_hint.Location = new System.Drawing.Point(221, 183);
+            this.textBox_logs_hint.Margin = new System.Windows.Forms.Padding(4);
+            this.textBox_logs_hint.Name = "textBox_logs_hint";
+            this.textBox_logs_hint.Size = new System.Drawing.Size(637, 38);
+            this.textBox_logs_hint.TabIndex = 39;
+            this.textBox_logs_hint.Text = "-1";
             // 
-            // label183
+            // textBox_logs_index
             // 
-            this.label183.AutoSize = true;
-            this.label183.Location = new System.Drawing.Point(146, 174);
-            this.label183.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label183.Name = "label183";
-            this.label183.Size = new System.Drawing.Size(166, 27);
-            this.label183.TabIndex = 80;
-            this.label183.Text = "strPassword";
+            this.textBox_logs_index.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.textBox_logs_index.Location = new System.Drawing.Point(220, 111);
+            this.textBox_logs_index.Margin = new System.Windows.Forms.Padding(4);
+            this.textBox_logs_index.Name = "textBox_logs_index";
+            this.textBox_logs_index.Size = new System.Drawing.Size(637, 38);
+            this.textBox_logs_index.TabIndex = 38;
+            this.textBox_logs_index.Text = "0";
             // 
-            // textBox_bind_strPassword
+            // textBox_logs_strFileName
             // 
-            this.textBox_bind_strPassword.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox_bind_strPassword.Location = new System.Drawing.Point(315, 162);
-            this.textBox_bind_strPassword.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.textBox_bind_strPassword.Name = "textBox_bind_strPassword";
-            this.textBox_bind_strPassword.Size = new System.Drawing.Size(681, 38);
-            this.textBox_bind_strPassword.TabIndex = 79;
+            this.textBox_logs_strFileName.Location = new System.Drawing.Point(216, 39);
+            this.textBox_logs_strFileName.Margin = new System.Windows.Forms.Padding(4);
+            this.textBox_logs_strFileName.Name = "textBox_logs_strFileName";
+            this.textBox_logs_strFileName.Size = new System.Drawing.Size(638, 38);
+            this.textBox_logs_strFileName.TabIndex = 37;
             // 
-            // label184
+            // label195
             // 
-            this.label184.AutoSize = true;
-            this.label184.Location = new System.Drawing.Point(173, 45);
-            this.label184.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label184.Name = "label184";
-            this.label184.Size = new System.Drawing.Size(138, 27);
-            this.label184.TabIndex = 78;
-            this.label184.Text = "strAction";
+            this.label195.AutoSize = true;
+            this.label195.Location = new System.Drawing.Point(58, 397);
+            this.label195.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label195.Name = "label195";
+            this.label195.Size = new System.Drawing.Size(138, 27);
+            this.label195.TabIndex = 35;
+            this.label195.Text = "strFilter";
             // 
-            // textBox_bind_strAction
+            // label196
             // 
-            this.textBox_bind_strAction.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox_bind_strAction.Location = new System.Drawing.Point(315, 42);
-            this.textBox_bind_strAction.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.textBox_bind_strAction.Name = "textBox_bind_strAction";
-            this.textBox_bind_strAction.Size = new System.Drawing.Size(681, 38);
-            this.textBox_bind_strAction.TabIndex = 77;
+            this.label196.AutoSize = true;
+            this.label196.Location = new System.Drawing.Point(72, 323);
+            this.label196.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label196.Name = "label196";
+            this.label196.Size = new System.Drawing.Size(124, 27);
+            this.label196.TabIndex = 34;
+            this.label196.Text = "strStyle";
             // 
-            // label185
+            // label197
             // 
-            this.label185.AutoSize = true;
-            this.label185.Location = new System.Drawing.Point(133, 115);
-            this.label185.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label185.Name = "label185";
-            this.label185.Size = new System.Drawing.Size(180, 27);
-            this.label185.TabIndex = 76;
-            this.label185.Text = "strQueryWord";
+            this.label197.AutoSize = true;
+            this.label197.Location = new System.Drawing.Point(103, 111);
+            this.label197.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label197.Name = "label197";
+            this.label197.Size = new System.Drawing.Size(96, 27);
+            this.label197.TabIndex = 33;
+            this.label197.Text = "lIndex";
             // 
-            // textBox_bind_strQueryWord
+            // label198
             // 
-            this.textBox_bind_strQueryWord.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox_bind_strQueryWord.Location = new System.Drawing.Point(315, 111);
-            this.textBox_bind_strQueryWord.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.textBox_bind_strQueryWord.Name = "textBox_bind_strQueryWord";
-            this.textBox_bind_strQueryWord.Size = new System.Drawing.Size(681, 38);
-            this.textBox_bind_strQueryWord.TabIndex = 75;
+            this.label198.AutoSize = true;
+            this.label198.Location = new System.Drawing.Point(33, 39);
+            this.label198.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label198.Name = "label198";
+            this.label198.Size = new System.Drawing.Size(166, 27);
+            this.label198.TabIndex = 32;
+            this.label198.Text = "strFileName";
             // 
-            // button_bindPatron
+            // tabPage_GetOperLog
             // 
-            this.button_bindPatron.Location = new System.Drawing.Point(316, 426);
-            this.button_bindPatron.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.button_bindPatron.Name = "button_bindPatron";
-            this.button_bindPatron.Size = new System.Drawing.Size(315, 57);
-            this.button_bindPatron.TabIndex = 74;
-            this.button_bindPatron.Tag = "";
-            this.button_bindPatron.Text = "BindPatron";
-            this.button_bindPatron.UseVisualStyleBackColor = true;
-            this.button_bindPatron.Click += new System.EventHandler(this.button_bindPatron_Click);
+            this.tabPage_GetOperLog.Controls.Add(this.textBox_GetOperLog_nAttachmentFragmentLength);
+            this.tabPage_GetOperLog.Controls.Add(this.label126);
+            this.tabPage_GetOperLog.Controls.Add(this.button_GetOperLog);
+            this.tabPage_GetOperLog.Controls.Add(this.textBox_GetOperLog_lAttachmentFragmentStart);
+            this.tabPage_GetOperLog.Controls.Add(this.textBox_GetOperLog_strFilter);
+            this.tabPage_GetOperLog.Controls.Add(this.textBox_GetOperLog_strStyle);
+            this.tabPage_GetOperLog.Controls.Add(this.textBox_GetOperLog_lHint);
+            this.tabPage_GetOperLog.Controls.Add(this.textBox_GetOperLog_lIndex);
+            this.tabPage_GetOperLog.Controls.Add(this.textBox_GetOperLog_strFileName);
+            this.tabPage_GetOperLog.Controls.Add(this.label123);
+            this.tabPage_GetOperLog.Controls.Add(this.label122);
+            this.tabPage_GetOperLog.Controls.Add(this.label121);
+            this.tabPage_GetOperLog.Controls.Add(this.label120);
+            this.tabPage_GetOperLog.Controls.Add(this.label119);
+            this.tabPage_GetOperLog.Controls.Add(this.label116);
+            this.tabPage_GetOperLog.Location = new System.Drawing.Point(10, 46);
+            this.tabPage_GetOperLog.Margin = new System.Windows.Forms.Padding(4);
+            this.tabPage_GetOperLog.Name = "tabPage_GetOperLog";
+            this.tabPage_GetOperLog.Size = new System.Drawing.Size(1060, 671);
+            this.tabPage_GetOperLog.TabIndex = 26;
+            this.tabPage_GetOperLog.Text = "GetOperLog";
+            this.tabPage_GetOperLog.UseVisualStyleBackColor = true;
             // 
-            // tabPage_VerifyReaderPassword
+            // textBox_GetOperLog_nAttachmentFragmentLength
             // 
-            this.tabPage_VerifyReaderPassword.Controls.Add(this.button_VerifyReaderPassword);
-            this.tabPage_VerifyReaderPassword.Controls.Add(this.button12);
-            this.tabPage_VerifyReaderPassword.Controls.Add(this.label182);
-            this.tabPage_VerifyReaderPassword.Controls.Add(this.textBox_vrp_strReaderBarcode);
-            this.tabPage_VerifyReaderPassword.Controls.Add(this.label186);
-            this.tabPage_VerifyReaderPassword.Controls.Add(this.textBox_vrp_strReaderPassword);
-            this.tabPage_VerifyReaderPassword.Location = new System.Drawing.Point(10, 46);
-            this.tabPage_VerifyReaderPassword.Name = "tabPage_VerifyReaderPassword";
-            this.tabPage_VerifyReaderPassword.Size = new System.Drawing.Size(1060, 671);
-            this.tabPage_VerifyReaderPassword.TabIndex = 40;
-            this.tabPage_VerifyReaderPassword.Text = "VerifyReaderPassword";
-            this.tabPage_VerifyReaderPassword.UseVisualStyleBackColor = true;
+            this.textBox_GetOperLog_nAttachmentFragmentLength.Location = new System.Drawing.Point(392, 469);
+            this.textBox_GetOperLog_nAttachmentFragmentLength.Margin = new System.Windows.Forms.Padding(4);
+            this.textBox_GetOperLog_nAttachmentFragmentLength.Name = "textBox_GetOperLog_nAttachmentFragmentLength";
+            this.textBox_GetOperLog_nAttachmentFragmentLength.Size = new System.Drawing.Size(637, 38);
+            this.textBox_GetOperLog_nAttachmentFragmentLength.TabIndex = 31;
+            this.textBox_GetOperLog_nAttachmentFragmentLength.Text = "0";
             // 
-            // button_VerifyReaderPassword
+            // label126
             // 
-            this.button_VerifyReaderPassword.Location = new System.Drawing.Point(320, 183);
-            this.button_VerifyReaderPassword.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.button_VerifyReaderPassword.Name = "button_VerifyReaderPassword";
-            this.button_VerifyReaderPassword.Size = new System.Drawing.Size(315, 57);
-            this.button_VerifyReaderPassword.TabIndex = 94;
-            this.button_VerifyReaderPassword.Tag = "";
-            this.button_VerifyReaderPassword.Text = "VerifyReaderPassword";
-            this.button_VerifyReaderPassword.UseVisualStyleBackColor = true;
-            this.button_VerifyReaderPassword.Click += new System.EventHandler(this.button_VerifyReaderPassword_Click);
+            this.label126.AutoSize = true;
+            this.label126.Location = new System.Drawing.Point(15, 487);
+            this.label126.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label126.Name = "label126";
+            this.label126.Size = new System.Drawing.Size(362, 27);
+            this.label126.TabIndex = 30;
+            this.label126.Text = "nAttachmentFragmentLength";
             // 
-            // button12
+            // button_GetOperLog
             // 
-            this.button12.Location = new System.Drawing.Point(4, 1);
-            this.button12.Name = "button12";
-            this.button12.Size = new System.Drawing.Size(54, 117);
-            this.button12.TabIndex = 93;
-            this.button12.Text = "帮助";
-            this.button12.UseVisualStyleBackColor = true;
+            this.button_GetOperLog.Location = new System.Drawing.Point(388, 539);
+            this.button_GetOperLog.Margin = new System.Windows.Forms.Padding(4);
+            this.button_GetOperLog.Name = "button_GetOperLog";
+            this.button_GetOperLog.Size = new System.Drawing.Size(183, 68);
+            this.button_GetOperLog.TabIndex = 29;
+            this.button_GetOperLog.Text = "GetOperLog";
+            this.button_GetOperLog.UseVisualStyleBackColor = true;
+            this.button_GetOperLog.Click += new System.EventHandler(this.button_GetOperLog_Click);
             // 
-            // label182
+            // textBox_GetOperLog_lAttachmentFragmentStart
             // 
-            this.label182.AutoSize = true;
-            this.label182.Location = new System.Drawing.Point(83, 43);
-            this.label182.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label182.Name = "label182";
-            this.label182.Size = new System.Drawing.Size(236, 27);
-            this.label182.TabIndex = 92;
-            this.label182.Text = "strReaderBarcode";
+            this.textBox_GetOperLog_lAttachmentFragmentStart.Location = new System.Drawing.Point(393, 400);
+            this.textBox_GetOperLog_lAttachmentFragmentStart.Margin = new System.Windows.Forms.Padding(4);
+            this.textBox_GetOperLog_lAttachmentFragmentStart.Name = "textBox_GetOperLog_lAttachmentFragmentStart";
+            this.textBox_GetOperLog_lAttachmentFragmentStart.Size = new System.Drawing.Size(635, 38);
+            this.textBox_GetOperLog_lAttachmentFragmentStart.TabIndex = 28;
+            this.textBox_GetOperLog_lAttachmentFragmentStart.Text = "0";
             // 
-            // textBox_vrp_strReaderBarcode
+            // textBox_GetOperLog_strFilter
             // 
-            this.textBox_vrp_strReaderBarcode.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox_vrp_strReaderBarcode.Location = new System.Drawing.Point(320, 39);
-            this.textBox_vrp_strReaderBarcode.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.textBox_vrp_strReaderBarcode.Name = "textBox_vrp_strReaderBarcode";
-            this.textBox_vrp_strReaderBarcode.Size = new System.Drawing.Size(681, 38);
-            this.textBox_vrp_strReaderBarcode.TabIndex = 91;
+            this.textBox_GetOperLog_strFilter.Location = new System.Drawing.Point(393, 314);
+            this.textBox_GetOperLog_strFilter.Margin = new System.Windows.Forms.Padding(4);
+            this.textBox_GetOperLog_strFilter.Name = "textBox_GetOperLog_strFilter";
+            this.textBox_GetOperLog_strFilter.Size = new System.Drawing.Size(635, 38);
+            this.textBox_GetOperLog_strFilter.TabIndex = 27;
             // 
-            // label186
+            // textBox_GetOperLog_strStyle
             // 
-            this.label186.AutoSize = true;
-            this.label186.Location = new System.Drawing.Point(70, 109);
-            this.label186.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label186.Name = "label186";
-            this.label186.Size = new System.Drawing.Size(250, 27);
-            this.label186.TabIndex = 90;
-            this.label186.Text = "strReaderPassword";
+            this.textBox_GetOperLog_strStyle.Location = new System.Drawing.Point(393, 240);
+            this.textBox_GetOperLog_strStyle.Margin = new System.Windows.Forms.Padding(4);
+            this.textBox_GetOperLog_strStyle.Name = "textBox_GetOperLog_strStyle";
+            this.textBox_GetOperLog_strStyle.Size = new System.Drawing.Size(635, 38);
+            this.textBox_GetOperLog_strStyle.TabIndex = 26;
             // 
-            // textBox_vrp_strReaderPassword
+            // textBox_GetOperLog_lHint
             // 
-            this.textBox_vrp_strReaderPassword.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox_vrp_strReaderPassword.Location = new System.Drawing.Point(320, 109);
-            this.textBox_vrp_strReaderPassword.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.textBox_vrp_strReaderPassword.Name = "textBox_vrp_strReaderPassword";
-            this.textBox_vrp_strReaderPassword.Size = new System.Drawing.Size(681, 38);
-            this.textBox_vrp_strReaderPassword.TabIndex = 89;
+            this.textBox_GetOperLog_lHint.Location = new System.Drawing.Point(393, 172);
+            this.textBox_GetOperLog_lHint.Margin = new System.Windows.Forms.Padding(4);
+            this.textBox_GetOperLog_lHint.Name = "textBox_GetOperLog_lHint";
+            this.textBox_GetOperLog_lHint.Size = new System.Drawing.Size(637, 38);
+            this.textBox_GetOperLog_lHint.TabIndex = 25;
+            this.textBox_GetOperLog_lHint.Text = "-1";
             // 
-            // tabPage_ManageDatabase
+            // textBox_GetOperLog_lIndex
             // 
-            this.tabPage_ManageDatabase.Controls.Add(this.button_ManageDatabase);
-            this.tabPage_ManageDatabase.Controls.Add(this.textBox_ManageDatabase_strDatabaseInfo);
-            this.tabPage_ManageDatabase.Controls.Add(this.textBox_ManageDatabase_strDatabaseName);
-            this.tabPage_ManageDatabase.Controls.Add(this.textBox_ManageDatabase_strAction);
-            this.tabPage_ManageDatabase.Controls.Add(this.label127);
-            this.tabPage_ManageDatabase.Controls.Add(this.label128);
-            this.tabPage_ManageDatabase.Controls.Add(this.label129);
-            this.tabPage_ManageDatabase.Location = new System.Drawing.Point(10, 46);
-            this.tabPage_ManageDatabase.Name = "tabPage_ManageDatabase";
-            this.tabPage_ManageDatabase.Size = new System.Drawing.Size(1060, 671);
-            this.tabPage_ManageDatabase.TabIndex = 28;
-            this.tabPage_ManageDatabase.Text = "ManageDatabase";
-            this.tabPage_ManageDatabase.UseVisualStyleBackColor = true;
+            this.textBox_GetOperLog_lIndex.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.textBox_GetOperLog_lIndex.Location = new System.Drawing.Point(392, 100);
+            this.textBox_GetOperLog_lIndex.Margin = new System.Windows.Forms.Padding(4);
+            this.textBox_GetOperLog_lIndex.Name = "textBox_GetOperLog_lIndex";
+            this.textBox_GetOperLog_lIndex.Size = new System.Drawing.Size(637, 38);
+            this.textBox_GetOperLog_lIndex.TabIndex = 24;
+            this.textBox_GetOperLog_lIndex.Text = "0";
             // 
-            // button_ManageDatabase
+            // textBox_GetOperLog_strFileName
             // 
-            this.button_ManageDatabase.Location = new System.Drawing.Point(387, 472);
-            this.button_ManageDatabase.Margin = new System.Windows.Forms.Padding(4);
-            this.button_ManageDatabase.Name = "button_ManageDatabase";
-            this.button_ManageDatabase.Size = new System.Drawing.Size(262, 83);
-            this.button_ManageDatabase.TabIndex = 23;
-            this.button_ManageDatabase.Text = "ManageDatabase";
-            this.button_ManageDatabase.UseVisualStyleBackColor = true;
-            this.button_ManageDatabase.Click += new System.EventHandler(this.button_ManageDatabase_Click);
+            this.textBox_GetOperLog_strFileName.Location = new System.Drawing.Point(388, 28);
+            this.textBox_GetOperLog_strFileName.Margin = new System.Windows.Forms.Padding(4);
+            this.textBox_GetOperLog_strFileName.Name = "textBox_GetOperLog_strFileName";
+            this.textBox_GetOperLog_strFileName.Size = new System.Drawing.Size(638, 38);
+            this.textBox_GetOperLog_strFileName.TabIndex = 23;
             // 
-            // textBox_ManageDatabase_strDatabaseInfo
+            // label123
             // 
-            this.textBox_ManageDatabase_strDatabaseInfo.Location = new System.Drawing.Point(387, 199);
-            this.textBox_ManageDatabase_strDatabaseInfo.Margin = new System.Windows.Forms.Padding(4);
-            this.textBox_ManageDatabase_strDatabaseInfo.Multiline = true;
-            this.textBox_ManageDatabase_strDatabaseInfo.Name = "textBox_ManageDatabase_strDatabaseInfo";
-            this.textBox_ManageDatabase_strDatabaseInfo.Size = new System.Drawing.Size(630, 206);
-            this.textBox_ManageDatabase_strDatabaseInfo.TabIndex = 22;
+            this.label123.AutoSize = true;
+            this.label123.Location = new System.Drawing.Point(15, 418);
+            this.label123.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label123.Name = "label123";
+            this.label123.Size = new System.Drawing.Size(348, 27);
+            this.label123.TabIndex = 22;
+            this.label123.Text = "lAttachmentFragmentStart";
             // 
-            // textBox_ManageDatabase_strDatabaseName
+            // label122
             // 
-            this.textBox_ManageDatabase_strDatabaseName.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.textBox_ManageDatabase_strDatabaseName.Location = new System.Drawing.Point(387, 109);
-            this.textBox_ManageDatabase_strDatabaseName.Margin = new System.Windows.Forms.Padding(4);
-            this.textBox_ManageDatabase_strDatabaseName.Name = "textBox_ManageDatabase_strDatabaseName";
-            this.textBox_ManageDatabase_strDatabaseName.Size = new System.Drawing.Size(638, 38);
-            this.textBox_ManageDatabase_strDatabaseName.TabIndex = 21;
+            this.label122.AutoSize = true;
+            this.label122.Location = new System.Drawing.Point(86, 332);
+            this.label122.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label122.Name = "label122";
+            this.label122.Size = new System.Drawing.Size(138, 27);
+            this.label122.TabIndex = 21;
+            this.label122.Text = "strFilter";
             // 
-            // textBox_ManageDatabase_strAction
+            // label121
             // 
-            this.textBox_ManageDatabase_strAction.Location = new System.Drawing.Point(386, 37);
-            this.textBox_ManageDatabase_strAction.Margin = new System.Windows.Forms.Padding(4);
-            this.textBox_ManageDatabase_strAction.Name = "textBox_ManageDatabase_strAction";
-            this.textBox_ManageDatabase_strAction.Size = new System.Drawing.Size(638, 38);
-            this.textBox_ManageDatabase_strAction.TabIndex = 20;
+            this.label121.AutoSize = true;
+            this.label121.Location = new System.Drawing.Point(86, 258);
+            this.label121.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label121.Name = "label121";
+            this.label121.Size = new System.Drawing.Size(124, 27);
+            this.label121.TabIndex = 20;
+            this.label121.Text = "strStyle";
             // 
-            // label127
+            // label120
             // 
-            this.label127.AutoSize = true;
-            this.label127.Location = new System.Drawing.Point(92, 199);
-            this.label127.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label127.Name = "label127";
-            this.label127.Size = new System.Drawing.Size(222, 27);
-            this.label127.TabIndex = 19;
-            this.label127.Text = "strDatabaseInfo";
+            this.label120.AutoSize = true;
+            this.label120.Location = new System.Drawing.Point(86, 183);
+            this.label120.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label120.Name = "label120";
+            this.label120.Size = new System.Drawing.Size(82, 27);
+            this.label120.TabIndex = 19;
+            this.label120.Text = "lHint";
             // 
-            // label128
+            // label119
             // 
-            this.label128.AutoSize = true;
-            this.label128.Location = new System.Drawing.Point(92, 127);
-            this.label128.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label128.Name = "label128";
-            this.label128.Size = new System.Drawing.Size(222, 27);
-            this.label128.TabIndex = 18;
-            this.label128.Text = "strDatabaseName";
+            this.label119.AutoSize = true;
+            this.label119.Location = new System.Drawing.Point(86, 118);
+            this.label119.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label119.Name = "label119";
+            this.label119.Size = new System.Drawing.Size(96, 27);
+            this.label119.TabIndex = 18;
+            this.label119.Text = "lIndex";
             // 
-            // label129
+            // label116
             // 
-            this.label129.AutoSize = true;
-            this.label129.Location = new System.Drawing.Point(92, 55);
-            this.label129.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label129.Name = "label129";
-            this.label129.Size = new System.Drawing.Size(138, 27);
-            this.label129.TabIndex = 17;
-            this.label129.Text = "strAction";
+            this.label116.AutoSize = true;
+            this.label116.Location = new System.Drawing.Point(86, 46);
+            this.label116.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label116.Name = "label116";
+            this.label116.Size = new System.Drawing.Size(166, 27);
+            this.label116.TabIndex = 17;
+            this.label116.Text = "strFileName";
             // 
             // tabPage_RepairBorrowInfo
             // 
@@ -1893,6 +1908,763 @@
             this.button_RepairBorrowInfo.Text = "RepairBorrowInfo";
             this.button_RepairBorrowInfo.UseVisualStyleBackColor = true;
             this.button_RepairBorrowInfo.Click += new System.EventHandler(this.button_RepairBorrowInfo_Click);
+            // 
+            // tabPage_ResetPassword
+            // 
+            this.tabPage_ResetPassword.Controls.Add(this.textBox_ResetPassword_strMessageTemplate);
+            this.tabPage_ResetPassword.Controls.Add(this.button15);
+            this.tabPage_ResetPassword.Controls.Add(this.button_ResetPassword);
+            this.tabPage_ResetPassword.Controls.Add(this.textBox_ResetPassword_strParameters);
+            this.tabPage_ResetPassword.Controls.Add(this.label200);
+            this.tabPage_ResetPassword.Controls.Add(this.label201);
+            this.tabPage_ResetPassword.Location = new System.Drawing.Point(10, 46);
+            this.tabPage_ResetPassword.Name = "tabPage_ResetPassword";
+            this.tabPage_ResetPassword.Size = new System.Drawing.Size(1060, 671);
+            this.tabPage_ResetPassword.TabIndex = 43;
+            this.tabPage_ResetPassword.Text = "ResetPassword";
+            this.tabPage_ResetPassword.UseVisualStyleBackColor = true;
+            // 
+            // textBox_ResetPassword_strMessageTemplate
+            // 
+            this.textBox_ResetPassword_strMessageTemplate.Location = new System.Drawing.Point(377, 245);
+            this.textBox_ResetPassword_strMessageTemplate.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.textBox_ResetPassword_strMessageTemplate.Multiline = true;
+            this.textBox_ResetPassword_strMessageTemplate.Name = "textBox_ResetPassword_strMessageTemplate";
+            this.textBox_ResetPassword_strMessageTemplate.Size = new System.Drawing.Size(625, 134);
+            this.textBox_ResetPassword_strMessageTemplate.TabIndex = 72;
+            // 
+            // button15
+            // 
+            this.button15.Location = new System.Drawing.Point(-1, -1);
+            this.button15.Name = "button15";
+            this.button15.Size = new System.Drawing.Size(54, 117);
+            this.button15.TabIndex = 71;
+            this.button15.Text = "帮助";
+            this.button15.UseVisualStyleBackColor = true;
+            // 
+            // button_ResetPassword
+            // 
+            this.button_ResetPassword.Location = new System.Drawing.Point(377, 416);
+            this.button_ResetPassword.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.button_ResetPassword.Name = "button_ResetPassword";
+            this.button_ResetPassword.Size = new System.Drawing.Size(342, 62);
+            this.button_ResetPassword.TabIndex = 70;
+            this.button_ResetPassword.Tag = "";
+            this.button_ResetPassword.Text = "ResetPassword";
+            this.button_ResetPassword.UseVisualStyleBackColor = false;
+            this.button_ResetPassword.Click += new System.EventHandler(this.button_ResetPassword_Click);
+            // 
+            // textBox_ResetPassword_strParameters
+            // 
+            this.textBox_ResetPassword_strParameters.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBox_ResetPassword_strParameters.Location = new System.Drawing.Point(377, 41);
+            this.textBox_ResetPassword_strParameters.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.textBox_ResetPassword_strParameters.Multiline = true;
+            this.textBox_ResetPassword_strParameters.Name = "textBox_ResetPassword_strParameters";
+            this.textBox_ResetPassword_strParameters.Size = new System.Drawing.Size(625, 178);
+            this.textBox_ResetPassword_strParameters.TabIndex = 67;
+            this.textBox_ResetPassword_strParameters.Text = "name=任1,tel=13862157150,barcode=P001,queryword=P001,style=returnMessage";
+            // 
+            // label200
+            // 
+            this.label200.AutoSize = true;
+            this.label200.Location = new System.Drawing.Point(74, 250);
+            this.label200.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label200.Name = "label200";
+            this.label200.Size = new System.Drawing.Size(264, 27);
+            this.label200.TabIndex = 69;
+            this.label200.Text = "strMessageTemplate";
+            // 
+            // label201
+            // 
+            this.label201.AutoSize = true;
+            this.label201.Location = new System.Drawing.Point(130, 47);
+            this.label201.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label201.Name = "label201";
+            this.label201.Size = new System.Drawing.Size(194, 27);
+            this.label201.TabIndex = 68;
+            this.label201.Text = "strParameters";
+            // 
+            // tabPage_ChangeReaderPassword
+            // 
+            this.tabPage_ChangeReaderPassword.Controls.Add(this.checkBox_ChangeReaderPassword);
+            this.tabPage_ChangeReaderPassword.Controls.Add(this.textBox_ChangeReaderPassword_strReaderNewPassword);
+            this.tabPage_ChangeReaderPassword.Controls.Add(this.label107);
+            this.tabPage_ChangeReaderPassword.Controls.Add(this.textBox_ChangeReaderPassword_strReaderOldPassword);
+            this.tabPage_ChangeReaderPassword.Controls.Add(this.button_help_ChangeReaderPassword);
+            this.tabPage_ChangeReaderPassword.Controls.Add(this.button_ChangeReaderPassword);
+            this.tabPage_ChangeReaderPassword.Controls.Add(this.textBox_ChangeReaderPassword_strReaderBarcode);
+            this.tabPage_ChangeReaderPassword.Controls.Add(this.label105);
+            this.tabPage_ChangeReaderPassword.Controls.Add(this.label106);
+            this.tabPage_ChangeReaderPassword.Location = new System.Drawing.Point(10, 46);
+            this.tabPage_ChangeReaderPassword.Name = "tabPage_ChangeReaderPassword";
+            this.tabPage_ChangeReaderPassword.Size = new System.Drawing.Size(1060, 671);
+            this.tabPage_ChangeReaderPassword.TabIndex = 24;
+            this.tabPage_ChangeReaderPassword.Text = "ChangeReaderPassword";
+            this.tabPage_ChangeReaderPassword.UseVisualStyleBackColor = true;
+            // 
+            // checkBox_ChangeReaderPassword
+            // 
+            this.checkBox_ChangeReaderPassword.AutoSize = true;
+            this.checkBox_ChangeReaderPassword.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
+            this.checkBox_ChangeReaderPassword.Checked = true;
+            this.checkBox_ChangeReaderPassword.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBox_ChangeReaderPassword.Location = new System.Drawing.Point(971, 112);
+            this.checkBox_ChangeReaderPassword.Name = "checkBox_ChangeReaderPassword";
+            this.checkBox_ChangeReaderPassword.Size = new System.Drawing.Size(100, 31);
+            this.checkBox_ChangeReaderPassword.TabIndex = 67;
+            this.checkBox_ChangeReaderPassword.Text = "null";
+            this.checkBox_ChangeReaderPassword.UseVisualStyleBackColor = false;
+            // 
+            // textBox_ChangeReaderPassword_strReaderNewPassword
+            // 
+            this.textBox_ChangeReaderPassword_strReaderNewPassword.Location = new System.Drawing.Point(381, 176);
+            this.textBox_ChangeReaderPassword_strReaderNewPassword.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.textBox_ChangeReaderPassword_strReaderNewPassword.Name = "textBox_ChangeReaderPassword_strReaderNewPassword";
+            this.textBox_ChangeReaderPassword_strReaderNewPassword.Size = new System.Drawing.Size(583, 38);
+            this.textBox_ChangeReaderPassword_strReaderNewPassword.TabIndex = 66;
+            // 
+            // label107
+            // 
+            this.label107.AutoSize = true;
+            this.label107.Location = new System.Drawing.Point(78, 183);
+            this.label107.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label107.Name = "label107";
+            this.label107.Size = new System.Drawing.Size(292, 27);
+            this.label107.TabIndex = 65;
+            this.label107.Text = "strReaderNewPassword";
+            // 
+            // textBox_ChangeReaderPassword_strReaderOldPassword
+            // 
+            this.textBox_ChangeReaderPassword_strReaderOldPassword.Location = new System.Drawing.Point(381, 111);
+            this.textBox_ChangeReaderPassword_strReaderOldPassword.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.textBox_ChangeReaderPassword_strReaderOldPassword.Name = "textBox_ChangeReaderPassword_strReaderOldPassword";
+            this.textBox_ChangeReaderPassword_strReaderOldPassword.Size = new System.Drawing.Size(583, 38);
+            this.textBox_ChangeReaderPassword_strReaderOldPassword.TabIndex = 64;
+            // 
+            // button_help_ChangeReaderPassword
+            // 
+            this.button_help_ChangeReaderPassword.Location = new System.Drawing.Point(3, 0);
+            this.button_help_ChangeReaderPassword.Name = "button_help_ChangeReaderPassword";
+            this.button_help_ChangeReaderPassword.Size = new System.Drawing.Size(54, 117);
+            this.button_help_ChangeReaderPassword.TabIndex = 63;
+            this.button_help_ChangeReaderPassword.Text = "帮助";
+            this.button_help_ChangeReaderPassword.UseVisualStyleBackColor = true;
+            this.button_help_ChangeReaderPassword.Click += new System.EventHandler(this.button_help_ChangeReaderPassword_Click);
+            // 
+            // button_ChangeReaderPassword
+            // 
+            this.button_ChangeReaderPassword.Location = new System.Drawing.Point(381, 249);
+            this.button_ChangeReaderPassword.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.button_ChangeReaderPassword.Name = "button_ChangeReaderPassword";
+            this.button_ChangeReaderPassword.Size = new System.Drawing.Size(342, 62);
+            this.button_ChangeReaderPassword.TabIndex = 62;
+            this.button_ChangeReaderPassword.Tag = "";
+            this.button_ChangeReaderPassword.Text = "ChangeReaderPassword";
+            this.button_ChangeReaderPassword.UseVisualStyleBackColor = false;
+            this.button_ChangeReaderPassword.Click += new System.EventHandler(this.button_ChangeReaderPassword_Click);
+            // 
+            // textBox_ChangeReaderPassword_strReaderBarcode
+            // 
+            this.textBox_ChangeReaderPassword_strReaderBarcode.Location = new System.Drawing.Point(381, 42);
+            this.textBox_ChangeReaderPassword_strReaderBarcode.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.textBox_ChangeReaderPassword_strReaderBarcode.Name = "textBox_ChangeReaderPassword_strReaderBarcode";
+            this.textBox_ChangeReaderPassword_strReaderBarcode.Size = new System.Drawing.Size(583, 38);
+            this.textBox_ChangeReaderPassword_strReaderBarcode.TabIndex = 58;
+            // 
+            // label105
+            // 
+            this.label105.AutoSize = true;
+            this.label105.Location = new System.Drawing.Point(78, 116);
+            this.label105.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label105.Name = "label105";
+            this.label105.Size = new System.Drawing.Size(292, 27);
+            this.label105.TabIndex = 61;
+            this.label105.Text = "strReaderOldPassword";
+            // 
+            // label106
+            // 
+            this.label106.AutoSize = true;
+            this.label106.Location = new System.Drawing.Point(134, 48);
+            this.label106.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label106.Name = "label106";
+            this.label106.Size = new System.Drawing.Size(236, 27);
+            this.label106.TabIndex = 59;
+            this.label106.Text = "strReaderBarcode";
+            // 
+            // tabPage_changeUserPassword
+            // 
+            this.tabPage_changeUserPassword.Controls.Add(this.checkBox_ChangeUserPassword_oldPasswordNull);
+            this.tabPage_changeUserPassword.Controls.Add(this.textBox_ChangeUserPassword_newPassword);
+            this.tabPage_changeUserPassword.Controls.Add(this.label190);
+            this.tabPage_changeUserPassword.Controls.Add(this.textBox_ChangeUserPassword_oldPassword);
+            this.tabPage_changeUserPassword.Controls.Add(this.button14);
+            this.tabPage_changeUserPassword.Controls.Add(this.button_ChangeUserPassword);
+            this.tabPage_changeUserPassword.Controls.Add(this.textBox_ChangeUserPassword_userName);
+            this.tabPage_changeUserPassword.Controls.Add(this.label191);
+            this.tabPage_changeUserPassword.Controls.Add(this.label192);
+            this.tabPage_changeUserPassword.Location = new System.Drawing.Point(10, 46);
+            this.tabPage_changeUserPassword.Name = "tabPage_changeUserPassword";
+            this.tabPage_changeUserPassword.Size = new System.Drawing.Size(1060, 671);
+            this.tabPage_changeUserPassword.TabIndex = 42;
+            this.tabPage_changeUserPassword.Text = "ChangeUserPassword";
+            this.tabPage_changeUserPassword.UseVisualStyleBackColor = true;
+            // 
+            // checkBox_ChangeUserPassword_oldPasswordNull
+            // 
+            this.checkBox_ChangeUserPassword_oldPasswordNull.AutoSize = true;
+            this.checkBox_ChangeUserPassword_oldPasswordNull.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
+            this.checkBox_ChangeUserPassword_oldPasswordNull.Location = new System.Drawing.Point(894, 118);
+            this.checkBox_ChangeUserPassword_oldPasswordNull.Name = "checkBox_ChangeUserPassword_oldPasswordNull";
+            this.checkBox_ChangeUserPassword_oldPasswordNull.Size = new System.Drawing.Size(100, 31);
+            this.checkBox_ChangeUserPassword_oldPasswordNull.TabIndex = 76;
+            this.checkBox_ChangeUserPassword_oldPasswordNull.Text = "null";
+            this.checkBox_ChangeUserPassword_oldPasswordNull.UseVisualStyleBackColor = false;
+            // 
+            // textBox_ChangeUserPassword_newPassword
+            // 
+            this.textBox_ChangeUserPassword_newPassword.Location = new System.Drawing.Point(304, 182);
+            this.textBox_ChangeUserPassword_newPassword.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.textBox_ChangeUserPassword_newPassword.Name = "textBox_ChangeUserPassword_newPassword";
+            this.textBox_ChangeUserPassword_newPassword.Size = new System.Drawing.Size(583, 38);
+            this.textBox_ChangeUserPassword_newPassword.TabIndex = 75;
+            // 
+            // label190
+            // 
+            this.label190.AutoSize = true;
+            this.label190.Location = new System.Drawing.Point(74, 183);
+            this.label190.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label190.Name = "label190";
+            this.label190.Size = new System.Drawing.Size(208, 27);
+            this.label190.TabIndex = 74;
+            this.label190.Text = "strNewPassword";
+            // 
+            // textBox_ChangeUserPassword_oldPassword
+            // 
+            this.textBox_ChangeUserPassword_oldPassword.Location = new System.Drawing.Point(304, 117);
+            this.textBox_ChangeUserPassword_oldPassword.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.textBox_ChangeUserPassword_oldPassword.Name = "textBox_ChangeUserPassword_oldPassword";
+            this.textBox_ChangeUserPassword_oldPassword.Size = new System.Drawing.Size(583, 38);
+            this.textBox_ChangeUserPassword_oldPassword.TabIndex = 73;
+            // 
+            // button14
+            // 
+            this.button14.Location = new System.Drawing.Point(-1, 0);
+            this.button14.Name = "button14";
+            this.button14.Size = new System.Drawing.Size(54, 117);
+            this.button14.TabIndex = 72;
+            this.button14.Text = "帮助";
+            this.button14.UseVisualStyleBackColor = true;
+            // 
+            // button_ChangeUserPassword
+            // 
+            this.button_ChangeUserPassword.Location = new System.Drawing.Point(304, 255);
+            this.button_ChangeUserPassword.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.button_ChangeUserPassword.Name = "button_ChangeUserPassword";
+            this.button_ChangeUserPassword.Size = new System.Drawing.Size(342, 62);
+            this.button_ChangeUserPassword.TabIndex = 71;
+            this.button_ChangeUserPassword.Tag = "";
+            this.button_ChangeUserPassword.Text = "ChangeUserPassword";
+            this.button_ChangeUserPassword.UseVisualStyleBackColor = false;
+            this.button_ChangeUserPassword.Click += new System.EventHandler(this.button_ChangeUserPassword_Click);
+            // 
+            // textBox_ChangeUserPassword_userName
+            // 
+            this.textBox_ChangeUserPassword_userName.Location = new System.Drawing.Point(304, 48);
+            this.textBox_ChangeUserPassword_userName.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.textBox_ChangeUserPassword_userName.Name = "textBox_ChangeUserPassword_userName";
+            this.textBox_ChangeUserPassword_userName.Size = new System.Drawing.Size(583, 38);
+            this.textBox_ChangeUserPassword_userName.TabIndex = 68;
+            // 
+            // label191
+            // 
+            this.label191.AutoSize = true;
+            this.label191.Location = new System.Drawing.Point(74, 116);
+            this.label191.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label191.Name = "label191";
+            this.label191.Size = new System.Drawing.Size(208, 27);
+            this.label191.TabIndex = 70;
+            this.label191.Text = "strOldPassword";
+            // 
+            // label192
+            // 
+            this.label192.AutoSize = true;
+            this.label192.Location = new System.Drawing.Point(130, 48);
+            this.label192.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label192.Name = "label192";
+            this.label192.Size = new System.Drawing.Size(166, 27);
+            this.label192.TabIndex = 69;
+            this.label192.Text = "strUserName";
+            // 
+            // tabPage_SetUser
+            // 
+            this.tabPage_SetUser.Controls.Add(this.button_SetUser);
+            this.tabPage_SetUser.Controls.Add(this.textBox_SetUser_strAction);
+            this.tabPage_SetUser.Controls.Add(this.label98);
+            this.tabPage_SetUser.Controls.Add(this.button_help_SetUser);
+            this.tabPage_SetUser.Controls.Add(this.groupBox3);
+            this.tabPage_SetUser.Location = new System.Drawing.Point(10, 46);
+            this.tabPage_SetUser.Name = "tabPage_SetUser";
+            this.tabPage_SetUser.Size = new System.Drawing.Size(1060, 671);
+            this.tabPage_SetUser.TabIndex = 22;
+            this.tabPage_SetUser.Text = "SetUser";
+            this.tabPage_SetUser.UseVisualStyleBackColor = true;
+            // 
+            // button_SetUser
+            // 
+            this.button_SetUser.Location = new System.Drawing.Point(104, 508);
+            this.button_SetUser.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.button_SetUser.Name = "button_SetUser";
+            this.button_SetUser.Size = new System.Drawing.Size(276, 62);
+            this.button_SetUser.TabIndex = 61;
+            this.button_SetUser.Tag = "";
+            this.button_SetUser.Text = "SetUser";
+            this.button_SetUser.UseVisualStyleBackColor = true;
+            this.button_SetUser.Click += new System.EventHandler(this.button_SetUser_Click);
+            // 
+            // textBox_SetUser_strAction
+            // 
+            this.textBox_SetUser_strAction.Location = new System.Drawing.Point(248, 45);
+            this.textBox_SetUser_strAction.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.textBox_SetUser_strAction.Name = "textBox_SetUser_strAction";
+            this.textBox_SetUser_strAction.Size = new System.Drawing.Size(583, 38);
+            this.textBox_SetUser_strAction.TabIndex = 59;
+            // 
+            // label98
+            // 
+            this.label98.AutoSize = true;
+            this.label98.Location = new System.Drawing.Point(100, 45);
+            this.label98.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label98.Name = "label98";
+            this.label98.Size = new System.Drawing.Size(138, 27);
+            this.label98.TabIndex = 60;
+            this.label98.Text = "strAction";
+            // 
+            // button_help_SetUser
+            // 
+            this.button_help_SetUser.Location = new System.Drawing.Point(0, 0);
+            this.button_help_SetUser.Name = "button_help_SetUser";
+            this.button_help_SetUser.Size = new System.Drawing.Size(54, 117);
+            this.button_help_SetUser.TabIndex = 58;
+            this.button_help_SetUser.Text = "帮助";
+            this.button_help_SetUser.UseVisualStyleBackColor = true;
+            this.button_help_SetUser.Click += new System.EventHandler(this.button_help_SetUser_Click);
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.textBox_SetUser_Access);
+            this.groupBox3.Controls.Add(this.label99);
+            this.groupBox3.Controls.Add(this.textBox_SetUser_Rights);
+            this.groupBox3.Controls.Add(this.label95);
+            this.groupBox3.Controls.Add(this.textBox_SetUser_Password);
+            this.groupBox3.Controls.Add(this.textBox_SetUser_UserName);
+            this.groupBox3.Controls.Add(this.label96);
+            this.groupBox3.Controls.Add(this.label97);
+            this.groupBox3.Location = new System.Drawing.Point(104, 123);
+            this.groupBox3.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Padding = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.groupBox3.Size = new System.Drawing.Size(775, 339);
+            this.groupBox3.TabIndex = 19;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "info";
+            // 
+            // textBox_SetUser_Access
+            // 
+            this.textBox_SetUser_Access.Location = new System.Drawing.Point(184, 260);
+            this.textBox_SetUser_Access.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.textBox_SetUser_Access.Name = "textBox_SetUser_Access";
+            this.textBox_SetUser_Access.Size = new System.Drawing.Size(527, 38);
+            this.textBox_SetUser_Access.TabIndex = 23;
+            // 
+            // label99
+            // 
+            this.label99.AutoSize = true;
+            this.label99.Location = new System.Drawing.Point(26, 266);
+            this.label99.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label99.Name = "label99";
+            this.label99.Size = new System.Drawing.Size(96, 27);
+            this.label99.TabIndex = 24;
+            this.label99.Text = "Access";
+            // 
+            // textBox_SetUser_Rights
+            // 
+            this.textBox_SetUser_Rights.Location = new System.Drawing.Point(184, 189);
+            this.textBox_SetUser_Rights.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.textBox_SetUser_Rights.Name = "textBox_SetUser_Rights";
+            this.textBox_SetUser_Rights.Size = new System.Drawing.Size(527, 38);
+            this.textBox_SetUser_Rights.TabIndex = 21;
+            // 
+            // label95
+            // 
+            this.label95.AutoSize = true;
+            this.label95.Location = new System.Drawing.Point(26, 195);
+            this.label95.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label95.Name = "label95";
+            this.label95.Size = new System.Drawing.Size(96, 27);
+            this.label95.TabIndex = 22;
+            this.label95.Text = "Rights";
+            // 
+            // textBox_SetUser_Password
+            // 
+            this.textBox_SetUser_Password.Location = new System.Drawing.Point(184, 130);
+            this.textBox_SetUser_Password.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.textBox_SetUser_Password.Name = "textBox_SetUser_Password";
+            this.textBox_SetUser_Password.Size = new System.Drawing.Size(382, 38);
+            this.textBox_SetUser_Password.TabIndex = 20;
+            this.textBox_SetUser_Password.UseSystemPasswordChar = true;
+            // 
+            // textBox_SetUser_UserName
+            // 
+            this.textBox_SetUser_UserName.Location = new System.Drawing.Point(184, 75);
+            this.textBox_SetUser_UserName.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.textBox_SetUser_UserName.Name = "textBox_SetUser_UserName";
+            this.textBox_SetUser_UserName.Size = new System.Drawing.Size(382, 38);
+            this.textBox_SetUser_UserName.TabIndex = 19;
+            // 
+            // label96
+            // 
+            this.label96.AutoSize = true;
+            this.label96.Location = new System.Drawing.Point(26, 130);
+            this.label96.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label96.Name = "label96";
+            this.label96.Size = new System.Drawing.Size(124, 27);
+            this.label96.TabIndex = 20;
+            this.label96.Text = "Password";
+            // 
+            // label97
+            // 
+            this.label97.AutoSize = true;
+            this.label97.Location = new System.Drawing.Point(26, 75);
+            this.label97.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label97.Name = "label97";
+            this.label97.Size = new System.Drawing.Size(124, 27);
+            this.label97.TabIndex = 19;
+            this.label97.Text = "UserName";
+            // 
+            // tabPage_VerifyReaderPassword
+            // 
+            this.tabPage_VerifyReaderPassword.Controls.Add(this.button_VerifyReaderPassword);
+            this.tabPage_VerifyReaderPassword.Controls.Add(this.button12);
+            this.tabPage_VerifyReaderPassword.Controls.Add(this.label182);
+            this.tabPage_VerifyReaderPassword.Controls.Add(this.textBox_vrp_strReaderBarcode);
+            this.tabPage_VerifyReaderPassword.Controls.Add(this.label186);
+            this.tabPage_VerifyReaderPassword.Controls.Add(this.textBox_vrp_strReaderPassword);
+            this.tabPage_VerifyReaderPassword.Location = new System.Drawing.Point(10, 46);
+            this.tabPage_VerifyReaderPassword.Name = "tabPage_VerifyReaderPassword";
+            this.tabPage_VerifyReaderPassword.Size = new System.Drawing.Size(1060, 671);
+            this.tabPage_VerifyReaderPassword.TabIndex = 40;
+            this.tabPage_VerifyReaderPassword.Text = "VerifyReaderPassword";
+            this.tabPage_VerifyReaderPassword.UseVisualStyleBackColor = true;
+            // 
+            // button_VerifyReaderPassword
+            // 
+            this.button_VerifyReaderPassword.Location = new System.Drawing.Point(320, 183);
+            this.button_VerifyReaderPassword.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.button_VerifyReaderPassword.Name = "button_VerifyReaderPassword";
+            this.button_VerifyReaderPassword.Size = new System.Drawing.Size(315, 57);
+            this.button_VerifyReaderPassword.TabIndex = 94;
+            this.button_VerifyReaderPassword.Tag = "";
+            this.button_VerifyReaderPassword.Text = "VerifyReaderPassword";
+            this.button_VerifyReaderPassword.UseVisualStyleBackColor = true;
+            this.button_VerifyReaderPassword.Click += new System.EventHandler(this.button_VerifyReaderPassword_Click);
+            // 
+            // button12
+            // 
+            this.button12.Location = new System.Drawing.Point(4, 1);
+            this.button12.Name = "button12";
+            this.button12.Size = new System.Drawing.Size(54, 117);
+            this.button12.TabIndex = 93;
+            this.button12.Text = "帮助";
+            this.button12.UseVisualStyleBackColor = true;
+            // 
+            // label182
+            // 
+            this.label182.AutoSize = true;
+            this.label182.Location = new System.Drawing.Point(83, 43);
+            this.label182.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label182.Name = "label182";
+            this.label182.Size = new System.Drawing.Size(236, 27);
+            this.label182.TabIndex = 92;
+            this.label182.Text = "strReaderBarcode";
+            // 
+            // textBox_vrp_strReaderBarcode
+            // 
+            this.textBox_vrp_strReaderBarcode.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBox_vrp_strReaderBarcode.Location = new System.Drawing.Point(320, 39);
+            this.textBox_vrp_strReaderBarcode.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.textBox_vrp_strReaderBarcode.Name = "textBox_vrp_strReaderBarcode";
+            this.textBox_vrp_strReaderBarcode.Size = new System.Drawing.Size(681, 38);
+            this.textBox_vrp_strReaderBarcode.TabIndex = 91;
+            // 
+            // label186
+            // 
+            this.label186.AutoSize = true;
+            this.label186.Location = new System.Drawing.Point(70, 109);
+            this.label186.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label186.Name = "label186";
+            this.label186.Size = new System.Drawing.Size(250, 27);
+            this.label186.TabIndex = 90;
+            this.label186.Text = "strReaderPassword";
+            // 
+            // textBox_vrp_strReaderPassword
+            // 
+            this.textBox_vrp_strReaderPassword.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBox_vrp_strReaderPassword.Location = new System.Drawing.Point(320, 109);
+            this.textBox_vrp_strReaderPassword.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.textBox_vrp_strReaderPassword.Name = "textBox_vrp_strReaderPassword";
+            this.textBox_vrp_strReaderPassword.Size = new System.Drawing.Size(681, 38);
+            this.textBox_vrp_strReaderPassword.TabIndex = 89;
+            // 
+            // tabPage_BindPatron
+            // 
+            this.tabPage_BindPatron.Controls.Add(this.button11);
+            this.tabPage_BindPatron.Controls.Add(this.label173);
+            this.tabPage_BindPatron.Controls.Add(this.textBox_bind_strStyle);
+            this.tabPage_BindPatron.Controls.Add(this.label180);
+            this.tabPage_BindPatron.Controls.Add(this.textBox_bind_strResultTypeList);
+            this.tabPage_BindPatron.Controls.Add(this.label181);
+            this.tabPage_BindPatron.Controls.Add(this.textBox_bind_strBindingID);
+            this.tabPage_BindPatron.Controls.Add(this.label183);
+            this.tabPage_BindPatron.Controls.Add(this.textBox_bind_strPassword);
+            this.tabPage_BindPatron.Controls.Add(this.label184);
+            this.tabPage_BindPatron.Controls.Add(this.textBox_bind_strAction);
+            this.tabPage_BindPatron.Controls.Add(this.label185);
+            this.tabPage_BindPatron.Controls.Add(this.textBox_bind_strQueryWord);
+            this.tabPage_BindPatron.Controls.Add(this.button_bindPatron);
+            this.tabPage_BindPatron.Location = new System.Drawing.Point(10, 46);
+            this.tabPage_BindPatron.Name = "tabPage_BindPatron";
+            this.tabPage_BindPatron.Size = new System.Drawing.Size(1060, 671);
+            this.tabPage_BindPatron.TabIndex = 39;
+            this.tabPage_BindPatron.Text = "BindPatron";
+            this.tabPage_BindPatron.UseVisualStyleBackColor = true;
+            // 
+            // button11
+            // 
+            this.button11.Location = new System.Drawing.Point(0, 3);
+            this.button11.Name = "button11";
+            this.button11.Size = new System.Drawing.Size(54, 117);
+            this.button11.TabIndex = 88;
+            this.button11.Text = "帮助";
+            this.button11.UseVisualStyleBackColor = true;
+            // 
+            // label173
+            // 
+            this.label173.AutoSize = true;
+            this.label173.Location = new System.Drawing.Point(187, 273);
+            this.label173.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label173.Name = "label173";
+            this.label173.Size = new System.Drawing.Size(124, 27);
+            this.label173.TabIndex = 87;
+            this.label173.Text = "strStyle";
+            // 
+            // textBox_bind_strStyle
+            // 
+            this.textBox_bind_strStyle.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBox_bind_strStyle.Location = new System.Drawing.Point(316, 273);
+            this.textBox_bind_strStyle.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.textBox_bind_strStyle.Name = "textBox_bind_strStyle";
+            this.textBox_bind_strStyle.Size = new System.Drawing.Size(681, 38);
+            this.textBox_bind_strStyle.TabIndex = 86;
+            // 
+            // label180
+            // 
+            this.label180.AutoSize = true;
+            this.label180.Location = new System.Drawing.Point(54, 343);
+            this.label180.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label180.Name = "label180";
+            this.label180.Size = new System.Drawing.Size(250, 27);
+            this.label180.TabIndex = 85;
+            this.label180.Text = "strResultTypeList";
+            // 
+            // textBox_bind_strResultTypeList
+            // 
+            this.textBox_bind_strResultTypeList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBox_bind_strResultTypeList.Location = new System.Drawing.Point(315, 340);
+            this.textBox_bind_strResultTypeList.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.textBox_bind_strResultTypeList.Name = "textBox_bind_strResultTypeList";
+            this.textBox_bind_strResultTypeList.Size = new System.Drawing.Size(681, 38);
+            this.textBox_bind_strResultTypeList.TabIndex = 84;
+            // 
+            // label181
+            // 
+            this.label181.AutoSize = true;
+            this.label181.Location = new System.Drawing.Point(133, 216);
+            this.label181.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label181.Name = "label181";
+            this.label181.Size = new System.Drawing.Size(180, 27);
+            this.label181.TabIndex = 83;
+            this.label181.Text = "strBindingID";
+            // 
+            // textBox_bind_strBindingID
+            // 
+            this.textBox_bind_strBindingID.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBox_bind_strBindingID.Location = new System.Drawing.Point(315, 213);
+            this.textBox_bind_strBindingID.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.textBox_bind_strBindingID.Name = "textBox_bind_strBindingID";
+            this.textBox_bind_strBindingID.Size = new System.Drawing.Size(681, 38);
+            this.textBox_bind_strBindingID.TabIndex = 82;
+            // 
+            // label183
+            // 
+            this.label183.AutoSize = true;
+            this.label183.Location = new System.Drawing.Point(146, 174);
+            this.label183.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label183.Name = "label183";
+            this.label183.Size = new System.Drawing.Size(166, 27);
+            this.label183.TabIndex = 80;
+            this.label183.Text = "strPassword";
+            // 
+            // textBox_bind_strPassword
+            // 
+            this.textBox_bind_strPassword.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBox_bind_strPassword.Location = new System.Drawing.Point(315, 162);
+            this.textBox_bind_strPassword.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.textBox_bind_strPassword.Name = "textBox_bind_strPassword";
+            this.textBox_bind_strPassword.Size = new System.Drawing.Size(681, 38);
+            this.textBox_bind_strPassword.TabIndex = 79;
+            // 
+            // label184
+            // 
+            this.label184.AutoSize = true;
+            this.label184.Location = new System.Drawing.Point(173, 45);
+            this.label184.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label184.Name = "label184";
+            this.label184.Size = new System.Drawing.Size(138, 27);
+            this.label184.TabIndex = 78;
+            this.label184.Text = "strAction";
+            // 
+            // textBox_bind_strAction
+            // 
+            this.textBox_bind_strAction.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBox_bind_strAction.Location = new System.Drawing.Point(315, 42);
+            this.textBox_bind_strAction.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.textBox_bind_strAction.Name = "textBox_bind_strAction";
+            this.textBox_bind_strAction.Size = new System.Drawing.Size(681, 38);
+            this.textBox_bind_strAction.TabIndex = 77;
+            // 
+            // label185
+            // 
+            this.label185.AutoSize = true;
+            this.label185.Location = new System.Drawing.Point(133, 115);
+            this.label185.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label185.Name = "label185";
+            this.label185.Size = new System.Drawing.Size(180, 27);
+            this.label185.TabIndex = 76;
+            this.label185.Text = "strQueryWord";
+            // 
+            // textBox_bind_strQueryWord
+            // 
+            this.textBox_bind_strQueryWord.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBox_bind_strQueryWord.Location = new System.Drawing.Point(315, 111);
+            this.textBox_bind_strQueryWord.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.textBox_bind_strQueryWord.Name = "textBox_bind_strQueryWord";
+            this.textBox_bind_strQueryWord.Size = new System.Drawing.Size(681, 38);
+            this.textBox_bind_strQueryWord.TabIndex = 75;
+            // 
+            // button_bindPatron
+            // 
+            this.button_bindPatron.Location = new System.Drawing.Point(316, 426);
+            this.button_bindPatron.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.button_bindPatron.Name = "button_bindPatron";
+            this.button_bindPatron.Size = new System.Drawing.Size(315, 57);
+            this.button_bindPatron.TabIndex = 74;
+            this.button_bindPatron.Tag = "";
+            this.button_bindPatron.Text = "BindPatron";
+            this.button_bindPatron.UseVisualStyleBackColor = true;
+            this.button_bindPatron.Click += new System.EventHandler(this.button_bindPatron_Click);
+            // 
+            // tabPage_ManageDatabase
+            // 
+            this.tabPage_ManageDatabase.Controls.Add(this.button_ManageDatabase);
+            this.tabPage_ManageDatabase.Controls.Add(this.textBox_ManageDatabase_strDatabaseInfo);
+            this.tabPage_ManageDatabase.Controls.Add(this.textBox_ManageDatabase_strDatabaseName);
+            this.tabPage_ManageDatabase.Controls.Add(this.textBox_ManageDatabase_strAction);
+            this.tabPage_ManageDatabase.Controls.Add(this.label127);
+            this.tabPage_ManageDatabase.Controls.Add(this.label128);
+            this.tabPage_ManageDatabase.Controls.Add(this.label129);
+            this.tabPage_ManageDatabase.Location = new System.Drawing.Point(10, 46);
+            this.tabPage_ManageDatabase.Name = "tabPage_ManageDatabase";
+            this.tabPage_ManageDatabase.Size = new System.Drawing.Size(1060, 671);
+            this.tabPage_ManageDatabase.TabIndex = 28;
+            this.tabPage_ManageDatabase.Text = "ManageDatabase";
+            this.tabPage_ManageDatabase.UseVisualStyleBackColor = true;
+            // 
+            // button_ManageDatabase
+            // 
+            this.button_ManageDatabase.Location = new System.Drawing.Point(387, 472);
+            this.button_ManageDatabase.Margin = new System.Windows.Forms.Padding(4);
+            this.button_ManageDatabase.Name = "button_ManageDatabase";
+            this.button_ManageDatabase.Size = new System.Drawing.Size(262, 83);
+            this.button_ManageDatabase.TabIndex = 23;
+            this.button_ManageDatabase.Text = "ManageDatabase";
+            this.button_ManageDatabase.UseVisualStyleBackColor = true;
+            this.button_ManageDatabase.Click += new System.EventHandler(this.button_ManageDatabase_Click);
+            // 
+            // textBox_ManageDatabase_strDatabaseInfo
+            // 
+            this.textBox_ManageDatabase_strDatabaseInfo.Location = new System.Drawing.Point(387, 199);
+            this.textBox_ManageDatabase_strDatabaseInfo.Margin = new System.Windows.Forms.Padding(4);
+            this.textBox_ManageDatabase_strDatabaseInfo.Multiline = true;
+            this.textBox_ManageDatabase_strDatabaseInfo.Name = "textBox_ManageDatabase_strDatabaseInfo";
+            this.textBox_ManageDatabase_strDatabaseInfo.Size = new System.Drawing.Size(630, 206);
+            this.textBox_ManageDatabase_strDatabaseInfo.TabIndex = 22;
+            // 
+            // textBox_ManageDatabase_strDatabaseName
+            // 
+            this.textBox_ManageDatabase_strDatabaseName.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.textBox_ManageDatabase_strDatabaseName.Location = new System.Drawing.Point(387, 109);
+            this.textBox_ManageDatabase_strDatabaseName.Margin = new System.Windows.Forms.Padding(4);
+            this.textBox_ManageDatabase_strDatabaseName.Name = "textBox_ManageDatabase_strDatabaseName";
+            this.textBox_ManageDatabase_strDatabaseName.Size = new System.Drawing.Size(638, 38);
+            this.textBox_ManageDatabase_strDatabaseName.TabIndex = 21;
+            // 
+            // textBox_ManageDatabase_strAction
+            // 
+            this.textBox_ManageDatabase_strAction.Location = new System.Drawing.Point(386, 37);
+            this.textBox_ManageDatabase_strAction.Margin = new System.Windows.Forms.Padding(4);
+            this.textBox_ManageDatabase_strAction.Name = "textBox_ManageDatabase_strAction";
+            this.textBox_ManageDatabase_strAction.Size = new System.Drawing.Size(638, 38);
+            this.textBox_ManageDatabase_strAction.TabIndex = 20;
+            // 
+            // label127
+            // 
+            this.label127.AutoSize = true;
+            this.label127.Location = new System.Drawing.Point(92, 199);
+            this.label127.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label127.Name = "label127";
+            this.label127.Size = new System.Drawing.Size(222, 27);
+            this.label127.TabIndex = 19;
+            this.label127.Text = "strDatabaseInfo";
+            // 
+            // label128
+            // 
+            this.label128.AutoSize = true;
+            this.label128.Location = new System.Drawing.Point(92, 127);
+            this.label128.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label128.Name = "label128";
+            this.label128.Size = new System.Drawing.Size(222, 27);
+            this.label128.TabIndex = 18;
+            this.label128.Text = "strDatabaseName";
+            // 
+            // label129
+            // 
+            this.label129.AutoSize = true;
+            this.label129.Location = new System.Drawing.Point(92, 55);
+            this.label129.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label129.Name = "label129";
+            this.label129.Size = new System.Drawing.Size(138, 27);
+            this.label129.TabIndex = 17;
+            this.label129.Text = "strAction";
             // 
             // tabPage_borrow
             // 
@@ -5360,363 +6132,6 @@
             this.label_Reservation_action.TabIndex = 53;
             this.label_Reservation_action.Text = "strFunction";
             // 
-            // tabPage_SetUser
-            // 
-            this.tabPage_SetUser.Controls.Add(this.button_SetUser);
-            this.tabPage_SetUser.Controls.Add(this.textBox_SetUser_strAction);
-            this.tabPage_SetUser.Controls.Add(this.label98);
-            this.tabPage_SetUser.Controls.Add(this.button_help_SetUser);
-            this.tabPage_SetUser.Controls.Add(this.groupBox3);
-            this.tabPage_SetUser.Location = new System.Drawing.Point(10, 46);
-            this.tabPage_SetUser.Name = "tabPage_SetUser";
-            this.tabPage_SetUser.Size = new System.Drawing.Size(1060, 671);
-            this.tabPage_SetUser.TabIndex = 22;
-            this.tabPage_SetUser.Text = "SetUser";
-            this.tabPage_SetUser.UseVisualStyleBackColor = true;
-            // 
-            // button_SetUser
-            // 
-            this.button_SetUser.Location = new System.Drawing.Point(104, 508);
-            this.button_SetUser.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.button_SetUser.Name = "button_SetUser";
-            this.button_SetUser.Size = new System.Drawing.Size(276, 62);
-            this.button_SetUser.TabIndex = 61;
-            this.button_SetUser.Tag = "";
-            this.button_SetUser.Text = "SetUser";
-            this.button_SetUser.UseVisualStyleBackColor = true;
-            this.button_SetUser.Click += new System.EventHandler(this.button_SetUser_Click);
-            // 
-            // textBox_SetUser_strAction
-            // 
-            this.textBox_SetUser_strAction.Location = new System.Drawing.Point(248, 45);
-            this.textBox_SetUser_strAction.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.textBox_SetUser_strAction.Name = "textBox_SetUser_strAction";
-            this.textBox_SetUser_strAction.Size = new System.Drawing.Size(583, 38);
-            this.textBox_SetUser_strAction.TabIndex = 59;
-            // 
-            // label98
-            // 
-            this.label98.AutoSize = true;
-            this.label98.Location = new System.Drawing.Point(100, 45);
-            this.label98.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label98.Name = "label98";
-            this.label98.Size = new System.Drawing.Size(138, 27);
-            this.label98.TabIndex = 60;
-            this.label98.Text = "strAction";
-            // 
-            // button_help_SetUser
-            // 
-            this.button_help_SetUser.Location = new System.Drawing.Point(0, 0);
-            this.button_help_SetUser.Name = "button_help_SetUser";
-            this.button_help_SetUser.Size = new System.Drawing.Size(54, 117);
-            this.button_help_SetUser.TabIndex = 58;
-            this.button_help_SetUser.Text = "帮助";
-            this.button_help_SetUser.UseVisualStyleBackColor = true;
-            this.button_help_SetUser.Click += new System.EventHandler(this.button_help_SetUser_Click);
-            // 
-            // groupBox3
-            // 
-            this.groupBox3.Controls.Add(this.textBox_SetUser_Access);
-            this.groupBox3.Controls.Add(this.label99);
-            this.groupBox3.Controls.Add(this.textBox_SetUser_Rights);
-            this.groupBox3.Controls.Add(this.label95);
-            this.groupBox3.Controls.Add(this.textBox_SetUser_Password);
-            this.groupBox3.Controls.Add(this.textBox_SetUser_UserName);
-            this.groupBox3.Controls.Add(this.label96);
-            this.groupBox3.Controls.Add(this.label97);
-            this.groupBox3.Location = new System.Drawing.Point(104, 123);
-            this.groupBox3.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Padding = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.groupBox3.Size = new System.Drawing.Size(775, 339);
-            this.groupBox3.TabIndex = 19;
-            this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "info";
-            // 
-            // textBox_SetUser_Access
-            // 
-            this.textBox_SetUser_Access.Location = new System.Drawing.Point(184, 260);
-            this.textBox_SetUser_Access.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.textBox_SetUser_Access.Name = "textBox_SetUser_Access";
-            this.textBox_SetUser_Access.Size = new System.Drawing.Size(527, 38);
-            this.textBox_SetUser_Access.TabIndex = 23;
-            // 
-            // label99
-            // 
-            this.label99.AutoSize = true;
-            this.label99.Location = new System.Drawing.Point(26, 266);
-            this.label99.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label99.Name = "label99";
-            this.label99.Size = new System.Drawing.Size(96, 27);
-            this.label99.TabIndex = 24;
-            this.label99.Text = "Access";
-            // 
-            // textBox_SetUser_Rights
-            // 
-            this.textBox_SetUser_Rights.Location = new System.Drawing.Point(184, 189);
-            this.textBox_SetUser_Rights.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.textBox_SetUser_Rights.Name = "textBox_SetUser_Rights";
-            this.textBox_SetUser_Rights.Size = new System.Drawing.Size(527, 38);
-            this.textBox_SetUser_Rights.TabIndex = 21;
-            // 
-            // label95
-            // 
-            this.label95.AutoSize = true;
-            this.label95.Location = new System.Drawing.Point(26, 195);
-            this.label95.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label95.Name = "label95";
-            this.label95.Size = new System.Drawing.Size(96, 27);
-            this.label95.TabIndex = 22;
-            this.label95.Text = "Rights";
-            // 
-            // textBox_SetUser_Password
-            // 
-            this.textBox_SetUser_Password.Location = new System.Drawing.Point(184, 130);
-            this.textBox_SetUser_Password.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.textBox_SetUser_Password.Name = "textBox_SetUser_Password";
-            this.textBox_SetUser_Password.Size = new System.Drawing.Size(382, 38);
-            this.textBox_SetUser_Password.TabIndex = 20;
-            this.textBox_SetUser_Password.UseSystemPasswordChar = true;
-            // 
-            // textBox_SetUser_UserName
-            // 
-            this.textBox_SetUser_UserName.Location = new System.Drawing.Point(184, 75);
-            this.textBox_SetUser_UserName.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.textBox_SetUser_UserName.Name = "textBox_SetUser_UserName";
-            this.textBox_SetUser_UserName.Size = new System.Drawing.Size(382, 38);
-            this.textBox_SetUser_UserName.TabIndex = 19;
-            // 
-            // label96
-            // 
-            this.label96.AutoSize = true;
-            this.label96.Location = new System.Drawing.Point(26, 130);
-            this.label96.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label96.Name = "label96";
-            this.label96.Size = new System.Drawing.Size(124, 27);
-            this.label96.TabIndex = 20;
-            this.label96.Text = "Password";
-            // 
-            // label97
-            // 
-            this.label97.AutoSize = true;
-            this.label97.Location = new System.Drawing.Point(26, 75);
-            this.label97.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label97.Name = "label97";
-            this.label97.Size = new System.Drawing.Size(124, 27);
-            this.label97.TabIndex = 19;
-            this.label97.Text = "UserName";
-            // 
-            // tabPage_changeUserPassword
-            // 
-            this.tabPage_changeUserPassword.Controls.Add(this.checkBox_ChangeUserPassword_oldPasswordNull);
-            this.tabPage_changeUserPassword.Controls.Add(this.textBox_ChangeUserPassword_newPassword);
-            this.tabPage_changeUserPassword.Controls.Add(this.label190);
-            this.tabPage_changeUserPassword.Controls.Add(this.textBox_ChangeUserPassword_oldPassword);
-            this.tabPage_changeUserPassword.Controls.Add(this.button14);
-            this.tabPage_changeUserPassword.Controls.Add(this.button_ChangeUserPassword);
-            this.tabPage_changeUserPassword.Controls.Add(this.textBox_ChangeUserPassword_userName);
-            this.tabPage_changeUserPassword.Controls.Add(this.label191);
-            this.tabPage_changeUserPassword.Controls.Add(this.label192);
-            this.tabPage_changeUserPassword.Location = new System.Drawing.Point(10, 46);
-            this.tabPage_changeUserPassword.Name = "tabPage_changeUserPassword";
-            this.tabPage_changeUserPassword.Size = new System.Drawing.Size(1060, 671);
-            this.tabPage_changeUserPassword.TabIndex = 42;
-            this.tabPage_changeUserPassword.Text = "ChangeUserPassword";
-            this.tabPage_changeUserPassword.UseVisualStyleBackColor = true;
-            // 
-            // checkBox_ChangeUserPassword_oldPasswordNull
-            // 
-            this.checkBox_ChangeUserPassword_oldPasswordNull.AutoSize = true;
-            this.checkBox_ChangeUserPassword_oldPasswordNull.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
-            this.checkBox_ChangeUserPassword_oldPasswordNull.Location = new System.Drawing.Point(894, 118);
-            this.checkBox_ChangeUserPassword_oldPasswordNull.Name = "checkBox_ChangeUserPassword_oldPasswordNull";
-            this.checkBox_ChangeUserPassword_oldPasswordNull.Size = new System.Drawing.Size(100, 31);
-            this.checkBox_ChangeUserPassword_oldPasswordNull.TabIndex = 76;
-            this.checkBox_ChangeUserPassword_oldPasswordNull.Text = "null";
-            this.checkBox_ChangeUserPassword_oldPasswordNull.UseVisualStyleBackColor = false;
-            // 
-            // textBox_ChangeUserPassword_newPassword
-            // 
-            this.textBox_ChangeUserPassword_newPassword.Location = new System.Drawing.Point(304, 182);
-            this.textBox_ChangeUserPassword_newPassword.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.textBox_ChangeUserPassword_newPassword.Name = "textBox_ChangeUserPassword_newPassword";
-            this.textBox_ChangeUserPassword_newPassword.Size = new System.Drawing.Size(583, 38);
-            this.textBox_ChangeUserPassword_newPassword.TabIndex = 75;
-            // 
-            // label190
-            // 
-            this.label190.AutoSize = true;
-            this.label190.Location = new System.Drawing.Point(74, 183);
-            this.label190.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label190.Name = "label190";
-            this.label190.Size = new System.Drawing.Size(208, 27);
-            this.label190.TabIndex = 74;
-            this.label190.Text = "strNewPassword";
-            // 
-            // textBox_ChangeUserPassword_oldPassword
-            // 
-            this.textBox_ChangeUserPassword_oldPassword.Location = new System.Drawing.Point(304, 117);
-            this.textBox_ChangeUserPassword_oldPassword.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.textBox_ChangeUserPassword_oldPassword.Name = "textBox_ChangeUserPassword_oldPassword";
-            this.textBox_ChangeUserPassword_oldPassword.Size = new System.Drawing.Size(583, 38);
-            this.textBox_ChangeUserPassword_oldPassword.TabIndex = 73;
-            // 
-            // button14
-            // 
-            this.button14.Location = new System.Drawing.Point(-1, 0);
-            this.button14.Name = "button14";
-            this.button14.Size = new System.Drawing.Size(54, 117);
-            this.button14.TabIndex = 72;
-            this.button14.Text = "帮助";
-            this.button14.UseVisualStyleBackColor = true;
-            // 
-            // button_ChangeUserPassword
-            // 
-            this.button_ChangeUserPassword.Location = new System.Drawing.Point(304, 255);
-            this.button_ChangeUserPassword.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.button_ChangeUserPassword.Name = "button_ChangeUserPassword";
-            this.button_ChangeUserPassword.Size = new System.Drawing.Size(342, 62);
-            this.button_ChangeUserPassword.TabIndex = 71;
-            this.button_ChangeUserPassword.Tag = "";
-            this.button_ChangeUserPassword.Text = "ChangeUserPassword";
-            this.button_ChangeUserPassword.UseVisualStyleBackColor = false;
-            this.button_ChangeUserPassword.Click += new System.EventHandler(this.button_ChangeUserPassword_Click);
-            // 
-            // textBox_ChangeUserPassword_userName
-            // 
-            this.textBox_ChangeUserPassword_userName.Location = new System.Drawing.Point(304, 48);
-            this.textBox_ChangeUserPassword_userName.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.textBox_ChangeUserPassword_userName.Name = "textBox_ChangeUserPassword_userName";
-            this.textBox_ChangeUserPassword_userName.Size = new System.Drawing.Size(583, 38);
-            this.textBox_ChangeUserPassword_userName.TabIndex = 68;
-            // 
-            // label191
-            // 
-            this.label191.AutoSize = true;
-            this.label191.Location = new System.Drawing.Point(74, 116);
-            this.label191.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label191.Name = "label191";
-            this.label191.Size = new System.Drawing.Size(208, 27);
-            this.label191.TabIndex = 70;
-            this.label191.Text = "strOldPassword";
-            // 
-            // label192
-            // 
-            this.label192.AutoSize = true;
-            this.label192.Location = new System.Drawing.Point(130, 48);
-            this.label192.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label192.Name = "label192";
-            this.label192.Size = new System.Drawing.Size(166, 27);
-            this.label192.TabIndex = 69;
-            this.label192.Text = "strUserName";
-            // 
-            // tabPage_ChangeReaderPassword
-            // 
-            this.tabPage_ChangeReaderPassword.Controls.Add(this.checkBox_ChangeReaderPassword);
-            this.tabPage_ChangeReaderPassword.Controls.Add(this.textBox_ChangeReaderPassword_strReaderNewPassword);
-            this.tabPage_ChangeReaderPassword.Controls.Add(this.label107);
-            this.tabPage_ChangeReaderPassword.Controls.Add(this.textBox_ChangeReaderPassword_strReaderOldPassword);
-            this.tabPage_ChangeReaderPassword.Controls.Add(this.button_help_ChangeReaderPassword);
-            this.tabPage_ChangeReaderPassword.Controls.Add(this.button_ChangeReaderPassword);
-            this.tabPage_ChangeReaderPassword.Controls.Add(this.textBox_ChangeReaderPassword_strReaderBarcode);
-            this.tabPage_ChangeReaderPassword.Controls.Add(this.label105);
-            this.tabPage_ChangeReaderPassword.Controls.Add(this.label106);
-            this.tabPage_ChangeReaderPassword.Location = new System.Drawing.Point(10, 46);
-            this.tabPage_ChangeReaderPassword.Name = "tabPage_ChangeReaderPassword";
-            this.tabPage_ChangeReaderPassword.Size = new System.Drawing.Size(1060, 671);
-            this.tabPage_ChangeReaderPassword.TabIndex = 24;
-            this.tabPage_ChangeReaderPassword.Text = "ChangeReaderPassword";
-            this.tabPage_ChangeReaderPassword.UseVisualStyleBackColor = true;
-            // 
-            // checkBox_ChangeReaderPassword
-            // 
-            this.checkBox_ChangeReaderPassword.AutoSize = true;
-            this.checkBox_ChangeReaderPassword.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
-            this.checkBox_ChangeReaderPassword.Checked = true;
-            this.checkBox_ChangeReaderPassword.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox_ChangeReaderPassword.Location = new System.Drawing.Point(971, 112);
-            this.checkBox_ChangeReaderPassword.Name = "checkBox_ChangeReaderPassword";
-            this.checkBox_ChangeReaderPassword.Size = new System.Drawing.Size(100, 31);
-            this.checkBox_ChangeReaderPassword.TabIndex = 67;
-            this.checkBox_ChangeReaderPassword.Text = "null";
-            this.checkBox_ChangeReaderPassword.UseVisualStyleBackColor = false;
-            // 
-            // textBox_ChangeReaderPassword_strReaderNewPassword
-            // 
-            this.textBox_ChangeReaderPassword_strReaderNewPassword.Location = new System.Drawing.Point(381, 176);
-            this.textBox_ChangeReaderPassword_strReaderNewPassword.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.textBox_ChangeReaderPassword_strReaderNewPassword.Name = "textBox_ChangeReaderPassword_strReaderNewPassword";
-            this.textBox_ChangeReaderPassword_strReaderNewPassword.Size = new System.Drawing.Size(583, 38);
-            this.textBox_ChangeReaderPassword_strReaderNewPassword.TabIndex = 66;
-            // 
-            // label107
-            // 
-            this.label107.AutoSize = true;
-            this.label107.Location = new System.Drawing.Point(78, 183);
-            this.label107.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label107.Name = "label107";
-            this.label107.Size = new System.Drawing.Size(292, 27);
-            this.label107.TabIndex = 65;
-            this.label107.Text = "strReaderNewPassword";
-            // 
-            // textBox_ChangeReaderPassword_strReaderOldPassword
-            // 
-            this.textBox_ChangeReaderPassword_strReaderOldPassword.Location = new System.Drawing.Point(381, 111);
-            this.textBox_ChangeReaderPassword_strReaderOldPassword.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.textBox_ChangeReaderPassword_strReaderOldPassword.Name = "textBox_ChangeReaderPassword_strReaderOldPassword";
-            this.textBox_ChangeReaderPassword_strReaderOldPassword.Size = new System.Drawing.Size(583, 38);
-            this.textBox_ChangeReaderPassword_strReaderOldPassword.TabIndex = 64;
-            // 
-            // button_help_ChangeReaderPassword
-            // 
-            this.button_help_ChangeReaderPassword.Location = new System.Drawing.Point(3, 0);
-            this.button_help_ChangeReaderPassword.Name = "button_help_ChangeReaderPassword";
-            this.button_help_ChangeReaderPassword.Size = new System.Drawing.Size(54, 117);
-            this.button_help_ChangeReaderPassword.TabIndex = 63;
-            this.button_help_ChangeReaderPassword.Text = "帮助";
-            this.button_help_ChangeReaderPassword.UseVisualStyleBackColor = true;
-            this.button_help_ChangeReaderPassword.Click += new System.EventHandler(this.button_help_ChangeReaderPassword_Click);
-            // 
-            // button_ChangeReaderPassword
-            // 
-            this.button_ChangeReaderPassword.Location = new System.Drawing.Point(381, 249);
-            this.button_ChangeReaderPassword.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.button_ChangeReaderPassword.Name = "button_ChangeReaderPassword";
-            this.button_ChangeReaderPassword.Size = new System.Drawing.Size(342, 62);
-            this.button_ChangeReaderPassword.TabIndex = 62;
-            this.button_ChangeReaderPassword.Tag = "";
-            this.button_ChangeReaderPassword.Text = "ChangeReaderPassword";
-            this.button_ChangeReaderPassword.UseVisualStyleBackColor = false;
-            this.button_ChangeReaderPassword.Click += new System.EventHandler(this.button_ChangeReaderPassword_Click);
-            // 
-            // textBox_ChangeReaderPassword_strReaderBarcode
-            // 
-            this.textBox_ChangeReaderPassword_strReaderBarcode.Location = new System.Drawing.Point(381, 42);
-            this.textBox_ChangeReaderPassword_strReaderBarcode.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.textBox_ChangeReaderPassword_strReaderBarcode.Name = "textBox_ChangeReaderPassword_strReaderBarcode";
-            this.textBox_ChangeReaderPassword_strReaderBarcode.Size = new System.Drawing.Size(583, 38);
-            this.textBox_ChangeReaderPassword_strReaderBarcode.TabIndex = 58;
-            // 
-            // label105
-            // 
-            this.label105.AutoSize = true;
-            this.label105.Location = new System.Drawing.Point(78, 116);
-            this.label105.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label105.Name = "label105";
-            this.label105.Size = new System.Drawing.Size(292, 27);
-            this.label105.TabIndex = 61;
-            this.label105.Text = "strReaderOldPassword";
-            // 
-            // label106
-            // 
-            this.label106.AutoSize = true;
-            this.label106.Location = new System.Drawing.Point(134, 48);
-            this.label106.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label106.Name = "label106";
-            this.label106.Size = new System.Drawing.Size(236, 27);
-            this.label106.TabIndex = 59;
-            this.label106.Text = "strReaderBarcode";
-            // 
             // tabPage_SearchCharging
             // 
             this.tabPage_SearchCharging.Controls.Add(this.textBox_searchCharging_order);
@@ -5934,174 +6349,6 @@
             this.label20.Size = new System.Drawing.Size(236, 27);
             this.label20.TabIndex = 39;
             this.label20.Text = "strBiblioRecPath";
-            // 
-            // tabPage_GetOperLog
-            // 
-            this.tabPage_GetOperLog.Controls.Add(this.textBox_GetOperLog_nAttachmentFragmentLength);
-            this.tabPage_GetOperLog.Controls.Add(this.label126);
-            this.tabPage_GetOperLog.Controls.Add(this.button_GetOperLog);
-            this.tabPage_GetOperLog.Controls.Add(this.textBox_GetOperLog_lAttachmentFragmentStart);
-            this.tabPage_GetOperLog.Controls.Add(this.textBox_GetOperLog_strFilter);
-            this.tabPage_GetOperLog.Controls.Add(this.textBox_GetOperLog_strStyle);
-            this.tabPage_GetOperLog.Controls.Add(this.textBox_GetOperLog_lHint);
-            this.tabPage_GetOperLog.Controls.Add(this.textBox_GetOperLog_lIndex);
-            this.tabPage_GetOperLog.Controls.Add(this.textBox_GetOperLog_strFileName);
-            this.tabPage_GetOperLog.Controls.Add(this.label123);
-            this.tabPage_GetOperLog.Controls.Add(this.label122);
-            this.tabPage_GetOperLog.Controls.Add(this.label121);
-            this.tabPage_GetOperLog.Controls.Add(this.label120);
-            this.tabPage_GetOperLog.Controls.Add(this.label119);
-            this.tabPage_GetOperLog.Controls.Add(this.label116);
-            this.tabPage_GetOperLog.Location = new System.Drawing.Point(10, 46);
-            this.tabPage_GetOperLog.Margin = new System.Windows.Forms.Padding(4);
-            this.tabPage_GetOperLog.Name = "tabPage_GetOperLog";
-            this.tabPage_GetOperLog.Size = new System.Drawing.Size(1060, 671);
-            this.tabPage_GetOperLog.TabIndex = 26;
-            this.tabPage_GetOperLog.Text = "GetOperLog";
-            this.tabPage_GetOperLog.UseVisualStyleBackColor = true;
-            // 
-            // textBox_GetOperLog_nAttachmentFragmentLength
-            // 
-            this.textBox_GetOperLog_nAttachmentFragmentLength.Location = new System.Drawing.Point(392, 469);
-            this.textBox_GetOperLog_nAttachmentFragmentLength.Margin = new System.Windows.Forms.Padding(4);
-            this.textBox_GetOperLog_nAttachmentFragmentLength.Name = "textBox_GetOperLog_nAttachmentFragmentLength";
-            this.textBox_GetOperLog_nAttachmentFragmentLength.Size = new System.Drawing.Size(637, 38);
-            this.textBox_GetOperLog_nAttachmentFragmentLength.TabIndex = 31;
-            this.textBox_GetOperLog_nAttachmentFragmentLength.Text = "0";
-            // 
-            // label126
-            // 
-            this.label126.AutoSize = true;
-            this.label126.Location = new System.Drawing.Point(15, 487);
-            this.label126.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label126.Name = "label126";
-            this.label126.Size = new System.Drawing.Size(362, 27);
-            this.label126.TabIndex = 30;
-            this.label126.Text = "nAttachmentFragmentLength";
-            // 
-            // button_GetOperLog
-            // 
-            this.button_GetOperLog.Location = new System.Drawing.Point(388, 539);
-            this.button_GetOperLog.Margin = new System.Windows.Forms.Padding(4);
-            this.button_GetOperLog.Name = "button_GetOperLog";
-            this.button_GetOperLog.Size = new System.Drawing.Size(183, 68);
-            this.button_GetOperLog.TabIndex = 29;
-            this.button_GetOperLog.Text = "GetOperLog";
-            this.button_GetOperLog.UseVisualStyleBackColor = true;
-            this.button_GetOperLog.Click += new System.EventHandler(this.button_GetOperLog_Click);
-            // 
-            // textBox_GetOperLog_lAttachmentFragmentStart
-            // 
-            this.textBox_GetOperLog_lAttachmentFragmentStart.Location = new System.Drawing.Point(393, 400);
-            this.textBox_GetOperLog_lAttachmentFragmentStart.Margin = new System.Windows.Forms.Padding(4);
-            this.textBox_GetOperLog_lAttachmentFragmentStart.Name = "textBox_GetOperLog_lAttachmentFragmentStart";
-            this.textBox_GetOperLog_lAttachmentFragmentStart.Size = new System.Drawing.Size(635, 38);
-            this.textBox_GetOperLog_lAttachmentFragmentStart.TabIndex = 28;
-            this.textBox_GetOperLog_lAttachmentFragmentStart.Text = "0";
-            // 
-            // textBox_GetOperLog_strFilter
-            // 
-            this.textBox_GetOperLog_strFilter.Location = new System.Drawing.Point(393, 314);
-            this.textBox_GetOperLog_strFilter.Margin = new System.Windows.Forms.Padding(4);
-            this.textBox_GetOperLog_strFilter.Name = "textBox_GetOperLog_strFilter";
-            this.textBox_GetOperLog_strFilter.Size = new System.Drawing.Size(635, 38);
-            this.textBox_GetOperLog_strFilter.TabIndex = 27;
-            // 
-            // textBox_GetOperLog_strStyle
-            // 
-            this.textBox_GetOperLog_strStyle.Location = new System.Drawing.Point(393, 240);
-            this.textBox_GetOperLog_strStyle.Margin = new System.Windows.Forms.Padding(4);
-            this.textBox_GetOperLog_strStyle.Name = "textBox_GetOperLog_strStyle";
-            this.textBox_GetOperLog_strStyle.Size = new System.Drawing.Size(635, 38);
-            this.textBox_GetOperLog_strStyle.TabIndex = 26;
-            // 
-            // textBox_GetOperLog_lHint
-            // 
-            this.textBox_GetOperLog_lHint.Location = new System.Drawing.Point(393, 172);
-            this.textBox_GetOperLog_lHint.Margin = new System.Windows.Forms.Padding(4);
-            this.textBox_GetOperLog_lHint.Name = "textBox_GetOperLog_lHint";
-            this.textBox_GetOperLog_lHint.Size = new System.Drawing.Size(637, 38);
-            this.textBox_GetOperLog_lHint.TabIndex = 25;
-            this.textBox_GetOperLog_lHint.Text = "-1";
-            // 
-            // textBox_GetOperLog_lIndex
-            // 
-            this.textBox_GetOperLog_lIndex.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.textBox_GetOperLog_lIndex.Location = new System.Drawing.Point(392, 100);
-            this.textBox_GetOperLog_lIndex.Margin = new System.Windows.Forms.Padding(4);
-            this.textBox_GetOperLog_lIndex.Name = "textBox_GetOperLog_lIndex";
-            this.textBox_GetOperLog_lIndex.Size = new System.Drawing.Size(637, 38);
-            this.textBox_GetOperLog_lIndex.TabIndex = 24;
-            this.textBox_GetOperLog_lIndex.Text = "0";
-            // 
-            // textBox_GetOperLog_strFileName
-            // 
-            this.textBox_GetOperLog_strFileName.Location = new System.Drawing.Point(388, 28);
-            this.textBox_GetOperLog_strFileName.Margin = new System.Windows.Forms.Padding(4);
-            this.textBox_GetOperLog_strFileName.Name = "textBox_GetOperLog_strFileName";
-            this.textBox_GetOperLog_strFileName.Size = new System.Drawing.Size(638, 38);
-            this.textBox_GetOperLog_strFileName.TabIndex = 23;
-            this.textBox_GetOperLog_strFileName.Text = "20230327.log";
-            // 
-            // label123
-            // 
-            this.label123.AutoSize = true;
-            this.label123.Location = new System.Drawing.Point(15, 418);
-            this.label123.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label123.Name = "label123";
-            this.label123.Size = new System.Drawing.Size(348, 27);
-            this.label123.TabIndex = 22;
-            this.label123.Text = "lAttachmentFragmentStart";
-            // 
-            // label122
-            // 
-            this.label122.AutoSize = true;
-            this.label122.Location = new System.Drawing.Point(86, 332);
-            this.label122.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label122.Name = "label122";
-            this.label122.Size = new System.Drawing.Size(138, 27);
-            this.label122.TabIndex = 21;
-            this.label122.Text = "strFilter";
-            // 
-            // label121
-            // 
-            this.label121.AutoSize = true;
-            this.label121.Location = new System.Drawing.Point(86, 258);
-            this.label121.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label121.Name = "label121";
-            this.label121.Size = new System.Drawing.Size(124, 27);
-            this.label121.TabIndex = 20;
-            this.label121.Text = "strStyle";
-            // 
-            // label120
-            // 
-            this.label120.AutoSize = true;
-            this.label120.Location = new System.Drawing.Point(86, 190);
-            this.label120.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label120.Name = "label120";
-            this.label120.Size = new System.Drawing.Size(82, 27);
-            this.label120.TabIndex = 19;
-            this.label120.Text = "lHint";
-            // 
-            // label119
-            // 
-            this.label119.AutoSize = true;
-            this.label119.Location = new System.Drawing.Point(86, 118);
-            this.label119.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label119.Name = "label119";
-            this.label119.Size = new System.Drawing.Size(96, 27);
-            this.label119.TabIndex = 18;
-            this.label119.Text = "lIndex";
-            // 
-            // label116
-            // 
-            this.label116.AutoSize = true;
-            this.label116.Location = new System.Drawing.Point(86, 46);
-            this.label116.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label116.Name = "label116";
-            this.label116.Size = new System.Drawing.Size(166, 27);
-            this.label116.TabIndex = 17;
-            this.label116.Text = "strFileName";
             // 
             // tabPage_GetSystemParameter
             // 
@@ -6526,7 +6773,7 @@
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Padding = new System.Windows.Forms.Padding(9, 3, 0, 3);
-            this.menuStrip1.Size = new System.Drawing.Size(1094, 54);
+            this.menuStrip1.Size = new System.Drawing.Size(1094, 45);
             this.menuStrip1.TabIndex = 8;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -6537,7 +6784,7 @@
             this.z3950ToolStripMenuItem,
             this.处理MARC字段ToolStripMenuItem});
             this.文件ToolStripMenuItem.Name = "文件ToolStripMenuItem";
-            this.文件ToolStripMenuItem.Size = new System.Drawing.Size(91, 48);
+            this.文件ToolStripMenuItem.Size = new System.Drawing.Size(91, 39);
             this.文件ToolStripMenuItem.Text = "文件";
             // 
             // 通用练习题ToolStripMenuItem
@@ -6567,7 +6814,7 @@
             this.自动测试1ToolStripMenuItem,
             this.自动测试2ToolStripMenuItem1});
             this.功能ToolStripMenuItem.Name = "功能ToolStripMenuItem";
-            this.功能ToolStripMenuItem.Size = new System.Drawing.Size(145, 48);
+            this.功能ToolStripMenuItem.Size = new System.Drawing.Size(145, 39);
             this.功能ToolStripMenuItem.Text = "自动测试";
             this.功能ToolStripMenuItem.Click += new System.EventHandler(this.功能ToolStripMenuItem_Click);
             // 
@@ -6635,14 +6882,28 @@
             this.tabPage_task.PerformLayout();
             this.groupBox5.ResumeLayout(false);
             this.groupBox5.PerformLayout();
-            this.tabPage_BindPatron.ResumeLayout(false);
-            this.tabPage_BindPatron.PerformLayout();
-            this.tabPage_VerifyReaderPassword.ResumeLayout(false);
-            this.tabPage_VerifyReaderPassword.PerformLayout();
-            this.tabPage_ManageDatabase.ResumeLayout(false);
-            this.tabPage_ManageDatabase.PerformLayout();
+            this.tabPage_GetOperLogs.ResumeLayout(false);
+            this.tabPage_GetOperLogs.PerformLayout();
+            this.tabPage_GetOperLog.ResumeLayout(false);
+            this.tabPage_GetOperLog.PerformLayout();
             this.tabPage_RepairBorrowInfo.ResumeLayout(false);
             this.tabPage_RepairBorrowInfo.PerformLayout();
+            this.tabPage_ResetPassword.ResumeLayout(false);
+            this.tabPage_ResetPassword.PerformLayout();
+            this.tabPage_ChangeReaderPassword.ResumeLayout(false);
+            this.tabPage_ChangeReaderPassword.PerformLayout();
+            this.tabPage_changeUserPassword.ResumeLayout(false);
+            this.tabPage_changeUserPassword.PerformLayout();
+            this.tabPage_SetUser.ResumeLayout(false);
+            this.tabPage_SetUser.PerformLayout();
+            this.groupBox3.ResumeLayout(false);
+            this.groupBox3.PerformLayout();
+            this.tabPage_VerifyReaderPassword.ResumeLayout(false);
+            this.tabPage_VerifyReaderPassword.PerformLayout();
+            this.tabPage_BindPatron.ResumeLayout(false);
+            this.tabPage_BindPatron.PerformLayout();
+            this.tabPage_ManageDatabase.ResumeLayout(false);
+            this.tabPage_ManageDatabase.PerformLayout();
             this.tabPage_borrow.ResumeLayout(false);
             this.tabPage_borrow.PerformLayout();
             this.tabPage_return.ResumeLayout(false);
@@ -6691,20 +6952,10 @@
             this.tabPage_GetBrowseRecords.PerformLayout();
             this.tabPage_Reservation.ResumeLayout(false);
             this.tabPage_Reservation.PerformLayout();
-            this.tabPage_SetUser.ResumeLayout(false);
-            this.tabPage_SetUser.PerformLayout();
-            this.groupBox3.ResumeLayout(false);
-            this.groupBox3.PerformLayout();
-            this.tabPage_changeUserPassword.ResumeLayout(false);
-            this.tabPage_changeUserPassword.PerformLayout();
-            this.tabPage_ChangeReaderPassword.ResumeLayout(false);
-            this.tabPage_ChangeReaderPassword.PerformLayout();
             this.tabPage_SearchCharging.ResumeLayout(false);
             this.tabPage_SearchCharging.PerformLayout();
             this.tabPage_GetBiblioInfo.ResumeLayout(false);
             this.tabPage_GetBiblioInfo.PerformLayout();
-            this.tabPage_GetOperLog.ResumeLayout(false);
-            this.tabPage_GetOperLog.PerformLayout();
             this.tabPage_GetSystemParameter.ResumeLayout(false);
             this.tabPage_GetSystemParameter.PerformLayout();
             this.tabPage_SetSystemParameter.ResumeLayout(false);
@@ -7274,6 +7525,27 @@
         private System.Windows.Forms.TextBox textBox_ChangeUserPassword_userName;
         private System.Windows.Forms.Label label191;
         private System.Windows.Forms.Label label192;
+        private System.Windows.Forms.TabPage tabPage_GetOperLogs;
+        private System.Windows.Forms.TabPage tabPage_ResetPassword;
+        private System.Windows.Forms.Button button_GetOperLogs;
+        private System.Windows.Forms.TextBox textBox_logs_strFilter;
+        private System.Windows.Forms.TextBox textBox_logs_strStyle;
+        private System.Windows.Forms.TextBox textBox_logs_hint;
+        private System.Windows.Forms.TextBox textBox_logs_index;
+        private System.Windows.Forms.TextBox textBox_logs_strFileName;
+        private System.Windows.Forms.Label label195;
+        private System.Windows.Forms.Label label196;
+        private System.Windows.Forms.Label label197;
+        private System.Windows.Forms.Label label198;
+        private System.Windows.Forms.Label label193;
+        private System.Windows.Forms.TextBox textBox_logs_nCount;
+        private System.Windows.Forms.Label label199;
+        private System.Windows.Forms.TextBox textBox_ResetPassword_strMessageTemplate;
+        private System.Windows.Forms.Button button15;
+        private System.Windows.Forms.Button button_ResetPassword;
+        private System.Windows.Forms.TextBox textBox_ResetPassword_strParameters;
+        private System.Windows.Forms.Label label200;
+        private System.Windows.Forms.Label label201;
     }
 }
 

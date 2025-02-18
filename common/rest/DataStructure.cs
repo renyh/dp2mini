@@ -1011,6 +1011,8 @@ LibraryServerResult.ErrorInfo		出错信息
     #endregion
 
 
+
+
     #region ChangeReaderPassword
 
     [DataContract]
@@ -1029,6 +1031,50 @@ LibraryServerResult.ErrorInfo		出错信息
     {
         [DataMember]
         public LibraryServerResult ChangeReaderPasswordResult { get; set; }
+    }
+
+    #endregion
+
+
+
+    #region ResetPassword
+
+    /*
+        // 读者找回密码
+        // parameters:
+        //      strParameters   参数列表。
+        //                      tel=?????,barcode=?????,name=?????
+        //                      email=?????,barcode=??????,name=??????
+        //                      librarycode=????
+        //      strMessageTempate   消息文字模板。其中可以使用 %name% %barcode% %temppassword% %expiretime% %period% 等宏
+        // result.Value:
+        //      -1  出错
+        //      0   因为条件不具备功能没有成功执行(其中，如果 ErrorCode 为 NotFound，表示读者账户尚未注册手机号)
+        //      1   功能成功执行
+        public LibraryServerResult ResetPassword(string strParameters,
+            string strMessageTemplate,
+            out string strMessage)
+     */
+
+    [DataContract]
+    public class ResetPasswordRequest
+    {
+        [DataMember]
+        public string strParameters { get; set; }
+        [DataMember]
+        public string strMessageTemplate { get; set; }
+
+    }
+
+    [DataContract]
+    public class ResetPasswordResponse
+    {
+        [DataMember]
+        public LibraryServerResult ResetPasswordResult { get; set; }
+
+
+        [DataMember]
+        public string strMessage { get; set; }
     }
 
     #endregion
