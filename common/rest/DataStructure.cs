@@ -973,6 +973,43 @@ LibraryServerResult.ErrorInfo		出错信息
 
     #endregion
 
+
+    #region ChangeUserPassword
+
+    /*
+        // 修改用户自己的密码
+        // 只能用本 API 修改自己的密码。如果要强制修改别人的密码(意思是修改时并不知道旧密码)，请使用SetUser() API
+        // 注：调用本 API 修改前，无需登录
+        // return.Value:
+        //      -1  出错
+        //      0   成功
+        public LibraryServerResult ChangeUserPassword(
+            string strUserName,
+            string strOldPassword,
+            string strNewPassword)
+     */
+
+    [DataContract]
+    public class ChangeUserPasswordRequest
+    {
+        [DataMember]
+        public string strUserName { get; set; }
+        [DataMember]
+        public string strOldPassword { get; set; }
+        [DataMember]
+        public string strNewPassword { get; set; }
+    }
+
+    [DataContract]
+    public class ChangeUserPasswordResponse
+    {
+        [DataMember]
+        public LibraryServerResult ChangeUserPasswordResult { get; set; }
+    }
+
+    #endregion
+
+
     #region ChangeReaderPassword
 
     [DataContract]

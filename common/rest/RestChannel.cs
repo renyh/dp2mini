@@ -291,6 +291,12 @@ namespace DigitalPlatform.LibraryRestClient
                 return GetServerResultInfo(r.ChangeReaderPasswordResult);
 
             }
+            else if (o is ChangeUserPasswordResponse)
+            {
+                ChangeUserPasswordResponse r = (ChangeUserPasswordResponse)o;
+                return GetServerResultInfo(r.ChangeUserPasswordResult);
+
+            }
             else if (o is SearchBiblioResponse)
             {
                 SearchBiblioResponse r = (SearchBiblioResponse)o;
@@ -617,23 +623,22 @@ namespace DigitalPlatform.LibraryRestClient
 
                 return info;  //BatchTaskResponse
             }
+            else if (o is GetSystemParameterResponse)
+            {
+                GetSystemParameterResponse r = (GetSystemParameterResponse)o;
+                string info = GetServerResultInfo(r.GetSystemParameterResult) + "\r\n";
 
+                info += "strValue=" + r.strValue;
+                return info;  
+            }
+            else if (o is SetSystemParameterResponse)
+            {
+                SetSystemParameterResponse r = (SetSystemParameterResponse)o;
+                string info = GetServerResultInfo(r.SetSystemParameterResult) + "\r\n";
 
-            /*
-    public class GetOperLogResponse
-    {
-        [DataMember]
-        public LibraryServerResult GetOperLogResult { get; set; }
-        [DataMember]
-        public string strXml { get; set; }
-        [DataMember]
-        public long lHintNext { get; set; }
-        [DataMember]
-        public byte[] attachment_data { get; set; }
-        [DataMember]
-        public long lAttachmentTotalLength { get; set; }
-    }
-             * */
+                info += "strValue=" + r.strValue;
+                return info;
+            }
 
             return "未识别的对象" + o.ToString();
         }
@@ -2161,6 +2166,49 @@ int nAttachmentFragmentLength)
                     if (DoNotLogin(ref strError) == 1)
                         goto REDO;
                 }
+                return response;
+            }
+            catch (Exception ex)
+            {
+                int nRet = ConvertWebError(ex, out strError);
+                if (nRet == 0)
+                    throw ex;
+
+                // 网络问题重做
+                goto REDO; ;
+            }
+        }
+
+
+        // 修改工作人员密码，需要提供老密码
+        public ChangeUserPasswordResponse ChangeUserPassword(string strUserName,
+            string strOldPassword,
+            string strNewPassword)
+        {
+            string strError = "";
+        REDO:
+            try
+            {
+                CookieAwareWebClient client = this.GetClient();
+
+                ChangeUserPasswordRequest request = new ChangeUserPasswordRequest();
+                request.strUserName = strUserName;
+                request.strOldPassword = strOldPassword;
+                request.strNewPassword = strNewPassword;
+
+                byte[] baData = Encoding.UTF8.GetBytes(Serialize(request));
+                byte[] result = client.UploadData(this.GetRestfulApiUrl("ChangeUserPassword"),
+                    "POST",
+                    baData);
+
+                string strResult = Encoding.UTF8.GetString(result);
+                ChangeUserPasswordResponse response = Deserialize<ChangeUserPasswordResponse>(strResult);
+                //if (response.ChangeUserPasswordResult.Value == -1
+                //     && response.ChangeUserPasswordResult.ErrorCode == ErrorCode.NotLogin)
+                //{
+                //    if (DoNotLogin(ref strError) == 1)
+                //        goto REDO;
+                //}
                 return response;
             }
             catch (Exception ex)
@@ -5097,6 +5145,59 @@ int nAttachmentFragmentLength)
         REDO:
             CookieAwareWebClient client = this.GetClient();
 
+
+            /*
+            SetSystemParameterRequest request = new SetSystemParameterRequest()
+            {
+                strCategory = strCategory,
+                strName = strName,
+                strValue = strValue
+            };
+            byte[] baData = Encoding.UTF8.GetBytes(Serialize(request));
+            byte[] result = client.UploadData(GetRestfulApiUrl("SetSystemParameter"),
+                "POST",
+                baData);
+
+            string strResult = Encoding.UTF8.GetString(result);
+            SetSystemParameterResponse response = Deserialize<SetSystemParameterResponse>(strResult);
+            if (response.SetSystemParameterResult.Value == -1
+                && response.SetSystemParameterResult.ErrorCode == ErrorCode.NotLogin)
+            {
+                if (DoNotLogin(ref strError) == 1)
+                    goto REDO;
+            }
+            */
+
+            SetSystemParameterResponse response = this.SetSystemParameter(strCategory, strName, strValue);
+
+            if (response != null)
+            {
+                strError = response.SetSystemParameterResult.ErrorInfo;
+
+                return (int)response.SetSystemParameterResult.Value;
+            }
+            else
+            {
+                strError = "response为null";
+                return -1;
+            }
+        }
+
+
+
+
+
+        public SetSystemParameterResponse SetSystemParameter(string strCategory,
+            string strName,
+            string strValue)
+        {
+
+            string strError = "";
+        REDO:
+
+            CookieAwareWebClient client = this.GetClient();
+
+
             SetSystemParameterRequest request = new SetSystemParameterRequest()
             {
                 strCategory = strCategory,
@@ -5117,10 +5218,11 @@ int nAttachmentFragmentLength)
                     goto REDO;
             }
 
-            strError = response.SetSystemParameterResult.ErrorInfo;
 
-            return (int)response.SetSystemParameterResult.Value;
+            return response;
         }
+
+
 
         public long ManageDatabase(string strAction,
                 string strDatabaseName,

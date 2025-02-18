@@ -4106,6 +4106,78 @@ this.checkBox_continueWhenError.Checked,
                 this._channelPool.ReturnChannel(channel);
             }
         }
+
+        private void button_SetSystemParameter_Click(object sender, EventArgs e)
+        {
+            // 清空底部输出信息
+            this.ClearResultInfo();
+
+            // 输入参数
+            //strCategory
+            string strCategory = this.textBox_setSP_strCatagory.Text.Trim();
+            //strName
+            string strName = this.textBox_setSP_strName.Text.Trim();
+
+            string strValue=this.textBox_setSP_strValue.Text.Trim();
+
+
+            RestChannel channel = this.GetChannel();
+            try
+            {
+                SetSystemParameterResponse response = channel.SetSystemParameter(strCategory, strName,strValue);
+
+                // 显示返回信息
+                this.SetResultInfo("SetSystemParameter()\r\n" + RestChannel.GetResultInfo(response));
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, "SetSystemParameter()异常：" + ex.Message);
+                return;
+            }
+            finally
+            {
+                this._channelPool.ReturnChannel(channel);
+            }
+        }
+
+        private void button_ChangeUserPassword_Click(object sender, EventArgs e)
+        {
+            // 清空底部输出信息
+            this.ClearResultInfo();
+
+            string userName = this.textBox_ChangeUserPassword_userName.Text;
+            string oldPassword = this.textBox_ChangeUserPassword_oldPassword.Text;
+
+            if (this.checkBox_ChangeUserPassword_oldPasswordNull.Checked == true)
+                oldPassword = null;
+
+            string newPassword = this.textBox_ChangeUserPassword_newPassword.Text;
+           
+            this.button_ChangeUserPassword.Enabled = false;
+            
+            RestChannel channel = this.GetChannel();
+            try
+            {
+                ChangeUserPasswordResponse response = channel.ChangeUserPassword(userName,
+                    oldPassword,
+                    newPassword);
+
+                // 显示返回信息
+                this.SetResultInfo("ChangeUserPassword()\r\n" + RestChannel.GetResultInfo(response));
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, "ChangeUserPassword()异常：" + ex.Message);
+                return;
+            }
+            finally
+            {
+                this._channelPool.ReturnChannel(channel);
+
+                this.button_ChangeUserPassword.Enabled =true;
+            }
+        }
     }
 
 
