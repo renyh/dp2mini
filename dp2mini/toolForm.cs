@@ -4957,6 +4957,12 @@ dp2kernel仅开通本机访问协议，不支持外部访问。
             if (this._readerDb2LibCode == null)
             {
                 this._readerDb2LibCode = new Hashtable();
+
+                if (this.LibraryDom == null)
+                {
+                    return "未找到LibraryDom";
+                }
+
                 XmlNodeList list =this.LibraryDom.DocumentElement.SelectNodes("readerdbgroup/database");
                 foreach (XmlNode node in list)
                 {
