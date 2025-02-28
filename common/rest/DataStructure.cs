@@ -870,6 +870,9 @@ LibraryServerResult.ErrorInfo		出错信息
         public string strOutputBiblioRecPath { get; set; }
 
         [DataMember]
+        public string strOutputBiblio { get; set; }
+
+        [DataMember]
         public byte[] baOutputTimestamp { get; set; }
     }
 

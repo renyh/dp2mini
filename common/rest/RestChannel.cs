@@ -108,10 +108,6 @@ namespace DigitalPlatform.LibraryRestClient
             return response;
         }
 
-
-
-
-
         public static string GetResultInfo(object o)
         {
             if (o == null)
@@ -203,7 +199,9 @@ namespace DigitalPlatform.LibraryRestClient
                 SetBiblioInfoResponse r = (SetBiblioInfoResponse)o;
                 return GetServerResultInfo(r.SetBiblioInfoResult) + "\r\n"
                     + "strOutputBiblioRecPath:" + r.strOutputBiblioRecPath + "\r\n"
-                    + "baOutputTimestamp:" + ByteArray.GetHexTimeStampString(r.baOutputTimestamp) + "\r\n";
+                    + "baOutputTimestamp:" + ByteArray.GetHexTimeStampString(r.baOutputTimestamp) + "\r\n"
+                    +"\r\n"
+                    + "strOutputBiblio:"+r.strOutputBiblio;
             }
             else if (o is GetBiblioInfoResponse)
             {
@@ -2235,12 +2233,12 @@ int nAttachmentFragmentLength)
 
                 string strResult = Encoding.UTF8.GetString(result);
                 ChangeReaderPasswordResponse response = Deserialize<ChangeReaderPasswordResponse>(strResult);
-                if (response.ChangeReaderPasswordResult.Value == -1
-                     && response.ChangeReaderPasswordResult.ErrorCode == ErrorCode.NotLogin)
-                {
-                    if (DoNotLogin(ref strError) == 1)
-                        goto REDO;
-                }
+                //if (response.ChangeReaderPasswordResult.Value == -1
+                //     && response.ChangeReaderPasswordResult.ErrorCode == ErrorCode.NotLogin)
+                //{
+                //    if (DoNotLogin(ref strError) == 1)
+                //        goto REDO;
+                //}
                 return response;
             }
             catch (Exception ex)

@@ -2008,8 +2008,6 @@
             // 
             this.checkBox_ChangeReaderPassword.AutoSize = true;
             this.checkBox_ChangeReaderPassword.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
-            this.checkBox_ChangeReaderPassword.Checked = true;
-            this.checkBox_ChangeReaderPassword.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBox_ChangeReaderPassword.Location = new System.Drawing.Point(971, 112);
             this.checkBox_ChangeReaderPassword.Name = "checkBox_ChangeReaderPassword";
             this.checkBox_ChangeReaderPassword.Size = new System.Drawing.Size(100, 31);
