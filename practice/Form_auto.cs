@@ -879,7 +879,7 @@ bool isReader = false)
                 channel = mainForm.GetChannelAndLogin(u.UserName, u.Password, isReader);
 
             REDO:
-                LibraryServerResult response = channel.SetItemInfo(strDbType,
+                SetItemInfoResponse response = channel.SetItemInfo(strDbType,
                     strAction,
                     strResPath,
                     strXml,"","",
@@ -888,7 +888,7 @@ bool isReader = false)
                     out strOutputRecPath,
                     out byte[] baOutputTimestamp);
                 // 间戳不匹配，自动重试
-                if (response.ErrorCode == ErrorCode.TimestampMismatch)
+                if (response.ErrorCode == ErrorCodeValue.TimestampMismatch)
                 {
                     // 设上时间戳
                     baTimestamp = baOutputTimestamp;
@@ -902,7 +902,7 @@ bool isReader = false)
                     ));
 
 
-                return response;
+                return response.SetItemInfoResult1;
 
             }
             catch (Exception ex)
@@ -8715,7 +8715,7 @@ CNY10人
                         string xml = this.GetItemXml("流通库", "普通", false,
                             out string itemBarcode, this.GetBiblioParent(strBiblioPath), price);
 
-                        LibraryServerResult response = channel.SetItemInfo("item",
+                        SetItemInfoResponse response = channel.SetItemInfo("item",
                             "new",
                             newItemPath,
                             xml,"","",
@@ -8723,7 +8723,7 @@ CNY10人
                             "force",
                             out string strOutputRecPath,
                             out byte[] baOutputTimestamp);
-                        if (response.Value == -1)
+                        if (response.SetItemInfoResult1.Value == -1)
                         {
                             MessageBox.Show(this, "出错:" + response.ErrorInfo);
                             return;

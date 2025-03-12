@@ -147,6 +147,12 @@ namespace DigitalPlatform.LibraryRestClient
     }
 
 
+    //public class SetItemInfoResponse
+    //{
+    //    public LibraryServerResult result { get; set; }
+
+    //    public ErrorCodeValue Value { get; set; }   
+    //}
 
 
 
@@ -815,12 +821,24 @@ LibraryServerResult.ErrorInfo		出错信息
     public class SetItemInfoResponse
     {
         [DataMember]
-        public LibraryServerResult SetItemInfoResult { get; set; }
+        public LibraryServerResult SetItemInfoResult1 { get; set; }
 
         [DataMember]
         public string strOutputRecPath { get; set; }
         [DataMember]
         public byte[] baOutputTimestamp { get; set; }
+
+        [DataMember]
+
+        public ErrorCodeValue ErrorCode { get; set; }
+
+        //[DataMember]
+        //public long Value { get; set; }
+
+        [DataMember]
+        public string ErrorInfo { get; set; }
+
+
     }
 
     #endregion
@@ -1245,6 +1263,100 @@ LibraryServerResult.ErrorInfo		出错信息
         public string ErrorString = "错误信息未初始化...";
     }
 
+
+
+    [DataContract(Namespace = "http://dp2003.com/dp2kernel/")]
+    public enum ErrorCodeValue
+    {
+        [EnumMember]
+        NoError = 0,	 // 没有错误
+        [EnumMember]
+        CommonError = 1, // 一般性错误   -1
+
+        [EnumMember]
+        NotLogin = 2,	// 尚未登录 (Dir/ListTask)
+        [EnumMember]
+        UserNameEmpty = 3,	// 用户名为空 (Login)
+        [EnumMember]
+        UserNameOrPasswordMismatch = 4,	// 用户名或者密码错误 (Login)
+
+        //NoHasList = 5,     //没有列目录权限
+        //NoHasRead = 6,     //没有读权限          
+        //NoHasWrite = 7,    //没有写权限
+        //NoHasManagement = 8, //没有管理员权限
+
+        [EnumMember]
+        NotHasEnoughRights = 5, // 没有足够的权限 -6
+
+        [EnumMember]
+        TimestampMismatch = 9,  //时间戳不匹配   -2
+        [EnumMember]
+        NotFound = 10, //没找到记录       -4
+        [EnumMember]
+        EmptyContent = 11,   //空记录  -3
+
+        [EnumMember]
+        NotFoundDb = 12,  // 没找到数据库 -5
+        //OutOfRange = 13, // 范围越界
+        [EnumMember]
+        PathError = 14, // 路径不合法  -7
+
+        [EnumMember]
+        PartNotFound = 15, // 通过xpath未找到节点 -10
+
+        [EnumMember]
+        ExistDbInfo = 16,  //在新建库中，发现已经存在相同的信息 -11
+
+        [EnumMember]
+        AlreadyExist = 17,	//已经存在	-8
+
+        [EnumMember]
+        AlreadyExistOtherType = 18,		// 存在不同类型的项 -9
+
+        [EnumMember]
+        ApplicationStartError = 19,	//Application启动错误
+
+        [EnumMember]
+        NotFoundSubRes = 20,    // 部分下级资源记录不存在
+
+        [EnumMember]
+        Canceled = 21,    // 操作被放弃 2011/1/19
+
+        [EnumMember]
+        AccessDenied = 22,  // 权限不够 2011/2/11
+
+        [EnumMember]
+        PartialDenied = 23,  // 部分被拒绝 2012/10/9 本来是为了dp2library准备的
+
+        [EnumMember]
+        NotFoundObjectFile = 24,  // 对象文件不存在 -100
+
+        [EnumMember]
+        Compressed = 25,  // 返回的内容是压缩过的
+
+        // 2024/3/29
+        [EnumMember]
+        NotFoundTargetDb = 26,  // 没找到数据库 -12
+
+        // 2025/2/21
+        [EnumMember]
+        FullDenied = 27,  // 全部被拒绝
+
+        [EnumMember]
+        NotChanged = 28,    // 没有发生修改
+
+        //
+
+        [EnumMember]
+        RequestError = 100,
+
+        [EnumMember]
+        RequestTimeOut = 112,   //请求超时 2016/1/27
+
+    };
+
+
+    /*
     public enum ErrorCodeValue : int
     {
 
@@ -1320,6 +1432,9 @@ LibraryServerResult.ErrorInfo		出错信息
         [System.Runtime.Serialization.EnumMemberAttribute()]
         RequestTimeOut = 112,
     }
+    */
+
+
 
     [DataContract(Namespace = "http://dp2003.com/dp2kernel/")]
     public class KeyFrom

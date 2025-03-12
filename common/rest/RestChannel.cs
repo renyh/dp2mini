@@ -450,7 +450,10 @@ namespace DigitalPlatform.LibraryRestClient
             {
                 SetItemInfoResponse r = (SetItemInfoResponse)o;
 
-                return GetServerResultInfo(r.SetItemInfoResult) + "\r\n"
+                return "Value:"+ r.SetItemInfoResult1.Value+ "\r\n"
+                    + "ErrorCode:"+r.ErrorCode + "\r\n"
+                    + "ErrorInfo:" + r.ErrorInfo + "\r\n"
+                    
                     + "strOutputRecPath:" + r.strOutputRecPath + "\r\n"
                     + "baOutputTimestamp:" + ByteArray.GetHexTimeStampString(r.baOutputTimestamp) + "\r\n";
 
@@ -3547,7 +3550,7 @@ int nAttachmentFragmentLength)
 
         }
 
-        public LibraryServerResult SetItemInfo(
+        public SetItemInfoResponse SetItemInfo(
                  string strDbType,
                 string strAction,
                 string newRecPath,
@@ -3565,6 +3568,9 @@ int nAttachmentFragmentLength)
             LibraryServerResult result = new LibraryServerResult();
             string strError = "";
 
+            SetItemInfoResponse r = new SetItemInfoResponse();
+            r.SetItemInfoResult1 = result;
+            
 
             var entity = new EntityInfo();
             entity.Action = strAction;
@@ -3640,27 +3646,31 @@ int nAttachmentFragmentLength)
                 result.Value = -1;
                 result.ErrorInfo = $"无法识别的数据库类型 '{strDbType}'";
                 result.ErrorCode = ErrorCode.SystemError;
-                return result;
+                return r;
             }
 
             if (result.Value == -1)
-                return result;
+                return r;
 
 
             //
             foreach (var error in errorinfos)
             {
+                r.ErrorCode = error.ErrorCode;
+               r.ErrorInfo=  error.ErrorInfo;
+
+
                 if (error.ErrorCode != ErrorCodeValue.NoError)
                 {
                     // TODO: error code
                     // string name = error.ErrorCode.ToString();
                     // result.ErrorCode = (ErrorCode)Enum.Parse(typeof(ErrorCode), name);
-                    result.ErrorCode = FromErrorValue(error.ErrorCode);
+                   
                     // “部分兑现保存”，不被当作报错
-                    if (error.ErrorCode == ErrorCodeValue.PartialDenied)
-                        result.Value = 0;
-                    else
-                        result.Value = -1;
+                    //if (error.ErrorCode == ErrorCodeValue.PartialDenied)
+                    //    result.Value = 0;
+                    //else
+                    //    result.Value = -1;
                     result.ErrorInfo = error.ErrorInfo;
                     if (error.ErrorCode == ErrorCodeValue.TimestampMismatch)
                     {
@@ -3672,10 +3682,12 @@ int nAttachmentFragmentLength)
                     }
                     else
                         baOutputTimestamp = error.NewTimestamp;
+
                     strOutputRecPath = error.NewRecPath;
+
                     // 2023/2/24
-                    result.ErrorCode = FromErrorValue(error.ErrorCode);
-                    return result;
+                    //result.ErrorCode = FromErrorValue(error.ErrorCode);
+                    //return r;
                 }
                 else
                 {
@@ -3684,23 +3696,24 @@ int nAttachmentFragmentLength)
                 }
             }
 
-            return result;
+            r.SetItemInfoResult1 = result;
+            return r;
         }
 
-        // 把内核错误码转换为 dp2library 错误码
-        public static ErrorCode FromErrorValue(ErrorCodeValue error_code,
-            bool throw_exception = false)
-        {
-            string text = error_code.ToString();
-            if (Enum.TryParse<ErrorCode>(text, out ErrorCode result) == false)
-            {
-                if (throw_exception == true)
-                    throw new Exception("无法将字符串 '" + text + "' 转换为 LibraryServer.ErrorCode 类型");
-                else
-                    return ErrorCode.SystemError;
-            }
-            return result;
-        }
+        //// 把内核错误码转换为 dp2library 错误码
+        //public static ErrorCodeValue FromErrorValue(ErrorCodeValue error_code,
+        //    bool throw_exception = false)
+        //{
+        //    string text = error_code.ToString();
+        //    if (Enum.TryParse<ErrorCodeValue>(text, out ErrorCodeValue result) == false)
+        //    {
+        //        if (throw_exception == true)
+        //            throw new Exception("无法将字符串 '" + text + "' 转换为 LibraryServer.ErrorCode 类型");
+        //        else
+        //            return ErrorCode.SystemError;
+        //    }
+        //    return result;
+        //}
 
         // 设置/保存册信息
         // parameters:

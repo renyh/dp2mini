@@ -3057,7 +3057,7 @@ out string strError);
             RestChannel channel = this.GetChannel();
             try
             {
-                LibraryServerResult response = channel.SetItemInfo(strDbType,
+                SetItemInfoResponse response = channel.SetItemInfo(strDbType,
                     strAction,
                     newRecPath,
                     newRecord,
@@ -3070,9 +3070,14 @@ out string strError);
 
                 // 显示返回信息
                 this.SetResultInfo("SetItemInfo()\r\n"
-                    + RestChannel.GetResultInfo(response) + "\r\n"
-                    + "strOutputRecPath:" + strOutputRecPath + "\r\n"
-                    + "baOutputTimestamp:" + ByteArray.GetHexTimeStampString(baOutputTimestamp) + "\r\n");
+                //+ RestChannel.GetResultInfo(response) + "\r\n");
+
+                + "Value:" + response.SetItemInfoResult1.Value + "\r\n"
+                + "ErrorCode:" + response.ErrorCode + "\r\n"
+                + "ErrorInfo:" + response.ErrorInfo + "\r\n"
+                +"\r\n"
+                + "strOutputRecPath:" + strOutputRecPath + "\r\n"
+                + "baOutputTimestamp:" + ByteArray.GetHexTimeStampString(baOutputTimestamp) + "\r\n");
 
             }
             catch (Exception ex)
