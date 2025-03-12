@@ -1,4 +1,5 @@
-﻿using DigitalPlatform.Xml;
+﻿using DigitalPlatform.IO;
+using DigitalPlatform.Xml;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -10,6 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TaskbarClock;
 
 namespace practice
 {
@@ -295,6 +297,30 @@ writeobject	写入对象资源	write object	2	废弃
         private void button1_Click_1(object sender, EventArgs e)
         {
 
+        }
+
+        private void button_toRfc1123_Click(object sender, EventArgs e)
+        {
+            string result = "";
+
+            string text = this.textBox_result.Text.Trim();
+            text = text.Replace("\r\n", "\n");
+            string[] rList = text.Split('\n');
+            foreach (string one in rList)
+            {
+                //2021.05.24
+                //2021.05.26
+
+                DateTime dateTime = Convert.ToDateTime(one);
+
+                if (result == "")
+                    result += "\r\n";
+
+                result+= DateTimeUtil.Rfc1123DateTimeStringEx(dateTime) +"\r\n";
+
+            }
+
+            this.textBox_result.Text = result;
         }
     }
 }

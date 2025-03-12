@@ -39,6 +39,7 @@
             this.button1 = new System.Windows.Forms.Button();
             this.label27 = new System.Windows.Forms.Label();
             this.textBox_userrightsdef = new System.Windows.Forms.TextBox();
+            this.button_toRfc1123 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label28
@@ -81,7 +82,6 @@
             this.textBox_result.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.textBox_result.Multiline = true;
             this.textBox_result.Name = "textBox_result";
-            this.textBox_result.ReadOnly = true;
             this.textBox_result.ScrollBars = System.Windows.Forms.ScrollBars.Both;
             this.textBox_result.Size = new System.Drawing.Size(1359, 543);
             this.textBox_result.TabIndex = 51;
@@ -112,7 +112,7 @@
             // 
             this.button_checkalias.Location = new System.Drawing.Point(234, 224);
             this.button_checkalias.Name = "button_checkalias";
-            this.button_checkalias.Size = new System.Drawing.Size(284, 47);
+            this.button_checkalias.Size = new System.Drawing.Size(407, 47);
             this.button_checkalias.TabIndex = 55;
             this.button_checkalias.Text = "查找有别名的权限";
             this.button_checkalias.UseVisualStyleBackColor = true;
@@ -122,7 +122,7 @@
             // 
             this.button_createUserRights.Location = new System.Drawing.Point(234, 118);
             this.button_createUserRights.Name = "button_createUserRights";
-            this.button_createUserRights.Size = new System.Drawing.Size(185, 47);
+            this.button_createUserRights.Size = new System.Drawing.Size(405, 47);
             this.button_createUserRights.TabIndex = 56;
             this.button_createUserRights.Text = "生成权限表";
             this.button_createUserRights.UseVisualStyleBackColor = true;
@@ -157,11 +157,22 @@
             this.textBox_userrightsdef.TabIndex = 57;
             this.textBox_userrightsdef.Text = "D:\\000-权限测试\\rights\\userrightsdef.xml";
             // 
+            // button_toRfc1123
+            // 
+            this.button_toRfc1123.Location = new System.Drawing.Point(647, 224);
+            this.button_toRfc1123.Name = "button_toRfc1123";
+            this.button_toRfc1123.Size = new System.Drawing.Size(284, 47);
+            this.button_toRfc1123.TabIndex = 60;
+            this.button_toRfc1123.Text = "转换为rfc1123格式";
+            this.button_toRfc1123.UseVisualStyleBackColor = true;
+            this.button_toRfc1123.Click += new System.EventHandler(this.button_toRfc1123_Click);
+            // 
             // Form_2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(14F, 27F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1406, 887);
+            this.Controls.Add(this.button_toRfc1123);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.label27);
             this.Controls.Add(this.textBox_userrightsdef);
@@ -193,5 +204,6 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Label label27;
         private System.Windows.Forms.TextBox textBox_userrightsdef;
+        private System.Windows.Forms.Button button_toRfc1123;
     }
 }
