@@ -29,6 +29,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTestPrice", "UnitTestPr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "operLogTool", "operLogTool\operLogTool.csproj", "{4347CBCC-823A-4ABF-B51B-B38AFB7998D8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "passwordTool", "passwordTool\passwordTool.csproj", "{BA0A0BD6-90A7-44BB-82DE-84690BBD0EE2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -87,6 +89,10 @@ Global
 		{4347CBCC-823A-4ABF-B51B-B38AFB7998D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4347CBCC-823A-4ABF-B51B-B38AFB7998D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4347CBCC-823A-4ABF-B51B-B38AFB7998D8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BA0A0BD6-90A7-44BB-82DE-84690BBD0EE2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BA0A0BD6-90A7-44BB-82DE-84690BBD0EE2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BA0A0BD6-90A7-44BB-82DE-84690BBD0EE2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BA0A0BD6-90A7-44BB-82DE-84690BBD0EE2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
