@@ -1,4 +1,5 @@
 ﻿using DigitalPlatform.IO;
+using DigitalPlatform.Marc;
 using DigitalPlatform.Xml;
 using System;
 using System.Collections.Generic;
@@ -302,6 +303,7 @@ writeobject	写入对象资源	write object	2	废弃
         private void button_toRfc1123_Click(object sender, EventArgs e)
         {
             string result = "";
+
 
             string text = this.textBox_result.Text.Trim();
             text = text.Replace("\r\n", "\n");
