@@ -563,6 +563,7 @@ namespace dp2mini
                     viewItem.SubItems.Add("");
                     viewItem.SubItems.Add("");
                     viewItem.SubItems.Add("");
+                    viewItem.SubItems.Add("");
                 }
                 else
                 {
@@ -574,6 +575,7 @@ namespace dp2mini
                     viewItem.SubItems.Add(borrowLog.readerBarcode);
                     viewItem.SubItems.Add(borrowLog.readerName);
                     viewItem.SubItems.Add(borrowLog.dept);
+                    viewItem.SubItems.Add(borrowLog.readerType); //20250328增加
                     viewItem.SubItems.Add(borrowLog.itemBarcode);
 
                     viewItem.SubItems.Add(borrowLog.price);
@@ -966,6 +968,9 @@ namespace dp2mini
                 //><department>单位</department>
                 borrowLog.dept = DomUtil.GetElementInnerText(reader_dom.DocumentElement, "department");
 
+                //<readerType>新x生</readerType>
+                borrowLog.readerType = DomUtil.GetElementInnerText(reader_dom.DocumentElement, "readerType");
+
             }
 
             // 获取图书信息
@@ -1317,6 +1322,10 @@ namespace dp2mini
 
         // 读者单位
         public string dept { get; set; }
+
+        //// 2025/03/08 增加读者类型字段，某用户只需要统计某类型的读者
+        //// 读者类型
+        //public string dept { get; set; }
 
         // 图书类型
         public string bookType { get; set; }

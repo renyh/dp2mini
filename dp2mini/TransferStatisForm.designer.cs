@@ -154,11 +154,13 @@
             this.columnHeader67 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader68 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.tabPage_borrowReturnByItemBarcode = new System.Windows.Forms.TabPage();
-            this.label4 = new System.Windows.Forms.Label();
-            this.textBox_librarycode = new System.Windows.Forms.TextBox();
             this.listView_borrowAndReturnItemBarcode = new System.Windows.Forms.ListView();
             this.columnHeader63 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader71 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.label4 = new System.Windows.Forms.Label();
+            this.textBox_librarycode = new System.Windows.Forms.TextBox();
+            this.columnHeader_borrow_readerType = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader69 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -601,7 +603,7 @@
             this.textBox_xml.Name = "textBox_xml";
             this.textBox_xml.ReadOnly = true;
             this.textBox_xml.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.textBox_xml.Size = new System.Drawing.Size(588, 580);
+            this.textBox_xml.Size = new System.Drawing.Size(586, 580);
             this.textBox_xml.TabIndex = 0;
             // 
             // tabControl_table
@@ -663,6 +665,7 @@
             this.columnHeader_borrow_patronBarcode,
             this.columnHeader_borrow_name,
             this.columnHeader_borrow_dept,
+            this.columnHeader_borrow_readerType,
             this.columnHeader_borrow_barcode,
             this.columnHeader_price,
             this.columnHeader_borrow_opretor,
@@ -846,6 +849,7 @@
             this.columnHeader43,
             this.columnHeader44,
             this.columnHeader55,
+            this.columnHeader69,
             this.columnHeader45,
             this.columnHeader5_price,
             this.columnHeader48,
@@ -1104,24 +1108,6 @@
             this.tabPage_borrowReturnByItemBarcode.Text = "借还统计(册条码)";
             this.tabPage_borrowReturnByItemBarcode.UseVisualStyleBackColor = true;
             // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label4.Location = new System.Drawing.Point(554, 77);
-            this.label4.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(143, 33);
-            this.label4.TabIndex = 18;
-            this.label4.Text = "馆代码：";
-            // 
-            // textBox_librarycode
-            // 
-            this.textBox_librarycode.Location = new System.Drawing.Point(685, 75);
-            this.textBox_librarycode.Name = "textBox_librarycode";
-            this.textBox_librarycode.Size = new System.Drawing.Size(406, 38);
-            this.textBox_librarycode.TabIndex = 19;
-            // 
             // listView_borrowAndReturnItemBarcode
             // 
             this.listView_borrowAndReturnItemBarcode.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
@@ -1150,6 +1136,33 @@
             // 
             this.columnHeader71.Text = "借还数量";
             this.columnHeader71.Width = 210;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label4.Location = new System.Drawing.Point(554, 77);
+            this.label4.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(143, 33);
+            this.label4.TabIndex = 18;
+            this.label4.Text = "馆代码：";
+            // 
+            // textBox_librarycode
+            // 
+            this.textBox_librarycode.Location = new System.Drawing.Point(685, 75);
+            this.textBox_librarycode.Name = "textBox_librarycode";
+            this.textBox_librarycode.Size = new System.Drawing.Size(406, 38);
+            this.textBox_librarycode.TabIndex = 19;
+            // 
+            // columnHeader_borrow_readerType
+            // 
+            this.columnHeader_borrow_readerType.Text = "读者类型";
+            this.columnHeader_borrow_readerType.Width = 256;
+            // 
+            // columnHeader69
+            // 
+            this.columnHeader69.Text = "读者类型";
             // 
             // TransferStatisForm
             // 
@@ -1324,5 +1337,7 @@
         private System.Windows.Forms.ListView listView_borrowAndReturnItemBarcode;
         private System.Windows.Forms.ColumnHeader columnHeader63;
         private System.Windows.Forms.ColumnHeader columnHeader71;
+        private System.Windows.Forms.ColumnHeader columnHeader_borrow_readerType;
+        private System.Windows.Forms.ColumnHeader columnHeader69;
     }
 }
