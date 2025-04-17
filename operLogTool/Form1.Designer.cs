@@ -82,6 +82,8 @@
             textBox_files = new TextBox();
             label2 = new Label();
             tabPage2 = new TabPage();
+            button_search = new Button();
+            textBox_word = new TextBox();
             tabControl1.SuspendLayout();
             tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
@@ -318,6 +320,8 @@
             // 
             // tabPage1
             // 
+            tabPage1.Controls.Add(button_search);
+            tabPage1.Controls.Add(textBox_word);
             tabPage1.Controls.Add(splitContainer1);
             tabPage1.Controls.Add(label4);
             tabPage1.Controls.Add(textBox_dir);
@@ -561,7 +565,7 @@
             // 
             // button_load
             // 
-            button_load.Location = new Point(1196, 3);
+            button_load.Location = new Point(934, 3);
             button_load.Name = "button_load";
             button_load.Size = new Size(94, 48);
             button_load.TabIndex = 4;
@@ -573,7 +577,7 @@
             // 
             textBox_files.Location = new Point(656, 6);
             textBox_files.Name = "textBox_files";
-            textBox_files.Size = new Size(534, 42);
+            textBox_files.Size = new Size(272, 42);
             textBox_files.TabIndex = 3;
             textBox_files.KeyDown += textBox_files_KeyDown;
             // 
@@ -617,6 +621,23 @@
             tabPage2.TabIndex = 1;
             tabPage2.Text = "tabPage2";
             tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // button_search
+            // 
+            button_search.Location = new Point(1326, 6);
+            button_search.Name = "button_search";
+            button_search.Size = new Size(94, 48);
+            button_search.TabIndex = 14;
+            button_search.Text = "检索";
+            button_search.UseVisualStyleBackColor = true;
+            button_search.Click += button_search_Click;
+            // 
+            // textBox_word
+            // 
+            textBox_word.Location = new Point(1048, 9);
+            textBox_word.Name = "textBox_word";
+            textBox_word.Size = new Size(272, 42);
+            textBox_word.TabIndex = 13;
             // 
             // Form1
             // 
@@ -698,6 +719,8 @@
         private ToolStripMenuItem 拷贝xml到剪切板ToolStripMenuItem;
         private Button button_new;
         private ToolStripMenuItem 复制到新文件ToolStripMenuItem;
+        private Button button_search;
+        private TextBox textBox_word;
     }
 }
 

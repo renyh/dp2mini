@@ -1436,8 +1436,8 @@ namespace opeLogTool
                 {
                     // 如果有附件，把附件取出来一起复制
                     string attLength = "";
-                    if (item.SubItems.Count>4)
-                        attLength= item.SubItems[4].Text.Trim();
+                    if (item.SubItems.Count > 4)
+                        attLength = item.SubItems[4].Text.Trim();
                     if (attLength != "")
                     {
                         // 如果左侧的事项上有附件，把附件读出来一起保存
@@ -1469,13 +1469,13 @@ namespace opeLogTool
                     //      0   file not found
                     //      1   succeed
                     //      2   超过范围
-                     nRet = OperLogUtility.AppendOperLog(
-                                        null,
-                                        strDir,
-                                         newFile,  // 追加到新文件
-                                        xml,
-                                        ms,
-                                        out  strError);
+                    nRet = OperLogUtility.AppendOperLog(
+                                       null,
+                                       strDir,
+                                        newFile,  // 追加到新文件
+                                       xml,
+                                       ms,
+                                       out strError);
                     if (nRet != 1)
                     {
                         MessageBox.Show(this, "失败：" + strError);
@@ -1497,6 +1497,27 @@ namespace opeLogTool
 
 
 
+        }
+
+        private void button_search_Click(object sender, EventArgs e)
+        {
+            string word = this.textBox_word.Text.Trim();
+
+            foreach (ListViewItem item in this.listView1.Items)
+            {
+               string temp= item.Tag.ToString();
+
+                if (temp.Contains(word) ==true)
+                {
+                    item.Selected = true;
+                    //MessageBox.Show(this, item.Index.ToString());
+                }
+            }
+
+            MessageBox.Show(this, "搜索完成");
+
+
+                
         }
     }
 }
