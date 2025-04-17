@@ -104,6 +104,7 @@
             this.columnHeader_borrow_patronBarcode = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader_borrow_name = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader_borrow_dept = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader_borrow_readerType = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader_borrow_barcode = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader_price = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader_borrow_opretor = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -128,6 +129,7 @@
             this.columnHeader43 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader44 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader55 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader69 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader45 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader5_price = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader48 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -159,8 +161,6 @@
             this.columnHeader71 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.label4 = new System.Windows.Forms.Label();
             this.textBox_librarycode = new System.Windows.Forms.TextBox();
-            this.columnHeader_borrow_readerType = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader69 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -266,7 +266,7 @@
             this.listView_results.Location = new System.Drawing.Point(0, 0);
             this.listView_results.Margin = new System.Windows.Forms.Padding(6);
             this.listView_results.Name = "listView_results";
-            this.listView_results.Size = new System.Drawing.Size(1216, 596);
+            this.listView_results.Size = new System.Drawing.Size(753, 560);
             this.listView_results.TabIndex = 12;
             this.listView_results.UseCompatibleStateImageBehavior = false;
             this.listView_results.View = System.Windows.Forms.View.Details;
@@ -587,8 +587,8 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.textBox_xml);
-            this.splitContainer1.Size = new System.Drawing.Size(1832, 596);
-            this.splitContainer1.SplitterDistance = 1216;
+            this.splitContainer1.Size = new System.Drawing.Size(1135, 560);
+            this.splitContainer1.SplitterDistance = 753;
             this.splitContainer1.SplitterWidth = 6;
             this.splitContainer1.TabIndex = 16;
             // 
@@ -603,7 +603,7 @@
             this.textBox_xml.Name = "textBox_xml";
             this.textBox_xml.ReadOnly = true;
             this.textBox_xml.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.textBox_xml.Size = new System.Drawing.Size(586, 580);
+            this.textBox_xml.Size = new System.Drawing.Size(350, 544);
             this.textBox_xml.TabIndex = 0;
             // 
             // tabControl_table
@@ -625,7 +625,7 @@
             this.tabControl_table.Name = "tabControl_table";
             this.tabControl_table.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.tabControl_table.SelectedIndex = 0;
-            this.tabControl_table.Size = new System.Drawing.Size(1864, 662);
+            this.tabControl_table.Size = new System.Drawing.Size(1167, 626);
             this.tabControl_table.TabIndex = 17;
             // 
             // tabPage_all
@@ -635,7 +635,7 @@
             this.tabPage_all.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.tabPage_all.Name = "tabPage_all";
             this.tabPage_all.Padding = new System.Windows.Forms.Padding(5, 4, 5, 4);
-            this.tabPage_all.Size = new System.Drawing.Size(1844, 606);
+            this.tabPage_all.Size = new System.Drawing.Size(1147, 570);
             this.tabPage_all.TabIndex = 0;
             this.tabPage_all.Text = "日志总表";
             this.tabPage_all.UseVisualStyleBackColor = true;
@@ -715,6 +715,11 @@
             // columnHeader_borrow_dept
             // 
             this.columnHeader_borrow_dept.Text = "读者单位";
+            // 
+            // columnHeader_borrow_readerType
+            // 
+            this.columnHeader_borrow_readerType.Text = "读者类型";
+            this.columnHeader_borrow_readerType.Width = 256;
             // 
             // columnHeader_borrow_barcode
             // 
@@ -899,6 +904,10 @@
             // columnHeader55
             // 
             this.columnHeader55.Text = "读者单位";
+            // 
+            // columnHeader69
+            // 
+            this.columnHeader69.Text = "读者类型";
             // 
             // columnHeader45
             // 
@@ -1155,20 +1164,11 @@
             this.textBox_librarycode.Size = new System.Drawing.Size(406, 38);
             this.textBox_librarycode.TabIndex = 19;
             // 
-            // columnHeader_borrow_readerType
-            // 
-            this.columnHeader_borrow_readerType.Text = "读者类型";
-            this.columnHeader_borrow_readerType.Width = 256;
-            // 
-            // columnHeader69
-            // 
-            this.columnHeader69.Text = "读者类型";
-            // 
             // TransferStatisForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(14F, 27F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1910, 810);
+            this.ClientSize = new System.Drawing.Size(1227, 792);
             this.Controls.Add(this.textBox_librarycode);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.tabControl_table);
