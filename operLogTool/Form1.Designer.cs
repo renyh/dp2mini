@@ -54,6 +54,8 @@
             button12 = new Button();
             tabControl1 = new TabControl();
             tabPage1 = new TabPage();
+            button_search = new Button();
+            textBox_word = new TextBox();
             splitContainer1 = new SplitContainer();
             listView1 = new ListView();
             columnHeader_file = new ColumnHeader();
@@ -82,8 +84,6 @@
             textBox_files = new TextBox();
             label2 = new Label();
             tabPage2 = new TabPage();
-            button_search = new Button();
-            textBox_word = new TextBox();
             tabControl1.SuspendLayout();
             tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
@@ -335,6 +335,25 @@
             tabPage1.TabIndex = 0;
             tabPage1.Text = "tabPage1";
             tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // button_search
+            // 
+            button_search.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            button_search.Location = new Point(1366, 10);
+            button_search.Name = "button_search";
+            button_search.Size = new Size(94, 48);
+            button_search.TabIndex = 14;
+            button_search.Text = "检索";
+            button_search.UseVisualStyleBackColor = true;
+            button_search.Click += button_search_Click;
+            // 
+            // textBox_word
+            // 
+            textBox_word.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            textBox_word.Location = new Point(1088, 13);
+            textBox_word.Name = "textBox_word";
+            textBox_word.Size = new Size(272, 42);
+            textBox_word.TabIndex = 13;
             // 
             // splitContainer1
             // 
@@ -621,23 +640,6 @@
             tabPage2.TabIndex = 1;
             tabPage2.Text = "tabPage2";
             tabPage2.UseVisualStyleBackColor = true;
-            // 
-            // button_search
-            // 
-            button_search.Location = new Point(1326, 6);
-            button_search.Name = "button_search";
-            button_search.Size = new Size(94, 48);
-            button_search.TabIndex = 14;
-            button_search.Text = "检索";
-            button_search.UseVisualStyleBackColor = true;
-            button_search.Click += button_search_Click;
-            // 
-            // textBox_word
-            // 
-            textBox_word.Location = new Point(1048, 9);
-            textBox_word.Name = "textBox_word";
-            textBox_word.Size = new Size(272, 42);
-            textBox_word.TabIndex = 13;
             // 
             // Form1
             // 

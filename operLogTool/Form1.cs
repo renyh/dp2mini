@@ -1502,6 +1502,11 @@ namespace opeLogTool
         private void button_search_Click(object sender, EventArgs e)
         {
             string word = this.textBox_word.Text.Trim();
+            if (string.IsNullOrEmpty(word))
+            {
+                MessageBox.Show(this, "尚未输入检索词");
+                return;
+            }
 
             foreach (ListViewItem item in this.listView1.Items)
             {
