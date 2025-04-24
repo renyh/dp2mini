@@ -3072,10 +3072,15 @@ out string strError);
                 this.SetResultInfo("SetItemInfo()\r\n"
                 //+ RestChannel.GetResultInfo(response) + "\r\n");
 
-                + "Value:" + response.SetItemInfoResult1.Value + "\r\n"
-                + "ErrorCode:" + response.ErrorCode + "\r\n"
-                + "ErrorInfo:" + response.ErrorInfo + "\r\n"
+                 +"接口整体返回信息：\r\n"
+                + "Value:" + response.SetItemInfoResult.Value + "\r\n"
+                + "ErrorCode:" + response.SetItemInfoResult.ErrorCode + "\r\n"
+                + "ErrorInfo:" + response.SetItemInfoResult.ErrorInfo + "\r\n"
                 +"\r\n"
+                +"第一条记录返回信息：\r\n"
+                + "ErrorCode:" + response.OneErrorCode + "\r\n"
+                + "ErrorInfo:" + response.OneErrorInfo + "\r\n"
+
                 + "strOutputRecPath:" + strOutputRecPath + "\r\n"
                 + "baOutputTimestamp:" + ByteArray.GetHexTimeStampString(baOutputTimestamp) + "\r\n");
 

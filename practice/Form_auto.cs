@@ -888,7 +888,7 @@ bool isReader = false)
                     out strOutputRecPath,
                     out byte[] baOutputTimestamp);
                 // 间戳不匹配，自动重试
-                if (response.ErrorCode == ErrorCodeValue.TimestampMismatch)
+                if (response.OneErrorCode == ErrorCodeValue.TimestampMismatch)
                 {
                     // 设上时间戳
                     baTimestamp = baOutputTimestamp;
@@ -902,7 +902,7 @@ bool isReader = false)
                     ));
 
 
-                return response.SetItemInfoResult1;
+                return response.SetItemInfoResult;
 
             }
             catch (Exception ex)
@@ -8723,9 +8723,9 @@ CNY10人
                             "force",
                             out string strOutputRecPath,
                             out byte[] baOutputTimestamp);
-                        if (response.SetItemInfoResult1.Value == -1)
+                        if (response.SetItemInfoResult.Value == -1)
                         {
-                            MessageBox.Show(this, "出错:" + response.ErrorInfo);
+                            MessageBox.Show(this, "出错:" + response.SetItemInfoResult.ErrorInfo +"\r\n"+response.OneErrorInfo);
                             return;
                         }
                     }

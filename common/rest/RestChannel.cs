@@ -446,18 +446,18 @@ namespace DigitalPlatform.LibraryRestClient
                 return GetServerResultInfo(r.SetUserResult);
 
             }
-            else if (o is SetItemInfoResponse)
-            {
-                SetItemInfoResponse r = (SetItemInfoResponse)o;
+            //else if (o is SetItemInfoResponse)
+            //{
+            //    SetItemInfoResponse r = (SetItemInfoResponse)o;
 
-                return "Value:"+ r.SetItemInfoResult1.Value+ "\r\n"
-                    + "ErrorCode:"+r.ErrorCode + "\r\n"
-                    + "ErrorInfo:" + r.ErrorInfo + "\r\n"
+            //    return "Value:"+ r.SetItemInfoResult.Value+ "\r\n"
+            //        + "ErrorCode:"+r.ErrorCode + "\r\n"
+            //        + "ErrorInfo:" + r.ErrorInfo + "\r\n"
                     
-                    + "strOutputRecPath:" + r.strOutputRecPath + "\r\n"
-                    + "baOutputTimestamp:" + ByteArray.GetHexTimeStampString(r.baOutputTimestamp) + "\r\n";
+            //        + "strOutputRecPath:" + r.strOutputRecPath + "\r\n"
+            //        + "baOutputTimestamp:" + ByteArray.GetHexTimeStampString(r.baOutputTimestamp) + "\r\n";
 
-            }
+            //}
             else if (o is CopyBiblioInfoResponse)
             {
                 CopyBiblioInfoResponse r = (CopyBiblioInfoResponse)o;
@@ -3565,11 +3565,11 @@ int nAttachmentFragmentLength)
             strOutputRecPath = "";
             baOutputTimestamp = null;
 
-            LibraryServerResult result = new LibraryServerResult();
+            //LibraryServerResult result = new LibraryServerResult();
             string strError = "";
 
             SetItemInfoResponse r = new SetItemInfoResponse();
-            r.SetItemInfoResult1 = result;
+            //r.SetItemInfoResult1 = result;
             
 
             var entity = new EntityInfo();
@@ -3612,7 +3612,7 @@ int nAttachmentFragmentLength)
                      new EntityInfo[] { entity });
 
                 errorinfos = ret.errorinfos;
-                result = ret.SetEntitiesResult;
+                r.SetItemInfoResult = ret.SetEntitiesResult;
             }
             else if (strDbType == "order")
             {
@@ -3621,7 +3621,7 @@ int nAttachmentFragmentLength)
                      new EntityInfo[] { entity });
 
                 errorinfos = ret.errorinfos;
-                result = ret.SetOrdersResult;
+                r.SetItemInfoResult = ret.SetOrdersResult;
             }
             else if (strDbType == "issue")
             {
@@ -3630,7 +3630,7 @@ int nAttachmentFragmentLength)
                      new EntityInfo[] { entity });
 
                 errorinfos = ret.errorinfos;
-                result = ret.SetIssuesResult;
+                r.SetItemInfoResult = ret.SetIssuesResult;
             }
             else if (strDbType == "comment")
             {
@@ -3639,64 +3639,34 @@ int nAttachmentFragmentLength)
                      new EntityInfo[] { entity });
 
                 errorinfos = ret.errorinfos;
-                result = ret.SetCommentsResult;
+                r.SetItemInfoResult = ret.SetCommentsResult;
             }
             else
             {
-                result.Value = -1;
-                result.ErrorInfo = $"无法识别的数据库类型 '{strDbType}'";
-                result.ErrorCode = ErrorCode.SystemError;
+                r.SetItemInfoResult.Value = -1;
+                r.SetItemInfoResult.ErrorInfo = $"无法识别的数据库类型 '{strDbType}'";
+                r.SetItemInfoResult.ErrorCode = ErrorCode.SystemError;
                 return r;
             }
 
-            if (result.Value == -1)
-                return r;
 
-
-            //
-            foreach (var error in errorinfos)
+            // 取第1个成员
+            if (errorinfos != null && errorinfos.Length > 0)
             {
-                r.ErrorCode = error.ErrorCode;
-               r.ErrorInfo=  error.ErrorInfo;
+                //foreach (var error in errorinfos)
+                var error = errorinfos[0];
+                r.OneErrorCode = error.ErrorCode;
+                r.OneErrorInfo = error.ErrorInfo;
+                strOutputRecPath = error.NewRecPath;
 
-
-                if (error.ErrorCode != ErrorCodeValue.NoError)
+                if (error.ErrorCode == ErrorCodeValue.TimestampMismatch)
                 {
-                    // TODO: error code
-                    // string name = error.ErrorCode.ToString();
-                    // result.ErrorCode = (ErrorCode)Enum.Parse(typeof(ErrorCode), name);
-                   
-                    // “部分兑现保存”，不被当作报错
-                    //if (error.ErrorCode == ErrorCodeValue.PartialDenied)
-                    //    result.Value = 0;
-                    //else
-                    //    result.Value = -1;
-                    result.ErrorInfo = error.ErrorInfo;
-                    if (error.ErrorCode == ErrorCodeValue.TimestampMismatch)
-                    {
-                        /*
-                        if (strAction == "delete")
-                            baOutputTimestamp = error.NewTimestamp;
-                        else */
-                        baOutputTimestamp = error.OldTimestamp;
-                    }
-                    else
-                        baOutputTimestamp = error.NewTimestamp;
-
-                    strOutputRecPath = error.NewRecPath;
-
-                    // 2023/2/24
-                    //result.ErrorCode = FromErrorValue(error.ErrorCode);
-                    //return r;
+                    baOutputTimestamp = error.OldTimestamp;
                 }
                 else
-                {
                     baOutputTimestamp = error.NewTimestamp;
-                    strOutputRecPath = error.NewRecPath;
-                }
             }
 
-            r.SetItemInfoResult1 = result;
             return r;
         }
 

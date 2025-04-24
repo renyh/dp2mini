@@ -820,23 +820,28 @@ LibraryServerResult.ErrorInfo		出错信息
     [DataContract]
     public class SetItemInfoResponse
     {
+
+        // 整体返回值
         [DataMember]
-        public LibraryServerResult SetItemInfoResult1 { get; set; }
+        public LibraryServerResult SetItemInfoResult { get; set; }
 
         [DataMember]
         public string strOutputRecPath { get; set; }
+
         [DataMember]
         public byte[] baOutputTimestamp { get; set; }
 
+
+
+
+        // 第一条记录的错误码
         [DataMember]
 
-        public ErrorCodeValue ErrorCode { get; set; }
+        public ErrorCodeValue OneErrorCode { get; set; }
 
-        //[DataMember]
-        //public long Value { get; set; }
-
+        // 第1条记录的错误信息
         [DataMember]
-        public string ErrorInfo { get; set; }
+        public string OneErrorInfo { get; set; }
 
 
     }
