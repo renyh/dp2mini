@@ -6175,8 +6175,9 @@
             this.textBox_searchCharging_actions.Location = new System.Drawing.Point(252, 150);
             this.textBox_searchCharging_actions.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.textBox_searchCharging_actions.Name = "textBox_searchCharging_actions";
-            this.textBox_searchCharging_actions.Size = new System.Drawing.Size(382, 38);
+            this.textBox_searchCharging_actions.Size = new System.Drawing.Size(758, 38);
             this.textBox_searchCharging_actions.TabIndex = 47;
+            this.textBox_searchCharging_actions.Text = "return,lost,transferIdTo:readerBarcode|itemBarcode";
             // 
             // label46
             // 
@@ -6205,8 +6206,9 @@
             this.textBox_SearchCharging_timeRange.Location = new System.Drawing.Point(252, 98);
             this.textBox_SearchCharging_timeRange.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.textBox_SearchCharging_timeRange.Name = "textBox_SearchCharging_timeRange";
-            this.textBox_SearchCharging_timeRange.Size = new System.Drawing.Size(382, 38);
+            this.textBox_SearchCharging_timeRange.Size = new System.Drawing.Size(758, 38);
             this.textBox_SearchCharging_timeRange.TabIndex = 44;
+            this.textBox_SearchCharging_timeRange.Text = "2025/01/01 00:00~2025/04/27 23:59";
             // 
             // label33
             // 
@@ -6225,6 +6227,7 @@
             this.textBox_searchCharging_count.Name = "textBox_searchCharging_count";
             this.textBox_searchCharging_count.Size = new System.Drawing.Size(382, 38);
             this.textBox_searchCharging_count.TabIndex = 42;
+            this.textBox_searchCharging_count.Text = "-1";
             // 
             // label42
             // 
@@ -6243,13 +6246,14 @@
             this.textBox_searchCharging_start.Name = "textBox_searchCharging_start";
             this.textBox_searchCharging_start.Size = new System.Drawing.Size(382, 38);
             this.textBox_searchCharging_start.TabIndex = 40;
+            this.textBox_searchCharging_start.Text = "0";
             // 
             // textBox_SearchCharging_patronBarcode
             // 
             this.textBox_SearchCharging_patronBarcode.Location = new System.Drawing.Point(252, 44);
             this.textBox_SearchCharging_patronBarcode.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.textBox_SearchCharging_patronBarcode.Name = "textBox_SearchCharging_patronBarcode";
-            this.textBox_SearchCharging_patronBarcode.Size = new System.Drawing.Size(382, 38);
+            this.textBox_SearchCharging_patronBarcode.Size = new System.Drawing.Size(534, 38);
             this.textBox_SearchCharging_patronBarcode.TabIndex = 38;
             // 
             // label43

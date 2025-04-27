@@ -764,8 +764,20 @@ public long SearchItem(string strItemDbName,
                         string temp = "";
                         foreach (ChargingItemWrapper one in itemWarpperList)
                         {
-                            temp += one.Item.ItemBarcode + "\r\n";
+                            temp += "ItemBarcode:"+one.Item.ItemBarcode +"\t"
+                                + "PatronBarcode:" + one.Item.PatronBarcode +"\t"
+
+                                + "Operation:" + one.Item.Operation+"\t"
+                                + "Operator:" + one.Item.Operator +"\t"
+                                + "OperTime:" + one.Item.OperTime +"\t"
+
+                                + "BorrowDate:" + one.Item.BorrowDate + "\t"
+                                + "BiblioRecPath:" + one.Item.BiblioRecPath + "\t"
+                                + "\r\n";
                         }
+
+
+
 
                         this.textBox_result.Text += temp;
                     }
