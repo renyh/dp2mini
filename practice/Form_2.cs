@@ -324,5 +324,31 @@ writeobject	写入对象资源	write object	2	废弃
 
             this.textBox_result.Text = result;
         }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            string result = "";
+
+
+            string text = this.textBox_result.Text.Trim();
+            text = text.Replace("\r\n", "\n");
+            string[] rList = text.Split('\n');
+            foreach (string one in rList)
+            {
+                //2021.05.24
+                //2021.05.26
+
+                if (one.IndexOf("_") != -1)
+                {
+                    result += one.Substring(0, one.IndexOf("_")) + "\r\n";
+                }
+                else
+                    result += one+ "\r\n";
+
+
+            }
+
+            this.textBox_result.Text = result;
+        }
     }
 }
