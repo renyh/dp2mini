@@ -438,107 +438,117 @@ namespace DigitalPlatform.ChargingAnalysis
 
                 string taskName=DomUtil.GetAttr(task, "name");
                 string patronBarcode = DomUtil.GetAttr(task, "barcode");
-
-                string patronXmlFile = dir + "\\" + patronBarcode + ".xml";
-
-                // 已完成的情况
-                string state=DomUtil.GetAttr(task, "state");
-                if (state == C_state_close)  // 已处理完
-                    continue;
-
-                // 出错的情况，统计一下数量
-                if (state == C_state_error)  // 已处理完
+                try
                 {
-                    errorCount++;
-                    continue;
-                }
 
-                // 执行任务
-                if (taskName == C_task_createXml)
-                {
-                    // 创建数据
-                    BorrowAnalysisReport report = null;
-                    nRet = BorrowAnalysisService.Instance.Build(token,
-                               patronBarcode,
-                               startDate,
-                               endDate,
-                               out report,
-                               out error);
-                    if (nRet == -1)
-                        goto ERROR1;
+                    string patronXmlFile = dir + "\\" + patronBarcode + ".xml";
 
-                    // 输出xml
-                    string xml = "";
-                    nRet = BorrowAnalysisService.Instance.OutputReport(report,
-                        "xml",
-                        out xml,
-                        out error);
-                    if (nRet == -1)
-                        goto ERROR1;
+                    // 已完成的情况
+                    string state = DomUtil.GetAttr(task, "state");
+                    if (state == C_state_close)  // 已处理完
+                        continue;
 
-                    //string fileName = dir + "\\" + barcode + ".xml";
-                    // StreamWriter当文件不存在时，会自动创建一个新文件。
-                    using (StreamWriter writer = new StreamWriter(patronXmlFile, false, Encoding.UTF8))
+                    // 出错的情况，统计一下数量
+                    if (state == C_state_error)  // 已处理完
                     {
-                        // 写到打印文件
-                        writer.Write(xml);
+                        errorCount++;
+                        continue;
                     }
 
-                }
-                else if (taskName == C_task_paiMing)
-                {
-                    // 进行排名，将排名结果写到排名临时文件
-                    nRet = PaiMing(token,
-                        dir,
-                        out error);
-                    if (nRet == -1)
-                        goto ERROR1;
-                }
-                else if (taskName == C_task_writePaiMing)
-                {
-                    if (paiMingDom == null)
+                    // 执行任务
+                    if (taskName == C_task_createXml)
                     {
-                        string paiMingFile = dir + "\\paiMing.txt";
-                        paiMingDom = new XmlDocument();
-                        paiMingDom.Load(paiMingFile);
+                        // 创建数据
+                        BorrowAnalysisReport report = null;
+                        nRet = BorrowAnalysisService.Instance.Build(token,
+                                   patronBarcode,
+                                   startDate,
+                                   endDate,
+                                   out report,
+                                   out error);
+                        if (nRet == -1)
+                            goto ERROR1;
+
+                        // 输出xml
+                        string xml = "";
+                        nRet = BorrowAnalysisService.Instance.OutputReport(report,
+                            "xml",
+                            out xml,
+                            out error);
+                        if (nRet == -1)
+                            goto ERROR1;
+
+                        //string fileName = dir + "\\" + barcode + ".xml";
+                        // StreamWriter当文件不存在时，会自动创建一个新文件。
+                        using (StreamWriter writer = new StreamWriter(patronXmlFile, false, Encoding.UTF8))
+                        {
+                            // 写到打印文件
+                            writer.Write(xml);
+                        }
+
+                    }
+                    else if (taskName == C_task_paiMing)
+                    {
+                        // 进行排名，将排名结果写到排名临时文件
+                        nRet = PaiMing(token,
+                            dir,
+                            out error);
+                        if (nRet == -1)
+                            goto ERROR1;
+                    }
+                    else if (taskName == C_task_writePaiMing)
+                    {
+                        if (paiMingDom == null)
+                        {
+                            string paiMingFile = dir + "\\paiMing.txt";
+                            paiMingDom = new XmlDocument();
+                            paiMingDom.Load(paiMingFile);
+                        }
+
+                        // 把名次写到对应xml
+                        nRet = WritePaiMing(token, dir, patronBarcode, paiMingDom, out error);
+                        if (nRet == -1)
+                            goto ERROR1;
+
+                    }
+                    else if (taskName == C_task_xml2html)
+                    {
+                        nRet = ConvertReport2Html(token, patronXmlFile, out error);
+                        if (nRet == -1)
+                            goto ERROR1;
+                    }
+                    else
+                    {
+                        //不认识的任务
+                        error = "不认识的任务";
                     }
 
-                    // 把名次写到对应xml
-                    nRet = WritePaiMing(token,dir, patronBarcode, paiMingDom, out error);
-                    if (nRet == -1)
-                        goto ERROR1;
+
+                    // 把这一任务设置成完成
+                    DomUtil.SetAttr(task, "state", C_state_close);
+                    dom.Save(planFile);// 立即保存一下plan文件。
+                    continue;
 
                 }
-                else if (taskName == C_task_xml2html)
+                catch (Exception ex) //2025/06/05 增加异常的情况
                 {
-                    nRet = ConvertReport2Html(token,patronXmlFile,out error);
-                    if (nRet == -1)
-                        goto ERROR1;
+                    error = "处理" + patronBarcode + "出错：" + ex.Message;
+                    goto ERROR1;
                 }
-                else
-                {
-                    //不认识的任务
-                    error = "不认识的任务";
-                }
-
-
-                // 把这一任务设置成完成
-                DomUtil.SetAttr(task, "state", C_state_close);
-                dom.Save(planFile);// 立即保存一下plan文件。
-                continue;
-
 
 
             ERROR1:
 
-                // 把这一任务设置成出错
-                errorCount++; //错误数量
-                DomUtil.SetAttr(task, "state", C_state_error);
-                if (string.IsNullOrEmpty(error) == false)  //写错误信息
-                { 
-                    DomUtil.SetAttr(task,"error",error);
-                }
-                dom.Save(planFile);// 立即保存一下plan文件。
+                    // 把这一任务设置成出错
+                    errorCount++; //错误数量
+                    DomUtil.SetAttr(task, "state", C_state_error);
+                    if (string.IsNullOrEmpty(error) == false)  //写错误信息
+                    {
+                        DomUtil.SetAttr(task, "error", error);
+                    }
+                    dom.Save(planFile);// 立即保存一下plan文件。
+
+      
             }
 
             //end
@@ -1275,6 +1285,8 @@ namespace DigitalPlatform.ChargingAnalysis
             string accessNo = DomUtil.GetElementInnerText(itemRoot, "accessNo");
             item.AccessNo = accessNo;
 
+
+
             // 取出大类
             if (string.IsNullOrEmpty(accessNo) == false)
             {
@@ -1285,6 +1297,9 @@ namespace DigitalPlatform.ChargingAnalysis
             //获取馆藏地
             string location = DomUtil.GetElementInnerText(itemRoot, "location");
             item.Location = location;
+
+            // 2025/06/05
+            item.realItemBarcode = DomUtil.GetElementInnerText(itemRoot, "barcode");
 
 
             // 处理书目，取题名信息
@@ -1706,7 +1721,7 @@ namespace DigitalPlatform.ChargingAnalysis
 
 
                     string temp = "<tr>"
-                        + "<td>" + one.ItemBarcode + "</td>"
+                        + "<td>" + one.realItemBarcode + "</td>"
                         + "<td>" + one.Title + "</td>"
                         + "<td>" + one.AccessNo + "</td>"
                         + "<td>" + borrowTime + "</td>"

@@ -170,6 +170,9 @@ namespace DigitalPlatform.ChargingAnalysis
         // 册条码
         public string ItemBarcode { get; set; }
 
+        // 2025/06/05 增加，最新dp2版本，mongodb中存储的是refID，用户显示用实际的册条码
+        public string realItemBarcode { get; set; }
+
         // 读者证条码
         public string PatronBarcode { get; set; }
 
@@ -226,7 +229,7 @@ namespace DigitalPlatform.ChargingAnalysis
                 returnYear = this.ReturnDate.Year;
             }
 
-            return "<borrowItem itemBarcode='" + ItemBarcode + "' "
+            return "<borrowItem itemBarcode='" + realItemBarcode + "' "
                 + " title=\"" + HttpUtility.HtmlEncode(Title) + "\" "
 
                 + " borrowTime='" + borrowTime + "' "
